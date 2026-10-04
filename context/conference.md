@@ -74,6 +74,22 @@ ecosystems*, touching *Education & outreach* (Nim as a learning tool) and
 - Schedule publication date, slide/recording deadlines: not found; check
   pretalx and speaker emails.
 
+## Our session: "A Babel of Compilers"
+
+Thursday 26 November, Room 108. Confirmed by Pietro (2026-10-04):
+
+- **Antonio Cuni** (with a co-speaker): SPy.
+- **Mamy André-Ratsimbazafy**: high-performance computing for AI in Nim.
+- **Pietro Peterlongo**: Sailing the Seas of Scientific Nim (14:40–15:10).
+
+Implications: the session audience comes for languages and compilers, so less
+"why another language" justification is needed. Mamy's talk is also about Nim
+and covers HPC/AI, so the "Accessible Performance" island and any
+Arraymancer/HPC material can stay brief and point to his talk rather than
+duplicate it. Coordinate with Mamy on overlap (order of talks unknown). SPy
+(a statically compiled Python variant) is a natural comparison point when
+explaining Nim's "reads like Python, compiles like C" pitch.
+
 ## CfP guidance, read as guidelines for the talk
 
 Source: the CfP page text, pasted by Pietro on 2026-10-04 (verbatim copy of
@@ -118,8 +134,8 @@ it is equally a checklist for the talk itself.
 - "Core content already shaped": every demo the proposal promises (penguins
   data exploration, the Shiny app port, Python interop and so on) should work
   well before the day.
-- "Repeated talks": keep the material new compared with earlier Nim and nimib
-  talks Pietro has given online.
+- "Repeated talks": the CfP strongly prefers new material, so the talk should
+  not reuse a deck that is already online.
 - "No sales pitch": nimib is Pietro's own project; present the seventh island
   as an open-source option with honest trade-offs, not a pitch.
 
@@ -154,8 +170,11 @@ R-Ladies Paris, Systematic Paris-Region.
 
 - [x] Day, time and room of our talk: Thu 26 Nov, 14:40–15:10, Room 108,
       session "A Babel of Compilers" (confirmed by Pietro from the website).
-- [ ] Other talks in the "A Babel of Compilers" session, and any other
-      non-Python language talks (Julia, R, Rust) to cross-reference.
+- [x] Other talks in the "A Babel of Compilers" session (confirmed by Pietro):
+      Antonio Cuni and a co-speaker on SPy, and Mamy André-Ratsimbazafy on
+      high-performance computing for AI in Nim.
+- [ ] Other non-Python language talks (Julia, R, Rust) elsewhere in the
+      programme to cross-reference.
 - [ ] Recording and streaming policy; slide upload deadline.
 - [ ] Projector / screen setup (aspect ratio, HDMI/USB-C) for nimiSlides.
 - [ ] Social events and the sprints programme (Sprints page on the site).
