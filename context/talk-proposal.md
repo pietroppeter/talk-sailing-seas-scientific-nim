@@ -16,7 +16,7 @@ Copied verbatim from the Compute! Paris 2026 talk page (pasted by Pietro on
 | Status | Accepted |
 | Audience | Scientific computing beginners and ecosystem builders; also PL enthusiasts and community builders |
 | Slides tooling | nimib + nimiSlides |
-| Talk page | TODO: add the pretalx URL (`https://pretalx.com/compute-paris-2026/talk/<CODE>/`) |
+| Talk page | https://pretalx.com/compute-paris-2026/talk/8EM8ZA/ (schedule view: https://compute.events/paris2026/schedule.html#session/8EM8ZA/) |
 
 Other speakers in the "Babel of Compilers" session reportedly include Antonio
 Cuni and Mamy André-Ratsimbazafy (from a search summary, not verified).
