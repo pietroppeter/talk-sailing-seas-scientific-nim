@@ -159,11 +159,8 @@ author is a good showcase for the new version, and nimiSlides' own
   `[nimislides] localReveal = "path"` for offline presenting (worth doing for a
   conference venue with flaky wifi).
 
-## Open questions for Pietro
+## Decisions (Pietro, 2026-10-04)
 
-- Theme: keep the AgileLab branding (logo, colors) for Compute Paris, or a
-  neutral / Nim-yellow theme (as in nimiSlides' `nimConfTheme`)?
-- Layout: hola-talk's `slides/` subfolder, or sources at the repo root like
-  earlier talks?
-- Tooling: atlas + grabnim again, or nimble (`nimble setup` + `nimble.paths`, as nimiSlides does)?
-
+- Theme: keep the AgileLab logo and colors.
+- Layout: sources in `slides/`, as in hola-talk.
+- Tooling: atlas again.
