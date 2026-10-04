@@ -1,9 +1,8 @@
 # Compute! Paris 2026: conference context
 
 Context for the talk **"Sailing the Seas of Scientific Nim"** (Pietro Peterlongo).
-Gathered 2026-10-04 from web search results. The official sites
-(compute.events, pretalx.com) were not directly reachable from the research
-environment, so items marked _(unverified)_ should be checked on the site.
+Gathered 2026-10-04 from web search results and conference-site text pasted by
+Pietro.
 
 ## At a glance
 
@@ -59,20 +58,13 @@ ecosystems*, touching *Education & outreach* (Nim as a learning tool) and
 - The **brief summary** is printed in the conference programme; summary and
   description are both visible to attendees online. Attendees choose our talk
   from these, so the talk should deliver what they promise.
-- The site nav lists a **Sprints** page, so there is a sprints programme
-  around the conference (details not read yet).
 - Each accepted talk includes **one free speaker ticket** for the full event.
-- Travel support, recording policy and number of parallel tracks were not
-  found. PyData Paris 2025 ran 3 parallel tracks with ~45 talks, and its talks
-  were recorded; expect something similar _(unverified)_.
 
 ## Timeline
 
 - CfP: opened 15 April 2026, deadline extended from 24 May to **7 June 2026**
-  (now closed). Acceptance notifications were "TBC" on the CfP page.
+  (now closed).
 - Conference: 25–26 November 2026.
-- Schedule publication date, slide/recording deadlines: not found; check
-  pretalx and speaker emails.
 
 ## Our session: "A Babel of Compilers"
 
@@ -165,20 +157,6 @@ R-Ladies Paris, Systematic Paris-Region.
   visualization and open-source practice.
 - The 2025 schedule (https://pretalx.com/pydata-paris-2025/schedule/) is a good
   proxy for the tone and technical level to expect.
-
-## Open questions to check
-
-- [x] Day, time and room of our talk: Thu 26 Nov, 14:40–15:10, Room 108,
-      session "A Babel of Compilers" (confirmed by Pietro from the website).
-- [x] Other talks in the "A Babel of Compilers" session (confirmed by Pietro):
-      Antonio Cuni and a co-speaker on SPy, and Mamy André-Ratsimbazafy on
-      high-performance computing for AI in Nim.
-- [ ] Other non-Python language talks (Julia, R, Rust) elsewhere in the
-      programme to cross-reference.
-- [ ] Recording and streaming policy; slide upload deadline.
-- [ ] Projector / screen setup (aspect ratio, HDMI/USB-C) for nimiSlides.
-- [ ] Social events and the sprints programme (Sprints page on the site).
-- [ ] Travel or accommodation support for speakers (likely none beyond the ticket).
 
 ## Sources
 
