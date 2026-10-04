@@ -7,6 +7,7 @@ const
   agileDarkBlue* = "#0e1f53"
   agileWhite* = "#FFF"
   witboostOrange* = "#ee961a"
+  softWhite* = "#F7F7F4" # background: white, not too bright
   agileLogUrl* = "https://www.agilelab.it/hubfs/logo-agilelab.png"
 
 newNbBlock(NbTextSmall of NbText):
@@ -38,7 +39,7 @@ template reference*(text: string) =
   nbTextSmall: text
 
 template agileTheme*() =
-  setSlidesTheme(Black)
+  setSlidesTheme(White)
   nb.addStyle: """
 :root {
   --r-background-color: $2;
@@ -68,7 +69,7 @@ li {
   font-style: normal;
   font-weight: 700;
 }
-""" % [agileWhite, agileDarkBlue, agileLightBlue, witboostOrange]
+""" % [agileDarkBlue, softWhite, agileLightBlue, witboostOrange]
 
 const agileLogoHtml = """
 <div id="agileLabLogo" style="background: url(./images/logo-agilelab.png);
