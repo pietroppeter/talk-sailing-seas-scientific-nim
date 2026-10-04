@@ -1,6 +1,6 @@
 # Compute! Paris 2026: conference context
 
-Context for the talk **"Sailing Seas of Scientific Nim"** (Pietro Peterlongo).
+Context for the talk **"Sailing the Seas of Scientific Nim"** (Pietro Peterlongo).
 Gathered 2026-10-04 from web search results. The official sites
 (compute.events, pretalx.com) were not directly reachable from the research
 environment, so items marked _(unverified)_ should be checked on the site.
@@ -14,6 +14,7 @@ environment, so items marked _(unverified)_ should be checked on the site.
 | Venue | Centre International de Conférences de Sorbonne Université (CICSU), 4 place Jussieu, Patio 44-55, 75005 Paris (Jussieu campus, Latin Quarter) |
 | Getting there | Metro Jussieu (lines 7 and 10); buses 63, 67, 86, 87, 89 |
 | Organizer | QuantStack (lead: Sylvain Corlay, CEO), same team that ran PyData Paris |
+| Our slot | **Thursday 26 November 2026, 14:40–15:10, Room 108**, session "A Babel of Compilers" (talk, 30 min incl. Q&A) |
 | Website | https://compute.events/paris2026/ |
 | CfP / schedule (pretalx) | https://pretalx.com/compute-paris-2026/ |
 | Meetup group | https://www.meetup.com/compute-paris/ |
@@ -48,7 +49,7 @@ environment, so items marked _(unverified)_ should be checked on the site.
 
 - Two days of live talks, keynotes and community events.
 - Talks are **30-minute slots including Q&A** (so plan roughly 22–25 minutes of
-  content).
+  content). Confirmed for our talk: 14:40–15:10.
 - Proposals were reviewed double-blind (reviewers saw title, description,
   outline and prior knowledge, not the speaker).
 - Each accepted talk includes **one free speaker ticket** for the full event.
@@ -93,9 +94,10 @@ R-Ladies Paris, Systematic Paris-Region.
 
 ## Open questions to check
 
-- [ ] Day, time and room of our talk (pretalx schedule).
-- [ ] Other talks in the same session/track, and any other non-Python
-      language talks (Julia, R, Rust) to cross-reference.
+- [x] Day, time and room of our talk: Thu 26 Nov, 14:40–15:10, Room 108,
+      session "A Babel of Compilers" (confirmed by Pietro from the website).
+- [ ] Other talks in the "A Babel of Compilers" session, and any other
+      non-Python language talks (Julia, R, Rust) to cross-reference.
 - [ ] Recording and streaming policy; slide upload deadline.
 - [ ] Projector / screen setup (aspect ratio, HDMI/USB-C) for nimiSlides.
 - [ ] Social events, sprints or "off" program around the conference.
