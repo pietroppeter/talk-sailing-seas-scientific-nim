@@ -39,11 +39,15 @@ environment, so items marked _(unverified)_ should be checked on the site.
 
 ## Topics (from the CfP)
 
-- Data engineering and visualization
-- Open-source AI/ML
-- High-performance computing
-- Scientific and technical applications
-- Education and outreach
+Data analysis & visualization · Scientific computing · Machine learning & AI ·
+Data engineering · High-performance computing · Reproducible research ·
+Open source tools & ecosystems · Education & outreach · Ethics & responsible
+AI · Community building · Domain applications · Package management &
+distribution.
+
+Our talk sits mainly in *Scientific computing* and *Open source tools &
+ecosystems*, touching *Education & outreach* (Nim as a learning tool) and
+*Reproducible research* (nimib, literate programming).
 
 ## Format
 
@@ -51,7 +55,12 @@ environment, so items marked _(unverified)_ should be checked on the site.
 - Talks are **30-minute slots including Q&A** (so plan roughly 22–25 minutes of
   content). Confirmed for our talk: 14:40–15:10.
 - Proposals were reviewed double-blind (reviewers saw title, description,
-  outline and prior knowledge, not the speaker).
+  outline, brief summary and prior knowledge expected, not the speaker).
+- The **brief summary** is printed in the conference programme; summary and
+  description are both visible to attendees online. Attendees choose our talk
+  from these, so the talk should deliver what they promise.
+- The site nav lists a **Sprints** page, so there is a sprints programme
+  around the conference (details not read yet).
 - Each accepted talk includes **one free speaker ticket** for the full event.
 - Travel support, recording policy and number of parallel tracks were not
   found. PyData Paris 2025 ran 3 parallel tracks with ~45 talks, and its talks
@@ -60,10 +69,59 @@ environment, so items marked _(unverified)_ should be checked on the site.
 ## Timeline
 
 - CfP: opened 15 April 2026, deadline extended from 24 May to **7 June 2026**
-  (now closed).
+  (now closed). Acceptance notifications were "TBC" on the CfP page.
 - Conference: 25–26 November 2026.
 - Schedule publication date, slide/recording deadlines: not found; check
   pretalx and speaker emails.
+
+## CfP guidance, read as guidelines for the talk
+
+Source: the CfP page text, pasted by Pietro on 2026-10-04 (verbatim copy of
+compute.events/paris2026/cfp.html). The organizers wrote it for proposals, but
+it is equally a checklist for the talk itself.
+
+**What a good talk/proposal discloses**
+
+- The topic (the **WHAT**) and **WHY** it is interesting.
+- The audience to **WHOM** it is addressed (job role and experience level).
+- The **TYPE** of talk (lots of maths, hands-on, etc.) and the tone.
+- The **TAKEAWAY**: what attendees will learn or be able to do.
+- Background knowledge required.
+- Approximate time breakdown (e.g. minutes 0–10: X, 10–15: Y).
+
+**Other advice from the CfP**
+
+- *Clear title*: people should get a rough idea of the talk from the title, and
+  the presentation should be consistent with title and proposal.
+- *Get feedback*: have friends or colleagues (ideally the target audience)
+  review it.
+- *Pitfalls*: overly long (aim for the key info in ~200 words); relying on
+  future work (core content should already be shaped); sales pitches (the
+  audience prefers techniques they can try with open-source tools); repeated
+  talks (strong preference for new talks and new speakers; a talk already
+  online is unlikely to be accepted).
+
+**How this applies to "Sailing the Seas of Scientific Nim"**
+
+- WHAT/WHY: why Nim is a good fit for scientific computing, as a tour of seven
+  "islands", without hiding where Nim falls short.
+- WHOM: the scientific-computing beginner and the ecosystem builder (plus
+  language enthusiasts and community builders). The room is mostly
+  Python/Jupyter people, so Python-like examples are the right bridge.
+- TYPE/tone: an example-driven tour, explicitly *not* a language tutorial;
+  light, travel-themed narrative.
+- TAKEAWAY: separate takeaways for the beginner (an accessible, fun language
+  to try) and the builder (pros and cons of building tools in Nim).
+- Time budget: ~25 minutes of content in a 30-minute slot. With intro,
+  conclusion and seven islands, that's about 2.5–3 minutes per island. Write
+  the per-section time breakdown into the slide outline, as the CfP suggests.
+- "Core content already shaped": every demo the proposal promises (penguins
+  data exploration, the Shiny app port, Python interop and so on) should work
+  well before the day.
+- "Repeated talks": keep the material new compared with earlier Nim and nimib
+  talks Pietro has given online.
+- "No sales pitch": nimib is Pietro's own project; present the seventh island
+  as an open-source option with honest trade-offs, not a pitch.
 
 ## Keynotes
 
@@ -100,12 +158,13 @@ R-Ladies Paris, Systematic Paris-Region.
       non-Python language talks (Julia, R, Rust) to cross-reference.
 - [ ] Recording and streaming policy; slide upload deadline.
 - [ ] Projector / screen setup (aspect ratio, HDMI/USB-C) for nimiSlides.
-- [ ] Social events, sprints or "off" program around the conference.
+- [ ] Social events and the sprints programme (Sprints page on the site).
 - [ ] Travel or accommodation support for speakers (likely none beyond the ticket).
 
 ## Sources
 
 - https://compute.events/paris2026/ and https://compute.events/paris2026/cfp.html
+  (CfP text pasted by Pietro in the project thread)
 - https://pretalx.com/compute-paris-2026/ (CfP page; proposals now closed)
 - https://discourse.julialang.org/t/compute-paris-ex-pydata-paris-25-26-november-2026/138889
 - https://discourse.julialang.org/t/new-conference-for-open-source-computation-and-data/137283
