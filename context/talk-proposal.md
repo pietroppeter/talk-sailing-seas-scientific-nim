@@ -15,10 +15,6 @@
 | Slides tooling | nimib + nimiSlides |
 | Talk page | https://pretalx.com/compute-paris-2026/talk/8EM8ZA/ (schedule view: https://compute.events/paris2026/schedule.html#session/8EM8ZA/) |
 
-Other talks in the "A Babel of Compilers" session:
-- Antonio Cuni (with a co-speaker) on SPy.
-- Mamy André-Ratsimbazafy on high-performance computing for AI in Nim.
-
 ## Abstract
 
 Programming languages used in Scientific Computing have evolved from Fortran to Python, but many languages are still actively used and are important in the ecosystem (C, C++, R). New languages made specifically for solving problems of the scientific ecosystem have been created (Julia). Is there space for one more? Why is Nim, a general purpose statically typed and compiled language, a good fit for Scientific Computing? We will make a quick travel around seven islands that represent important themes where Nim shows its powers. The talk will not hide where Nim falls short.
@@ -63,3 +59,8 @@ Data Scientist Delivery Lead at AgileLab (Consulting in Data for Enterprises), I
 - **No language tutorial**: examples must be readable by Python users without prior Nim knowledge.
 - **Audience**: largely the Python/PyData scientific community. Keynotes include
   Fernando Pérez (Jupyter), Mackenzie Mathis, Inès Montani (spaCy) and Wolf Vollprecht (Pixi).
+
+## Other talks in "A Babel of Compilers"
+
+- Antonio Cuni (with a co-speaker) on SPy.
+- Mamy André-Ratsimbazafy on high-performance computing for AI in Nim.
