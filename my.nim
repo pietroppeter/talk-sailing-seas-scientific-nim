@@ -28,12 +28,13 @@ newNbBlock(NbImg):
 <figcaption>{blk.caption}</figcaption>
 </figure>"""
 
-template nbImg*(iurl: string, iwidth: string, icaption = "", ialt = "") =
-  nb.add newNbImg(
-    url = nb.doc.relToRoot(iurl),
-    width = iwidth,
-    caption = icaption,
-    alt = if ialt.len == 0: icaption else: ialt)
+func img*(nb: var Nb, url: string, width: string, caption = "", alt = "") =
+  let blk = newNbImg(url = nb.doc.relToRoot(url), width = width, caption = caption,
+    alt = if alt.len == 0: caption else: alt)
+  nb.add blk
+
+template nbImg*(url: string, width: string, caption = "", alt = "") =
+  nb.img(url, width, caption, alt)
 
 template reference*(text: string) =
   nbTextSmall: text
@@ -148,7 +149,7 @@ Text with *italic*, **strong** and [link](recurse.com)
   slide:
     nbText: "### LaTeX and images"
     nbText: r"Inline math $e^{i\pi} + 1 = 0$ and display math $$\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$$"
-    nbImg("images/logo-agilelab.png", "200", icaption = "an image with a width")
+    nbImg("images/logo-agilelab.png", width = "200px", caption = "an image with a width")
 
 when isMainModule:
   myInit("my.nim")
