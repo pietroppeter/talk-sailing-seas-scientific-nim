@@ -2,7 +2,7 @@
 
 Context gathered on 2026-10-04 from Pietro's past talk repos, to bootstrap the
 slides for "Sailing Seas of Scientific Nim" (Compute Paris 2026).
-Nothing is scaffolded yet: this file only describes the setup to copy.
+A scaffold (`slides/my.nim`, `slides/index.nim`) ported to nimib 0.4.1 + nimiSlides 0.4.0 compiles on Nim 2.2.12; see PR #5.
 
 ## TL;DR
 
@@ -96,8 +96,7 @@ What still works unchanged: `nbInit(theme = revealTheme)`, `nb.useLatex`,
 `setSlidesTheme`, `nb.addStyle`, `nbText`, `nbRawHtml`, `slide`, `speakerNote`,
 `columns`/`column`, `fragment*`, `animateCode`, `cornerImage`, `footer`.
 
-What needs rewriting (sketch, **not compiled yet**, based on the nimib 0.4
-changelog and nimiSlides' `NbBigText`):
+What needed rewriting (early sketch; the compiled version is `my.nim` in PR #5):
 
 ```nim
 # nbTextSmall: subclass NbText, reuse the nbText partial
@@ -159,8 +158,21 @@ author is a good showcase for the new version, and nimiSlides' own
   `[nimislides] localReveal = "path"` for offline presenting (worth doing for a
   conference venue with flaky wifi).
 
+## Porting notes (verified 2026-10-04)
+
+- `my.nim` compiles and renders against nimib 0.4.1 + nimiSlides 0.4.0 on Nim 2.2.12.
+  The test deck and the title slide were both checked visually.
+- `import nimiSlides` needs that exact casing: `import nimislides` fails on Linux.
+- Template params can't share names with block fields: `url` vs `blk.url` breaks `nbImg`.
+- Logo: override `nb.backend.funcs["NbDoc"]` with a copy of `revealNbDocToHtml` that appends the logo div.
+- nim-markdown needs `libpcre.so.3` at runtime.
+- **Known issue:** LaTeX doesn't load out of the box. `useLatex` stores an html string, but nimiSlides 0.4 checks it with `getBool`. `my.nim` works around it: it sets `context["latex"] = true` and adds `RevealMath.KaTeX` to the reveal plugins.
+- Previews: `scripts/screenshot.sh` renders slides to png, using local reveal.js and KaTeX.
+- Cloud env: nim-lang.org and cdnjs are blocked. Nim was built from git source (`build_all.sh` also builds atlas).
+
 ## Decisions (Pietro, 2026-10-04)
 
 - Theme: keep the AgileLab logo and colors.
-- Layout: sources in `slides/`, as in hola-talk.
+- Layout: main files (`index.nim`, `my.nim`, `nimib.toml`, ...) at the repo root, individual slide files in `slides/`.
 - Tooling: atlas again.
+- LaTeX: workaround in my.nim for now; investigation in a separate thread.
