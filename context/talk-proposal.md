@@ -1,8 +1,5 @@
 # Talk proposal: Sailing the Seas of Scientific Nim
 
-Copied verbatim from the Compute! Paris 2026 talk page (pasted by Pietro on
-2026-10-04, since pretalx.com is not reachable from the cloud environment).
-
 ## At a glance
 
 | Field | Value |
@@ -18,8 +15,9 @@ Copied verbatim from the Compute! Paris 2026 talk page (pasted by Pietro on
 | Slides tooling | nimib + nimiSlides |
 | Talk page | https://pretalx.com/compute-paris-2026/talk/8EM8ZA/ (schedule view: https://compute.events/paris2026/schedule.html#session/8EM8ZA/) |
 
-Other speakers in the "Babel of Compilers" session reportedly include Antonio
-Cuni and Mamy André-Ratsimbazafy (from a search summary, not verified).
+Other talks in the "A Babel of Compilers" session:
+- Antonio Cuni (with a co-speaker) on SPy.
+- Mamy André-Ratsimbazafy on high-performance computing for AI in Nim.
 
 ## Abstract
 
@@ -65,5 +63,3 @@ Data Scientist Delivery Lead at AgileLab (Consulting in Data for Enterprises), I
 - **No language tutorial**: examples must be readable by Python users without prior Nim knowledge.
 - **Audience**: largely the Python/PyData scientific community. Keynotes include
   Fernando Pérez (Jupyter), Mackenzie Mathis, Inès Montani (spaCy) and Wolf Vollprecht (Pixi).
-- **Related prior talk**: "Nimib-land: an extensible ecosystem for Literate
-  Programming and Explorable Explanations" (FOSDEM 2024).
