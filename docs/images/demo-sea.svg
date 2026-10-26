@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" width="600" height="900">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e1f53"/>
+      <stop offset="0.55" stop-color="#02A4BD"/>
+      <stop offset="1" stop-color="#F7F7F4"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#02A4BD"/>
+      <stop offset="1" stop-color="#0e1f53"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="560" fill="url(#sky)"/>
+  <circle cx="420" cy="420" r="70" fill="#ee961a"/>
+  <path d="M120 560 Q190 440 260 470 Q320 420 380 560 Z" fill="#2e6b3a"/>
+  <rect y="540" width="600" height="360" fill="url(#sea)"/>
+  <g fill="none" stroke="#F7F7F4" stroke-width="4" stroke-linecap="round" opacity="0.6">
+    <path d="M0 610 q40 -16 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0"/>
+    <path d="M-40 690 q40 -16 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0"/>
+    <path d="M0 770 q40 -16 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0"/>
+    <path d="M-40 850 q40 -16 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0"/>
+  </g>
+  <g transform="translate(250 600)">
+    <path d="M-60 40 L60 40 L40 70 L-40 70 Z" fill="#F7F7F4"/>
+    <path d="M0 -110 L0 40" stroke="#F7F7F4" stroke-width="5"/>
+    <path d="M5 -100 L70 30 L5 30 Z" fill="#F7F7F4"/>
+    <path d="M-5 -80 L-50 30 L-5 30 Z" fill="#ee961a"/>
+  </g>
+</svg>
