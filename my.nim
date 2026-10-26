@@ -82,11 +82,42 @@ width: 250px;
 height: 70px;"></div>
 """
 
+const
+  revealAssets = "assets/reveal.js" # vendored by scripts/vendor-assets.sh into docs/assets
+  katexAssets = "assets/katex"
+
+func assetPath(nb: Nb, path: string): string =
+  {.cast(noSideEffect).}:
+    nb.doc.relToRoot(path)
+
+func vendoredRevealCss(blk: JsonNode, nb: Nb): string =
+  ## nimiSlides' revealCSS partial, loading reveal.js from docs/assets instead of the CDN
+  let reveal = nb.assetPath(revealAssets)
+  let theme = nb.doc.context{"slidesTheme"}.getStr
+  result = &"""
+<link rel="stylesheet" href="{reveal}/dist/reveal.css" />
+<link rel="stylesheet" href="{reveal}/dist/theme/{theme}.css" />
+<link rel="stylesheet" href="{reveal}/plugin/highlight/monokai.css" />
+"""
+
+func vendoredRevealJs(blk: JsonNode, nb: Nb): string =
+  ## nimiSlides' revealJS partial, loading reveal.js and its plugins from docs/assets
+  let reveal = nb.assetPath(revealAssets)
+  result = &"""
+<script src="{reveal}/dist/reveal.js"></script>
+<script src="{reveal}/plugin/highlight/highlight.js"></script>
+<script src="{reveal}/plugin/notes/notes.js"></script>
+"""
+  if nb.doc.context{"latex"}.getBool:
+    result.add &"""<script src="{reveal}/plugin/math/math.js"></script>"""
+
 func agileMainToHtml(doc: NbDoc, nb: Nb): string =
-  ## nimiSlides' revealMainToHtml, plus the reveal math (KaTeX) plugin when LaTeX is on
+  ## nimiSlides' revealMainToHtml, plus the reveal math (KaTeX) plugin when LaTeX is on,
+  ## with KaTeX loaded from docs/assets
   let docJson = %[]
   let renderedBlocks = nbContainerToHtml(doc, nb)
   let mathPlugin = if doc.context{"latex"}.getBool: "RevealMath.KaTeX," else: ""
+  let katex = nb.assetPath(katexAssets)
   result = withNewlines:
     hlHtmlF"""
 <div class="reveal">
@@ -99,6 +130,7 @@ func agileMainToHtml(doc: NbDoc, nb: Nb): string =
     "<script>"
     &"""
     Reveal.initialize({{
+      katex: {{ local: '{katex}' }},
       plugins: [
         RevealHighlight,
         RevealNotes,
@@ -128,8 +160,14 @@ template useRevealLatex* =
   ## nimib's `useLatex` stores the KaTeX html there, so the math plugin is never loaded
   nb.doc.context["latex"] = %true
 
+template useVendoredAssets* =
+  ## load reveal.js and KaTeX from docs/assets instead of CDNs
+  nb.backend.partials["revealCSS"] = vendoredRevealCss
+  nb.backend.partials["revealJS"] = vendoredRevealJs
+
 template myInit*(sourceFileRel = "my.nim") =
   nbInit(thisFileRel=sourceFileRel, theme=revealTheme)
+  useVendoredAssets
   useRevealLatex
   agileTheme()
   nb.backend.funcs["NbDoc"] = agileNbDocToHtml
