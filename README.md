@@ -9,7 +9,7 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `index.nim`: the presentation, it imports the slides from `slides/`
 - `my.nim`: helpers and AgileLab theme; run it directly for a style test deck
 - `slides/`: one file per slide (or group of slides)
-- `context/`: notes on the talk, the conference and the slides setup
+- `openspec/`: the talk is prepared with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (see below)
 
 ## setup
 
@@ -28,3 +28,14 @@ reveal.js and KaTeX are not loaded from CDNs: local copies live in `docs/assets/
 nim-markdown needs PCRE at runtime (`libpcre.so.3`, e.g. `apt install libpcre3`).
 
 `scripts/screenshot.sh docs/index.html shots/` renders each slide to a png with headless Chromium.
+
+## OpenSpec
+
+The talk is prepared with spec-driven development using [OpenSpec](https://github.com/Fission-AI/OpenSpec) and a custom `talk` workflow schema:
+
+- `openspec/specs/`: the talk's source of truth (abstract as submitted, audience, format and slot, slides tooling)
+- `openspec/changes/`: iterations of the talk in progress, each with proposal → specs (deltas) → outline (sections and slides) → tasks
+- `openspec/schemas/talk/`: the custom schema and its templates
+- `openspec/reference/`: background notes (conference, slides setup, references)
+
+Install the CLI with `npm install -g @fission-ai/openspec` (cloud sessions do this in a SessionStart hook). In Claude Code: `/opsx:explore`, `/opsx:propose <idea>`, `/opsx:apply`, `/opsx:archive`.
