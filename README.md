@@ -2,7 +2,7 @@
 
 Talk by Pietro Peterlongo at Compute! Paris 2026, Thursday 26 November 2026, 14:40-15:10, Room 108 (session "A Babel of Compilers"). In the programme it is titled **Sailing the Seas of Scientific Nim**: [talk page](https://pretalx.com/compute-paris-2026/talk/8EM8ZA/).
 
-Slides: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/
+Slides: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/ (style test deck from `my.nim`: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/my.html)
 
 ## Abstract
 
