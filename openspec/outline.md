@@ -129,6 +129,7 @@ Takeaways and an opinionated reflection on why Nim is still niche. Carries K1, K
 - No live demos: Pietro will not have time to prepare them. Slides marked `[example]` show code and its output, computed when the deck is built (nimib runs the code), which also fits the offline deck. Alternative: live coding or switching to a terminal; rejected for preparation time and stage risk.
 - Vertical sections (Pietro, 2026-10-26): the top row of the deck is the voyage itself (opening, intro, the seven islands, conclusion), and each section's content is below it. This makes it easy to skip or shorten a section on stage. Alternative: one flat row of 43 slides.
 - Shallow by design: following the sailing metaphor, no island goes in depth; each gives the feeling of the place. Depth is left to links and to the Q&A.
+- Image-left layout (Pietro, 2026-10-26): slides that pair one picture with a few lines of text can use `imageLeftSlide` from `my.nim`, an image on the left at full screen height and a fraction of the width (40% by default), text on the right. Which slides use it is decided section by section, when their content is written. Alternative: images in the flow of the slide with `nbImg`, which stays available for small images.
 
 ## Risks / Trade-offs
 

@@ -72,6 +72,65 @@ li {
 }
 """ % [agileDarkBlue, softWhite, agileLightBlue, witboostOrange]
 
+template imageLeftStyle* =
+  ## css for `imageLeftSlide`: reveal.js sets --viewport-width/height and --slide-scale,
+  ## so dividing by the scale gives the screen size in slide pixels
+  nb.addStyle: """
+.reveal .slides section:has(> .img-left) {
+  top: 0 !important;
+  height: var(--slide-height);
+  padding: 0;
+}
+
+.img-left {
+  --vw: calc(var(--viewport-width) / var(--slide-scale));
+  --vh: calc(var(--viewport-height) / var(--slide-scale));
+  --screen-left: calc(50% - var(--vw) / 2);
+  --screen-top: calc(50% - var(--vh) / 2);
+  --text-left: calc(var(--screen-left) + var(--vw) * var(--img-left-width) + 40px);
+  position: absolute;
+  inset: 0;
+}
+
+.reveal .img-left img.img-left-image {
+  position: absolute;
+  left: var(--screen-left);
+  top: var(--screen-top);
+  width: calc(var(--vw) * var(--img-left-width));
+  height: var(--vh);
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  object-fit: cover;
+}
+
+.img-left-text {
+  position: absolute;
+  left: var(--text-left);
+  right: calc(var(--screen-left) + 60px);
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+.img-left-logo {
+  position: absolute;
+  left: calc(var(--text-left) - 30px);
+  bottom: var(--screen-top);
+  width: calc(250px / var(--slide-scale));
+  height: calc(70px / var(--slide-scale));
+  background: url(./images/logo-agilelab.png) no-repeat;
+  background-size: contain;
+}
+
+body:has(.slides section.present > .img-left) #agileLabLogo {
+  display: none;
+}
+"""
+
 const agileLogoHtml = """
 <div id="agileLabLogo" style="background: url(./images/logo-agilelab.png);
 background-repeat: no-repeat;
@@ -170,6 +229,7 @@ template myInit*(sourceFileRel = "my.nim") =
   useVendoredAssets
   useRevealLatex
   agileTheme()
+  imageLeftStyle
   nb.backend.funcs["NbDoc"] = agileNbDocToHtml
 
 
@@ -202,6 +262,21 @@ template placeholderSlide*(id, title, description: string) =
     nbText "<small>slide " & id & "</small>"
     speakerNote description
 
+template imageLeftSlide*(url: string, width: float, body: untyped) =
+  ## slide with an image on the left, full screen height and `width` (0..1) of the screen width,
+  ## cropped to fill; the slide content is vertically centered on the right
+  slide:
+    nbRawHtml: "<div class=\"img-left\" style=\"--img-left-width: " & $width & "\">\n" &
+      "<img class=\"img-left-image\" src=\"" & nb.doc.relToRoot(url) & "\" alt=\"\">\n" &
+      "<div class=\"img-left-text\">"
+    body
+    nbRawHtml: """</div>
+<div class="img-left-logo"></div>
+</div>"""
+
+template imageLeftSlide*(url: string, body: untyped) =
+  imageLeftSlide(url, 0.4, body)
+
 template testSlide =
   slide:
     nbText """
@@ -218,6 +293,28 @@ Text with *italic*, **strong** and [link](recurse.com)
     nbText: "### LaTeX and images"
     nbText: r"Inline math $e^{i\pi} + 1 = 0$ and display math $$\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$$"
     nbImg("images/logo-agilelab.png", width = "200px", caption = "an image with a width")
+  imageLeftSlide("images/demo-sea.svg"):
+    nbText: """
+## Image on the left
+
+- full screen height
+- 40% of the screen width (default)
+- text centered on the right
+"""
+  imageLeftSlide("images/demo-sea.svg", 0.25):
+    nbText: """
+## A narrower image
+
+`imageLeftSlide(url, 0.25)`: a quarter of the screen width, the image is cropped to fill it
+"""
+  slide:
+    slide:
+      nbText "## A vertical stack"
+      nbText "the next slide is below"
+    imageLeftSlide("images/demo-sea.svg", 0.5):
+      nbText "## Inside a stack"
+      nbText "half the screen, inside a vertical stack like the talk's sections"
+      reference "a small reference"
 
 when isMainModule:
   myInit("my.nim")

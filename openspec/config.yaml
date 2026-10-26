@@ -6,7 +6,8 @@ context: |
   The talk's lasting requirements are in openspec/specs/ (abstract, audience, format, slides-tooling, plus any added later). They win over anything else.
   The living outline of the talk (sections, timing, slides) is openspec/outline.md; each change's outline.md is a delta of it (only the sections and bullets that change), merged in on archive.
   Background material that is not a requirement lives in openspec/reference/: conference.md (venue, keynotes, CfP text, sources), nimib-slides-setup.md (how the deck is built, porting notes, past talk repos), refs.md (interesting links).
-  Slides are Nim code (nimib + nimiSlides): index.nim at the root imports one file per section from slides/ (island files are named islandN_<topic>.nim with template islandN<Topic>Section, e.g. island1_performance.nim / island1PerformanceSection); my.nim holds theme and helpers. Build with `nim r index.nim` (writes docs/index.html), preview with `scripts/screenshot.sh docs/index.html <outdir>`. In cloud sessions Nim comes from scripts/install-nim.sh (run by the SessionStart hook, async).
+  Slides are Nim code (nimib + nimiSlides): index.nim at the root imports one file per section from slides/ (island files are named islandN_<topic>.nim with template islandN<Topic>Section, e.g. island1_performance.nim / island1PerformanceSection); my.nim holds theme, layout helpers and the style test deck. Build with `nim r index.nim` (writes docs/index.html), preview with `scripts/screenshot.sh docs/index.html <outdir>`.
+  Layout iteration: a change that adds or tweaks a layout or the theme works in my.nim first. Its demo slides live in my.nim's style test deck (`nim r my.nim` writes docs/my.html; screenshot it with `scripts/screenshot.sh docs/my.html <outdir>`), and talk slides adopt the layout in later changes, section by section. In cloud sessions Nim comes from scripts/install-nim.sh (run by the SessionStart hook, async).
   Never invent facts about the speaker, the audience, the conference, the demos or the success stories: ask Pietro.
   Markdown: one line per paragraph or bullet, no hard wrapping. No "open points", "unverified" or "not found" notes inside specs or reference files.
 
@@ -17,8 +18,10 @@ rules:
   outline:
     - Break the talk into sections and each section into numbered slides (<section>.<slide>)
     - Keep the total within the content time in the format spec
+    - A layout or theme change that no talk slide adopts yet changes no section: write only a Decisions entry for the layout
   tasks:
     - One task group per outline section; slide tasks reuse the outline's slide IDs
+    - Layout and theme work goes in a `## Layouts` group (tasks L.1, L.2, ...) before `## Whole talk`, each verified with `nim r my.nim` and screenshots of docs/my.html
 
 # Per-operation guidance for apply and archive.
 operations:
