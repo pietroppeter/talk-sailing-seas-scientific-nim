@@ -2,41 +2,64 @@ import nimib, nimiSlides
 import ../my
 
 # 9.6 Thank you: a p5nim sketch, Nim compiled to JavaScript and drawn with p5.js.
-# A grid of colored points flies into the words "Thank You!", one color per letter.
-# Inspired by a sketch by Okazz: https://openprocessing.org/sketch/3044593
-# The animation starts every time the slide is shown.
+# A grid of colored points moves into the words "Thank You!", one color per letter,
+# and back into the grid, in a loop.
+# Inspired by a sketch by Okazz (https://openprocessing.org/sketch/3044593), where a grid
+# morphs into packed circles and back: same palette, easing and translucent colors.
+# The animation starts from the grid every time the slide is shown.
 
 template thankYouSlide* =
   useP5
+  nb.addStyle: """
+.reveal .slides section:has(> #thank-you-sketch) {
+  top: 0 !important;
+  height: var(--slide-height);
+  padding: 0;
+}
+#thank-you-sketch {
+  position: absolute;
+  inset: 0;
+}
+.thank-you-link {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+}
+"""
   slide:
-    nbRawHtml: """<div id="thank-you-sketch"></div>"""
-    nbTextSmall: "[pietroppeter.github.io/talk-sailing-seas-scientific-nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/)"
+    nbRawHtml: """<div id="thank-you-sketch"></div>
+<div class="thank-you-link"><small><a href="https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/">pietroppeter.github.io/talk-sailing-seas-scientific-nim</a></small></div>"""
     nbJsFromCodeGlobal:
       import p5
       import std / [dom, jsffi]
     nbJsFromCode:
       const
-        W = 960
-        H = 560
+        W = 960 # the whole slide
+        H = 700
         message = "Thank You!"
-        palette = ["#f70640", "#f78e2c", "#fdd903", "#63be93", "#299dbf", "#38187d", "#a4459f", "#f654a9", "#2F0A30"]
-        step = 7 # distance between points inside a letter
-        hold = 60 # frames the grid stays still before moving
-        maxDelay = 70 # frames: each point leaves the grid with a random delay
-        travel = 100 # frames to fly from the grid to the letter
+        # Okazz's palette, one color per letter of "ThankYou!"
+        palette = ["#f42464", "#f6a620", "#09aa75", "#58a5fd", "#4629d7", "#f93c1b", "#fbd50c", "#f7acc6", "#251872"]
+        step = 9 # distance between points inside a letter
+        gridRest = 90 # frames the grid stays still
+        letterRest = 180 # frames "Thank You!" stays still
+        wave = 60 # frames: points leave in a wave from left to right
+        move = 70 # frames: move of one point
+        period = gridRest + wave + move + letterRest + wave + move
 
       type Dot = object
-        x0, y0, x1, y1: float # position in the grid and in the letter
-        delay, size, phase, bend: float
-        col: cstring
-        inLetter: bool # grid points left over shrink away
+        x0, y0, size0: float # in the grid
+        x1, y1, size1: float # in the letter
+        delay: float
+        col: Color
 
       var
         dots: seq[Dot]
         t = -1 # frames since the slide was shown, -1 while it is not shown
 
-      proc easeInOutCubic(x: float): float =
-        if x < 0.5: 4 * x * x * x else: 1 - pow(-2 * x + 2, 3) / 2
+      proc easeInOutQuad(x: float): float =
+        if x < 0.5: 2 * x * x else: 1 - pow(-2 * x + 2, 2) / 2
 
       proc letterPoints(): seq[(float, float, int)] =
         ## points inside each letter of `message`: draws the letters offscreen,
@@ -63,33 +86,41 @@ template thankYouSlide* =
             if g.pixels[k + 3] > 200:
               result.add (x.float, y.float, round(g.pixels[k] / 20).int - 1)
 
-      proc slideIsShown(): bool =
-        document.querySelector("section.present:not(.stack) > #thank-you-sketch") != nil
-
       proc makeDots() =
-        let points = letterPoints()
-        # a grid with about 20% more points than the letters need
-        let rows = ceil(sqrt(points.len * 1.2 * H / W)).int
-        let cols = ceil(points.len * 1.2 / rows.float).int
-        var grid: seq[(float, float)]
+        var points = letterPoints()
+        # a full grid with as many cells as points, in 85% x 75% of the slide:
+        # the few points that do not fit in the grid are dropped from the letters
+        let (gw, gh) = (W * 0.85, H * 0.75)
+        let rows = round(sqrt(points.len * gh / gw)).int
+        let cols = points.len div rows
+        let gap = gw / cols.float
+        for i in countdown(points.high, 1): # shuffle, so each point goes to a random letter
+          let j = int(random(float(i + 1)))
+          swap(points[i], points[j])
         for i in 0 ..< cols:
           for j in 0 ..< rows:
-            grid.add (W * (i + 0.5) / cols, H * (j + 0.5) / rows)
-        for i in countdown(grid.high, 1): # shuffle, so each point flies to a random place
-          let j = int(random(float(i + 1)))
-          swap(grid[i], grid[j])
-        for i, (gx, gy) in grid:
-          var d = Dot(x0: gx, y0: gy, x1: gx, y1: gy, delay: random(maxDelay.float),
-            size: step * 1.25, phase: random(TAU), bend: random(-80.0, 80.0))
-          if i < points.len:
-            let (px, py, letter) = points[i]
-            d.x1 = px
-            d.y1 = py
-            d.col = palette[letter mod palette.len].cstring
-            d.inLetter = true
-          else:
-            d.col = palette[int(random(palette.len.float))].cstring
-          dots.add d
+            let (px, py, letter) = points[i * rows + j]
+            let gx = (W - gw) / 2 + gap * (i + 0.5)
+            let gy = (H - gh) / 2 + gh / rows.float * (j + 0.5)
+            var c = color(palette[letter mod palette.len].cstring)
+            discard toJs(c).setAlpha(int(random(150.0, 255.0)))
+            dots.add Dot(x0: gx, y0: gy, size0: gap * 0.45, x1: px, y1: py, size1: step * 1.3,
+              delay: gx / W * wave, col: c)
+
+      proc progress(d: Dot): float =
+        ## 0 in the grid, 1 in the letters
+        let s = t mod period
+        if s < gridRest:
+          0.0
+        elif s < gridRest + wave + move:
+          easeInOutQuad(clamp((s - gridRest - d.delay) / move, 0.0, 1.0))
+        elif s < gridRest + wave + move + letterRest:
+          1.0
+        else:
+          1 - easeInOutQuad(clamp((s - gridRest - wave - move - letterRest - d.delay) / move, 0.0, 1.0))
+
+      proc slideIsShown(): bool =
+        document.querySelector("section.present:not(.stack) > #thank-you-sketch") != nil
 
       setup:
         createCanvas(W, H)
@@ -102,17 +133,10 @@ template thankYouSlide* =
         if dots.len == 0: # made the first time the slide is shown, when the deck's font is loaded
           makeDots()
         inc t
-        clear()
+        clear() # transparent, so the slide's background and logo show through
+        blendMode(MULTIPLY)
         noStroke()
         for d in dots:
-          let e = easeInOutCubic(clamp((t - hold - d.delay) / travel, 0.0, 1.0))
-          let (dx, dy) = (d.x1 - d.x0, d.y1 - d.y0)
-          let len = float(sqrt(dx * dx + dy * dy)) + 0.001
-          let arc = sin(PI * e) * d.bend # fly along a curve, not a straight line
-          let x = d.x0 + dx * e - dy / len * arc
-          let y = d.y0 + dy * e + dx / len * arc
-          var size = d.size * (1 + 0.2 * sin(t * 0.08 + d.phase))
-          if not d.inLetter:
-            size *= 1 - e
+          let e = progress(d)
           fill(d.col)
-          ellipse(x, y, size, size)
+          ellipse(d.x0 + (d.x1 - d.x0) * e, d.y0 + (d.y1 - d.y0) * e, d.size0 + (d.size1 - d.size0) * e)

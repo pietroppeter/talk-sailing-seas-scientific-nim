@@ -2,7 +2,7 @@
 
 ## 9. Conclusion: back on land
 
-- [x] 9.6 `thankYouSlide` in `slides/thank_you.nim`, a p5nim sketch: grid of colored points flying into "Thank You!" with one color per letter, deck link below, restarting each time the slide is shown; replaces the 9.6 placeholder in `slides/conclusion.nim`; verify with screenshots of the start, middle and end frames and a recording
+- [x] 9.6 `thankYouSlide` in `slides/thank_you.nim`, a p5nim sketch: grid of colored points moving into "Thank You!" with one color per letter and back, in a loop, deck link below, restarting from the grid each time the slide is shown; replaces the 9.6 placeholder in `slides/conclusion.nim`; verify with screenshots of the start, middle and end frames and a recording
 
 ## Whole talk
 
