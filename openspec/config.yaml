@@ -12,6 +12,8 @@ context: |
 
 # Per-artifact rules: only injected for the matching artifact.
 rules:
+  proposal:
+    - Under What Changes, list every edit to the living outline (openspec/outline.md) one by one, since the change's outline.md is a full copy and its diff is hard to read
   outline:
     - Break the talk into sections and each section into numbered slides (<section>.<slide>)
     - Keep the total within the content time in the format spec
