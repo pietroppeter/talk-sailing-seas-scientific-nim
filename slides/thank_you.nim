@@ -1,7 +1,7 @@
 import nimib, nimiSlides
 import ../my
 
-# 9.6 Thank you: a p5nim sketch, Nim compiled to JavaScript and drawn with p5.js.
+# 9.6 Thank you, the last slide on the top row (after the conclusion stack): a p5nim sketch, Nim compiled to JavaScript and drawn with p5.js.
 # A grid of colored points flies along curves into the words "Thank You!", one color per letter,
 # and back into the grid, in a loop. The animation starts from the grid every time the slide is shown.
 #
@@ -38,7 +38,7 @@ template thankYouSlide* =
   slide:
     nbRawHtml: """<div id="thank-you-sketch"></div>
 <div class="thank-you-link"><small><a href="https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/">pietroppeter.github.io/talk-sailing-seas-scientific-nim</a></small><br>
-<span class="thank-you-credit">animation based on <a href="https://openprocessing.org/sketch/3044593">a sketch by Okazz</a>, <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0</a></span></div>"""
+<span class="thank-you-credit">animation built with <a href="https://github.com/pietroppeter/p5nim">p5nim</a> and inspired by <a href="https://openprocessing.org/sketch/3044593">a sketch by Okazz</a>, <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0</a></span></div>"""
     nbJsFromCodeGlobal:
       import p5
       import std / [dom, jsffi]
@@ -47,6 +47,7 @@ template thankYouSlide* =
         W = 960 # the whole slide
         H = 700
         message = "Thank You!"
+        font = "bold 100px 'Source Sans Pro'" # the deck's font, for the letters
         # Okazz's palette, one color per letter of "ThankYou!"
         palette = ["#f42464", "#f6a620", "#09aa75", "#58a5fd", "#4629d7", "#f93c1b", "#fbd50c", "#f7acc6", "#251872"]
         step = 7 # distance between points inside a letter
@@ -142,7 +143,11 @@ template thankYouSlide* =
         if not slideIsShown():
           t = -1
           return
-        if dots.len == 0: # made the first time the slide is shown, when the deck's font is loaded
+        if dots.len == 0: # made the first time the slide is shown, once the deck's bold font is loaded
+          let fonts = toJs(document).fonts
+          if not fonts.check(font.cstring).to(bool):
+            discard fonts.load(font.cstring)
+            return
           makeDots()
         inc t
         clear() # transparent, so the slide's background and logo show through
@@ -159,3 +164,9 @@ template thankYouSlide* =
             size *= 1 - e
           fill(d.col)
           ellipse(x, y, size, size)
+
+when isMainModule:
+  # the slide on its own: `nim r slides/thank_you.nim` writes docs/thank_you.html
+  myInit("thank_you.nim")
+  thankYouSlide
+  nbSave
