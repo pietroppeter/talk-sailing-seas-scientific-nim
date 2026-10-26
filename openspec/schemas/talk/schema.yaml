@@ -173,9 +173,12 @@ artifacts:
       narrative arc, the time budget, and the breakdown of the talk into
       sections, each section into slides.
 
-      Always create outline.md: in a talk every iteration touches the shape
-      of the deck. When the change only affects part of the talk, outline the
-      affected sections in full and list the others by name and minutes only.
+      The living outline of the talk is `openspec/outline.md`: start from
+      it, and write the change's outline.md as the FULL updated outline (all
+      sections, timing and slides), not a diff. When the change is archived,
+      its outline.md replaces `openspec/outline.md`, the same way spec deltas
+      update `openspec/specs/`. If `openspec/outline.md` does not exist yet,
+      write the outline from the proposal and specs.
 
       Sections:
       - **Narrative Arc**: The story in a few sentences: the opening hook, how

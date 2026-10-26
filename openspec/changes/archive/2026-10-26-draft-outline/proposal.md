@@ -15,15 +15,18 @@ The deck has only a title slide, while the specs already fix what the talk promi
 
 ### New Capabilities
 
-- `key-messages`: the 3-5 messages the whole talk must leave with the audience, and where each one is carried. Draft wording, to refine with Pietro.
+- `key-messages`: the four messages (K1-K4) the whole talk must leave with the audience, and where each one is carried. Draft wording, to refine with Pietro.
 
 ### Modified Capabilities
 
 - `audience`: adds a finer breakdown of the audience by background (Python, R, C++, other) and by role (library authors, users). Draft, to refine with Pietro.
+- `abstract`: the title slide uses the short form "Sailing Seas of Scientific Nim"; the programme keeps "Sailing the Seas of Scientific Nim".
+- `format`: the readiness requirement now says examples are built into the deck and the talk does not rely on live demos.
 
 ## Impact
 
-- New files `slides/intro.nim`, `slides/island1-performance.nim` ... `slides/island7-notebook.nim`, `slides/conclusion.nim`; `index.nim` imports them after the title slide.
-- `slides/title.nim` gets the accepted title, "Sailing the Seas of Scientific Nim" (it currently drops "the").
+- New files `slides/intro.nim`, `slides/island1.nim` ... `slides/island7.nim`, `slides/conclusion.nim`; `index.nim` imports them after the title slide.
+- `slides/title.nim` keeps the short form "Sailing Seas of Scientific Nim", so the title fits on one line.
 - The published deck on GitHub Pages grows from one slide to a full skeleton (43 slides, mostly placeholders).
-- No demos, images or theme changes in this iteration.
+- No examples, images or theme changes in this iteration.
+- No live demos in the talk: examples are code and output rendered in the deck (see the `format` delta).

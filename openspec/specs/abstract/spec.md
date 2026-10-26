@@ -39,11 +39,11 @@ Data Scientist Delivery Lead at AgileLab (Consulting in Data for Enterprises), I
 ## Requirements
 
 ### Requirement: Talk keeps its title
-The talk SHALL be titled "Sailing the Seas of Scientific Nim" and SHALL answer the abstract's question: why Nim, a general purpose statically typed and compiled language, is a good fit for scientific computing.
+The talk SHALL be titled "Sailing the Seas of Scientific Nim" in the conference programme, and the title slide SHALL use the short form "Sailing Seas of Scientific Nim" so the title fits on one line. The talk SHALL answer the abstract's question: why Nim, a general purpose statically typed and compiled language, is a good fit for scientific computing.
 
 #### Scenario: Title slide
 - **WHEN** the deck opens
-- **THEN** the title slide reads "Sailing the Seas of Scientific Nim" with the speaker's name
+- **THEN** the title slide reads "Sailing Seas of Scientific Nim" with the speaker's name
 
 ### Requirement: Intro, seven islands, conclusion
 The talk SHALL consist of an intro, seven islands and a conclusion, in this order: Intro; Accessible Performance without Ceiling; Success Stories; Data Stack; An Expressive Language; Interoperability; Interactivity; Notebook; Conclusion.

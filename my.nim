@@ -172,6 +172,36 @@ template myInit*(sourceFileRel = "my.nim") =
   agileTheme()
   nb.backend.funcs["NbDoc"] = agileNbDocToHtml
 
+
+const islands* = [
+  "Accessible Performance without Ceiling",
+  "Success Stories",
+  "Data Stack",
+  "An Expressive Language",
+  "Interoperability",
+  "Interactivity",
+  "Notebook",
+]
+
+template mapSlide*(n: int) =
+  ## placeholder for the map of the voyage: island `n` (1..7) highlighted,
+  ## 0 for the whole map, 8 for back on land (all islands visited)
+  slide:
+    var md = (if n == 0: "## The map\n\n" elif n == 8: "## Back on land\n\n" else: "## Island " & $n & "\n\n")
+    for i, island in islands:
+      let item = "Island " & $(i + 1) & ": " & island
+      md.add "- " & (if i + 1 == n: "**" & item & "**" elif n == 8 or i + 1 < n: item & " ✓" else: item) & "\n"
+    nbText md
+
+template placeholderSlide*(id, title, description: string) =
+  ## draft slide from the outline: the published deck shows only the title and a draft marker,
+  ## the outline description stays in the speaker notes
+  slide:
+    nbText "## " & title
+    nbText "*draft*"
+    nbText "<small>slide " & id & "</small>"
+    speakerNote description
+
 template testSlide =
   slide:
     nbText """

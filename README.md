@@ -33,7 +33,8 @@ nim-markdown needs PCRE at runtime (`libpcre.so.3`, e.g. `apt install libpcre3`)
 
 The talk is prepared with spec-driven development using [OpenSpec](https://github.com/Fission-AI/OpenSpec) and a custom `talk` workflow schema:
 
-- `openspec/specs/`: the talk's source of truth (abstract as submitted, audience, format and slot, slides tooling)
+- `openspec/specs/`: the talk's source of truth (abstract as submitted, audience, key messages, format and slot, slides tooling)
+- `openspec/outline.md`: the living outline (sections, timing, slides), updated by each change on archive
 - `openspec/changes/`: iterations of the talk in progress, each with proposal → specs (deltas) → outline (sections and slides) → tasks
 - `openspec/schemas/talk/`: the custom schema and its templates
 - `openspec/reference/`: background notes (conference, slides setup, references)

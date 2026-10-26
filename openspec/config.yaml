@@ -4,9 +4,10 @@ schema: talk
 context: |
   This repo is a conference talk, not a software product: "Sailing the Seas of Scientific Nim" by Pietro Peterlongo (pietroppeter) at Compute! Paris 2026, Thu 26 Nov 2026, 14:40-15:10, Room 108.
   The talk's lasting requirements are in openspec/specs/ (abstract, audience, format, slides-tooling, plus any added later). They win over anything else.
+  The living outline of the talk (sections, timing, slides) is openspec/outline.md; each change's outline.md is the full updated version of it.
   Background material that is not a requirement lives in openspec/reference/: conference.md (venue, keynotes, CfP text, sources), nimib-slides-setup.md (how the deck is built, porting notes, past talk repos), refs.md (interesting links).
-  Slides are Nim code (nimib + nimiSlides): index.nim at the root imports one file per section from slides/; my.nim holds theme and helpers. Build with `nim r index.nim` (writes docs/index.html), preview with `scripts/screenshot.sh docs/index.html <outdir>`. In cloud sessions Nim comes from scripts/install-nim.sh (run by the SessionStart hook, async).
-  Never invent facts about the speaker, the audience, the conference, the demos or the success stories: ask Pietro. He often dictates by voice, so expect transcription errors (e.g. "Meme" means "Nim").
+  Slides are Nim code (nimib + nimiSlides): index.nim at the root imports one file per section from slides/ (island files are named islandN_<topic>.nim with template islandN<Topic>Section, e.g. island1_performance.nim / island1PerformanceSection); my.nim holds theme and helpers. Build with `nim r index.nim` (writes docs/index.html), preview with `scripts/screenshot.sh docs/index.html <outdir>`. In cloud sessions Nim comes from scripts/install-nim.sh (run by the SessionStart hook, async).
+  Never invent facts about the speaker, the audience, the conference, the demos or the success stories: ask Pietro.
   Markdown: one line per paragraph or bullet, no hard wrapping. No "open points", "unverified" or "not found" notes inside specs or reference files.
 
 # Per-artifact rules: only injected for the matching artifact.
@@ -24,4 +25,5 @@ operations:
       - After changing slides, build the deck and attach screenshots of the changed slides for Pietro's review
   archive:
     guidance:
+      - Before archiving, copy the change's outline.md over openspec/outline.md (when the change has one), so the living outline stays current
       - Archive only after Pietro has reviewed the change in the project thread

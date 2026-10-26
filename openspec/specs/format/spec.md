@@ -56,8 +56,8 @@ The talk SHALL present tools, including the speaker's own project nimib, as open
 - **THEN** it also states at least one limitation or trade-off of nimib
 
 ### Requirement: Core content shaped well before the day
-Every example and demo the proposal promises SHALL work well before the conference day, following the CfP advice against relying on future work.
+Every example the talk shows SHALL be built into the deck well before the conference day, following the CfP advice against relying on future work. The talk SHALL NOT rely on live demos: examples are code and output rendered in the slides.
 
 #### Scenario: Demo readiness
 - **WHEN** a full rehearsal is run in the week before the conference
-- **THEN** every demo in the deck runs without changes on the day
+- **THEN** every example in the deck shows its code and output without running anything live on the day
