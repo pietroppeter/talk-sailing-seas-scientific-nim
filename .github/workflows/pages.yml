@@ -1,0 +1,46 @@
+# Builds the slides into docs/ and publishes docs/ to GitHub Pages.
+# Pull requests only build (to check that the slides compile), pushes to main also deploy.
+name: pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04 # libpcre3 (needed by nimib's markdown) is gone from newer images
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install Nim and atlas
+        run: sudo bash scripts/install-nim.sh
+      - name: Install dependencies
+        run: atlas install
+      - name: Build slides
+        run: |
+          nim r index.nim
+          nim r my.nim
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
