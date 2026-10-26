@@ -35,7 +35,7 @@ Ported from hola-talk (identical to domain-driven-data-science):
 - `agileTheme()`: `setSlidesTheme(White)` + CSS variables (off-white background, dark blue text, light blue links), left-aligned lists, `strong` in light blue / `em` in orange (bold, non-italic).
 - `nbTextSmall` (text wrapped in `<small>`) and `reference` (alias, used for the repo link on the title slide).
 - `nbImg(url, width, caption, alt)`: image block with explicit width.
-- `myInit(sourceFileRel)`: `nbInit(theme=revealTheme)`, the LaTeX workaround, vendored reveal.js/KaTeX, theme, and the AgileLab logo fixed bottom-left.
+- `myInit(sourceFileRel)`: `nbInit(theme=revealTheme)`, the LaTeX workaround, vendored reveal.js/KaTeX, theme, and the AgileLab logo fixed bottom-right.
 - `testSlide` + `when isMainModule` so `my.nim` renders a style-check deck.
 
 Talk modules follow the pattern: `template xxxSlide* = slide: ...`, then `template presentation* = titleSlide; ...` and `when isMainModule: myInit("index.nim"); presentation; nbSave`. Bigger talks put each section in its own module imported by `index.nim`.
