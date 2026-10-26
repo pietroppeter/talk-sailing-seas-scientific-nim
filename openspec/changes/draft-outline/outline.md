@@ -72,7 +72,7 @@ Two language features that make Nim good for scientific use. Carries K2 (metapro
 5.1 **Island 4** - section title on the map.
 5.2 **Custom operators** - defining an operator in one line and using it in a formula (the easy feature) [tbd: example].
 5.3 **Metaprogramming** - a macro or template that removes boilerplate in a scientific setting (the advanced feature) [tbd: example].
-5.4 **Rocks ahead** - with great power: macros can make code hard to read for newcomers.
+5.4 **Rocks ahead** - with great power: macros can make code hard to read for newcomers; concepts (compile-time duck typing) were not robust until possibly recently.
 
 ### 6. Island 5: Interoperability (~3 min)
 
@@ -91,7 +91,7 @@ Nim compiles to JavaScript: a snappy port of a fun Shiny app. Carries K2 (JavaSc
 7.1 **Island 6** - section title on the map.
 7.2 **The original Shiny app** - what the app does and why it is fun [tbd: which app].
 7.3 **The Nim port** - the same app compiled to JavaScript, running in the browser [demo].
-7.4 **Rocks ahead** - no Jupyter- or Marimo-style interactivity in Nim yet.
+7.4 **Rocks ahead** - no REPL, so no Jupyter- or Marimo-style interactivity in Nim yet.
 
 ### 8. Island 7: Notebook (~2.5 min)
 
@@ -110,7 +110,7 @@ Takeaways and an opinionated reflection on why Nim is still niche. Carries K1, K
 9.2 **For the beginner** - an accessible, fun language to try, at least as a learning tool that shows you your own language's tradeoffs, and where to start.
 9.3 **For the builder** - the pros and cons of building scientific tools in Nim.
 9.4 **Your language, seen from Nim** - not "switch to Nim": the tradeoffs of your own language that this voyage made visible, and why diversity of languages is good for scientific computing.
-9.5 **Why still niche?** - stable for a while and ready for more, yet niche: an opinionated view of the language, the ecosystem and the community, with governance as the main shortcoming [tbd: Pietro's views].
+9.5 **Why still niche?** - stable for a while and ready for more, yet niche: an opinionated view of the language, the ecosystem and the community, with governance as the main shortcoming, and dev tooling not yet at Rust's level, with Nimony and NIF as the way to catch up [tbd: Pietro's views].
 9.6 **Thank you** - links: slides, repo, nimib, Nim community.
 
 ## Decisions

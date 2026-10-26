@@ -25,11 +25,11 @@ The talk SHALL convey Nim's strengths: as easy to write as Python, as fast as C,
 - **THEN** each strength (Python-like ease, C-like speed, metaprogramming, JavaScript backend, interoperability) has been shown with at least one concrete example
 
 ### Requirement: Pragmatic view, Nim is ready for more
-The talk SHALL take a pragmatic view: Nim is ready for more than it is used for, it has been stable for a while, it has its own shortcomings (above all governance), and the audience leaves aware of its pitfalls.
+The talk SHALL take a pragmatic view: Nim is ready for more than it is used for, it has been stable for a while, it has its own shortcomings, and the audience leaves aware of its pitfalls. The main shortcomings are governance and, on the technical side, no REPL, concepts (compile-time duck typing) not robust until possibly recently, and dev tooling not at Rust's level, which Nimony and NIF could help close.
 
 #### Scenario: Pitfalls named
 - **WHEN** the talk is over
-- **THEN** the audience has heard concrete shortcomings and pitfalls of Nim, including the speaker's view on its governance, alongside the evidence that it is stable and ready for more
+- **THEN** the audience has heard concrete shortcomings and pitfalls of Nim, including governance, the missing REPL, concepts and dev tooling, alongside the evidence that it is stable and ready for more
 
 ### Requirement: Appreciate the diversity of languages
 The talk SHALL NOT try to convert attendees away from their favorite language for scientific computing. It SHALL help them see tradeoffs of their own language they were not aware of, and leave with a better appreciation of the diversity of languages in scientific computing. Learning Nim, at the very least as a learning tool, is one way to see those tradeoffs.
