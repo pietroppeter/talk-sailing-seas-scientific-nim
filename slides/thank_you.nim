@@ -3,7 +3,7 @@ import ../my
 
 # 9.6 Thank you, the last slide on the top row (after the conclusion stack): a p5nim sketch, Nim compiled to JavaScript and drawn with p5.js.
 # A grid of colored points flies along curves into the words "Thank You!", one color per letter,
-# and back into the grid, in a loop. The animation starts from the grid every time the slide is shown.
+# back into the grid, then into "Questions?" and back, in a loop. The animation starts from the grid every time the slide is shown.
 #
 # Based on a sketch by Okazz, https://openprocessing.org/sketch/3044593 (a grid that morphs into
 # packed circles and back), whose palette it uses. Okazz's sketch is licensed under CC BY-NC-SA 3.0
@@ -46,31 +46,34 @@ template thankYouSlide* =
       const
         W = 960 # the whole slide
         H = 700
-        message = "Thank You!"
+        messages = ["Thank You!", "Questions?"] # shown in turn, with the grid in between
         font = "bold 100px 'Source Sans Pro'" # the deck's font, for the letters
-        # Okazz's palette, one color per letter of "ThankYou!"
+        # Okazz's palette, one color per letter, in a loop when a message has more letters
         palette = ["#f42464", "#f6a620", "#09aa75", "#58a5fd", "#4629d7", "#f93c1b", "#fbd50c", "#f7acc6", "#251872"]
         step = 7 # distance between points inside a letter
         gridRest = 120 # frames the grid stays still
-        letterRest = 180 # frames "Thank You!" stays still
+        letterRest = 180 # frames a message stays still
         maxDelay = 70 # frames: each point leaves with a random delay
         travel = 100 # frames to fly between the grid and the letter
-        period = gridRest + maxDelay + travel + letterRest + maxDelay + travel
+        back = gridRest + maxDelay + travel + letterRest # frames until the way back starts
+        period = back + maxDelay + travel # grid, message, grid
 
-      type Dot = object
-        x0, y0, x1, y1: float # position in the grid and in the letter
-        delay, size, phase, bend: float
-        col: cstring
-        inLetter: bool # grid points left over shrink away
+      type
+        Target = object # where a point goes for one message
+          x, y: float
+          col: Color
+          inLetter: bool # grid points left over shrink away
+        Dot = object
+          x0, y0: float # position in the grid
+          delay, size, phase, bend: float
+          col: Color # color in the grid
+          targets: array[messages.len, Target]
 
       var
         dots: seq[Dot]
         t = -1 # frames since the slide was shown, -1 while it is not shown
 
-      proc easeInOutCubic(x: float): float =
-        if x < 0.5: 4 * x * x * x else: 1 - pow(-2 * x + 2, 3) / 2
-
-      proc letterPoints(): seq[(float, float, int)] =
+      proc letterPoints(message: string): seq[(float, float, int)] =
         ## points inside each letter of `message`: draws the letters offscreen,
         ## letter i in red (i + 1) * 20, then samples the pixels every `step`
         let g = createGraphics(W, H)
@@ -96,35 +99,43 @@ template thankYouSlide* =
               result.add (x.float, y.float, round(g.pixels[k] / 20).int - 1)
 
       proc makeDots() =
-        let points = letterPoints()
-        # a grid with about 20% more points than the letters need, above the link at the bottom
+        var points: array[messages.len, seq[(float, float, int)]]
+        var most = 0
+        for m, message in messages:
+          points[m] = letterPoints(message)
+          if points[m].len > most: most = points[m].len
+        # a grid with about 20% more points than the longest message needs, above the link at the bottom
         let (gw, gh, top) = (W * 0.96, H * 0.74, H * 0.04)
-        let rows = ceil(sqrt(points.len * 1.2 * gh / gw)).int
-        let cols = ceil(points.len * 1.2 / rows.float).int
-        var grid: seq[(float, float)]
+        let rows = ceil(sqrt(most * 1.2 * gh / gw)).int
+        let cols = ceil(most * 1.2 / rows.float).int
         for i in 0 ..< cols:
           for j in 0 ..< rows:
-            grid.add ((W - gw) / 2 + gw * (i + 0.5) / cols, top + gh * (j + 0.5) / rows)
-        for i in countdown(grid.high, 1): # shuffle, so each point flies to a random place
-          let j = int(random(float(i + 1)))
-          swap(grid[i], grid[j])
-        for i, (gx, gy) in grid:
-          var d = Dot(x0: gx, y0: gy, x1: gx, y1: gy, delay: random(maxDelay.float),
-            size: step * 1.25, phase: random(TAU), bend: random(-80.0, 80.0))
-          if i < points.len:
-            let (px, py, letter) = points[i]
-            d.x1 = px
-            d.y1 = py
-            d.col = palette[letter mod palette.len].cstring
-            d.inLetter = true
-          else:
-            d.col = palette[int(random(palette.len.float))].cstring
-          dots.add d
+            let (gx, gy) = ((W - gw) / 2 + gw * (i + 0.5) / cols, top + gh * (j + 0.5) / rows)
+            var d = Dot(x0: gx, y0: gy, delay: random(maxDelay.float),
+              size: step * 1.25, phase: random(TAU), bend: random(-80.0, 80.0),
+              col: color(palette[int(random(palette.len.float))].cstring))
+            for m in 0 ..< messages.len: # by default, a point stays in its place
+              d.targets[m] = Target(x: gx, y: gy, col: d.col)
+            dots.add d
+        for m in 0 ..< messages.len:
+          var order = newSeq[int](dots.len)
+          for i in 0 ..< order.len: order[i] = i
+          # Fisher–Yates shuffle (https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle),
+          # so each point flies to a random place
+          for i in countdown(order.high, 1):
+            let j = int(random(float(i + 1)))
+            swap(order[i], order[j])
+          for k, (px, py, letter) in points[m]:
+            dots[order[k]].targets[m] = Target(x: px, y: py, inLetter: true,
+              col: color(palette[letter mod palette.len].cstring))
+
+      proc easeInOutCubic(x: float): float =
+        ## starts slow, speeds up, ends slow: https://easings.net/#easeInOutCubic
+        if x < 0.5: 4 * x * x * x else: 1 - pow(-2 * x + 2, 3) / 2
 
       proc progress(d: Dot): float =
         ## 0 in the grid, 1 in the letters; the way back retraces the same curve
         let s = t mod period
-        let back = gridRest + maxDelay + travel + letterRest
         if s < gridRest:
           0.0
         elif s < back:
@@ -150,19 +161,21 @@ template thankYouSlide* =
             return
           makeDots()
         inc t
+        let m = (t div period) mod messages.len # which message this loop shows
         clear() # transparent, so the slide's background and logo show through
         noStroke()
         for d in dots:
           let e = progress(d)
-          let (dx, dy) = (d.x1 - d.x0, d.y1 - d.y0)
+          let target = d.targets[m]
+          let (dx, dy) = (target.x - d.x0, target.y - d.y0)
           let len = float(sqrt(dx * dx + dy * dy)) + 0.001
           let arc = sin(PI * e) * d.bend # fly along a curve, not a straight line
           let x = d.x0 + dx * e - dy / len * arc
           let y = d.y0 + dy * e + dx / len * arc
           var size = d.size * (1 + 0.2 * sin(t * 0.08 + d.phase))
-          if not d.inLetter:
+          if not target.inLetter:
             size *= 1 - e
-          fill(d.col)
+          fill(lerpColor(d.col, target.col, e)) # from its grid color to its letter's color
           ellipse(x, y, size, size)
 
 when isMainModule:
