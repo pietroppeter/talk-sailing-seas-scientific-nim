@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Downloads local copies of the js/css/fonts that nimiSlides loads from CDNs
 # (reveal.js with its highlight, notes and math plugins; KaTeX for the math plugin)
-# into docs/assets, so the slides work offline and on GitHub Pages without CDNs.
+# and of p5.js (for the p5nim sketches) into docs/assets, so the slides work offline and on GitHub Pages without CDNs.
 # The vendored files are committed: rerun only to change versions.
 #
 # usage: scripts/vendor-assets.sh   (needs git and npm)
@@ -9,6 +9,7 @@ set -euo pipefail
 
 REVEAL_VERSION="${REVEAL_VERSION:-5.0.4}" # must match nimiSlides' reveal_version
 KATEX_VERSION="${KATEX_VERSION:-0.16.47}"
+P5_VERSION="${P5_VERSION:-1.11.13}" # p5nim binds the p5.js 1.x api
 
 root=$(cd "$(dirname "$0")/.." && pwd)
 assets="$root/docs/assets"
@@ -40,4 +41,13 @@ cp -r "$tmp/package/dist/fonts" "$katex/dist/"
 cp "$tmp/package/dist/contrib/auto-render.min.js" "$tmp/package/dist/contrib/mhchem.min.js" "$katex/dist/contrib/"
 echo "$KATEX_VERSION" > "$katex/VERSION"
 
-du -sh "$reveal" "$katex"
+# p5.js: the minified library, loaded by the p5nim sketches (see my.nim)
+mkdir -p "$tmp/p5" && (cd "$tmp/p5" && npm pack --silent "p5@$P5_VERSION" >/dev/null && tar xzf p5-*.tgz)
+p5="$assets/p5"
+rm -rf "$p5"
+mkdir -p "$p5"
+cp "$tmp/p5/package/license.txt" "$p5/LICENSE" 2>/dev/null || cp "$tmp/p5/package/LICENSE"* "$p5/LICENSE"
+cp "$tmp/p5/package/lib/p5.min.js" "$p5/"
+echo "$P5_VERSION" > "$p5/VERSION"
+
+du -sh "$reveal" "$katex" "$p5"

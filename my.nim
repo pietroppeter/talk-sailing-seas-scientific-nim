@@ -144,6 +144,7 @@ height: 70px;"></div>
 const
   revealAssets = "assets/reveal.js" # vendored by scripts/vendor-assets.sh into docs/assets
   katexAssets = "assets/katex"
+  p5Assets = "assets/p5"
 
 func assetPath(nb: Nb, path: string): string =
   {.cast(noSideEffect).}:
@@ -158,6 +159,8 @@ func vendoredRevealCss(blk: JsonNode, nb: Nb): string =
 <link rel="stylesheet" href="{reveal}/dist/theme/{theme}.css" />
 <link rel="stylesheet" href="{reveal}/plugin/highlight/monokai.css" />
 """
+  if nb.doc.context{"p5"}.getBool:
+    result.add &"""<script src="{nb.assetPath(p5Assets)}/p5.min.js"></script>"""
 
 func vendoredRevealJs(blk: JsonNode, nb: Nb): string =
   ## nimiSlides' revealJS partial, loading reveal.js and its plugins from docs/assets
@@ -218,6 +221,10 @@ template useRevealLatex* =
   ## workaround: nimiSlides 0.4 checks `context["latex"]` as a bool, but
   ## nimib's `useLatex` stores the KaTeX html there, so the math plugin is never loaded
   nb.doc.context["latex"] = %true
+
+template useP5* =
+  ## load the vendored p5.js in the head, for slides with a p5nim sketch (see slides/thank_you.nim)
+  nb.doc.context["p5"] = %true
 
 template useVendoredAssets* =
   ## load reveal.js and KaTeX from docs/assets instead of CDNs
