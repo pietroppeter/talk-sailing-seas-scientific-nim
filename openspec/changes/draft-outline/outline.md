@@ -2,7 +2,7 @@
 
 ## Narrative Arc
 
-The talk is a sea voyage. We leave the familiar mainland of scientific computing (Fortran, C, C++, R, Python, Julia) noting that each language came with its own tradeoffs and promising to show Nim's (K1: Nim's tradeoffs, and its untapped potential). We then hop across seven islands, and together they show Nim's strengths (K2: easy like Python, fast as C, with superpowers such as metaprogramming and the JavaScript backend), while the success stories and the data stack show it holds up in real work. Each island ends with one honest "rocks ahead" line on where Nim falls short, so the pitfalls add up along the way (K3: pragmatic, Nim is ready for more). We touch back land in the conclusion with one takeaway for the beginner, one for the builder, and an opinionated look at why Nim is still niche despite being stable and ready for more (K3), closing K1: why it is fun, exciting, and has more potential than the impact it had so far.
+The talk is a sea voyage. We leave the familiar mainland of scientific computing (Fortran, C, C++, R, Python, Julia) noting that each language came with its own tradeoffs and promising to show Nim's (K1: Nim's tradeoffs, and its untapped potential). We then hop across seven islands, and together they show Nim's strengths (K2: easy like Python, fast as C, with superpowers: metaprogramming, the JavaScript backend and interop), while the success stories and the data stack show it holds up in real work. Each island ends with one honest "rocks ahead" line on where Nim falls short, so the pitfalls add up along the way (K3: pragmatic, Nim is ready for more). We touch back land in the conclusion with one takeaway for the beginner, one for the builder, and an opinionated look at why Nim is still niche despite being stable and ready for more (K3), closing K1: why it is fun, exciting, and has more potential than the impact it had so far.
 
 K1-K3 refer to the requirements in the `key-messages` spec delta of this change.
 
@@ -76,7 +76,7 @@ Two language features that make Nim good for scientific use. Carries K2 (metapro
 
 ### 6. Island 5: Interoperability (~3 min)
 
-Nim is easy to combine with other languages, in both directions. Carries K2 and K3.
+Nim is easy to combine with other languages, in both directions. Carries K2 (interop superpower) and K3.
 
 6.1 **Island 5** - section title on the map.
 6.2 **Wrapping C and C++** - calling an existing C library from Nim in a few lines [tbd: library].

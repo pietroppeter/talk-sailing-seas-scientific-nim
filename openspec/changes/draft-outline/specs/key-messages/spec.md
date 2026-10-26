@@ -18,11 +18,11 @@ The talk SHALL convey that scientific computing has used many languages, each wi
 - **THEN** the speaker has explained Nim's tradeoffs, its strengths and its shortcomings, and has said why Nim is fun and exciting and why its potential is bigger than its impact so far
 
 ### Requirement: Nim's strengths and superpowers
-The talk SHALL convey Nim's strengths: as easy to write as Python, as fast as C, and with superpowers such as metaprogramming and the JavaScript backend.
+The talk SHALL convey Nim's strengths: as easy to write as Python, as fast as C, and with superpowers: metaprogramming, the JavaScript backend, and interoperability (wrapping C/C++, bridges to Python, R and Julia, using Nim from Python).
 
 #### Scenario: Strengths backed by examples
 - **WHEN** the talk is over
-- **THEN** each strength (Python-like ease, C-like speed, metaprogramming, JavaScript backend) has been shown with at least one concrete example
+- **THEN** each strength (Python-like ease, C-like speed, metaprogramming, JavaScript backend, interoperability) has been shown with at least one concrete example
 
 ### Requirement: Pragmatic view, Nim is ready for more
 The talk SHALL take a pragmatic view: Nim is ready for more than it is used for, it has been stable for a while, it has its own shortcomings, and the audience leaves aware of its pitfalls.
