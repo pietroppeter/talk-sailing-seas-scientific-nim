@@ -25,5 +25,5 @@ The deck has only a title slide, while the specs already fix what the talk promi
 
 - New files `slides/intro.nim`, `slides/island1-performance.nim` ... `slides/island7-notebook.nim`, `slides/conclusion.nim`; `index.nim` imports them after the title slide.
 - `slides/title.nim` gets the accepted title, "Sailing the Seas of Scientific Nim" (it currently drops "the").
-- The published deck on GitHub Pages grows from one slide to a full skeleton (44 slides, mostly placeholders).
+- The published deck on GitHub Pages grows from one slide to a full skeleton (43 slides, mostly placeholders).
 - No demos, images or theme changes in this iteration.

@@ -10,7 +10,7 @@ Every slide task below means: a slide with the outline's title as heading, the o
 
 ## 2. Island 1: Accessible Performance without Ceiling
 
-- [ ] 2.1 Slides 2.1-2.5 in slides/island1-performance.nim as template `island1Section`, wired into index.nim; verify in the screenshots
+- [ ] 2.1 Slides 2.1-2.4 in slides/island1-performance.nim as template `island1Section`, wired into index.nim; verify in the screenshots
 
 ## 3. Island 2: Success Stories
 
@@ -42,7 +42,7 @@ Every slide task below means: a slide with the outline's title as heading, the o
 
 ## Whole talk
 
-- [ ] W.1 Build the full deck and screenshot every slide; verify the deck has the nine sections in outline order and the slide count matches the outline (44 slides)
+- [ ] W.1 Build the full deck and screenshot every slide; verify the deck has the nine sections in outline order and the slide count matches the outline (43 slides)
 - [ ] W.2 Read-through of the speaker notes against the timing table; verify each section's notes fit its minutes
 
 ## Workflow follow-up

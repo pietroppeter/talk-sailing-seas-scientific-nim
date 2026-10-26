@@ -2,7 +2,7 @@
 
 ## Narrative Arc
 
-The talk is a sea voyage. We leave the familiar mainland of scientific computing (Fortran, C, C++, R, Python, Julia) noting that each language came with its own tradeoffs and promising to show Nim's (K1: Nim's tradeoffs as a scientific computing language, and its untapped potential). We then hop across seven islands, and together they show Nim's strengths (K2: easy like Python, fast as C, with superpowers: metaprogramming, the JavaScript backend and interop), while the success stories and the data stack show it holds up in real work. Each island ends with one honest "rocks ahead" line on where Nim falls short, so the pitfalls add up along the way (K3: pragmatic, Nim is ready for more). We touch back land in the conclusion with one takeaway for the beginner, one for the builder, and an opinionated look at why Nim is still niche despite being stable and ready for more (K3), closing K1: why it is fun, exciting, and has more potential than the impact it had so far. Throughout, comparisons with the audience's languages are framed as tradeoffs, not as a contest, so people leave appreciating their own language and the diversity of languages better (K4: appreciate the diversity of languages).
+The talk is a sea voyage. From a boat you only get a very limited view of the land: we will not go in depth anywhere, and the audience gets the feeling of each island rather than a tour of it. We leave the familiar mainland of scientific computing (Fortran, C, C++, R, Python, Julia) noting that each language came with its own tradeoffs and promising to show Nim's (K1: Nim's tradeoffs as a scientific computing language, and its untapped potential). We then hop across seven islands, and together they show Nim's strengths (K2: easy like Python, fast as C, with superpowers: metaprogramming, the JavaScript backend and interop), while the success stories and the data stack show it holds up in real work (K3: pragmatic, Nim is ready for more). Where it fits, an island ends with an honest "rocks ahead" line on where Nim falls short, so the pitfalls add up along the way (K3). We touch back land in the conclusion with one takeaway for the beginner, one for the builder, and an opinionated look at why Nim is still niche despite being stable and ready for more (K3), closing K1: why it is fun, exciting, and has more potential than the impact it had so far. Throughout, comparisons with the audience's languages are framed as tradeoffs, not as a contest, so people leave appreciating their own language and the diversity of languages better (K4: appreciate the diversity of languages).
 
 K1-K4 refer to the requirements in the `key-messages` spec delta of this change.
 
@@ -11,16 +11,16 @@ K1-K4 refer to the requirements in the `key-messages` spec delta of this change.
 | # | Section | Minutes | Ends at |
 |---|---------|---------|---------|
 | 1 | Intro: leaving the mainland | 3 | 03:00 |
-| 2 | Island 1: Accessible Performance without Ceiling | 2.5 | 05:30 |
-| 3 | Island 2: Success Stories | 2 | 07:30 |
-| 4 | Island 3: Data Stack | 3.5 | 11:00 |
-| 5 | Island 4: An Expressive Language | 2.5 | 13:30 |
-| 6 | Island 5: Interoperability | 3 | 16:30 |
-| 7 | Island 6: Interactivity | 2.5 | 19:00 |
-| 8 | Island 7: Notebook | 2.5 | 21:30 |
-| 9 | Conclusion: back on land | 2.5 | 24:00 |
+| 2 | Island 1: Accessible Performance without Ceiling | 1.5 | 04:30 |
+| 3 | Island 2: Success Stories | 2 | 06:30 |
+| 4 | Island 3: Data Stack | 3.5 | 10:00 |
+| 5 | Island 4: An Expressive Language | 2.5 | 12:30 |
+| 6 | Island 5: Interoperability | 3 | 15:30 |
+| 7 | Island 6: Interactivity | 2.5 | 18:00 |
+| 8 | Island 7: Notebook | 2.5 | 20:30 |
+| 9 | Conclusion: back on land | 2.5 | 23:00 |
 
-Total 24 minutes of content, leaving 6 minutes for Q&A and slack.
+Total 23 minutes of content, leaving 7 minutes for Q&A and slack.
 
 ## Sections
 
@@ -35,15 +35,14 @@ Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim'
 1.5 **Nim's tradeoffs** - the abstract's question "is there space for one more?" reframed: this talk is about Nim's specific tradeoffs, seven islands, and we won't hide where Nim falls short.
 1.6 **The map** - the seven islands on one map, used again as a progress marker at each section start.
 
-### 2. Island 1: Accessible Performance without Ceiling (~2.5 min)
+### 2. Island 1: Accessible Performance without Ceiling (~1.5 min)
 
-Nim is as easy to write as Python and as fast as C. Carries K2.
+Nim is as easy to write as Python and as fast as C, passed through quickly: performance is not the focus here and Mamy's talk in the same session goes deeper. Carries K2.
 
 2.1 **Island 1** - section title on the map.
 2.2 **Reads like Python** - the same small function in Python and in Nim side by side.
 2.3 **Runs like C** - timing of that function in Python and Nim [demo] [tbd: which benchmark].
-2.4 **No ceiling** - what "no ceiling" means: compiled, static types, control over memory when you need it; pointer to Mamy's HPC/AI talk in the same session.
-2.5 **Rocks ahead** - one honest limitation [tbd].
+2.4 **No ceiling** - one line on what "no ceiling" means (compiled, static types, control over memory when you need it), then a pointer to Mamy's HPC/AI talk in the same session for the deep dive.
 
 ### 3. Island 2: Success Stories (~2 min)
 
@@ -116,12 +115,13 @@ Takeaways and an opinionated reflection on why Nim is still niche. Carries K1, K
 ## Decisions
 
 - Travel metaphor as the spine: a recurring map slide at each island start shows progress and keeps the audience oriented in a 9-section talk. Alternative: a plain agenda slide; rejected because the abstract already sells the voyage.
-- "Rocks ahead" closing slide on each island, so the promise of not hiding shortcomings is kept throughout instead of being dumped in the conclusion. Alternative: one "shortcomings" slide in the conclusion; rejected as easy to cut when time runs short.
+- "Rocks ahead" closing slide on most islands, where there is an honest limitation worth naming (not on island 1), so the promise of not hiding shortcomings is kept throughout instead of being dumped in the conclusion. Alternative: one "shortcomings" slide in the conclusion; rejected as easy to cut when time runs short.
 - The Data Stack island gets the most time (3.5 min) because it is the one a PyData audience will judge hardest. Success Stories gets the least (2 min) because stories are told, not demoed.
-- Island 1 stays brief on HPC and points to Mamy's talk, as the audience spec requires.
+- Island 1 is the shortest island (1.5 min): performance is not the speaker's main interest, and it points to Mamy's talk for depth, as the audience spec requires.
+- Shallow by design: following the sailing metaphor, no island goes in depth; each gives the feeling of the place. Depth is left to links and to the Q&A.
 
 ## Risks / Trade-offs
 
-- [Nine sections in 24 minutes leave about 2.5 minutes per island] → one core slide per island carries the message; everything else is cuttable, and the timing table is checked in rehearsal.
+- [Nine sections in 23 minutes leave about 2.5 minutes per island] → one core slide per island carries the message; everything else is cuttable, and the timing table is checked in rehearsal.
 - [Live demos fail on stage or venue wifi is down] → demos are recorded as screenshots or embedded output in the deck (built offline), live runs are optional extras.
 - [Too many [tbd] slides make the skeleton hard to judge] → this iteration only fixes the shape; content choices are the next iterations, one island at a time.
