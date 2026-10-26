@@ -31,6 +31,7 @@ jobs:
           nim r index.nim
           nim r my.nim
           nim r slides/thank_you.nim
+          nim r slides/thank_you_explainer.nim
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs

@@ -18,7 +18,7 @@ rules:
   outline:
     - Break the talk into sections and each section into numbered slides (<section>.<slide>)
     - Keep the total within the content time in the format spec
-    - A layout or theme change that no talk slide adopts yet changes no section: write only a Decisions entry for the layout
+    - "A layout or theme change that no talk slide adopts yet changes no section: write only a Decisions entry for the layout"
   tasks:
     - One task group per outline section; slide tasks reuse the outline's slide IDs
     - Layout and theme work goes in a `## Layouts` group (tasks L.1, L.2, ...) before `## Whole talk`, each verified with `nim r my.nim` and screenshots of docs/my.html
