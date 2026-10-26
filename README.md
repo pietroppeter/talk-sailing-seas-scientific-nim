@@ -2,12 +2,14 @@
 
 Talk by Pietro Peterlongo at Compute Paris 2026 (end of November 2026).
 
-Slides are made with [nimib](https://github.com/pietroppeter/nimib) and
-[nimiSlides](https://github.com/HugoGranstrom/nimiSlides):
+Slides: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/
+
+Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSlides](https://github.com/HugoGranstrom/nimiSlides):
 
 - `index.nim`: the presentation, it imports the slides from `slides/`
 - `my.nim`: helpers and AgileLab theme; run it directly for a style test deck
 - `slides/`: one file per slide (or group of slides)
+- `context/`: notes on the talk, the conference and the slides setup
 
 ## setup
 
