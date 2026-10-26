@@ -1,7 +1,7 @@
 import nimib, nimiSlides
 import ../my
 
-# Section 4: Island 3: Data Stack (draft outline, see openspec/changes/draft-outline/outline.md)
+# Section 4: Island 3: Data Stack (see the latest outline in openspec)
 # The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2 and K3.
 
 template island3Section* =

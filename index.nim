@@ -1,9 +1,10 @@
 import nimib, nimiSlides
 import my
-import slides / [title, intro, island1, island2, island3, island4, island5, island6, island7, conclusion]
+import slides / [title, me, intro, island1, island2, island3, island4, island5, island6, island7, conclusion]
 
 template presentation* =
   titleSlide
+  meSlide
   introSection
   island1Section
   island2Section

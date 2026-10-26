@@ -1,7 +1,7 @@
 import nimib, nimiSlides
 import ../my
 
-# Section 3: Island 2: Success Stories (draft outline, see openspec/changes/draft-outline/outline.md)
+# Section 3: Island 2: Success Stories (see the latest outline in openspec)
 # Pioneers have used Nim successfully in scientific computing. Carries K3 (ready for more).
 
 template island2Section* =

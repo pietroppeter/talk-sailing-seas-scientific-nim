@@ -1,7 +1,7 @@
 import nimib, nimiSlides
 import ../my
 
-# Section 5: Island 4: An Expressive Language (draft outline, see openspec/changes/draft-outline/outline.md)
+# Section 5: Island 4: An Expressive Language (see the latest outline in openspec)
 # Two language features that make Nim good for scientific use. Carries K2 (metaprogramming superpower).
 
 template island4Section* =

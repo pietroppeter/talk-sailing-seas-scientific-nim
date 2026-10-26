@@ -1,7 +1,7 @@
 import nimib, nimiSlides
 import ../my
 
-# Section 7: Island 6: Interactivity (draft outline, see openspec/changes/draft-outline/outline.md)
+# Section 7: Island 6: Interactivity (see the latest outline in openspec)
 # Nim compiles to JavaScript: a snappy port of a fun Shiny app. Carries K2 (JavaScript backend superpower).
 
 template island6Section* =
