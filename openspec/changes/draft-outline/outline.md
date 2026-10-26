@@ -107,10 +107,10 @@ The literate computing paradigm Jupyter made central, and a Nim option that goes
 Takeaways and an opinionated reflection on why Nim is still niche. Carries K1, K3 and K4.
 
 9.1 **Back on land** - the map with all seven islands visited.
-9.2 **For the beginner** - an accessible, fun language to try, at least as a learning tool, and where to start.
+9.2 **For the beginner** - an accessible, fun language to try, at least as a learning tool that shows you your own language's tradeoffs, and where to start.
 9.3 **For the builder** - the pros and cons of building scientific tools in Nim.
 9.4 **Your language, seen from Nim** - not "switch to Nim": the tradeoffs of your own language that this voyage made visible, and why diversity of languages is good for scientific computing.
-9.5 **Why still niche?** - stable for a while and ready for more, yet niche: an opinionated view of the language, the ecosystem, the community and the governance [tbd: Pietro's views].
+9.5 **Why still niche?** - stable for a while and ready for more, yet niche: an opinionated view of the language, the ecosystem and the community, with governance as the main shortcoming [tbd: Pietro's views].
 9.6 **Thank you** - links: slides, repo, nimib, Nim community.
 
 ## Decisions
