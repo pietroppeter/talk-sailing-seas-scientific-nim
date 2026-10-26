@@ -26,7 +26,7 @@ Total 24 minutes of content, leaving 6 minutes for Q&A and slack.
 
 ### 1. Intro: leaving the mainland (~3 min)
 
-Set up the voyage and the question "is there space for one more?" Carries K1.
+Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim's. Carries K1.
 
 1.1 **Sailing the Seas of Scientific Nim** - title slide with speaker and conference (existing slide).
 1.2 **About me** - mathematician, data scientist at AgileLab, nimib maintainer, Python Milan and PyData Milan organizer; the Paris climate-dynamics years as a personal hook [tbd: which details Pietro wants on stage].
