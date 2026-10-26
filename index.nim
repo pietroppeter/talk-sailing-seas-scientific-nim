@@ -1,18 +1,18 @@
 import nimib, nimiSlides
 import my
-import slides / [title, me, intro, island1, island2, island3, island4, island5, island6, island7, conclusion]
+import slides / [title, me, intro, island1_performance, island2_stories, island3_datastack, island4_expressive, island5_interop, island6_interactivity, island7_notebook, conclusion]
 
 template presentation* =
   titleSlide
   meSlide
   introSection
-  island1Section
-  island2Section
-  island3Section
-  island4Section
-  island5Section
-  island6Section
-  island7Section
+  island1PerformanceSection
+  island2StoriesSection
+  island3DataStackSection
+  island4ExpressiveSection
+  island5InteropSection
+  island6InteractivitySection
+  island7NotebookSection
   conclusionSection
 
 when isMainModule:

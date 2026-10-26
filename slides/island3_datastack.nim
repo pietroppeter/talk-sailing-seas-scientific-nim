@@ -4,7 +4,7 @@ import ../my
 # Section 4: Island 3: Data Stack (see the latest outline in openspec)
 # The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2 and K3.
 
-template island3Section* =
+template island3DataStackSection* =
   mapSlide(3) # 4.1
   placeholderSlide("4.2", "Meet the penguins", """the palmerpenguins dataset in one slide, a familiar sight for the Python and R crowd.""")
   placeholderSlide("4.3", "Dataframe", """load and summarise the penguins in a dataframe [example] [tbd: library].""")

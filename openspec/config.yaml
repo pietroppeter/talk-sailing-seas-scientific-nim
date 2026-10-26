@@ -6,7 +6,7 @@ context: |
   The talk's lasting requirements are in openspec/specs/ (abstract, audience, format, slides-tooling, plus any added later). They win over anything else.
   The living outline of the talk (sections, timing, slides) is openspec/outline.md; each change's outline.md is the full updated version of it.
   Background material that is not a requirement lives in openspec/reference/: conference.md (venue, keynotes, CfP text, sources), nimib-slides-setup.md (how the deck is built, porting notes, past talk repos), refs.md (interesting links).
-  Slides are Nim code (nimib + nimiSlides): index.nim at the root imports one file per section from slides/; my.nim holds theme and helpers. Build with `nim r index.nim` (writes docs/index.html), preview with `scripts/screenshot.sh docs/index.html <outdir>`. In cloud sessions Nim comes from scripts/install-nim.sh (run by the SessionStart hook, async).
+  Slides are Nim code (nimib + nimiSlides): index.nim at the root imports one file per section from slides/ (island files are named islandN_<topic>.nim with template islandN<Topic>Section, e.g. island1_performance.nim / island1PerformanceSection); my.nim holds theme and helpers. Build with `nim r index.nim` (writes docs/index.html), preview with `scripts/screenshot.sh docs/index.html <outdir>`. In cloud sessions Nim comes from scripts/install-nim.sh (run by the SessionStart hook, async).
   Never invent facts about the speaker, the audience, the conference, the demos or the success stories: ask Pietro. He often dictates by voice, so expect transcription errors (e.g. "Meme" means "Nim").
   Markdown: one line per paragraph or bullet, no hard wrapping. No "open points", "unverified" or "not found" notes inside specs or reference files.
 
