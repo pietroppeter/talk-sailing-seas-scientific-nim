@@ -7,7 +7,7 @@ The last slide is the one left on screen during Q&A, and it is the last impressi
 ## What Changes
 
 - Living outline: slide 9.6 "Thank you" becomes an animation written with p5nim (the Nim binding of p5.js): a grid of colored points that flies along curves to form "Thank You!", one color per letter, and back into the grid, in a loop, with the link to the deck and the credit to Okazz below it. The links to the repo, nimib and the Nim community are dropped from 9.6 for now.
-- New slide file `slides/thank_you.nim` with `thankYouSlide`, used by `slides/conclusion.nim` in place of the 9.6 placeholder.
+- New slide file `slides/thank_you.nim` with `thankYouSlide`, which replaces the 9.6 placeholder and sits on the top row after the conclusion stack (`index.nim`). `nim r slides/thank_you.nim` builds it on its own (`docs/thank_you.html`), linked from the README and built by the pages workflow.
 - `my.nim` gets `useP5`, which loads p5.js from `docs/assets/p5` in the deck's head.
 - p5.js 1.11.13 is vendored in `docs/assets/p5` by `scripts/vendor-assets.sh`, so the animation works offline like the rest of the deck.
 - p5nim is a new dependency (atlas, `deps/p5nim`).

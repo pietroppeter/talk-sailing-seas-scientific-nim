@@ -1,6 +1,6 @@
 import nimib, nimiSlides
 import my
-import slides / [title, me, intro, island1_performance, island2_stories, island3_datastack, island4_expressive, island5_interop, island6_interactivity, island7_notebook, conclusion]
+import slides / [title, me, intro, island1_performance, island2_stories, island3_datastack, island4_expressive, island5_interop, island6_interactivity, island7_notebook, conclusion, thank_you]
 
 template presentation* =
   titleSlide
@@ -14,6 +14,7 @@ template presentation* =
   island6InteractivitySection
   island7NotebookSection
   conclusionSection
+  thankYouSlide # 9.6, on the top row after the conclusion
 
 when isMainModule:
   myInit("index.nim")
