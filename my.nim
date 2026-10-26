@@ -194,12 +194,11 @@ template mapSlide*(n: int) =
     nbText md
 
 template placeholderSlide*(id, title, description: string) =
-  ## draft slide from the outline: title, outline description, and a marker when content is still [tbd]
+  ## draft slide from the outline: the published deck shows only the title and a draft marker,
+  ## the outline description stays in the speaker notes
   slide:
     nbText "## " & title
-    nbTextSmall description
-    if "[tbd" in description:
-      nbText "*draft: content to decide*"
+    nbText "*draft*"
     nbText "<small>slide " & id & "</small>"
     speakerNote description
 
