@@ -15,11 +15,11 @@ The deck has only a title slide, while the specs already fix what the talk promi
 
 ### New Capabilities
 
-- `key-messages`: the 3-5 messages the whole talk must leave with the audience, and where each one is carried.
+- `key-messages`: the 3-5 messages the whole talk must leave with the audience, and where each one is carried. Draft wording, to refine with Pietro.
 
 ### Modified Capabilities
 
-None.
+- `audience`: adds a finer breakdown of the audience by background (Python, R, C++, other) and by role (library authors, users). Draft, to refine with Pietro.
 
 ## Impact
 
