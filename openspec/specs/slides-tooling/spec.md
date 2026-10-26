@@ -35,11 +35,11 @@ The built deck SHALL be published at https://pietroppeter.github.io/talk-sailing
 - **THEN** the published deck shows the change after the pages workflow finishes
 
 ### Requirement: Works offline
-The deck SHALL NOT depend on CDNs: reveal.js and KaTeX are vendored in `docs/assets/`, so the deck works without network access.
+The deck SHALL NOT depend on CDNs: reveal.js, KaTeX and p5.js are vendored in `docs/assets/`, so the deck works without network access.
 
 #### Scenario: No wifi at the venue
 - **WHEN** the deck is opened from a local build with the network off
-- **THEN** all slides, styles and math render
+- **THEN** all slides, styles, math and animations render
 
 ### Requirement: Math renders
 LaTeX math in slides SHALL render with KaTeX.
@@ -65,3 +65,10 @@ Slide layouts SHALL be helpers in `my.nim`, and every layout SHALL have demo sli
 #### Scenario: Image on the left
 - **WHEN** a slide uses the image-left layout with a width fraction
 - **THEN** the image covers the full height of the screen and that fraction of its width, cropped and not stretched, the slide content sits to its right, and the AgileLab logo stays visible and does not cover the image
+
+### Requirement: Animations are p5nim sketches
+Animated slides SHALL be written in Nim with p5nim and compiled to JavaScript by nimib when the deck is built, and an animation SHALL start when its slide is shown.
+
+#### Scenario: Showing an animated slide
+- **WHEN** the speaker moves to a slide with an animation, also coming back to it later
+- **THEN** the animation plays from its start
