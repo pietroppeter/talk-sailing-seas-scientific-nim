@@ -24,6 +24,6 @@ None.
 ## Impact
 
 - New files `slides/intro.nim`, `slides/island1-performance.nim` ... `slides/island7-notebook.nim`, `slides/conclusion.nim`; `index.nim` imports them after the title slide.
-- `slides/title.nim` stays as is.
+- `slides/title.nim` gets the accepted title, "Sailing the Seas of Scientific Nim" (it currently drops "the").
 - The published deck on GitHub Pages grows from one slide to a full skeleton (43 slides, mostly placeholders).
 - No demos, images or theme changes in this iteration.
