@@ -15,7 +15,7 @@ The deck has only a title slide, while the specs already fix what the talk promi
 
 ### New Capabilities
 
-- `key-messages`: the 3-5 messages the whole talk must leave with the audience, and where each one is carried. Draft wording, to refine with Pietro.
+- `key-messages`: the three messages the whole talk must leave with the audience, and where each one is carried. Draft wording, to refine with Pietro.
 
 ### Modified Capabilities
 

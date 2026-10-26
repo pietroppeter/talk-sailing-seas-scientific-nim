@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Fixes the few messages the whole talk must leave with the audience, so that every section can be checked against them and anything that carries none of them can be cut.
+Fixes the three messages the whole talk must leave with the audience, so that every section can be checked against them and anything that carries none of them can be cut.
 
 ## ADDED Requirements
 
@@ -17,26 +17,19 @@ The talk SHALL convey that scientific computing has used many languages, each wi
 - **WHEN** the conclusion ends
 - **THEN** the speaker has explained Nim's tradeoffs, its strengths and its shortcomings, and has said why Nim is fun and exciting and why its potential is bigger than its impact so far
 
-### Requirement: Easy like Python, fast like C
-The talk SHALL convey that Nim is as easy to write as Python and as fast as C, with no performance ceiling.
+### Requirement: Nim's strengths and superpowers
+The talk SHALL convey Nim's strengths: as easy to write as Python, as fast as C, and with superpowers such as metaprogramming and the JavaScript backend.
 
-#### Scenario: Message backed by evidence
+#### Scenario: Strengths backed by examples
 - **WHEN** the talk is over
-- **THEN** the claim has been backed by at least one concrete example in the deck
+- **THEN** each strength (Python-like ease, C-like speed, metaprogramming, JavaScript backend) has been shown with at least one concrete example
 
-### Requirement: Nim works with your ecosystem
-The talk SHALL convey that adopting Nim does not mean leaving your ecosystem: C and C++ libraries are easy to wrap, and what you build in Nim is easy to use from Python.
+### Requirement: Pragmatic view, Nim is ready for more
+The talk SHALL take a pragmatic view: Nim is ready for more than it is used for, it has been stable for a while, it has its own shortcomings, and the audience leaves aware of its pitfalls.
 
-#### Scenario: Message in the interop island
-- **WHEN** the interoperability island ends
-- **THEN** the audience has seen Nim code used from Python
-
-### Requirement: Niche, honest, and worth trying
-The talk SHALL convey that Nim is still a niche language with real shortcomings, and at the same time fun and worth trying, at least as a learning tool.
-
-#### Scenario: Message in the conclusion
-- **WHEN** the conclusion ends
-- **THEN** the audience has heard both why Nim is niche and an invitation to try it
+#### Scenario: Pitfalls named
+- **WHEN** the talk is over
+- **THEN** the audience has heard concrete shortcomings and pitfalls of Nim, alongside the evidence that it is stable and ready for more
 
 ### Requirement: Every section carries a key message
 Every section of the talk SHALL carry at least one of the key messages.

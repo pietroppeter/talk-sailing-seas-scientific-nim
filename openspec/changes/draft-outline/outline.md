@@ -2,9 +2,9 @@
 
 ## Narrative Arc
 
-The talk is a sea voyage. We leave the familiar mainland of scientific computing (Fortran, C, C++, R, Python, Julia) noting that each language came with its own tradeoffs and promising to show Nim's (K1: Nim's tradeoffs, and its untapped potential). We then hop across seven islands, each a theme where Nim shows a strength: the first island sets the core promise (K2: easy like Python, fast like C), the next ones show it holds up in real work (success stories, data stack, expressive language), the fifth shows Nim does not ask you to leave home (K3: Nim works with your ecosystem), and the last two show what is special and what is still missing for interactive and literate computing. Each island ends with one honest "rocks ahead" line on where Nim falls short. We touch back land in the conclusion with one takeaway for the beginner, one for the builder, and an opinionated look at why Nim is still niche (K4: niche, honest, and worth trying), closing K1: why it is fun, exciting, and has more potential than the impact it had so far.
+The talk is a sea voyage. We leave the familiar mainland of scientific computing (Fortran, C, C++, R, Python, Julia) noting that each language came with its own tradeoffs and promising to show Nim's (K1: Nim's tradeoffs, and its untapped potential). We then hop across seven islands, and together they show Nim's strengths (K2: easy like Python, fast as C, with superpowers such as metaprogramming and the JavaScript backend), while the success stories and the data stack show it holds up in real work. Each island ends with one honest "rocks ahead" line on where Nim falls short, so the pitfalls add up along the way (K3: pragmatic, Nim is ready for more). We touch back land in the conclusion with one takeaway for the beginner, one for the builder, and an opinionated look at why Nim is still niche despite being stable and ready for more (K3), closing K1: why it is fun, exciting, and has more potential than the impact it had so far.
 
-K1-K4 refer to the requirements in the `key-messages` spec delta of this change.
+K1-K3 refer to the requirements in the `key-messages` spec delta of this change.
 
 ## Timing
 
@@ -47,7 +47,7 @@ Nim is as easy to write as Python and as fast as C. Carries K2.
 
 ### 3. Island 2: Success Stories (~2 min)
 
-Pioneers have used Nim successfully in scientific computing. Carries K2.
+Pioneers have used Nim successfully in scientific computing. Carries K3 (ready for more).
 
 3.1 **Island 2** - section title on the map.
 3.2 **Story one** - [tbd: which project, who, what Nim made possible].
@@ -56,7 +56,7 @@ Pioneers have used Nim successfully in scientific computing. Carries K2.
 
 ### 4. Island 3: Data Stack (~3.5 min)
 
-The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2.
+The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2 and K3.
 
 4.1 **Island 3** - section title on the map.
 4.2 **Meet the penguins** - the palmerpenguins dataset in one slide, a familiar sight for the Python and R crowd.
@@ -67,7 +67,7 @@ The basic building blocks of the data ecosystem, through an exploration of the p
 
 ### 5. Island 4: An Expressive Language (~2.5 min)
 
-Two language features that make Nim good for scientific use. Carries K2.
+Two language features that make Nim good for scientific use. Carries K2 (metaprogramming superpower).
 
 5.1 **Island 4** - section title on the map.
 5.2 **Custom operators** - defining an operator in one line and using it in a formula (the easy feature) [tbd: example].
@@ -76,7 +76,7 @@ Two language features that make Nim good for scientific use. Carries K2.
 
 ### 6. Island 5: Interoperability (~3 min)
 
-Nim is easy to combine with other languages, in both directions. Carries K3.
+Nim is easy to combine with other languages, in both directions. Carries K2 and K3.
 
 6.1 **Island 5** - section title on the map.
 6.2 **Wrapping C and C++** - calling an existing C library from Nim in a few lines [tbd: library].
@@ -86,7 +86,7 @@ Nim is easy to combine with other languages, in both directions. Carries K3.
 
 ### 7. Island 6: Interactivity (~2.5 min)
 
-Nim compiles to JavaScript: a snappy port of a fun Shiny app. Carries K2 and K4.
+Nim compiles to JavaScript: a snappy port of a fun Shiny app. Carries K2 (JavaScript backend superpower).
 
 7.1 **Island 6** - section title on the map.
 7.2 **The original Shiny app** - what the app does and why it is fun [tbd: which app].
@@ -95,7 +95,7 @@ Nim compiles to JavaScript: a snappy port of a fun Shiny app. Carries K2 and K4.
 
 ### 8. Island 7: Notebook (~2.5 min)
 
-The literate computing paradigm Jupyter made central, and a Nim option that goes in an unexpected direction. Carries K4.
+The literate computing paradigm Jupyter made central, and a Nim option that goes in an unexpected direction. Carries K2 and K3.
 
 8.1 **Island 7** - section title on the map.
 8.2 **Literate computing** - from Knuth to Jupyter: why notebooks matter in science.
@@ -104,12 +104,12 @@ The literate computing paradigm Jupyter made central, and a Nim option that goes
 
 ### 9. Conclusion: back on land (~2.5 min)
 
-Takeaways and an opinionated reflection on why Nim is still niche. Carries K1 and K4.
+Takeaways and an opinionated reflection on why Nim is still niche. Carries K1 and K3.
 
 9.1 **Back on land** - the map with all seven islands visited.
 9.2 **For the beginner** - an accessible, fun language to try, at least as a learning tool, and where to start.
 9.3 **For the builder** - the pros and cons of building scientific tools in Nim.
-9.4 **Why still niche?** - an opinionated view of the language, the ecosystem, the community and the governance [tbd: Pietro's views].
+9.4 **Why still niche?** - stable for a while and ready for more, yet niche: an opinionated view of the language, the ecosystem, the community and the governance [tbd: Pietro's views].
 9.5 **Thank you** - links: slides, repo, nimib, Nim community.
 
 ## Decisions
