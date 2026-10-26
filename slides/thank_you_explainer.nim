@@ -143,8 +143,7 @@ While the slide is hidden, nothing is drawn and `t` is reset, so the animation s
 The points are made on the first frame the slide is shown, once the deck's bold font is loaded (otherwise the letters would come out in a fallback font).
 
 Each frame clears the canvas (transparent, so the slide's background and logo show through) and draws every point.
-A point moves on the straight line from grid to letter, pushed sideways by `sin(PI * e)
-* bend`: that push is zero at both ends and largest halfway, so the line becomes an arc.
+A point moves on the straight line from grid to letter, pushed sideways by `sin(PI * e) * bend`: that push is zero at both ends and largest halfway, so the line becomes an arc.
 Every point pulses a little with its own phase, and the extra grid points shrink as `e` goes to 1 (`size *= 1 - e`) and grow back as it returns to 0.
 """
 
