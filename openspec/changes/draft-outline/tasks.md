@@ -38,11 +38,11 @@ Every slide task below means: a slide with the outline's title as heading, the o
 
 ## 9. Conclusion: back on land
 
-- [ ] 9.1 Slides 9.1-9.5 in slides/conclusion.nim as template `conclusionSection`, wired into index.nim; verify in the screenshots
+- [ ] 9.1 Slides 9.1-9.6 in slides/conclusion.nim as template `conclusionSection`, wired into index.nim; verify in the screenshots
 
 ## Whole talk
 
-- [ ] W.1 Build the full deck and screenshot every slide; verify the deck has the nine sections in outline order and the slide count matches the outline (43 slides)
+- [ ] W.1 Build the full deck and screenshot every slide; verify the deck has the nine sections in outline order and the slide count matches the outline (44 slides)
 - [ ] W.2 Read-through of the speaker notes against the timing table; verify each section's notes fit its minutes
 
 ## Workflow follow-up

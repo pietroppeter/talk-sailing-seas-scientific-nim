@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Fixes the three messages the whole talk must leave with the audience, so that every section can be checked against them and anything that carries none of them can be cut.
+Fixes the few messages the whole talk must leave with the audience, so that every section can be checked against them and anything that carries none of them can be cut.
 
 ## ADDED Requirements
 
@@ -30,6 +30,17 @@ The talk SHALL take a pragmatic view: Nim is ready for more than it is used for,
 #### Scenario: Pitfalls named
 - **WHEN** the talk is over
 - **THEN** the audience has heard concrete shortcomings and pitfalls of Nim, alongside the evidence that it is stable and ready for more
+
+### Requirement: Appreciate the diversity of languages
+The talk SHALL NOT try to convert attendees away from their favorite language for scientific computing. It SHALL help them see tradeoffs of their own language they were not aware of, and leave with a better appreciation of the diversity of languages in scientific computing.
+
+#### Scenario: Attendee with a favorite language
+- **WHEN** a Python, R, Julia or C++ user leaves the talk
+- **THEN** they can name a tradeoff of their own language that Nim made visible to them, without having been told to switch
+
+#### Scenario: No conversion pitch
+- **WHEN** the deck is read
+- **THEN** no slide tells the audience to abandon their current language for Nim
 
 ### Requirement: Every section carries a key message
 Every section of the talk SHALL carry at least one of the key messages.

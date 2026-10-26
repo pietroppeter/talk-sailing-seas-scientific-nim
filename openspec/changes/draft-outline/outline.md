@@ -2,9 +2,9 @@
 
 ## Narrative Arc
 
-The talk is a sea voyage. We leave the familiar mainland of scientific computing (Fortran, C, C++, R, Python, Julia) noting that each language came with its own tradeoffs and promising to show Nim's (K1: Nim's tradeoffs, and its untapped potential). We then hop across seven islands, and together they show Nim's strengths (K2: easy like Python, fast as C, with superpowers: metaprogramming, the JavaScript backend and interop), while the success stories and the data stack show it holds up in real work. Each island ends with one honest "rocks ahead" line on where Nim falls short, so the pitfalls add up along the way (K3: pragmatic, Nim is ready for more). We touch back land in the conclusion with one takeaway for the beginner, one for the builder, and an opinionated look at why Nim is still niche despite being stable and ready for more (K3), closing K1: why it is fun, exciting, and has more potential than the impact it had so far.
+The talk is a sea voyage. We leave the familiar mainland of scientific computing (Fortran, C, C++, R, Python, Julia) noting that each language came with its own tradeoffs and promising to show Nim's (K1: Nim's tradeoffs, and its untapped potential). We then hop across seven islands, and together they show Nim's strengths (K2: easy like Python, fast as C, with superpowers: metaprogramming, the JavaScript backend and interop), while the success stories and the data stack show it holds up in real work. Each island ends with one honest "rocks ahead" line on where Nim falls short, so the pitfalls add up along the way (K3: pragmatic, Nim is ready for more). We touch back land in the conclusion with one takeaway for the beginner, one for the builder, and an opinionated look at why Nim is still niche despite being stable and ready for more (K3), closing K1: why it is fun, exciting, and has more potential than the impact it had so far. Throughout, comparisons with the audience's languages are framed as tradeoffs, not as a contest, so people leave appreciating their own language and the diversity of languages better (K4: appreciate the diversity of languages).
 
-K1-K3 refer to the requirements in the `key-messages` spec delta of this change.
+K1-K4 refer to the requirements in the `key-messages` spec delta of this change.
 
 ## Timing
 
@@ -26,7 +26,7 @@ Total 24 minutes of content, leaving 6 minutes for Q&A and slack.
 
 ### 1. Intro: leaving the mainland (~3 min)
 
-Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim's. Carries K1.
+Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim's. Carries K1 and K4.
 
 1.1 **Sailing the Seas of Scientific Nim** - title slide with speaker and conference (existing slide).
 1.2 **About me** - mathematician, data scientist at AgileLab, nimib maintainer, Python Milan and PyData Milan organizer; the Paris climate-dynamics years as a personal hook [tbd: which details Pietro wants on stage].
@@ -104,13 +104,14 @@ The literate computing paradigm Jupyter made central, and a Nim option that goes
 
 ### 9. Conclusion: back on land (~2.5 min)
 
-Takeaways and an opinionated reflection on why Nim is still niche. Carries K1 and K3.
+Takeaways and an opinionated reflection on why Nim is still niche. Carries K1, K3 and K4.
 
 9.1 **Back on land** - the map with all seven islands visited.
 9.2 **For the beginner** - an accessible, fun language to try, at least as a learning tool, and where to start.
 9.3 **For the builder** - the pros and cons of building scientific tools in Nim.
-9.4 **Why still niche?** - stable for a while and ready for more, yet niche: an opinionated view of the language, the ecosystem, the community and the governance [tbd: Pietro's views].
-9.5 **Thank you** - links: slides, repo, nimib, Nim community.
+9.4 **Your language, seen from Nim** - not "switch to Nim": the tradeoffs of your own language that this voyage made visible, and why diversity of languages is good for scientific computing.
+9.5 **Why still niche?** - stable for a while and ready for more, yet niche: an opinionated view of the language, the ecosystem, the community and the governance [tbd: Pietro's views].
+9.6 **Thank you** - links: slides, repo, nimib, Nim community.
 
 ## Decisions
 
