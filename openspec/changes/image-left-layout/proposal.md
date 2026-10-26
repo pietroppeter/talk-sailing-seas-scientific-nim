@@ -8,8 +8,7 @@ This is also the first change that iterates on a slide layout rather than on con
 
 ## What Changes
 
-- New layout helper `imageLeftSlide` in `my.nim`: an image on the left, full height of the screen (edge to edge, not only the slide box), with its width given as a fraction of the screen width (default 40%), cropped to fill; the slide content is vertically centered in the space on the right.
-- The AgileLab logo moves from bottom-left to bottom-right on every slide (Pietro, 2026-10-26), next to the navigation arrows, so it never sits on a left image and no layout has to move it.
+- New layout helper `imageLeftSlide` in `my.nim`: an image on the left, full height of the screen (edge to edge, not only the slide box), with its width given as a fraction of the screen width (default 40%), cropped to fill; the slide content is vertically centered in the space on the right. The AgileLab logo moves to the bottom-left of the text area on these slides, so it does not sit on the image.
 - The style test deck (`my.nim`) gets demo slides of the new layout: default width, a narrower one, and one inside a vertical stack, like the talk's sections.
 - A demo image (`docs/images/demo-sea.svg`, drawn for this repo) to try the layout.
 - OpenSpec: `config.yaml` learns about the style test deck and how layout changes are planned (outline delta with Decisions only, a `Layouts` task group verified on `docs/my.html`).
@@ -23,10 +22,9 @@ None.
 
 ### Modified Capabilities
 
-- `slides-tooling`: adds a requirement that slide layouts are helpers in `my.nim` with demo slides in the style test deck, including the image-left layout; the theme requirement moves the logo bottom-right.
+- `slides-tooling`: adds a requirement that slide layouts are helpers in `my.nim` with demo slides in the style test deck, including the image-left layout.
 
 ## Impact
 
 - `my.nim` (helper, CSS, demo slides), `docs/images/demo-sea.svg` (new), `openspec/config.yaml`.
-- `openspec/reference/nimib-slides-setup.md`: logo position.
-- The logo moves on every slide of the talk; no talk slide uses the layout yet (`index.nim` and `slides/` unchanged); timing unchanged.
+- No talk slide uses the layout yet (`index.nim` and `slides/` unchanged); timing unchanged.

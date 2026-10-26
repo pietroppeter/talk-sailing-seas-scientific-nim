@@ -115,15 +115,28 @@ template imageLeftStyle* =
   justify-content: center;
   text-align: left;
 }
+
+.img-left-logo {
+  position: absolute;
+  left: calc(var(--text-left) - 30px);
+  bottom: var(--screen-top);
+  width: calc(250px / var(--slide-scale));
+  height: calc(70px / var(--slide-scale));
+  background: url(./images/logo-agilelab.png) no-repeat;
+  background-size: contain;
+}
+
+body:has(.slides section.present > .img-left) #agileLabLogo {
+  display: none;
+}
 """
 
 const agileLogoHtml = """
 <div id="agileLabLogo" style="background: url(./images/logo-agilelab.png);
-background-position: right;
 background-repeat: no-repeat;
 position: absolute;
 bottom: 0px;
-right: 120px;
+left: 10px;
 width: 250px;
 height: 70px;"></div>
 """
@@ -258,6 +271,7 @@ template imageLeftSlide*(url: string, width: float, body: untyped) =
       "<div class=\"img-left-text\">"
     body
     nbRawHtml: """</div>
+<div class="img-left-logo"></div>
 </div>"""
 
 template imageLeftSlide*(url: string, body: untyped) =
