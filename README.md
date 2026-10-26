@@ -2,7 +2,7 @@
 
 Talk by Pietro Peterlongo at Compute! Paris 2026, Thursday 26 November 2026, 14:40-15:10, Room 108 (session "A Babel of Compilers"). In the programme it is titled **Sailing the Seas of Scientific Nim**: [talk page](https://pretalx.com/compute-paris-2026/talk/8EM8ZA/).
 
-Slides: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/ (style test deck from `my.nim`: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/my.html)
+Slides: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/
 
 ## Abstract
 
@@ -33,7 +33,7 @@ The talk will use examples from the ecosystem to showcase the power of Nim but i
 Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSlides](https://github.com/HugoGranstrom/nimiSlides):
 
 - `index.nim`: the presentation, it imports the slides from `slides/`
-- `my.nim`: helpers and AgileLab theme; run it directly for a style test deck
+- `my.nim`: helpers and AgileLab theme; run it directly for a style test deck (deplyed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/my.html)
 - `slides/`: one file per slide (or group of slides)
 - `openspec/`: the talk is prepared with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (see below)
 
