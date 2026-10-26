@@ -15,7 +15,7 @@ The talk SHALL convey that scientific computing has used many languages, each wi
 
 #### Scenario: Message closed in the conclusion
 - **WHEN** the conclusion ends
-- **THEN** the speaker has said why Nim is fun and exciting and why its potential is bigger than its impact so far
+- **THEN** the speaker has explained Nim's tradeoffs, its strengths and its shortcomings, and has said why Nim is fun and exciting and why its potential is bigger than its impact so far
 
 ### Requirement: Easy like Python, fast like C
 The talk SHALL convey that Nim is as easy to write as Python and as fast as C, with no performance ceiling.
