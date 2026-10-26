@@ -4,7 +4,7 @@ import ../my
 template titleSlide* =
   slide:
     nbText """
-## Sailing Seas of Scientific Nim
+## Sailing the Seas of Scientific Nim
 
 **Pietro Peterlongo, AgileLab**
 
