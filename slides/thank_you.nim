@@ -38,7 +38,7 @@ template thankYouSlide* =
   slide:
     nbRawHtml: """<div id="thank-you-sketch"></div>
 <div class="thank-you-link"><small><a href="https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/">pietroppeter.github.io/talk-sailing-seas-scientific-nim</a></small><br>
-<span class="thank-you-credit">animation built with <a href="https://github.com/pietroppeter/p5nim">p5nim</a> and inspired by <a href="https://openprocessing.org/sketch/3044593">a sketch by Okazz</a>, <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0</a></span></div>"""
+<span class="thank-you-credit">animation built with <a href="https://github.com/pietroppeter/p5nim">p5nim</a> (<a href="thank_you_explainer.html">explained here</a>) and inspired by <a href="https://openprocessing.org/sketch/3044593">a sketch by Okazz</a>, <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0</a></span></div>"""
     nbJsFromCodeGlobal:
       import p5
       import std / [dom, jsffi]
