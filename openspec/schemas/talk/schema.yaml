@@ -166,41 +166,39 @@ artifacts:
 
   - id: outline
     generates: outline.md
-    description: Talk outline - narrative arc, timing, and sections broken down into slides
+    description: Outline delta - the edits this change makes to the living outline (narrative arc, timing, sections of slides)
     template: outline.md
     instruction: |
-      Create the outline that explains HOW the talk delivers its specs: the
-      narrative arc, the time budget, and the breakdown of the talk into
-      sections, each section into slides.
+      Create the outline delta: the edits this change makes to the living
+      outline of the talk, `openspec/outline.md` (narrative arc, time budget,
+      sections broken down into slides). Read `openspec/outline.md` first.
+      Write only what changes, the way spec deltas only hold changed
+      requirements; when the change is archived, the delta is merged into
+      `openspec/outline.md`. If `openspec/outline.md` does not exist yet,
+      write the whole outline under the same headings.
 
-      The living outline of the talk is `openspec/outline.md`: start from
-      it, and write the change's outline.md as the FULL updated outline (all
-      sections, timing and slides), not a diff. When the change is archived,
-      its outline.md replaces `openspec/outline.md`, the same way spec deltas
-      update `openspec/specs/`. If `openspec/outline.md` does not exist yet,
-      write the outline from the proposal and specs.
-
-      Sections:
-      - **Narrative Arc**: The story in a few sentences: the opening hook, how
-        each section hands over to the next, and the closing. Name the key
-        messages each part carries.
-      - **Timing**: A table with one row per section: number, section,
-        minutes, cumulative end time. The total MUST fit the content time in
-        the specs (leave room for Q&A).
-      - **Sections**: One `### <n>. <Section name> (~<m> min)` heading per
-        section, in delivery order. Under each: one line on the section's
-        goal, then its slides as a numbered list `<n>.<k>`, one slide per
-        item: **title** - what is on the slide (text, code, image, demo) and
-        what the speaker says, in one or two sentences. Mark demos with
-        `[demo]` and slides whose content is still unknown with `[tbd]`.
+      Headings (omit any heading with nothing to change):
+      - **Narrative Arc**: the full updated text, only if the story changes.
+      - **Timing**: the full updated table (one row per section: number,
+        section, minutes, cumulative end time), only if any minutes change.
+        The total MUST fit the content time in the specs (leave room for Q&A).
+      - **Sections**: each new or changed section in full, with its heading
+        `### <n>. <Section name> (~<m> min)`, the one-line goal, and all its
+        slides as a numbered list `<n>.<k>`: **title** - what is on the
+        slide (text, code, image, example) and what the speaker says, in one
+        or two sentences. Mark examples with `[example]` and slides whose
+        content is still unknown with `[tbd]`. A removed section is a
+        heading `### <n>. <Section name> - REMOVED` with one line on why.
+        Text that applies to all sections (before the first section) goes
+        under `### General`, in full. End with `Unchanged: <section numbers>`.
         The slide numbers are the IDs that tasks.md refers to.
-      - **Decisions**: Choices about structure or content with rationale and
-        the alternatives considered (why this order, why cut that example).
-      - **Risks / Trade-offs**: What could go wrong on stage (timing overruns,
-        live demo failures, wifi) and the mitigation. Format: [Risk] → Mitigation
-      - **Open Questions**: Unknowns that can safely be answered later
+      - **Decisions**: bullets starting with `ADDED:` (new choice with
+        rationale and alternatives considered) or `REMOVED:` (quote the
+        start of the old bullet and say why).
+      - **Risks / Trade-offs**: same `ADDED:` / `REMOVED:` bullets; a risk
+        reads [Risk] → Mitigation.
+      - **Open Questions**: unknowns that can safely be answered later
         without changing the specs, the sections, or the task breakdown.
-        Omit if none.
 
       Open questions are for genuinely deferrable unknowns, not decisions you
       skipped. If a question would change the specs or the section breakdown,

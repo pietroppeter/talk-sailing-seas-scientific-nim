@@ -1,32 +1,32 @@
-# Outline
+# Outline Delta
+
+<!-- Edits to openspec/outline.md. Omit headings with nothing to change. -->
 
 ## Narrative Arc
 
-<!-- The story in a few sentences: opening hook, hand-overs between sections, closing. Which key messages each part carries. -->
+<!-- Full updated text, only if the story changes. -->
 
 ## Timing
 
+<!-- Full updated table, only if minutes change. -->
+
 | # | Section | Minutes | Ends at |
 |---|---------|---------|---------|
-| 1 | <!-- section --> | <!-- m --> | <!-- mm:ss --> |
 
 ## Sections
 
-### 1. <!-- Section name --> (~<!-- m --> min)
+### <!-- n -->. <!-- Section name --> (~<!-- m --> min)
 
 <!-- One line: what this section achieves. -->
 
-1.1 **<!-- Slide title -->** - <!-- what is on the slide and what the speaker says -->
-1.2 **<!-- Slide title -->** - <!-- ... mark demos with [demo], unknown content with [tbd] -->
+<!-- n -->.1 **<!-- Slide title -->** - <!-- what is on the slide and what the speaker says; [example], [tbd] -->
 
-### 2. <!-- Section name --> (~<!-- m --> min)
-
-2.1 **<!-- Slide title -->** - <!-- ... -->
+Unchanged: <!-- section numbers -->
 
 ## Decisions
 
-<!-- Structure and content choices with rationale and alternatives considered -->
+- ADDED: <!-- choice, rationale, alternatives -->
 
 ## Risks / Trade-offs
 
-<!-- [Risk] → Mitigation -->
+- ADDED: <!-- [Risk] → Mitigation -->
