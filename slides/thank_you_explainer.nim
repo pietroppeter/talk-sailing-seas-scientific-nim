@@ -1,4 +1,4 @@
-import std / [strutils, strformat]
+import std / [strutils, strformat, json]
 import nimib
 import nimib / highlight
 
@@ -38,7 +38,12 @@ template step(n: int, title, startMarker, endMarker, text: string) =
   nbText "### " & $n & ". " & title & "\n\n" & text
   nbRawHtml codeHtml(startMarker, endMarker)
 
-nbInit(thisFileRel = "thank_you_explainer.nim")
+nbInit(thisFileRel = "thank_you_explainer.nim") # so the page is written to docs/, not docs/slides/
+# with the path above nimib cannot find this file, so give the "Show Source" button its source here
+const ownSource = staticRead("thank_you_explainer.nim")
+nb.doc.source = ownSource
+nb.doc.context["source"] = %nb.doc.source
+nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
 nbRawHtml("<style>\n" & """
 pre { overflow-x: auto; }
 .lines { font-size: 0.8em; color: #6b7280; margin-top: -0.5em; }
