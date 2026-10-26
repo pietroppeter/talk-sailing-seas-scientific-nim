@@ -63,6 +63,7 @@ pre { overflow-x: auto; }
   width: 100%; aspect-ratio: 16 / 9;
   border: 1px solid #ddd; border-radius: 6px;
 }
+.egg, .egg:hover { color: inherit; text-decoration: none; }
 .note { border-left: 4px solid #02A4BD; padding-left: 1em; }
 """ & "</style>")
 
@@ -301,7 +302,7 @@ and grow back as it returns to 0.
 """
 
 nbText """
-## Try it
+## <a href="emilia.html" class="egg">Try it</a>
 
 Clone [the
 repository](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim),
