@@ -4,7 +4,7 @@ Every slide task below means: a slide with the outline's title as heading, the o
 
 ## 1. Intro: leaving the mainland
 
-- [x] 1.1 Slide "Sailing the Seas of Scientific Nim": fix the title in slides/title.nim to the accepted title (with "the"); verify in the screenshots
+- [x] 1.1 Slide "Sailing Seas of Scientific Nim": keep the short title in slides/title.nim so it fits on one line (Pietro's choice); verify in the screenshots
 - [x] 1.2 Slides 1.2-1.6 in slides/intro.nim as template `introSection`, wired into index.nim after `titleSlide`; verify in the screenshots
 - [x] 1.3 Map slide helper `mapSlide(n)` in my.nim, a text-only placeholder listing the seven islands with island n highlighted (used by 1.6 and each island title); verify the highlighted island differs per section in the screenshots
 
@@ -43,9 +43,9 @@ Every slide task below means: a slide with the outline's title as heading, the o
 ## Whole talk
 
 - [x] W.1 Build the full deck and screenshot every slide; verify the deck has the nine sections in outline order and the slide count matches the outline (43 slides)
-- [ ] W.2 Read-through of the speaker notes against the timing table; verify each section's notes fit its minutes
 
 ## Workflow follow-up
 
+- Timed read-through of the speaker notes against the timing table: skipped by Pietro for this iteration (placeholders only).
 - Share the screenshots with Pietro in the project thread.
 - Archive the change after Pietro's review, so `key-messages` becomes a main spec.

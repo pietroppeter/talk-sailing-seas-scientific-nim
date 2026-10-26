@@ -28,7 +28,7 @@ Total 23 minutes of content, leaving 7 minutes for Q&A and slack.
 
 Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim's. Carries K1 and K4.
 
-1.1 **Sailing the Seas of Scientific Nim** - title slide with speaker and conference (existing slide).
+1.1 **Sailing Seas of Scientific Nim** - title slide (short form, fits on one line) with speaker and conference (existing slide).
 1.2 **About me** - mathematician, data scientist at AgileLab, nimib maintainer, Python Milan and PyData Milan organizer; the Paris climate-dynamics years as a personal hook [tbd: which details Pietro wants on stage].
 1.3 **The mainland** - a map of scientific computing languages over time: Fortran, C, C++, R, Python, Julia.
 1.4 **Why so many languages?** - each language came to solve a problem the previous ones did not; the two-language problem as the classic example.
@@ -41,7 +41,7 @@ Nim is as easy to write as Python and as fast as C, passed through quickly: perf
 
 2.1 **Island 1** - section title on the map.
 2.2 **Reads like Python** - the same small function in Python and in Nim side by side.
-2.3 **Runs like C** - timing of that function in Python and Nim [demo] [tbd: which benchmark].
+2.3 **Runs like C** - timing of that function in Python and Nim [example] [tbd: which benchmark].
 2.4 **No ceiling** - one line on what "no ceiling" means (compiled, static types, control over memory when you need it), then a pointer to Mamy's HPC/AI talk in the same session for the deep dive.
 
 ### 3. Island 2: Success Stories (~2 min)
@@ -59,9 +59,9 @@ The basic building blocks of the data ecosystem, through an exploration of the p
 
 4.1 **Island 3** - section title on the map.
 4.2 **Meet the penguins** - the palmerpenguins dataset in one slide, a familiar sight for the Python and R crowd.
-4.3 **Dataframe** - load and summarise the penguins in a dataframe [demo] [tbd: library].
-4.4 **Plot** - a scatter plot of the penguins [demo] [tbd: library].
-4.5 **Tensor** - the tensor library underneath, one small computation [demo] [tbd: library].
+4.3 **Dataframe** - load and summarise the penguins in a dataframe [example] [tbd: library].
+4.4 **Plot** - a scatter plot of the penguins [example] [tbd: library].
+4.5 **Tensor** - the tensor library underneath, one small computation [example] [tbd: library].
 4.6 **Rocks ahead** - one honest limitation of the data stack [tbd].
 
 ### 5. Island 4: An Expressive Language (~2.5 min)
@@ -80,7 +80,7 @@ Nim is easy to combine with other languages, in both directions. Carries K2 (int
 6.1 **Island 5** - section title on the map.
 6.2 **Wrapping C and C++** - calling an existing C library from Nim in a few lines [tbd: library].
 6.3 **Bridges** - two-way bridges to Python, R and Julia, with an honest maturity rating for each [tbd: which libraries].
-6.4 **Nim from Python** - a Nim function imported and called from Python, "almost like Rust" [demo] [tbd: example].
+6.4 **Nim from Python** - a Nim function imported and called from Python, "almost like Rust" [example] [tbd: example].
 6.5 **Rocks ahead** - packaging and distribution of Nim extensions [tbd].
 
 ### 7. Island 6: Interactivity (~2.5 min)
@@ -89,7 +89,7 @@ Nim compiles to JavaScript: a snappy port of a fun Shiny app. Carries K2 (JavaSc
 
 7.1 **Island 6** - section title on the map.
 7.2 **The original Shiny app** - what the app does and why it is fun [tbd: which app].
-7.3 **The Nim port** - the same app compiled to JavaScript, running in the browser [demo].
+7.3 **The Nim port** - the same app compiled to JavaScript, running in the browser [example].
 7.4 **Rocks ahead** - no REPL, so no Jupyter- or Marimo-style interactivity in Nim yet.
 
 ### 8. Island 7: Notebook (~2.5 min)
@@ -118,10 +118,11 @@ Takeaways and an opinionated reflection on why Nim is still niche. Carries K1, K
 - "Rocks ahead" closing slide on most islands, where there is an honest limitation worth naming (not on island 1), so the promise of not hiding shortcomings is kept throughout instead of being dumped in the conclusion. Alternative: one "shortcomings" slide in the conclusion; rejected as easy to cut when time runs short.
 - The Data Stack island gets the most time (3.5 min) because it is the one a PyData audience will judge hardest. Success Stories gets the least (2 min) because stories are told, not demoed.
 - Island 1 is the shortest island (1.5 min): performance is not the speaker's main interest, and it points to Mamy's talk for depth, as the audience spec requires.
+- No live demos: Pietro will not have time to prepare them. Slides marked `[example]` show code and its output, computed when the deck is built (nimib runs the code), which also fits the offline deck. Alternative: live coding or switching to a terminal; rejected for preparation time and stage risk.
 - Shallow by design: following the sailing metaphor, no island goes in depth; each gives the feeling of the place. Depth is left to links and to the Q&A.
 
 ## Risks / Trade-offs
 
 - [Nine sections in 23 minutes leave about 2.5 minutes per island] → one core slide per island carries the message; everything else is cuttable, and the timing table is checked in rehearsal.
-- [Live demos fail on stage or venue wifi is down] → demos are recorded as screenshots or embedded output in the deck (built offline), live runs are optional extras.
+- [Examples break or take too long to prepare] → each example is code plus its output, run by nimib when the deck is built, so a broken example shows up in CI and not on stage; an example can fall back to a static snippet.
 - [Too many [tbd] slides make the skeleton hard to judge] → this iteration only fixes the shape; content choices are the next iterations, one island at a time.
