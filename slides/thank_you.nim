@@ -50,7 +50,7 @@ template thankYouSlide* =
         # Okazz's palette, one color per letter of "ThankYou!"
         palette = ["#f42464", "#f6a620", "#09aa75", "#58a5fd", "#4629d7", "#f93c1b", "#fbd50c", "#f7acc6", "#251872"]
         step = 7 # distance between points inside a letter
-        gridRest = 60 # frames the grid stays still
+        gridRest = 120 # frames the grid stays still
         letterRest = 180 # frames "Thank You!" stays still
         maxDelay = 70 # frames: each point leaves with a random delay
         travel = 100 # frames to fly between the grid and the letter
