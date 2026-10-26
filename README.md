@@ -66,3 +66,7 @@ The talk is prepared with spec-driven development using [OpenSpec](https://githu
 - `openspec/reference/`: background notes (conference, slides setup, references)
 
 Install the CLI with `npm install -g @fission-ai/openspec` (cloud sessions do this in a SessionStart hook). In Claude Code: `/opsx:explore`, `/opsx:propose <idea>`, `/opsx:apply`, `/opsx:archive`.
+
+## License
+
+MIT (see `LICENSE`), except `slides/thank_you.nim`: the animation of the Thank You slide is based on [a sketch by Okazz](https://openprocessing.org/sketch/3044593), licensed under [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/), so that file is licensed under CC BY-NC-SA 3.0 too.
