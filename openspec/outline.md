@@ -25,6 +25,8 @@ Total 23 minutes of content, leaving 7 minutes for Q&A and slack.
 
 ## Sections
 
+Navigation: each section except the opening is a vertical stack in reveal.js. Its section/map slide (the intro's first slide) sits on the top row, and the section's content slides are below it, so left/right moves between sections and down goes through a section.
+
 ### 0. Opening (~1 min)
 
 Title and speaker, before the voyage starts. Not part of the intro section.
@@ -125,6 +127,7 @@ Takeaways and an opinionated reflection on why Nim is still niche. Carries K1, K
 - The Data Stack island gets the most time (3.5 min) because it is the one a PyData audience will judge hardest. Success Stories gets the least (2 min) because stories are told, not demoed.
 - Island 1 is the shortest island (1.5 min): performance is not the speaker's main interest, and it points to Mamy's talk for depth, as the audience spec requires.
 - No live demos: Pietro will not have time to prepare them. Slides marked `[example]` show code and its output, computed when the deck is built (nimib runs the code), which also fits the offline deck. Alternative: live coding or switching to a terminal; rejected for preparation time and stage risk.
+- Vertical sections (Pietro, 2026-10-26): the top row of the deck is the voyage itself (opening, intro, the seven islands, conclusion), and each section's content is below it. This makes it easy to skip or shorten a section on stage. Alternative: one flat row of 43 slides.
 - Shallow by design: following the sailing metaphor, no island goes in depth; each gives the feeling of the place. Depth is left to links and to the Q&A.
 
 ## Risks / Trade-offs
