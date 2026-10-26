@@ -6,7 +6,7 @@ Fixes the few messages the whole talk must leave with the audience, so that ever
 
 ## ADDED Requirements
 
-### Requirement: Nim's tradeoffs, and its untapped potential
+### Requirement: Nim's tradeoffs as a scientific computing language, and its untapped potential
 The talk SHALL convey that scientific computing has used many languages, each with different tradeoffs, and SHALL present the specific tradeoffs of Nim, and why the speaker finds it fun, exciting and with a lot more potential than the limited impact it has had until now.
 
 #### Scenario: Message set up in the intro
