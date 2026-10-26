@@ -6,12 +6,16 @@ Fixes the few messages the whole talk must leave with the audience, so that ever
 
 ## ADDED Requirements
 
-### Requirement: Space for one more language
-The talk SHALL convey that scientific computing has always used many languages and that there is still space for one more, and that Nim earns it.
+### Requirement: Nim's tradeoffs, and its untapped potential
+The talk SHALL convey that scientific computing has used many languages, each with different tradeoffs, and SHALL present the specific tradeoffs of Nim, and why the speaker finds it fun, exciting and with a lot more potential than the limited impact it has had until now.
 
-#### Scenario: Message in the intro
+#### Scenario: Message set up in the intro
 - **WHEN** the intro ends
-- **THEN** the audience has heard why a new language can still matter in scientific computing
+- **THEN** the audience knows the talk is about Nim's specific tradeoffs, not a claim that Nim beats every other language
+
+#### Scenario: Message closed in the conclusion
+- **WHEN** the conclusion ends
+- **THEN** the speaker has said why Nim is fun and exciting and why its potential is bigger than its impact so far
 
 ### Requirement: Easy like Python, fast like C
 The talk SHALL convey that Nim is as easy to write as Python and as fast as C, with no performance ceiling.

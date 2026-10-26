@@ -2,7 +2,7 @@
 
 ## Narrative Arc
 
-The talk is a sea voyage. We leave the familiar mainland of scientific computing (Fortran, C, C++, R, Python, Julia) asking whether there is room for one more language (K1: space for one more language). We then hop across seven islands, each a theme where Nim shows a strength: the first island sets the core promise (K2: easy like Python, fast like C), the next ones show it holds up in real work (success stories, data stack, expressive language), the fifth shows Nim does not ask you to leave home (K3: Nim works with your ecosystem), and the last two show what is special and what is still missing for interactive and literate computing. Each island ends with one honest "rocks ahead" line on where Nim falls short. We touch back land in the conclusion with one takeaway for the beginner, one for the builder, and an opinionated look at why Nim is still niche (K4: niche, honest, and worth trying).
+The talk is a sea voyage. We leave the familiar mainland of scientific computing (Fortran, C, C++, R, Python, Julia) noting that each language came with its own tradeoffs and promising to show Nim's (K1: Nim's tradeoffs, and its untapped potential). We then hop across seven islands, each a theme where Nim shows a strength: the first island sets the core promise (K2: easy like Python, fast like C), the next ones show it holds up in real work (success stories, data stack, expressive language), the fifth shows Nim does not ask you to leave home (K3: Nim works with your ecosystem), and the last two show what is special and what is still missing for interactive and literate computing. Each island ends with one honest "rocks ahead" line on where Nim falls short. We touch back land in the conclusion with one takeaway for the beginner, one for the builder, and an opinionated look at why Nim is still niche (K4: niche, honest, and worth trying), closing K1: why it is fun, exciting, and has more potential than the impact it had so far.
 
 K1-K4 refer to the requirements in the `key-messages` spec delta of this change.
 
@@ -32,7 +32,7 @@ Set up the voyage and the question "is there space for one more?" Carries K1.
 1.2 **About me** - mathematician, data scientist at AgileLab, nimib maintainer, Python Milan and PyData Milan organizer; the Paris climate-dynamics years as a personal hook [tbd: which details Pietro wants on stage].
 1.3 **The mainland** - a map of scientific computing languages over time: Fortran, C, C++, R, Python, Julia.
 1.4 **Why so many languages?** - each language came to solve a problem the previous ones did not; the two-language problem as the classic example.
-1.5 **Is there space for one more?** - the abstract's question, and the promise: seven islands, and we won't hide where Nim falls short.
+1.5 **Nim's tradeoffs** - the abstract's question "is there space for one more?" reframed: this talk is about Nim's specific tradeoffs, seven islands, and we won't hide where Nim falls short.
 1.6 **The map** - the seven islands on one map, used again as a progress marker at each section start.
 
 ### 2. Island 1: Accessible Performance without Ceiling (~2.5 min)
@@ -104,7 +104,7 @@ The literate computing paradigm Jupyter made central, and a Nim option that goes
 
 ### 9. Conclusion: back on land (~2.5 min)
 
-Takeaways and an opinionated reflection on why Nim is still niche. Carries K4.
+Takeaways and an opinionated reflection on why Nim is still niche. Carries K1 and K4.
 
 9.1 **Back on land** - the map with all seven islands visited.
 9.2 **For the beginner** - an accessible, fun language to try, at least as a learning tool, and where to start.
