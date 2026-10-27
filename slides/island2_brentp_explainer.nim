@@ -462,6 +462,52 @@ without ever knowing they are written in Nim.
 """
 
 nbText """
+## A polyglot toolmaker
+
+Nim is one chapter of a longer story. On
+[his website](https://brentp.github.io/) Brent lists six
+key projects, each with a maintained repository and a
+paper, and they span four languages:
+
+| Tool | Language | Paper |
+|---|---|---|
+| [cyvcf2](https://github.com/brentp/cyvcf2) | Python and Cython | Bioinformatics 2017 |
+| [vcfanno](https://github.com/brentp/vcfanno) | Go | Genome Biology 2016 |
+| [mosdepth](https://github.com/brentp/mosdepth) | Nim | Bioinformatics 2018 |
+| [somalier](https://github.com/brentp/somalier) | Nim | Genome Medicine 2020 |
+| [slivar](https://github.com/brentp/slivar) | Nim | npj Genomic Medicine 2021 |
+| [echtvar](https://github.com/brentp/echtvar) | Rust | Nucleic Acids Research 2023 |
+
+He describes mosdepth as "written in Nim for maximum
+performance", echtvar as "written in Rust for maximum
+performance", and vcfanno as "written in Go for speed
+and reliability". The same person, the same goal (fast,
+simple tools for genomic variants), and over the years
+the language changed with the tools and libraries
+around it. Before all of these he co-wrote
+[pybedtools](https://github.com/daler/pybedtools)
+(Bioinformatics 2011), a Python library.
+
+Some ideas travel across the languages. slivar's
+"filter variants with a user expression" came back in
+Rust twice: [vcfexpress](https://github.com/brentp/vcfexpress)
+(Bioinformatics 2025), with Lua as the expression
+language, and [htsvcf](https://github.com/brentp/htsvcf),
+JavaScript expressions on top of
+[rust-htslib](https://github.com/rust-bio/rust-htslib),
+the Rust counterpart of hts-nim, maintained by the
+rust-bio community. He wrote about building htsvcf with
+AI coding tools on [his blog](https://brentp.github.io/blog/),
+and about why he likes to add a scripting interface to
+command line tools.
+
+For the talk this is a good illustration of its last
+message: languages are tools with tradeoffs, and a good
+toolmaker picks up the one that fits the job and the
+ecosystem of the moment.
+"""
+
+nbText """
 ## Why this is a success story
 
 For the talk the point is simple: a competent scientist
