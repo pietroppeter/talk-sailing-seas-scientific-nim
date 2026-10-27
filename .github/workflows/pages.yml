@@ -26,7 +26,8 @@ jobs:
         run: sudo bash scripts/install-nim.sh
       - name: Install dependencies
         run: |
-          sudo apt-get install -y libcairo2 # ggplotnim saves its PNG plots with cairo
+          # cairo: ggplotnim saves its PNG plots with it; BLAS/LAPACK: loaded by Arraymancer at startup
+          sudo apt-get install -y libcairo2 libblas3 liblapack3
           atlas install
       - name: Build slides
         run: |
