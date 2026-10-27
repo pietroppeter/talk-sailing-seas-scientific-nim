@@ -9,11 +9,12 @@ template brentSlide = # 3.2
   slide:
     nbText: """
 ### Brent Pedersen · @brentp
-
-Genomics researcher and software developer:
-6 papers on 6 Nim tools (2018-2022),
-with 1,944 citations and 1,833 stars
 """
+    nbRawHtml: """<p class="brent-intro">Genomics researcher and software developer:
+6 papers on 6 Nim tools (2018-2022),
+with 1,944 citations and 1,833 stars.
+Others followed
+(<a href="https://github.com/andreas-wilm/awesome-bionimformatics">awesome-bionimformatics</a>)</p>"""
     nbRawHtml: """<div class="brent-cols">
 <table class="brent-table">
 <thead><tr><th>tool</th><th>year</th><th>citations</th><th>stars</th></tr></thead>
@@ -25,11 +26,15 @@ with 1,944 citations and 1,833 stars
 <tr><td><a href="https://github.com/quinlan-lab/STRling">STRling</a></td><td>2022</td><td>68</td><td>72</td></tr>
 <tr><td><a href="https://github.com/brentp/hts-nim">hts-nim</a></td><td>2018</td><td>18</td><td>159</td></tr>
 </tbody></table>
-<pre><code class="language-nim">import hts
+<pre><code class="language-nim"># read a file of DNA reads aligned to the genome
+import hts
 var b: Bam
 open(b, "sample.bam", index=true)
+# reads in a region of chromosome 6
 for r in b.query("6", 30816675, 32816675):
+  # keep reads placed with confidence
   if r.mapping_quality > 10u:
+    # where each read sits on the genome
     echo r.chrom, r.start, r.stop</code></pre>
 </div>"""
     reference """
@@ -103,6 +108,7 @@ analysis framework: the extra work delayed the thesis,
 and he says he learned way more.
 """
     nbRawHtml: """<style>
+.reveal .brent-intro { font-size: 0.8em; }
 .reveal .brent-cols { display: grid; grid-template-columns: auto 1fr; gap: 1.2em; align-items: center; }
 .reveal .brent-cols table { font-size: 0.5em; margin: 0; }
 .reveal .brent-cols table td:nth-child(n+2), .reveal .brent-cols table th:nth-child(n+2) { text-align: right; font-variant-numeric: tabular-nums; }
