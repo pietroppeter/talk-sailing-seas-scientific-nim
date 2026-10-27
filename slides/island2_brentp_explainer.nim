@@ -435,14 +435,16 @@ of their papers on
 | [somalier](https://github.com/brentp/somalier) | sample identity and relatedness | 341 | 172 |
 | [slivar](https://github.com/brentp/slivar) | variant filtering with expressions | 274 | 141 |
 | [hts-nim](https://github.com/brentp/hts-nim) | htslib for Nim | 159 | 18 |
-| [jigv](https://github.com/brentp/jigv) | self-contained igv.js pages to look at reads and variants | 132 | |
 | [duphold](https://github.com/brentp/duphold) | adds depth evidence to deletion and duplication calls | 109 | 93 |
-| [seqcover](https://github.com/brentp/seqcover) | coverage across many genes and samples | 51 | |
 | [STRling](https://github.com/quinlan-lab/STRling) | finds expansions of short tandem repeats (with Harriet Dashnow, Quinlan lab) | 72 | 68 |
 
-Counting the six tools with a paper (hts-nim, mosdepth,
-duphold, somalier, slivar, STRling, 2018 to 2022), that is
-1,944 citations and 1,833 stars. hts-nim and slivar also appear in a review
+These are the six Nim tools with a paper (2018 to 2022):
+together 1,944 citations and 1,833 stars.
+Some of his other Nim tools have no paper, like
+[jigv](https://github.com/brentp/jigv) (132 stars),
+self-contained igv.js pages to look at reads and variants,
+and [seqcover](https://github.com/brentp/seqcover)
+(51 stars), coverage across many genes and samples. hts-nim and slivar also appear in a review
 of VCF tools,
 ["A spectrum of free software tools for processing the VCF
 variant call format"](https://doi.org/10.1371/journal.pcbi.1009123)
