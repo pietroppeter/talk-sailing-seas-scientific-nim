@@ -39,6 +39,8 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `slides/island2_brentp_explainer.nim`: a nimib page that explains Brent Pedersen's genomics tools in Nim, with the bioinformatics background (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_brentp_explainer.html)
 - `slides/island2_vindaar_explainer.nim`: a nimib page that explains Vindaar's physics PhD thesis in plain words (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_vindaar_explainer.html)
 - `slides/island2_beyond_explainer.nim`: a nimib page with Nim success stories outside scientific computing (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_beyond_explainer.html)
+- `slides/island4_operators_explainer.nim`: a nimib page that explains the custom operators example of Island 4 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island4_operators_explainer.html)
+- `slides/island4_units_explainer.nim`: a nimib page that explains the units example of Island 4, with unchained (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island4_units_explainer.html)
 - `slides/`: one file per slide (or group of slides)
 - `openspec/`: the talk is prepared with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (see below)
 
@@ -55,6 +57,8 @@ nim r slides/thank_you_explainer.nim  # explainer of the Thank You slide, writes
 nim r slides/island2_brentp_explainer.nim  # explainer of Brent Pedersen's tools (Island 2), writes docs/island2_brentp_explainer.html
 nim r slides/island2_vindaar_explainer.nim  # Vindaar's thesis in plain words (Island 2), writes docs/island2_vindaar_explainer.html
 nim r slides/island2_beyond_explainer.nim  # Nim success stories beyond science (Island 2), writes docs/island2_beyond_explainer.html
+nim r slides/island4_operators_explainer.nim  # explainer of the custom operators slides, writes docs/island4_operators_explainer.html
+nim r slides/island4_units_explainer.nim  # explainer of the units slides, writes docs/island4_units_explainer.html
 ```
 
 Outputs go to `docs/` (set by `homeDir` in `nimib.toml`), which is what gets published on GitHub Pages: the `pages` workflow builds the slides on every push to `main` and deploys `docs/`. Generated html is not committed.
