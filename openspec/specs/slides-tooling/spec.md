@@ -21,11 +21,15 @@ The presentation entry point `index.nim`, the helpers `my.nim`, `nimib.toml`, `n
 - **THEN** it goes in a file under `slides/` and is wired into `index.nim`
 
 ### Requirement: Theme and branding
-The deck SHALL use the AgileLab theme from `my.nim`: off-white background, AgileLab colors, and the AgileLab logo fixed bottom-left.
+The deck SHALL use the AgileLab theme from `my.nim`: off-white background, AgileLab colors, the AgileLab logo fixed bottom-left, and a light code theme (highlight.js style chosen by `codeTheme` in `my.nim`) for code blocks.
 
 #### Scenario: Any slide
 - **WHEN** any slide is shown
 - **THEN** it has the off-white background and the AgileLab logo bottom-left
+
+#### Scenario: Code on a slide
+- **WHEN** a slide shows Nim code and its output
+- **THEN** the code is in a light box with the chosen highlight.js style, not a dark one, and the output is marked by a light-blue bar on its left
 
 ### Requirement: Published on GitHub Pages
 The built deck SHALL be published at https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/ by CI: outputs go to `docs/`, generated html is not committed, and every push to `main` builds and deploys `docs/`.
@@ -35,7 +39,7 @@ The built deck SHALL be published at https://pietroppeter.github.io/talk-sailing
 - **THEN** the published deck shows the change after the pages workflow finishes
 
 ### Requirement: Works offline
-The deck SHALL NOT depend on CDNs: reveal.js, KaTeX and p5.js are vendored in `docs/assets/`, so the deck works without network access.
+The deck SHALL NOT depend on CDNs: reveal.js, KaTeX, p5.js and the highlight.js code styles are vendored in `docs/assets/`, so the deck works without network access.
 
 #### Scenario: No wifi at the venue
 - **WHEN** the deck is opened from a local build with the network off
