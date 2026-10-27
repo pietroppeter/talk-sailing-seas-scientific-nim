@@ -10,11 +10,28 @@ export SolarMass, Msun, EarthMass, Mearth
 # Section 5: Island 4: An Expressive Language (see the latest outline in openspec)
 # Two language features that make Nim good for scientific use. Carries K2 (metaprogramming superpower).
 
+func codeHtml(code: string): string =
+  &"""<pre style="width: 100%"><code class="nim hljs" data-noescape>{highlightNim(code.strip)}</code></pre>"""
+
 proc newUnitsHtml: string =
   ## the declaration in island4_units.nim, between the markers, highlighted
   const source = staticRead("island4_units.nim")
   let code = source.split("# >>> new units\n")[1].split("# <<< new units")[0]
-  &"""<pre style="width: 100%"><code class="nim hljs" data-noescape>{highlightNim(code.strip)}</code></pre>"""
+  codeHtml(code)
+
+proc siUnitsHtml: string =
+  ## some SI base units as unchained declares them in its si_units.nim
+  ## (read from the dependency at build time, comments dropped)
+  const source = staticRead("../deps/unchained/src/unchained/si_units.nim")
+  var code = "declareUnits:\n  BaseUnits:\n"
+  for unit in ["Gram", "Meter"]:
+    let lines = source.split("\n    " & unit & ":\n")[1].splitLines
+    code.add "    " & unit & ":\n"
+    for line in lines:
+      if not line.startsWith("      "): break
+      code.add line.split(" #")[0] & "\n"
+  code.add "    ..."
+  codeHtml(code)
 
 template island4ExpressiveSection* =
   slide:
@@ -72,14 +89,21 @@ The explainer goes through the math, the edge cases
       nbTextSmall """
 [unchained](https://github.com/SciNim/unchained) by Vindaar:
 units checked at compile time, plain floats at run time.
-Its `declareUnits` macro adds two masses to SI:
+Its `declareUnits` macro declares the SI units,
+and we can add our own:
 """
-      nbRawHtml newUnitsHtml()
+      columns:
+        column:
+          nbRawHtml siUnitsHtml()
+        column:
+          nbRawHtml newUnitsHtml()
       nbTextSmall """
 The macro writes the types, the aliases and the conversions;
 `*`, `/` and `+` are macros that work out the unit of the result.
 """
       speakerNote """
+Left: two SI base units as unchained declares them (its si_units.nim),
+right: our two new units (slides/island4_units.nim).
 A macro is Nim code that runs in the compiler and writes Nim code.
 declareUnits reads this block and generates distinct float types
 (SolarMass, EarthMass) with their short names and conversions.

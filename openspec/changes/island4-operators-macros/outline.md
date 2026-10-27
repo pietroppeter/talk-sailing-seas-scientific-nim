@@ -9,7 +9,7 @@ Two language features that make Nim good for scientific use: custom operators wr
 5.1 **Island 4** - section title on the map.
 5.2 **Custom operators** - hand-written geometry: `Line` and `Plane` types over `Point` and `Vec` (a `distinct Point`), `+` joins (two points make a line, a line and a point a plane), `*` meets (a line hits a plane in a point); `Point + Point` is not a point, so the types let it mean the line through them [example].
 5.3 **Where a line meets a plane** - the plane through three points, the line through two, and their meet [example]; the slide links its explainer.
-5.4 **Units with a macro** - Vindaar's unchained: units checked at compile time, plain floats at run time; its `declareUnits` macro adds the solar mass and the Earth mass to SI, and the macro writes the types, aliases and conversions while `*`, `/` and `+` are macros that work out the unit of the result.
+5.4 **Units with a macro** - Vindaar's unchained: units checked at compile time, plain floats at run time; its `declareUnits` macro declares the SI units (left column: Gram and Meter, read from unchained's si_units.nim at build time) and adds the solar mass and the Earth mass (right column), and the macro writes the types, aliases and conversions while `*`, `/` and `+` are macros that work out the unit of the result.
 5.5 **Kepler's third law** - `period(a, mass)` is `2 * PI * sqrt(a^3 / (G_Newton * mass))` for any length and any mass: the year of Mars (1.524 AU around one solar mass) and the month of the Moon (384 400 km around one Earth mass); adding a length to a mass does not compile [example].
 5.6 **Rocks ahead** - with great power: macros can make code hard to read for newcomers; concepts (compile-time duck typing) were not robust until possibly recently.
 
