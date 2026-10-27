@@ -14,4 +14,4 @@
 
 ## Workflow follow-up
 
-- Archive the change after Pietro's review.
+- [x] Archive the change after Pietro's review (2026-10-27: atom-one-light, output bar kept, all three styles kept).
