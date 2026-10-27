@@ -41,7 +41,8 @@ but slow at the scale of modern genomics data;
 Nim gives a scripting-like syntax without that cost.
 mosdepth computes sequencing depth: per base on a 30X genome
 in about half the time of samtools (its README benchmark).
-Many users install these tools without knowing they run Nim.
+Many users install these tools from bioconda
+without knowing they run Nim.
 """
 
 template vindaarSlide = # 3.3
