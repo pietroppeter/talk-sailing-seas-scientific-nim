@@ -7,7 +7,7 @@ Island 3 is still made of placeholders. It is where the talk shows that Nim has 
 ## What Changes
 
 - ADDED 4.2 **The stack**: a table mapping Python, R and Nim for tensors, dataframes and plots (NumPy / arrays / Arraymancer, pandas / dplyr / Datamancer, matplotlib / ggplot2 / ggplotnim), framed by the VanderPlas handbook.
-- 4.2 becomes 4.3 **Meet the penguins**: Allison Horst's penguin artwork on the left (image-left layout), the dataset in two lines, its credits and the link to the explainer.
+- 4.2 becomes 4.3 **Meet the penguins**: Allison Horst's penguin artwork in full on top, a short summary of the dataset and of the explainer with its link, and the credits.
 - 4.3 becomes 4.4 **Dataframes: Datamancer** (inspired by dplyr, built on Arraymancer): read the CSV, drop the missing, mean body mass (g) and flipper length (mm) per species, with its output.
 - 4.4 becomes 4.5 **Plots: ggplotnim** (a port of ggplot2, using Datamancer): flipper length against body mass colored by species, made when the deck is built.
 - 4.5 becomes 4.6 **Tensors: Arraymancer**: a 342 x 4 matrix of measurements, standardized with broadcasting, and its correlation matrix; more than an ndarray (linear algebra, autograd, neural networks, CPU/CUDA/OpenCL).

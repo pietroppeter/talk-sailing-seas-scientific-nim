@@ -35,22 +35,19 @@ Datamancer and ggplotnim are by Vindaar,
 built for his PhD (island 2), now under SciNim.
 Let's try them on a dataset you all know.
 """
-    imageLeftSlide("images/lter_penguins.png", 0.45): # 4.3
+    slide: # 4.3
       nbText "## Meet the penguins"
+      nbImg("images/lter_penguins.png", "42%")
       nbTextSmall """
-344 penguins from three islands near Palmer Station, Antarctica:
-three species, bill and flipper sizes, body mass, sex.
-The friendly replacement of the iris dataset.
+344 penguins, three species, three islands near Palmer Station, Antarctica.
+[The explainer](island3_penguins_explainer.html) explores them further:
+missing values, group and summarize, three plots,
+Simpson's paradox with tensors, k-means clustering.
 """
       reference """
 Data: Gorman, Williams and Fraser (2014),
-[palmerpenguins](https://allisonhorst.github.io/palmerpenguins/)
-by Horst, Hill and Gorman (CC0).
+[palmerpenguins](https://allisonhorst.github.io/palmerpenguins/) (CC0).
 Artwork by @allison_horst.
-"""
-      nbTextSmall """
-[The penguins explored further here](island3_penguins_explainer.html),
-from summaries and plots to clustering.
 """
       speakerNote """
 Familiar to the Python crowd (seaborn ships it)
@@ -59,9 +56,6 @@ We use seaborn's CSV, missing values are empty fields.
 """
     slide: # 4.4
       nbText "## Dataframes: Datamancer"
-      nbTextSmall """
-Inspired by dplyr, built on Arraymancer.
-"""
       nbCode:
         let df = readCsv("data/penguins.csv")
           .filter(f{`body_mass_g` > 0.0}) # drop missing
@@ -69,6 +63,9 @@ Inspired by dplyr, built on Arraymancer.
         echo df.group_by("species").summarize(
           f{float: "mass (g)" << mean(`body_mass_g`)},
           f{float: "flipper (mm)" << mean(`flipper_length_mm`)})
+      nbTextSmall """
+Inspired by dplyr, built on Arraymancer.
+"""
       speakerNote """
 Reads like dplyr or pandas: read, filter, group by, summarize.
 f{...} is a formula: a macro that turns the expression
