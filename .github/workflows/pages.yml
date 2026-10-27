@@ -33,6 +33,7 @@ jobs:
           nim r slides/thank_you.nim
           nim r slides/thank_you_explainer.nim
           nim r slides/island4_operators_explainer.nim
+          nim r slides/island4_units_explainer.nim
           nim r slides/emilia.nim
       - uses: actions/upload-pages-artifact@v3
         with:

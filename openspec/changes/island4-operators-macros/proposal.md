@@ -12,6 +12,7 @@ Island 4 is still made of placeholders, and slides have little room for code. It
 - ADDED 5.5 **Units applied**: Kepler's third law, the orbital period of Mars (astronomical units, solar mass) and of the Moon (kilometers, Earth mass) with unchained, with its output, and a compile time unit error.
 - 5.4 becomes 5.6 **Rocks ahead**, unchanged.
 - New explainer `slides/island4_operators_explainer.nim` (`docs/island4_operators_explainer.html`), linked from slide 5.3: operators in Nim (precedence, unicode operators), points and vectors, join and meet with their math, where a line meets a plane, where it breaks, and the meet of two planes as an exercise.
+- New explainer `slides/island4_units_explainer.nim` (`docs/island4_units_explainer.html`), linked from slide 5.5: units as distinct floats, operators as macros, quantity concepts, `declareQuantities` and `declareUnits` with excerpts of unchained's SI units, the new masses, Kepler's third law with its units, and the pitfalls (case insensitivity, duplicated types).
 - New dependency: unchained (SciNim/unchained), added with atlas.
 - Helper modules `slides/island4_vectors.nim` (points, vectors, `∙` and `×`) and `slides/island4_units.nim` (the `declareUnits` call, read by slide 5.4 at build time).
 
@@ -27,5 +28,5 @@ None.
 
 ## Impact
 
-- `slides/island4_expressive.nim`, new `slides/island4_vectors.nim` and `slides/island4_units.nim`, `slides/island4_operators_explainer.nim`, `.github/workflows/pages.yml`, `README.md`, `talk-sailing-seas-scientific-nim.nimble`, `nim.cfg`, `openspec/outline.md` (on archive).
+- `slides/island4_expressive.nim`, new `slides/island4_vectors.nim` and `slides/island4_units.nim`, `slides/island4_operators_explainer.nim`, `slides/island4_units_explainer.nim`, `.github/workflows/pages.yml`, `README.md`, `talk-sailing-seas-scientific-nim.nimble`, `nim.cfg`, `openspec/outline.md` (on archive).
 - Island 4 grows from 3 to 5 content slides in the same 2.5 minutes: the two code slides of each example go fast.

@@ -97,7 +97,8 @@ The explainer goes through the math, the edge cases
 [unchained](https://github.com/SciNim/unchained) by Vindaar:
 units checked at compile time, plain floats at run time.
 Its `declareUnits` macro declares the SI units,
-and we can add our own:
+and provides an API to add your own units
+(e.g. SolarMass and EarthMass, below):
 """
       columns:
         column:
@@ -130,6 +131,9 @@ how long is a year, for a planet or a moon?
         echo "Mars: ", period(1.524.AU, 1.Msun).to(yr)
         echo "Moon: ", period(384_400.km, 1.Mearth).to(day)
         echo compiles(1.AU + 1.Msun) # Length + Mass
+      nbTextSmall """
+[Explained step by step here](island4_units_explainer.html).
+"""
       speakerNote """
 Astronomical units, kilometers, solar and Earth masses
 and Newton's constant in one formula, converted for us.

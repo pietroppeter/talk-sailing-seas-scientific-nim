@@ -7,6 +7,7 @@
 - [x] 5.3b Explainer slides/island4_operators_explainer.nim, linked from slide 5.3, built by the pages workflow and listed in the README; verify `nim r slides/island4_operators_explainer.nim` builds and check every output
 - [x] 5.4 Slide "Macros to define Units": add unchained with atlas, declare the solar and Earth masses in slides/island4_units.nim, show the declaration read from that file next to a column with Gram and Meter read from unchained's si_units.nim; verify the code is highlighted and fits
 - [x] 5.5 Slide "Units applied" (Kepler's third law): the computation with unchained and its output; verify Mars 1.88 yr, Moon 27.45 days, and `compiles(1.AU + 1.Msun)` is false
+- [x] 5.5b Explainer slides/island4_units_explainer.nim, linked from slide 5.5, built by the pages workflow and listed in the README; verify it builds and check every output
 - [x] 5.6 Slide "Rocks ahead" stays a placeholder, renumbered
 
 ## Whole talk
