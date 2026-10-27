@@ -25,13 +25,13 @@ jobs:
       - name: Install Nim and atlas
         run: sudo bash scripts/install-nim.sh
       # deps/ is reused until the .nimble file or nim.cfg change; atlas install then only fetches what is missing
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: deps
           key: deps-${{ hashFiles('*.nimble', 'nim.cfg') }}
           restore-keys: deps-
       # Nim's build folder: Nim recompiles only the C files whose content changed
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.cache/nim
           key: nimcache-${{ github.run_id }}
