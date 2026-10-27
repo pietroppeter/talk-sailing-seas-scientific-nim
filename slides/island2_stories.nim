@@ -8,20 +8,22 @@ import ../my
 template brentSlide = # 3.2
   slide:
     nbText: """
-## Brent Pedersen
+### Brent Pedersen · @brentp
 
-### @brentp · bioinformatics
-
-Genomics tools in Nim, each with its paper
+Genomics researcher and software developer:
+6 papers on 6 Nim tools (2018-2022),
+with 1,944 citations and 1,833 stars
 """
     nbRawHtml: """<div class="brent-cols">
 <table class="brent-table">
-<thead><tr><th>tool</th><th>citations</th><th>stars</th></tr></thead>
+<thead><tr><th>tool</th><th>year</th><th>citations</th><th>stars</th></tr></thead>
 <tbody>
-<tr><td><a href="https://github.com/brentp/mosdepth">mosdepth</a></td><td>1452</td><td>878</td></tr>
-<tr><td><a href="https://github.com/brentp/somalier">somalier</a></td><td>172</td><td>341</td></tr>
-<tr><td><a href="https://github.com/brentp/slivar">slivar</a></td><td>141</td><td>274</td></tr>
-<tr><td><a href="https://github.com/brentp/hts-nim">hts-nim</a></td><td>18</td><td>159</td></tr>
+<tr><td><a href="https://github.com/brentp/mosdepth">mosdepth</a></td><td>2018</td><td>1452</td><td>878</td></tr>
+<tr><td><a href="https://github.com/brentp/somalier">somalier</a></td><td>2020</td><td>172</td><td>341</td></tr>
+<tr><td><a href="https://github.com/brentp/slivar">slivar</a></td><td>2021</td><td>141</td><td>274</td></tr>
+<tr><td><a href="https://github.com/brentp/duphold">duphold</a></td><td>2019</td><td>93</td><td>109</td></tr>
+<tr><td><a href="https://github.com/quinlan-lab/STRling">STRling</a></td><td>2022</td><td>68</td><td>72</td></tr>
+<tr><td><a href="https://github.com/brentp/hts-nim">hts-nim</a></td><td>2018</td><td>18</td><td>159</td></tr>
 </tbody></table>
 <pre><code class="language-nim">import hts
 var b: Bam
@@ -31,6 +33,7 @@ for r in b.query("6", 30816675, 32816675):
     echo r.chrom, r.start, r.stop</code></pre>
 </div>"""
     reference """
+[brentp.github.io](https://brentp.github.io/);
 citations from Google Scholar, stars from GitHub (October 2026);
 [the tools and the genomics behind them, explained](island2_brentp_explainer.html)
 """
@@ -48,9 +51,7 @@ without knowing they run Nim.
 template vindaarSlide = # 3.3
   slide:
     nbText: """
-## Sebastian Schmidt
-
-### @Vindaar · physics
+### Sebastian Schmidt · @Vindaar
 
 A PhD searching for solar axions at CERN's CAST:
 the entire analysis code base is written in Nim
@@ -103,7 +104,7 @@ and he says he learned way more.
 """
     nbRawHtml: """<style>
 .reveal .brent-cols { display: grid; grid-template-columns: auto 1fr; gap: 1.2em; align-items: center; }
-.reveal .brent-cols table { font-size: 0.6em; margin: 0; }
+.reveal .brent-cols table { font-size: 0.5em; margin: 0; }
 .reveal .brent-cols table td:nth-child(n+2), .reveal .brent-cols table th:nth-child(n+2) { text-align: right; font-variant-numeric: tabular-nums; }
 .reveal .brent-cols pre { font-size: 0.42em; width: 100%; margin: 0; }
 .reveal .rocks-quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; }

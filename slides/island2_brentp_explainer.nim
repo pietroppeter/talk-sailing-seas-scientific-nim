@@ -438,9 +438,11 @@ of their papers on
 | [jigv](https://github.com/brentp/jigv) | self-contained igv.js pages to look at reads and variants | 132 | |
 | [duphold](https://github.com/brentp/duphold) | adds depth evidence to deletion and duplication calls | 109 | 93 |
 | [seqcover](https://github.com/brentp/seqcover) | coverage across many genes and samples | 51 | |
+| [STRling](https://github.com/quinlan-lab/STRling) | finds expansions of short tandem repeats (with Harriet Dashnow, Quinlan lab) | 72 | 68 |
 
-Together the papers of these tools have about 1,900
-citations. hts-nim and slivar also appear in a review
+Counting the six tools with a paper (hts-nim, mosdepth,
+duphold, somalier, slivar, STRling, 2018 to 2022), that is
+1,944 citations and 1,833 stars. hts-nim and slivar also appear in a review
 of VCF tools,
 ["A spectrum of free software tools for processing the VCF
 variant call format"](https://doi.org/10.1371/journal.pcbi.1009123)
