@@ -11,7 +11,30 @@ const githubMark = """<svg class="gh-mark" viewBox="0 0 16 16" aria-hidden="true
 template storyTitle(emoji, name, handle: string) =
   nbRawHtml "<h3>" & emoji & " " & name & " · <a href=\"https://github.com/" & handle & "\">" & githubMark & "@" & handle & "</a></h3>"
 
-template brentSlide = # 3.2
+template storiesIntroSlide = # 3.2
+  slide:
+    nbText: """
+## Success stories
+
+How do we define success stories in scientific computing?
+By looking at people who used Nim to advance science.
+
+The following are two stories:<br>
+🧬 Bioinformatics and ☀️ Physics
+"""
+    reference """
+Beyond science, Nim runs on the web, in blockchains,
+security tools, games, chips and more:
+[Nim success stories beyond science](island2_beyond_explainer.html)
+"""
+    speakerNote """
+Success here means people who used Nim to advance science:
+published, cited, used by others.
+For the curious, the explainer collects stories
+outside science, to show the breadth.
+"""
+
+template brentSlide = # 3.3
   slide:
     storyTitle("🧬", "Brent Pedersen", "brentp")
     nbRawHtml: """<p class="story-intro">Genomics researcher and software developer:
@@ -57,7 +80,7 @@ Many users install these tools from bioconda
 without knowing they run Nim.
 """
 
-template vindaarSlide = # 3.3
+template vindaarSlide = # 3.4
   slide:
     storyTitle("☀️", "Sebastian Schmidt", "Vindaar")
     nbRawHtml: """<p class="story-intro">A PhD student in Physics searching for solar axions
@@ -80,7 +103,8 @@ proc axionFluxPrimakoff(E_a: keV,
 [Thesis](https://doi.org/10.48565/bonndoc-303) (University of Bonn, 2024),
 [source](https://github.com/Vindaar/phd),
 [code](https://github.com/Vindaar/TimepixAnalysis),
-[data](https://zenodo.org/uploads/10521887)
+[data](https://zenodo.org/uploads/10521887);
+[the thesis in plain words](island2_vindaar_explainer.html)
 """
     speakerNote """
 A GridPix detector at the CERN Axion Solar Telescope.
@@ -90,7 +114,7 @@ with physical units in the types, checked at compile time.
 Why Nim, in his words: "the language gets out of my way".
 """
 
-template rocksAheadSlide = # 3.4
+template rocksAheadSlide = # 3.5
   slide:
     nbText: """
 ## Rocks ahead
@@ -130,6 +154,7 @@ and he says he learned way more.
 template island2StoriesSection* =
   slide:
     mapSlide(2) # 3.1
+    storiesIntroSlide
     brentSlide
     vindaarSlide
     rocksAheadSlide
