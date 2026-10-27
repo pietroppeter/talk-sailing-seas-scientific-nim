@@ -1,20 +1,20 @@
 import unchained, unchained / ct_api
 
-# Island 4 helper: sailing units declared on top of unchained's SI units,
-# shown on slide 5.3 (read from this file at build time).
+# Island 4 helper: astronomical masses declared on top of unchained's SI units,
+# shown on slide 5.4 (read from this file at build time).
 # The macro generates types, so it runs at the top level of its own module:
 # it also generates again the compound SI types (e.g. `Meter•Second⁻¹`),
-# so the island exports only the new units, to avoid ambiguous types.
+# so the island imports and exports only the new units, to avoid ambiguous types.
 
-# >>> sailing units
+# >>> new units
 declareUnits:
   Derived:
-    NauticalMile:
-      short: nmi
-      quantity: Length
-      conversion: 1852.0.m
-    Knot:
-      short: knot
-      quantity: Velocity
-      conversion: 0.514444.m•s⁻¹ # 1 nmi/h
-# <<< sailing units
+    SolarMass:
+      short: Msun
+      quantity: Mass
+      conversion: 1.98847e30.kg
+    EarthMass:
+      short: Mearth
+      quantity: Mass
+      conversion: 5.9722e24.kg
+# <<< new units

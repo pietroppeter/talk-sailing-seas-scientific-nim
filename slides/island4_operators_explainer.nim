@@ -24,14 +24,14 @@ pre { overflow-x: auto; }
 """ & "</style>")
 
 nbText """
-# Custom operators: a shadow at sea
+# Custom operators: points, lines and planes
 
 In the talk [Sailing Seas of Scientific
 Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/),
 Island 4 shows, on two slides, how Nim lets you define
 your own operators: with a few lines of geometry,
 `Point + Point` makes a line, and a line and a plane
-meet in a point, the shadow of a mast top on the sea.
+meet in a point.
 A slide has room for little code, so this page takes
 the time to explain it, and goes further:
 how operators work in Nim, the geometry behind the
@@ -168,13 +168,30 @@ So the module does not define it,
 and since no meaning is taken, we are free to give
 `Point + Point` a new one.
 
-Two separate object types are the simplest way to keep
-points and vectors apart.
-Another way is `distinct` types, which share the
-representation of an existing type but not its
-procedures, so you choose which ones to borrow:
-it is the trick that unchained uses for units,
-on the next slides of the talk.
+`Vec` is a `distinct Point`: the same three floats in
+memory, but a new type that inherits none of Point's
+procedures, so a vector is never taken for a point, or
+the other way around, by mistake.
+A distinct type gets only what you choose to *borrow*:
+here field access (the `{.borrow: `.`.}` pragma) and
+`$`, the conversion to string.
+Converting is explicit, `Vec(p)` or `Point(v)`, and free
+at run time.
+It is the same trick that
+[unchained](https://github.com/SciNim/unchained) uses
+for units, on the next slides of the talk:
+a length and a time are both distinct floats.
+"""
+nbCode:
+  let p = pt(1, 2, 3)
+  let v = Vec(p)          # explicit conversion
+  echo v.x + v.y + v.z    # borrowed field access
+  echo compiles(p ∙ p)    # dot product of points?
+  echo compiles(p + p)    # sum of two points?
+  echo Point(v) + v       # a point plus a vector
+nbText """
+The sum of two points does not compile, yet:
+the next section gives it a meaning.
 """
 
 nbText """
@@ -250,55 +267,53 @@ naturally and need no unicode keyboard.
 """
 
 nbText """
-## A shadow at sea
+## Where a line meets a plane
 
-The sea is the plane through three points at height 0,
-the sun is a point up in the sky, and the mast top is
-12 meters above the origin, where the mast stands.
-The line from the sun through the mast top meets the
-sea where the shadow of the mast top falls:
+The plane through three points at height 0 is the plane
+$z = 0$, and the line through two points goes down
+across it:
 """
 nbCode:
   let
-    sea = pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)
-    sun = pt(-30, 0, 40)
-    mastTop = pt(0, 0, 12)
-    shadow = (sun + mastTop) * sea
-  echo shadow
+    plane = pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)
+    line = pt(1, 2, 3) + pt(2, 3, 1)
+  echo line * plane
 
 nbText """
+The line starts at height 3 and goes down by 2 at each
+step along it, so it reaches height 0 after one step
+and a half, at $(2.5, 3.5, 0)$.
 `pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)` is
 `(Point + Point) + Point`, so `Line + Point`, a `Plane`.
 Each step has a type, and the compiler checks them:
 """
 nbCode:
-  echo typeof(sun + mastTop)
-  echo typeof(sun + mastTop + shadow)
-  echo compiles(sea * sun) # a plane times a point
-  echo compiles(sun + mastTop + shadow + sun)
+  echo typeof(line)
+  echo typeof(line + pt(0, 0, 0))
+  echo compiles(plane * line) # the meet is Line * Plane
+  echo compiles(plane + pt(1, 1, 1))
 
 nbText """
-The second line is a plane through the sun, the mast
-top and its shadow, which is a vertical plane, since the
-sun is right above the x axis.
-The last two lines do not compile: there is no meet of
-a plane and a point, and no join of a plane and a point
-in three dimensions (it would be the whole space).
+The last two lines do not compile.
+We defined the meet as `Line * Plane`, not
+`Plane * Line`: an operator has no built-in symmetry,
+and if we want it we write the second procedure too.
+And there is no join of a plane and a point in three
+dimensions: it would be the whole space.
 
-A real sun is not a point 50 meters away:
-it is so far that its rays are parallel,
-and the line of a ray is better given by a point and a
-direction.
-Projective geometry handles this with *points at
-infinity*: a direction is a point at infinity, and a
-point plus a point at infinity is the line through the
-first point along that direction.
-In homogeneous coordinates (four numbers for a point
-in space) join and meet become a single formula each,
+Two parallel lines never meet, a line parallel to a
+plane never meets it.
+Projective geometry fixes this with *points at
+infinity*: parallel lines meet at infinity, at the point
+that stands for their direction, and a point plus a
+point at infinity is the line through the first point
+along that direction.
+In homogeneous coordinates (four numbers for a point in
+space) join and meet become a single formula each,
 with no special cases, which is how computer graphics
 and geometric algebra do it.
-Here we keep three coordinates, and a sun 50 meters
-away.
+Here we keep three coordinates, and the special cases
+show up as we see next.
 """
 
 nbText """
@@ -306,18 +321,18 @@ nbText """
 
 The types catch nonsense, not degenerate geometry.
 Three points on one line do not make a plane,
-a line parallel to the sea never meets it,
-and a line lying on the sea meets it everywhere.
+a line parallel to a plane never meets it,
+and a line lying on a plane meets it everywhere.
 The code does not check, and floats do what they do:
 """
 nbCode:
   let flat = pt(0, 0, 12) + pt(1, 0, 12)
-  echo "parallel line: ", flat * sea
-  let onSea = pt(0, 0, 0) + pt(1, 1, 0)
-  echo "line on the sea: ", onSea * sea
+  echo "parallel line: ", flat * plane
+  let onPlane = pt(0, 0, 0) + pt(1, 1, 0)
+  echo "line on the plane: ", onPlane * plane
   let notAPlane = pt(0, 0, 0) + pt(1, 0, 0) + pt(2, 0, 0)
   echo "normal of three points on a line: ", notAPlane.n
-  echo "meet with it: ", (sun + mastTop) * notAPlane
+  echo "meet with it: ", line * notAPlane
 
 nbText """
 For a parallel line $d \cdot n = 0$ and the division
@@ -341,14 +356,14 @@ $x \cdot n_i = c_i$ are two linear equations in
 $\alpha$ and $\beta$.
 Try to write the `*` of two planes before reading the
 solution below.
-Then use it for the shadow of the whole mast:
-the plane through the sun, the foot of the mast and its
-top meets the sea in the line of the shadow.
+Then use it on the plane through our line and the
+origin: it meets the plane $z = 0$ in a line through the
+origin and through the point $(2.5, 3.5, 0)$ found above.
 
 Solving the two equations with Cramer's rule:
 """
 nbCode:
-  func `+`(u, v: Vec): Vec = Vec(x: u.x + v.x, y: u.y + v.y, z: u.z + v.z)
+  func `+`(u, v: Vec): Vec = vec(u.x + v.x, u.y + v.y, u.z + v.z)
 
   func `*`(a, b: Plane): Line =
     let
@@ -361,15 +376,13 @@ nbCode:
     Line(p: o + (alpha * n1 + beta * n2), d: n1 × n2)
 
   let
-    mastFoot = pt(0, 0, 0)
-    mastShadow = (sun + mastFoot + mastTop) * sea
-  echo mastShadow.p, " along ", mastShadow.d
+    throughOrigin = line + pt(0, 0, 0)
+    trace = throughOrigin * plane
+  echo trace.p, " along ", trace.d
 
 nbText """
-The shadow of the mast lies on the x axis (it goes
-through the origin, along $x$): it starts at the foot of
-the mast and ends at the shadow of the mast top found
-above.
+The line goes through the origin, and its direction is a
+multiple of $(2.5, 3.5, 0)$, the meet found above.
 If the planes are parallel, `det` is 0 and we are back
 to the previous section.
 

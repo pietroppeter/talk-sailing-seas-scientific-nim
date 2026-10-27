@@ -2,11 +2,11 @@
 
 ## 5. Island 4: An Expressive Language
 
-- [x] 5.2 Slide "Custom operators" in slides/island4_expressive.nim, with `Point`, `Vec`, `∙` and `×` in slides/island4_vectors.nim; verify the code fits the slide in the screenshot
-- [x] 5.3 Slide "A shadow at sea": the computation and its output, built by nimib; verify the output is (12.86, 0.00, 0.00)
+- [x] 5.2 Slide "Custom operators" in slides/island4_expressive.nim, with `Point`, `Vec` (a `distinct Point`), `∙` and `×` in slides/island4_vectors.nim; verify the code fits the slide in the screenshot
+- [x] 5.3 Slide "Where a line meets a plane": the computation and its output, built by nimib; verify the output is (2.50, 3.50, 0.00)
 - [x] 5.3b Explainer slides/island4_operators_explainer.nim, linked from slide 5.3, built by the pages workflow and listed in the README; verify `nim r slides/island4_operators_explainer.nim` builds and check every output
-- [x] 5.4 Slide "Units with a macro": add unchained with atlas, declare the sailing units in slides/island4_units.nim, show the declaration read from that file; verify the code is highlighted and fits
-- [x] 5.5 Slide "Hull speed": the computation with unchained and its output; verify 7.34 knots and `compiles(waterline + g)` is false
+- [x] 5.4 Slide "Units with a macro": add unchained with atlas, declare the solar and Earth masses in slides/island4_units.nim, show the declaration read from that file; verify the code is highlighted and fits
+- [x] 5.5 Slide "Kepler's third law": the computation with unchained and its output; verify Mars 1.88 yr, Moon 27.45 days, and `compiles(1.AU + 1.Msun)` is false
 - [x] 5.6 Slide "Rocks ahead" stays a placeholder, renumbered
 
 ## Whole talk

@@ -3,17 +3,17 @@ import nimib, nimiSlides
 import nimib / highlight
 import unchained
 import ../my, island4_vectors
-from island4_units import NauticalMile, nmi, Knot, knot
+from island4_units import SolarMass, Msun, EarthMass, Mearth
 export math, unchained, island4_vectors
-export NauticalMile, nmi, Knot, knot
+export SolarMass, Msun, EarthMass, Mearth
 
 # Section 5: Island 4: An Expressive Language (see the latest outline in openspec)
 # Two language features that make Nim good for scientific use. Carries K2 (metaprogramming superpower).
 
-proc sailingUnitsHtml: string =
+proc newUnitsHtml: string =
   ## the declaration in island4_units.nim, between the markers, highlighted
   const source = staticRead("island4_units.nim")
-  let code = source.split("# >>> sailing units\n")[1].split("# <<< sailing units")[0]
+  let code = source.split("# >>> new units\n")[1].split("# <<< new units")[0]
   &"""<pre style="width: 100%"><code class="nim hljs" data-noescape>{highlightNim(code.strip)}</code></pre>"""
 
 template island4ExpressiveSection* =
@@ -47,35 +47,34 @@ unicode operators are custom operators too.
 `*` meets (a line hits a plane in a point).
 """
     slide: # 5.3
-      nbText "## A shadow at sea"
+      nbText "## Where a line meets a plane"
       nbTextSmall """
-Where does the shadow of the mast top fall?
+The plane through three points, the line through two.
 """
       nbCode:
         let
-          sea = pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)
-          sun = pt(-30, 0, 40)
-          mastTop = pt(0, 0, 12)
-          shadow = (sun + mastTop) * sea
-        echo shadow
+          plane = pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)
+          line = pt(1, 2, 3) + pt(2, 3, 1)
+        echo line * plane
       nbTextSmall """
 [Explained step by step here](island4_operators_explainer.html).
 """
       speakerNote """
-Three points make the plane of the sea,
-the sun and the mast top make a line,
-the line meets the sea in the shadow.
-The formula reads like geometry, the types check it:
-`sun + mastTop + shadow` is a plane, `sea * sun` does not compile.
+Three points make a plane (here z = 0), two points a line,
+and the line meets the plane in a point.
+The code reads like geometry, and the types check it:
+`plane * line` and `plane + pt(1, 1, 1)` do not compile.
+The explainer goes through the math, the edge cases
+(parallel lines give infinities) and the meet of two planes.
 """
     slide: # 5.4
       nbText "## Units with a macro"
       nbTextSmall """
 [unchained](https://github.com/SciNim/unchained) by Vindaar:
 units checked at compile time, plain floats at run time.
-Its `declareUnits` macro adds sailing units to SI:
+Its `declareUnits` macro adds two masses to SI:
 """
-      nbRawHtml sailingUnitsHtml()
+      nbRawHtml newUnitsHtml()
       nbTextSmall """
 The macro writes the types, the aliases and the conversions;
 `*`, `/` and `+` are macros that work out the unit of the result.
@@ -83,29 +82,27 @@ The macro writes the types, the aliases and the conversions;
       speakerNote """
 A macro is Nim code that runs in the compiler and writes Nim code.
 declareUnits reads this block and generates distinct float types
-(NauticalMile, Knot) with their short names and conversions.
+(SolarMass, EarthMass) with their short names and conversions.
 The arithmetic operators are macros too: at compile time they
 compute the unit of the result (and define its type if needed).
-Short name `knot`, not `kn`: Nim identifiers are case insensitive
-after the first letter, so `kn` would clash with `kN` (kilonewton).
 """
     slide: # 5.5
-      nbText "## Hull speed"
+      nbText "## Kepler's third law"
       nbTextSmall """
-The speed of a wave as long as the boat,
-a rule of thumb for how fast a hull can go.
+How long is a year, for a planet or a moon?
 """
       nbCode:
-        let
-          g = 9.81.m•s⁻²
-          waterline = 30.ft
-          hullSpeed = sqrt(g * waterline / (2 * PI))
-        echo hullSpeed, " = ", hullSpeed.to(knot)
-        echo "30 nmi in ", (30.nmi / hullSpeed).to(h)
-        echo compiles(waterline + g) # Length + Acceleration
+        func period[L: Length, M: Mass](a: L, mass: M): Second =
+          (2 * PI * sqrt(a^3 / (G_Newton * mass))).to(Second)
+
+        echo "Mars: ", period(1.524.AU, 1.Msun).to(yr)
+        echo "Moon: ", period(384_400.km, 1.Mearth).to(day)
+        echo compiles(1.AU + 1.Msun) # Length + Mass
       speakerNote """
-Feet, SI and nautical units in one formula, converted for us.
+Astronomical units, kilometers, solar and Earth masses
+and Newton's constant in one formula, converted for us.
+Length and Mass are concepts: any unit of that quantity fits.
 sqrt only compiles for a unit that is a perfect square.
-Adding a length to an acceleration is a compile time error.
+Adding a length to a mass is a compile time error.
 """
     placeholderSlide("5.6", "Rocks ahead", """with great power: macros can make code hard to read for newcomers; concepts (compile-time duck typing) were not robust until possibly recently.""")
