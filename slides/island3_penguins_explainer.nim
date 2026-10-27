@@ -205,12 +205,28 @@ Gentoo in a cluster of its own.
 Adelie and Chinstrap overlap in size and shape,
 so the other two clusters mix them:
 the measurements alone do not tell those two apart.
-Arraymancer also has PCA, DBSCAN and a least squares solver,
-and the neural networks Mamy talks about.
+Arraymancer also has PCA, DBSCAN, a least squares solver
+and neural networks.
 What Nim lacks is a library that collects the classic
 algorithms behind one consistent interface,
 like scikit-learn does for Python,
 with models, pipelines, cross validation and metrics.
+"""
+
+nbText """
+## SciNim
+
+The [SciNim](https://github.com/SciNim) organization gathers
+the scientific Nim libraries, Datamancer and unchained among them.
+Its [getting started](https://scinim.github.io/getting-started/)
+site has tutorials for the stack and a list of libraries.
+A few more: [flambeau](https://github.com/SciNim/flambeau)
+(bindings to libtorch),
+[nim-plotly](https://github.com/SciNim/nim-plotly)
+(interactive plots with plotly.js, started by Brent Pedersen
+and donated to SciNim) and
+[numericalnim](https://github.com/SciNim/numericalnim)
+(integration, ODEs, optimization, interpolation).
 """
 
 nbText """
@@ -220,14 +236,15 @@ The pieces are good and real work was done with them:
 Vindaar wrote Datamancer and ggplotnim for his PhD analysis,
 and every plot in his thesis is made with ggplotnim
 (see Island 2).
-There was an initial collective effort, and the
-[SciNim](https://github.com/SciNim) organization gathers
-libraries that otherwise grew scattered.
-What is missing is a continuous effort:
-the stack evolved in separate pieces,
-there are several tensor libraries next to Arraymancer,
-and there is no systematic take on classic machine learning.
-If you would like to build that, there is room.
+Three things hold the stack back.
+There is no scikit-learn: the classic machine learning
+algorithms are scattered across libraries,
+with no consistent interface.
+There is more than one tensor library.
+And the ecosystem depends on a few contributors,
+Vindaar, mratsim, Clonkk and HugoGranstrom among them:
+when life happens, development stops.
+If you would like to help, there is room.
 """
 
 nbText """
