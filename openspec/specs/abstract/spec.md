@@ -24,7 +24,7 @@ The talk SHALL be titled "Sailing the Seas of Scientific Nim" in the conference 
 - **THEN** the title slide reads "Sailing Seas of Scientific Nim" with the speaker's name
 
 ### Requirement: Intro, seven islands, conclusion
-The talk SHALL consist of an intro, seven islands and a conclusion, in this order: Intro; Accessible Performance without Ceiling; Success Stories; Data Stack; An Expressive Language; Interoperability; Interactivity; Notebook; Conclusion.
+The talk SHALL consist of an intro, seven islands and a conclusion, in this order: Intro; Accessible Performance; Success Stories; Data Stack; Interoperability; An Expressive Language; Interactivity; Notebook; Conclusion. This order and the shorter name of the first island differ from the agenda as submitted (Pietro, 2026-10-27); the README lists the changes from the submitted abstract.
 
 #### Scenario: Section order
 - **WHEN** the deck is paged through
@@ -37,7 +37,7 @@ The intro SHALL motivate why there are so many programming languages in scientif
 - **WHEN** the intro ends
 - **THEN** the audience has seen why one more language is worth a look and the journey to the first island starts
 
-### Requirement: Island 1, Accessible Performance without Ceiling
+### Requirement: Island 1, Accessible Performance
 The first island SHALL show, at a high level, that Nim is as easy to write as Python and as fast as C.
 
 #### Scenario: Performance claim
@@ -58,19 +58,19 @@ The third island SHALL go through the basic building blocks of the data ecosyste
 - **WHEN** the third island ends
 - **THEN** a tensor, a dataframe and a plot library have each appeared in the penguins exploration
 
-### Requirement: Island 4, An Expressive Language
-The fourth island SHALL show two language features that make Nim good for scientific use: defining custom operators (an easy feature) and metaprogramming (an advanced feature).
-
-#### Scenario: Two features shown
-- **WHEN** the fourth island ends
-- **THEN** one custom operator example and one metaprogramming example have been shown
-
-### Requirement: Island 5, Interoperability
-The fifth island SHALL show that Nim interoperates easily: wrapping existing C and C++ libraries, two-way bridges to Python, R and Julia (of varying maturity), and Nim code used from Python almost as easily as Rust.
+### Requirement: Island 4, Interoperability
+The fourth island SHALL show that Nim interoperates easily: wrapping existing C and C++ libraries, two-way bridges to Python, R and Julia (of varying maturity), and Nim code used from Python almost as easily as Rust.
 
 #### Scenario: Interop directions
-- **WHEN** the fifth island ends
+- **WHEN** the fourth island ends
 - **THEN** both directions have been shown: calling C/C++ or Python from Nim, and using Nim from Python
+
+### Requirement: Island 5, An Expressive Language
+The fifth island SHALL show two language features that make Nim good for scientific use: defining custom operators (an easy feature) and metaprogramming (an advanced feature).
+
+#### Scenario: Two features shown
+- **WHEN** the fifth island ends
+- **THEN** one custom operator example and one metaprogramming example have been shown
 
 ### Requirement: Island 6, Interactivity
 The sixth island SHALL showcase compiling Nim to JavaScript with a snappy port of a fun Shiny app, and SHALL say openly that interactivity as in a Jupyter or Marimo notebook is not there yet.

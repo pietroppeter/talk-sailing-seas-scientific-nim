@@ -53,4 +53,4 @@ Unchanged: 0-1, 3-4, 7-9
 
 ## Decisions
 
-- ADDED: Island names and order (Pietro, 2026-10-27): the first island is just "Accessible Performance" (shorter on the map; slide 2.4 still explains "no ceiling"), and Interoperability comes before An Expressive Language, so the deck departs from the agenda as submitted. Files and slide IDs follow the new numbers.
+- ADDED: Island names and order (Pietro, 2026-10-27): the first island is just "Accessible Performance" (shorter on the map; slide 2.4 still explains "no ceiling"), and Interoperability comes before An Expressive Language, so the deck departs from the agenda as submitted; the README lists these changes next to the verbatim abstract. Files and slide IDs follow the new numbers.

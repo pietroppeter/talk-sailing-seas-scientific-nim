@@ -28,6 +28,14 @@ The agenda of the talk:
 
 The talk will use examples from the ecosystem to showcase the power of Nim but it will NOT contain a tutorial of the language. This is possible because Nim reads like Python and the examples should be easy enough understand without knowing the language. Of course if you look up a tutorial of the language before the talk you might be in a better position to appreciate it, but it is not a requirement.
 
+## Changes from the submitted abstract
+
+The abstract and description above are kept verbatim as submitted. While preparing the talk, a few things changed:
+
+- The title slide says **Sailing Seas of Scientific Nim**, without "the", so the title fits on one line.
+- The first island is just **Accessible Performance** ("without Ceiling" dropped from the title).
+- **Interoperability** comes before **An Expressive Language**: Interoperability is the fourth island and An Expressive Language the fifth.
+
 ## Slides
 
 Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSlides](https://github.com/HugoGranstrom/nimiSlides):

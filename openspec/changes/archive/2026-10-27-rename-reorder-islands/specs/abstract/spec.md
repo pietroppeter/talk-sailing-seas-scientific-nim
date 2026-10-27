@@ -3,7 +3,7 @@
 ## MODIFIED Requirements
 
 ### Requirement: Intro, seven islands, conclusion
-The talk SHALL consist of an intro, seven islands and a conclusion, in this order: Intro; Accessible Performance; Success Stories; Data Stack; Interoperability; An Expressive Language; Interactivity; Notebook; Conclusion. This order and the shorter name of the first island differ from the agenda as submitted (Pietro, 2026-10-27).
+The talk SHALL consist of an intro, seven islands and a conclusion, in this order: Intro; Accessible Performance; Success Stories; Data Stack; Interoperability; An Expressive Language; Interactivity; Notebook; Conclusion. This order and the shorter name of the first island differ from the agenda as submitted (Pietro, 2026-10-27); the README lists the changes from the submitted abstract.
 
 #### Scenario: Section order
 - **WHEN** the deck is paged through

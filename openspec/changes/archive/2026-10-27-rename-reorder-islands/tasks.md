@@ -18,4 +18,5 @@
 
 ## Workflow follow-up
 
-- Archive the change after Pietro's review (merge the outline delta and the abstract spec delta).
+- [x] W.2 README section "Changes from the submitted abstract"
+- [x] W.3 Archived after Pietro's review (outline delta and abstract spec delta merged)
