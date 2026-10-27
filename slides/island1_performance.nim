@@ -1,7 +1,7 @@
 import nimib, nimiSlides
 import ../my
 
-# Section 2: Island 1: Accessible Performance without Ceiling (see the latest outline in openspec)
+# Section 2: Island 1: Accessible Performance (see the latest outline in openspec)
 # Nim is as easy to write as Python and as fast as C, passed through quickly: performance is not the focus here and Mamy's talk in the same session goes deeper. Carries K2.
 
 template island1PerformanceSection* =

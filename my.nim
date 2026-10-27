@@ -252,11 +252,11 @@ template myInit*(sourceFileRel = "my.nim") =
 
 
 const islands* = [
-  "Accessible Performance without Ceiling",
+  "Accessible Performance",
   "Success Stories",
   "Data Stack",
-  "An Expressive Language",
   "Interoperability",
+  "An Expressive Language",
   "Interactivity",
   "Notebook",
 ]

@@ -1,24 +1,24 @@
 import std / [math, strformat]
 import nimib, nimiSlides
 import nimib / highlight
-# `pT` (picotesla) would clash with `pt` (slide 5.3):
+# `pT` (picotesla) would clash with `pt` (slide 6.3):
 # identifiers are case insensitive after the first letter
 import unchained except pT
-import ../my, island4_vectors
-from island4_units import SolarMass, Msun, EarthMass, Mearth
-export math, island4_vectors
+import ../my, island5_vectors
+from island5_units import SolarMass, Msun, EarthMass, Mearth
+export math, island5_vectors
 export unchained except pT
 export SolarMass, Msun, EarthMass, Mearth
 
-# Section 5: Island 4: An Expressive Language (see the latest outline in openspec)
+# Section 6: Island 5: An Expressive Language (see the latest outline in openspec)
 # Two language features that make Nim good for scientific use. Carries K2 (metaprogramming superpower).
 
 func codeHtml(code: string): string =
   &"""<pre style="width: 100%"><code class="nim hljs" data-noescape>{highlightNim(code.strip)}</code></pre>"""
 
 proc newUnitsHtml: string =
-  ## the declaration in island4_units.nim, between the markers, highlighted
-  const source = staticRead("island4_units.nim")
+  ## the declaration in island5_units.nim, between the markers, highlighted
+  const source = staticRead("island5_units.nim")
   let code = source.split("# >>> new units\n")[1].split("# <<< new units")[0]
   codeHtml(code)
 
@@ -36,10 +36,10 @@ proc siUnitsHtml: string =
   code.add "    ..."
   codeHtml(code)
 
-template island4ExpressiveSection* =
+template island5ExpressiveSection* =
   slide:
-    mapSlide(4) # 5.1
-    slide: # 5.2
+    mapSlide(5) # 6.1
+    slide: # 6.2
       nbText "## Custom Operators: defined"
       nbTextSmall """
 You can define custom operators easily in Nim,
@@ -66,7 +66,7 @@ unicode operators are custom operators too.
 `+` joins (two points make a line, a line and a point a plane),
 `*` meets (a line hits a plane in a point).
 """
-    slide: # 5.3
+    slide: # 6.3
       nbText "## Custom Operators: applied"
       nbTextSmall """
 A line is defined by two points,
@@ -81,7 +81,7 @@ they generically intersect in one point.
           plane = pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)
         echo line * plane
       nbTextSmall """
-[Explained step by step here](island4_operators_explainer.html).
+[Explained step by step here](island5_operators_explainer.html).
 """
       speakerNote """
 Two points make a line, three points a plane (here z = 0),
@@ -91,7 +91,7 @@ The code reads like geometry, and the types check it:
 The explainer goes through the math, the edge cases
 (parallel lines give infinities) and the meet of two planes.
 """
-    slide: # 5.4
+    slide: # 6.4
       nbText "## Macros to define Units"
       nbTextSmall """
 [unchained](https://github.com/SciNim/unchained) by Vindaar:
@@ -110,7 +110,7 @@ The macro writes the types, the aliases and the conversions;
 """
       speakerNote """
 Left: two SI base units as unchained declares them (its si_units.nim),
-right: our two new units (slides/island4_units.nim).
+right: our two new units (slides/island5_units.nim).
 Our own units here: SolarMass and EarthMass (right column).
 A macro is Nim code that runs in the compiler and writes Nim code.
 declareUnits reads this block and generates distinct float types
@@ -118,7 +118,7 @@ declareUnits reads this block and generates distinct float types
 The arithmetic operators are macros too: at compile time they
 compute the unit of the result (and define its type if needed).
 """
-    slide: # 5.5
+    slide: # 6.5
       nbText "## Units applied"
       nbTextSmall """
 Kepler's third law:
@@ -132,7 +132,7 @@ how long is a year, for a planet or a moon?
         echo "Moon: ", period(384_400.km, 1.Mearth).to(day)
         echo compiles(1.AU + 1.Msun) # Length + Mass
       nbTextSmall """
-[Explained step by step here](island4_units_explainer.html).
+[Explained step by step here](island5_units_explainer.html).
 """
       speakerNote """
 Astronomical units, kilometers, solar and Earth masses
@@ -141,4 +141,4 @@ Length and Mass are concepts: any unit of that quantity fits.
 sqrt only compiles for a unit that is a perfect square.
 Adding a length to a mass is a compile time error.
 """
-    placeholderSlide("5.6", "Rocks ahead", """with great power: macros can make code hard to read for newcomers; concepts (compile-time duck typing) were not robust until possibly recently.""")
+    placeholderSlide("6.6", "Rocks ahead", """with great power: macros can make code hard to read for newcomers; concepts (compile-time duck typing) were not robust until possibly recently.""")

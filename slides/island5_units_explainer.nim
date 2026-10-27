@@ -2,19 +2,19 @@ import std / [math, strutils, strformat, json]
 import nimib
 import nimib / highlight
 import unchained
-from island4_units import SolarMass, Msun, EarthMass, Mearth
+from island5_units import SolarMass, Msun, EarthMass, Mearth
 
-# A nimib document that explains the units example of Island 4
-# (slides 5.4 and 5.5, in slides/island4_expressive.nim):
-#   nim r slides/island4_units_explainer.nim
-# writes docs/island4_units_explainer.html.
+# A nimib document that explains the units example of Island 5
+# (slides 6.4 and 6.5, in slides/island5_expressive.nim):
+#   nim r slides/island5_units_explainer.nim
+# writes docs/island5_units_explainer.html.
 # The code below runs when the page is built, like on the slides.
 
 # this path writes the page to docs/, not docs/slides/
-nbInit(thisFileRel = "island4_units_explainer.nim")
+nbInit(thisFileRel = "island5_units_explainer.nim")
 # but with it nimib cannot find this file,
 # so give the "Show Source" button its source here
-const ownSource = staticRead("island4_units_explainer.nim")
+const ownSource = staticRead("island5_units_explainer.nim")
 nb.doc.source = ownSource
 nb.doc.context["source"] = %nb.doc.source
 nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
@@ -26,7 +26,7 @@ pre { overflow-x: auto; }
 
 const
   siUnitsSource = staticRead("../deps/unchained/src/unchained/si_units.nim")
-  newUnitsSource = staticRead("island4_units.nim")
+  newUnitsSource = staticRead("island5_units.nim")
 
 proc between(source, first, last: string): string =
   ## the lines of `source` from the one starting with `first`
@@ -51,7 +51,7 @@ nbText """
 
 In the talk [Sailing Seas of Scientific
 Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/),
-Island 4 shows metaprogramming with
+Island 5 shows metaprogramming with
 [unchained](https://github.com/SciNim/unchained),
 a library by Vindaar (Sebastian Schmidt) for physical
 units checked at compile time.
@@ -181,7 +181,7 @@ It is the same macro, `declareUnits`, that the talk
 uses to add two units unchained does not have:
 """
 showCode(newUnitsSource.between("declareUnits:", "# <<< new units"),
-  "slides/island4_units.nim")
+  "slides/island5_units.nim")
 nbCode:
   echo 1.Msun.to(kg)
   echo 1.Msun / 1.Mearth # how many Earths in the Sun
@@ -238,7 +238,7 @@ Nim identifiers are case insensitive after the first
 letter, and ignore underscores.
 With units that is a trap: the short name `kn` for a
 knot would be the same identifier as `kN`, the
-kilonewton, and on slide 5.3 our `pt` for points is the
+kilonewton, and on slide 6.3 our `pt` for points is the
 same identifier as `pT`, the picotesla.
 The slides import unchained without it
 (`import unchained except pT`).
@@ -247,9 +247,9 @@ The slides import unchained without it
 compound SI units (like `Meter•Second⁻¹`).
 If those and unchained's are both visible, every use is
 ambiguous, so our units live in their own module,
-`slides/island4_units.nim`, and the slides import only
+`slides/island5_units.nim`, and the slides import only
 the four new names from it
-(`from island4_units import SolarMass, Msun, EarthMass, Mearth`).
+(`from island5_units import SolarMass, Msun, EarthMass, Mearth`).
 The `conversion:` of a unit has to be a literal
 (`1.98847e30.kg`), not an expression.
 
@@ -266,8 +266,8 @@ in your own unit system, and compute the period of
 Io around Jupiter (421 700 km).
 Clone [the
 repository](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim)
-and run `nim r slides/island4_units_explainer.nim`:
-it builds this page in `docs/island4_units_explainer.html`.
+and run `nim r slides/island5_units_explainer.nim`:
+it builds this page in `docs/island5_units_explainer.html`.
 The
 [README](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim#readme)
 explains how to install the dependencies.
