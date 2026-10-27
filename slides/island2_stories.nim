@@ -8,7 +8,7 @@ import ../my
 template brentSlide = # 3.2
   slide:
     nbText: """
-### Brent Pedersen · @brentp
+### 🧬 Brent Pedersen · @brentp
 """
     nbRawHtml: """<p class="brent-intro">Genomics researcher and software developer:
 6 papers on 6 Nim tools (2018-2022),
@@ -56,7 +56,7 @@ without knowing they run Nim.
 template vindaarSlide = # 3.3
   slide:
     nbText: """
-### Sebastian Schmidt · @Vindaar
+### ☀️ Sebastian Schmidt · @Vindaar
 
 A PhD student in Physics searching for solar axions
 at CERN's CAST:
