@@ -39,6 +39,7 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `slides/island2_brentp_explainer.nim`: a nimib page that explains Brent Pedersen's genomics tools in Nim, with the bioinformatics background (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_brentp_explainer.html)
 - `slides/island2_vindaar_explainer.nim`: a nimib page that explains Vindaar's physics PhD thesis in plain words (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_vindaar_explainer.html)
 - `slides/island2_beyond_explainer.nim`: a nimib page with Nim success stories outside scientific computing (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_beyond_explainer.html)
+- `slides/island3_penguins_explainer.nim`: a nimib page that explores the penguins dataset with the Nim data stack of Island 3 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island3_penguins_explainer.html)
 - `slides/island4_operators_explainer.nim`: a nimib page that explains the custom operators example of Island 4 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island4_operators_explainer.html)
 - `slides/island4_units_explainer.nim`: a nimib page that explains the units example of Island 4, with unchained (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island4_units_explainer.html)
 - `slides/`: one file per slide (or group of slides)

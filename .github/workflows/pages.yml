@@ -25,7 +25,9 @@ jobs:
       - name: Install Nim and atlas
         run: sudo bash scripts/install-nim.sh
       - name: Install dependencies
-        run: atlas install
+        run: |
+          sudo apt-get install -y libcairo2 # ggplotnim saves its PNG plots with cairo
+          atlas install
       - name: Build slides
         run: |
           nim r index.nim
@@ -35,6 +37,7 @@ jobs:
           nim r slides/island2_brentp_explainer.nim
           nim r slides/island2_vindaar_explainer.nim
           nim r slides/island2_beyond_explainer.nim
+          nim r slides/island3_penguins_explainer.nim
           nim r slides/island4_operators_explainer.nim
           nim r slides/island4_units_explainer.nim
           nim r slides/emilia.nim
