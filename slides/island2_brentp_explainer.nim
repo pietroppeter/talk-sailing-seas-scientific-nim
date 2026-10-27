@@ -476,7 +476,16 @@ libBigWig) a few lines of wrapping away.
 The rocks ahead are real too: the genomics ecosystem
 in Nim is small, so he wrapped or wrote what he needed
 himself, from the htslib bindings to an interval tree.
-That is the price of being a pioneer.
+In the end he moved on. When Pietro got in touch about
+this talk, Brent answered (personal communication, 2026):
+
+> I mostly switched to rust since that's where the
+> bioinformatics libs are, but I still really like nim
+
+Libraries attract people, and people write libraries:
+a small ecosystem has a hard time keeping even its
+pioneers. That is the price of being early, and one of
+the shortcomings the talk comes back to at the end.
 
 ## Sources
 

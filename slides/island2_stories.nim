@@ -79,20 +79,31 @@ template rocksAheadSlide = # 3.4
     nbText: """
 ## Rocks ahead
 
-A tiny ecosystem: pioneers build what they need
-
-> by choosing Nim as the target language
-> I underestimated the amount of code
-> I would / had to write [...]
-> I learned *way* more than I would have otherwise
-
-Vindaar, in his thesis
+A tiny ecosystem: pioneers build what they need,
+or move where the libraries are
 """
+    nbRawHtml: """<div class="rocks-quotes">
+<figure><blockquote>I mostly switched to rust since that's where
+the bioinformatics libs are, but I still really like nim</blockquote>
+<figcaption>Brent Pedersen, personal communication, 2026</figcaption></figure>
+<figure><blockquote>by choosing Nim [...] I underestimated
+the amount of code I would / had to write [...]
+I learned <em>way</em> more than I would have otherwise</blockquote>
+<figcaption>Vindaar, in his thesis</figcaption></figure>
+</div>"""
     speakerNote """
-From the thesis appendix on why he wrote his own
+Brent: his newer tools are in Rust, because that is
+where the bioinformatics libraries are; he still likes Nim.
+Vindaar: from the thesis appendix on why he wrote his own
 analysis framework: the extra work delayed the thesis,
 and he says he learned way more.
 """
+    nbRawHtml: """<style>
+.reveal .rocks-quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; }
+.reveal .rocks-quotes figure { margin: 0; }
+.reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
+.reveal .rocks-quotes figcaption { font-size: 0.55em; margin-top: 0.5em; }
+</style>"""
 
 template island2StoriesSection* =
   slide:
