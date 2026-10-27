@@ -1,4 +1,4 @@
-import std / [strutils, strformat, json]
+import std / [strutils, strformat, json, math]
 export strutils
 import nimib, nimiSlides
 
@@ -69,6 +69,12 @@ li {
   color: $4;
   font-style: normal;
   font-weight: 700;
+}
+
+.reveal pre samp.hljs {
+  display: block;
+  padding: 0.5em 1em;
+  border-left: 4px solid $3;
 }
 """ % [agileDarkBlue, softWhite, agileLightBlue, witboostOrange]
 
@@ -145,6 +151,11 @@ const
   revealAssets = "assets/reveal.js" # vendored by scripts/vendor-assets.sh into docs/assets
   katexAssets = "assets/katex"
   p5Assets = "assets/p5"
+  highlightAssets = "assets/highlight" # highlight.js styles, vendored by scripts/vendor-assets.sh
+
+const codeTheme* {.strdefine.} = "atom-one-light"
+  ## highlight.js style for code blocks, one of the files in docs/assets/highlight
+  ## (try another with `nim r -d:codeTheme=github my.nim`)
 
 func assetPath(nb: Nb, path: string): string =
   {.cast(noSideEffect).}:
@@ -157,7 +168,7 @@ func vendoredRevealCss(blk: JsonNode, nb: Nb): string =
   result = &"""
 <link rel="stylesheet" href="{reveal}/dist/reveal.css" />
 <link rel="stylesheet" href="{reveal}/dist/theme/{theme}.css" />
-<link rel="stylesheet" href="{reveal}/plugin/highlight/monokai.css" />
+<link rel="stylesheet" href="{nb.assetPath(highlightAssets)}/{codeTheme}.css" />
 """
   if nb.doc.context{"p5"}.getBool:
     result.add &"""<script src="{nb.assetPath(p5Assets)}/p5.min.js"></script>"""
@@ -314,6 +325,17 @@ Text with *italic*, **strong** and [link](recurse.com)
 
 `imageLeftSlide(url, 0.25)`: a quarter of the screen width, the image is cropped to fill it
 """
+  slide:
+    nbText "### Code and its output"
+    nbCode:
+      type Boat = object
+        name: string
+        length: float # m
+      func hullSpeed(b: Boat): float =
+        ## knots, a rule of thumb
+        1.34 * sqrt(b.length / 0.3048)
+      let boat = Boat(name: "Nimbus", length: 9.0)
+      echo boat.name, ": ", hullSpeed(boat).round(1), " knots"
   slide:
     slide:
       nbText "## A vertical stack"
