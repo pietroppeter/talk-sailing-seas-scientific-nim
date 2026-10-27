@@ -97,19 +97,21 @@ The explainer goes through the math, the edge cases
 [unchained](https://github.com/SciNim/unchained) by Vindaar:
 units checked at compile time, plain floats at run time.
 Its `declareUnits` macro declares the SI units,
-and provides an API to add your own units
-(e.g. SolarMass and EarthMass, below):
+and provides an API to add your own units:
 """
       columns:
         column:
           nbRawHtml siUnitsHtml()
         column:
           nbRawHtml newUnitsHtml()
+      nbTextSmall """
+The macro writes the types, the aliases and the conversions;
+`*`, `/` and `+` are macros that work out the unit of the result.
+"""
       speakerNote """
 Left: two SI base units as unchained declares them (its si_units.nim),
 right: our two new units (slides/island4_units.nim).
-The macro writes the types, the aliases and the conversions;
-`*`, `/` and `+` are macros that work out the unit of the result.
+Our own units here: SolarMass and EarthMass (right column).
 A macro is Nim code that runs in the compiler and writes Nim code.
 declareUnits reads this block and generates distinct float types
 (SolarMass, EarthMass) with their short names and conversions.
