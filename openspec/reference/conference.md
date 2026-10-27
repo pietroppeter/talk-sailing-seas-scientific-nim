@@ -50,7 +50,7 @@ Thursday 26 November, Room 108. Confirmed by Pietro (2026-10-04):
 - **Mamy André-Ratsimbazafy**: high-performance computing for AI in Nim.
 - **Pietro Peterlongo**: Sailing the Seas of Scientific Nim (14:40–15:10).
 
-Implications: the session audience comes for languages and compilers, so less "why another language" justification is needed. Mamy's talk is also about Nim and covers HPC/AI, so the "Accessible Performance" island and any Arraymancer/HPC material can stay brief and point to his talk rather than duplicate it. Coordinate with Mamy on overlap. SPy (a statically compiled Python variant) is a natural comparison point when explaining Nim's "reads like Python, compiles like C" pitch.
+Implications: the session audience comes for languages and compilers, so less "why another language" justification is needed. Mamy's talk is also about Nim and covers HPC/AI, so the "Accessible Performance" island can stay brief and point to his talk rather than duplicate it; his talk is not about Arraymancer (Pietro, 2026-10-27), so Island 3 does not point to it. Coordinate with Mamy on overlap. SPy (a statically compiled Python variant) is a natural comparison point when explaining Nim's "reads like Python, compiles like C" pitch.
 
 ## CfP guidance, read as guidelines for the talk
 
