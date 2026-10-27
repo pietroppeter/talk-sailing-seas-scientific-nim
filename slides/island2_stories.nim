@@ -29,7 +29,8 @@ for record in b.query("6", 30816675, 32816675):
 [hts-nim](https://github.com/brentp/hts-nim) (Bioinformatics 2018),
 [mosdepth](https://github.com/brentp/mosdepth) (Bioinformatics 2018),
 [somalier](https://github.com/brentp/somalier) (Genome Medicine 2020),
-[slivar](https://github.com/brentp/slivar) (npj Genomic Medicine 2021)
+[slivar](https://github.com/brentp/slivar) (npj Genomic Medicine 2021);
+[explained here](island2_brentp_explainer.html)
 """
     speakerNote """
 hts-nim wraps htslib, the C library behind samtools.
