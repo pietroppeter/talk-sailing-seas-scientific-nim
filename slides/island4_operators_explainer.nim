@@ -147,6 +147,13 @@ nbRawHtml &"""<pre><code class="nim hljs">{highlightNim(vectorsSource.strip)}</c
 <p class="lines">slides/island4_vectors.nim</p>"""
 
 nbText """
+On the slides, points are built with a short
+constructor:
+"""
+nbCode:
+  func pt(x, y, z: float): Point = Point(x: x, y: y, z: z)
+
+nbText """
 A `Point` is a position and a `Vec` is a displacement,
 and they are different types even if both have three
 coordinates: this is the classic distinction of

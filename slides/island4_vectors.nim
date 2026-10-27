@@ -13,13 +13,13 @@ type
     x*, y*, z*: float
   Vec* {.borrow: `.`.} = distinct Point
 
-func pt*(x, y, z: float): Point = Point(x: x, y: y, z: z)
-func vec*(x, y, z: float): Vec = Vec(pt(x, y, z))
+func vec*(x, y, z: float): Vec = Vec(Point(x: x, y: y, z: z))
 func `$`*(p: Point): string = &"({p.x:.2f}, {p.y:.2f}, {p.z:.2f})"
 func `$`*(v: Vec): string {.borrow.}
 
 func `-`*(a, b: Point): Vec = vec(a.x - b.x, a.y - b.y, a.z - b.z)
-func `+`*(p: Point, v: Vec): Point = pt(p.x + v.x, p.y + v.y, p.z + v.z)
+func `+`*(p: Point, v: Vec): Point =
+  Point(x: p.x + v.x, y: p.y + v.y, z: p.z + v.z)
 func `*`*(t: float, v: Vec): Vec = vec(t * v.x, t * v.y, t * v.z)
 func `∙`*(u, v: Vec): float = u.x * v.x + u.y * v.y + u.z * v.z
 func `×`*(u, v: Vec): Vec =

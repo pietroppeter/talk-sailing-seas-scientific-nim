@@ -1,10 +1,13 @@
 import std / [math, strformat]
 import nimib, nimiSlides
 import nimib / highlight
-import unchained
+# `pT` (picotesla) would clash with `pt` (slide 5.3):
+# identifiers are case insensitive after the first letter
+import unchained except pT
 import ../my, island4_vectors
 from island4_units import SolarMass, Msun, EarthMass, Mearth
-export math, unchained, island4_vectors
+export math, island4_vectors
+export unchained except pT
 export SolarMass, Msun, EarthMass, Mearth
 
 # Section 5: Island 4: An Expressive Language (see the latest outline in openspec)
@@ -37,10 +40,10 @@ template island4ExpressiveSection* =
   slide:
     mapSlide(4) # 5.1
     slide: # 5.2
-      nbText "## Custom operators"
+      nbText "## Custom Operators: defined"
       nbTextSmall """
-`Point + Point` is not a point:
-let it be the line through them.
+You can define custom operators easily in Nim,
+as a normal function, using backticks.
 """
       nbCode:
         type
@@ -64,20 +67,24 @@ unicode operators are custom operators too.
 `*` meets (a line hits a plane in a point).
 """
     slide: # 5.3
-      nbText "## Where a line meets a plane"
+      nbText "## Custom Operators: applied"
       nbTextSmall """
-The plane through three points, the line through two.
+A line is defined by two points,
+a plane is defined by three points,
+they generically intersect in one point.
 """
       nbCode:
+        func pt(x, y, z: float): Point = Point(x: x, y: y, z: z)
+
         let
-          plane = pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)
           line = pt(1, 2, 3) + pt(2, 3, 1)
+          plane = pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)
         echo line * plane
       nbTextSmall """
 [Explained step by step here](island4_operators_explainer.html).
 """
       speakerNote """
-Three points make a plane (here z = 0), two points a line,
+Two points make a line, three points a plane (here z = 0),
 and the line meets the plane in a point.
 The code reads like geometry, and the types check it:
 `plane * line` and `plane + pt(1, 1, 1)` do not compile.
@@ -85,7 +92,7 @@ The explainer goes through the math, the edge cases
 (parallel lines give infinities) and the meet of two planes.
 """
     slide: # 5.4
-      nbText "## Units with a macro"
+      nbText "## Macros to define Units"
       nbTextSmall """
 [unchained](https://github.com/SciNim/unchained) by Vindaar:
 units checked at compile time, plain floats at run time.
@@ -111,9 +118,10 @@ The arithmetic operators are macros too: at compile time they
 compute the unit of the result (and define its type if needed).
 """
     slide: # 5.5
-      nbText "## Kepler's third law"
+      nbText "## Units applied"
       nbTextSmall """
-How long is a year, for a planet or a moon?
+Kepler's third law:
+how long is a year, for a planet or a moon?
 """
       nbCode:
         func period[L: Length, M: Mass](a: L, mass: M): Second =
