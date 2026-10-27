@@ -60,9 +60,13 @@ template vindaarSlide = # 3.3
 
 A PhD student in Physics searching for solar axions
 at CERN's CAST:
-the entire analysis code base is written in Nim
+the entire analysis code base is written in Nim.
+He ended up building an important part
+of the data stack in Nim
 
 ```nim
+# how many axions the Sun sends us at energy E_a,
+# per keV, cm² and second; units checked when compiling
 proc axionFluxPrimakoff(E_a: keV,
                         g_aγ: GeV⁻¹): keV⁻¹•cm⁻²•s⁻¹ =
   let g₁₀ = g_aγ / 1e-10.GeV⁻¹
