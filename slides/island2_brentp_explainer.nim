@@ -235,7 +235,7 @@ covered at least 10, 20, 30 times (a standard quality
 check: "is 95% of the exome covered at 20X?").
 
 It is the most used of Brent's tools: the paper has
-around 1,200 citations on Google Scholar and the repo
+about 1,450 citations on Google Scholar and the repo
 about 900 stars on GitHub (October 2026).
 
 **The trick.** Instead of piling up reads base by base,
@@ -424,18 +424,27 @@ interactive HTML report
 nbText """
 ## And more
 
-A few more of his Nim tools, from his GitHub profile
-(stars as of October 2026):
+His main Nim tools, with GitHub stars and the citations
+of their papers on
+[Google Scholar](https://scholar.google.com/citations?user=tDf0VkUAAAAJ)
+(both as of October 2026):
 
-| Tool | What it does | Stars |
-|---|---|---|
-| [mosdepth](https://github.com/brentp/mosdepth) | depth from BAM/CRAM | 878 |
-| [somalier](https://github.com/brentp/somalier) | sample identity and relatedness | 341 |
-| [slivar](https://github.com/brentp/slivar) | variant filtering with expressions | 274 |
-| [hts-nim](https://github.com/brentp/hts-nim) | htslib for Nim | 159 |
-| [jigv](https://github.com/brentp/jigv) | self-contained igv.js pages to look at reads and variants | 132 |
-| [duphold](https://github.com/brentp/duphold) | adds depth evidence to deletion and duplication calls | 109 |
-| [seqcover](https://github.com/brentp/seqcover) | coverage across many genes and samples | 51 |
+| Tool | What it does | Stars | Citations |
+|---|---|---|---|
+| [mosdepth](https://github.com/brentp/mosdepth) | depth from BAM/CRAM | 878 | 1,452 |
+| [somalier](https://github.com/brentp/somalier) | sample identity and relatedness | 341 | 172 |
+| [slivar](https://github.com/brentp/slivar) | variant filtering with expressions | 274 | 141 |
+| [hts-nim](https://github.com/brentp/hts-nim) | htslib for Nim | 159 | 18 |
+| [jigv](https://github.com/brentp/jigv) | self-contained igv.js pages to look at reads and variants | 132 | |
+| [duphold](https://github.com/brentp/duphold) | adds depth evidence to deletion and duplication calls | 109 | 93 |
+| [seqcover](https://github.com/brentp/seqcover) | coverage across many genes and samples | 51 | |
+
+Together the papers of these tools have about 1,900
+citations. hts-nim and slivar also appear in a review
+of VCF tools,
+["A spectrum of free software tools for processing the VCF
+variant call format"](https://doi.org/10.1371/journal.pcbi.1009123)
+(PLoS Computational Biology 2022), which Brent co-authored.
 
 duphold is a nice follow-up of the depth story: a
 structural variant caller may claim a deletion from the
