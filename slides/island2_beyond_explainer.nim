@@ -132,6 +132,13 @@ construction projects, has its backend, builder and
 microservices written in Nim, according to its
 founder Thomas T. Jarløv.
 
+**[Buckets](https://www.budgetwithbuckets.com/)**,
+by Matt Haggard (@iffy) and his company One Part Rain,
+is a private budgeting app for families: envelope-style
+budgets, with the data kept on your own computer.
+It is a commercial desktop app (with a free trial),
+and it is built with Nim.
+
 ## Games
 
 **[Turing Complete](https://store.steampowered.com/app/1444480/Turing_Complete/)**
