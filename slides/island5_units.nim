@@ -1,7 +1,7 @@
 import unchained, unchained / ct_api
 
-# Island 4 helper: astronomical masses declared on top of unchained's SI units,
-# shown on slide 5.4 (read from this file at build time).
+# Island 5 helper: astronomical masses declared on top of unchained's SI units,
+# shown on slide 6.4 (read from this file at build time).
 # The macro generates types, so it runs at the top level of its own module:
 # it also generates again the compound SI types (e.g. `Meter•Second⁻¹`),
 # so the island imports and exports only the new units, to avoid ambiguous types.

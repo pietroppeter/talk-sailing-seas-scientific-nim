@@ -51,8 +51,8 @@ jobs:
           nim r slides/island2_vindaar_explainer.nim
           nim r slides/island2_beyond_explainer.nim
           nim r slides/island3_penguins_explainer.nim
-          nim r slides/island4_operators_explainer.nim
-          nim r slides/island4_units_explainer.nim
+          nim r slides/island5_operators_explainer.nim
+          nim r slides/island5_units_explainer.nim
           nim r slides/emilia.nim
       - uses: actions/upload-pages-artifact@v3
         with:

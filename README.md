@@ -28,6 +28,14 @@ The agenda of the talk:
 
 The talk will use examples from the ecosystem to showcase the power of Nim but it will NOT contain a tutorial of the language. This is possible because Nim reads like Python and the examples should be easy enough understand without knowing the language. Of course if you look up a tutorial of the language before the talk you might be in a better position to appreciate it, but it is not a requirement.
 
+## Changes from the submitted abstract
+
+The abstract and description above are kept verbatim as submitted. While preparing the talk, a few things changed:
+
+- The title slide says **Sailing Seas of Scientific Nim**, without "the", so the title fits on one line.
+- The first island is just **Accessible Performance** ("without Ceiling" dropped from the title).
+- **Interoperability** comes before **An Expressive Language**: Interoperability is the fourth island and An Expressive Language the fifth.
+
 ## Slides
 
 Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSlides](https://github.com/HugoGranstrom/nimiSlides):
@@ -40,8 +48,8 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `slides/island2_vindaar_explainer.nim`: a nimib page that explains Vindaar's physics PhD thesis in plain words (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_vindaar_explainer.html)
 - `slides/island2_beyond_explainer.nim`: a nimib page with Nim success stories outside scientific computing (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_beyond_explainer.html)
 - `slides/island3_penguins_explainer.nim`: a nimib page that explores the penguins dataset with the Nim data stack of Island 3 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island3_penguins_explainer.html)
-- `slides/island4_operators_explainer.nim`: a nimib page that explains the custom operators example of Island 4 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island4_operators_explainer.html)
-- `slides/island4_units_explainer.nim`: a nimib page that explains the units example of Island 4, with unchained (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island4_units_explainer.html)
+- `slides/island5_operators_explainer.nim`: a nimib page that explains the custom operators example of Island 5 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_operators_explainer.html)
+- `slides/island5_units_explainer.nim`: a nimib page that explains the units example of Island 5, with unchained (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_units_explainer.html)
 - `slides/`: one file per slide (or group of slides)
 - `openspec/`: the talk is prepared with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (see below)
 
@@ -58,8 +66,8 @@ nim r slides/thank_you_explainer.nim  # explainer of the Thank You slide, writes
 nim r slides/island2_brentp_explainer.nim  # explainer of Brent Pedersen's tools (Island 2), writes docs/island2_brentp_explainer.html
 nim r slides/island2_vindaar_explainer.nim  # Vindaar's thesis in plain words (Island 2), writes docs/island2_vindaar_explainer.html
 nim r slides/island2_beyond_explainer.nim  # Nim success stories beyond science (Island 2), writes docs/island2_beyond_explainer.html
-nim r slides/island4_operators_explainer.nim  # explainer of the custom operators slides, writes docs/island4_operators_explainer.html
-nim r slides/island4_units_explainer.nim  # explainer of the units slides, writes docs/island4_units_explainer.html
+nim r slides/island5_operators_explainer.nim  # explainer of the custom operators slides, writes docs/island5_operators_explainer.html
+nim r slides/island5_units_explainer.nim  # explainer of the units slides, writes docs/island5_units_explainer.html
 ```
 
 Outputs go to `docs/` (set by `homeDir` in `nimib.toml`), which is what gets published on GitHub Pages: the `pages` workflow builds the slides on every push to `main` and deploys `docs/`. Generated html is not committed.

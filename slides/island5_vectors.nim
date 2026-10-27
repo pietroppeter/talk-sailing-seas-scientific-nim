@@ -1,7 +1,7 @@
 import std / strformat
 
-# Island 4 helper: points and vectors in space,
-# used by the custom operators example (slide 5.2).
+# Island 5 helper: points and vectors in space,
+# used by the custom operators example (slide 6.2).
 # `∙` (dot product) and `×` (cross product) are custom operators too:
 # Nim accepts a set of unicode operator symbols.
 

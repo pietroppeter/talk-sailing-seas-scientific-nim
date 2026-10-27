@@ -218,7 +218,7 @@ small command line examples, and its
 lists about fifteen projects by other people built on
 it, including two from SeqOne, a genomics company.
 
-Wrapping a C library is Island 5 of the talk:
+Wrapping a C library is Island 4 of the talk:
 hts-nim is a real world example of how far that goes.
 """
 

@@ -1,19 +1,19 @@
 import std / [math, strutils, strformat, json]
 import nimib
 import nimib / highlight
-import island4_vectors
+import island5_vectors
 
 # A nimib document that explains the custom operators example
-# of Island 4 (slides 5.2 and 5.3, in slides/island4_expressive.nim):
-#   nim r slides/island4_operators_explainer.nim
-# writes docs/island4_operators_explainer.html.
+# of Island 5 (slides 6.2 and 6.3, in slides/island5_expressive.nim):
+#   nim r slides/island5_operators_explainer.nim
+# writes docs/island5_operators_explainer.html.
 # The code below runs when the page is built, like on the slides.
 
 # this path writes the page to docs/, not docs/slides/
-nbInit(thisFileRel = "island4_operators_explainer.nim")
+nbInit(thisFileRel = "island5_operators_explainer.nim")
 # but with it nimib cannot find this file,
 # so give the "Show Source" button its source here
-const ownSource = staticRead("island4_operators_explainer.nim")
+const ownSource = staticRead("island5_operators_explainer.nim")
 nb.doc.source = ownSource
 nb.doc.context["source"] = %nb.doc.source
 nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
@@ -28,7 +28,7 @@ nbText """
 
 In the talk [Sailing Seas of Scientific
 Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/),
-Island 4 shows, on two slides, how Nim lets you define
+Island 5 shows, on two slides, how Nim lets you define
 your own operators: with a few lines of geometry,
 `Point + Point` makes a line, and a line and a plane
 meet in a point.
@@ -138,13 +138,13 @@ nbText """
 ## Points are not vectors
 
 The slides use a small helper module,
-[`slides/island4_vectors.nim`](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim/blob/main/slides/island4_vectors.nim),
+[`slides/island5_vectors.nim`](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim/blob/main/slides/island5_vectors.nim),
 written for the talk, not part of the standard library
 (`std/math` has no points or vectors):
 """
-const vectorsSource = staticRead("island4_vectors.nim")
+const vectorsSource = staticRead("island5_vectors.nim")
 nbRawHtml &"""<pre><code class="nim hljs">{highlightNim(vectorsSource.strip)}</code></pre>
-<p class="lines">slides/island4_vectors.nim</p>"""
+<p class="lines">slides/island5_vectors.nim</p>"""
 
 nbText """
 On the slides, points are built with a short
@@ -395,9 +395,9 @@ to the previous section.
 
 To play with the code, clone [the
 repository](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim)
-and run `nim r slides/island4_operators_explainer.nim`:
+and run `nim r slides/island5_operators_explainer.nim`:
 it builds this page in
-`docs/island4_operators_explainer.html`.
+`docs/island5_operators_explainer.html`.
 The
 [README](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim#readme)
 explains how to install the dependencies.
