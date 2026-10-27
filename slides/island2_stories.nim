@@ -14,9 +14,9 @@ template storyTitle(emoji, name, handle: string) =
 template brentSlide = # 3.2
   slide:
     storyTitle("🧬", "Brent Pedersen", "brentp")
-    nbRawHtml: """<p class="brent-intro">Genomics researcher and software developer:
+    nbRawHtml: """<p class="story-intro">Genomics researcher and software developer:
 6 papers on 6 Nim tools (2018-2022),
-with 1,944 citations and 1,833 stars.
+with 1,944 citations and 1,833 stars.<br>
 Others followed
 (<a href="https://github.com/andreas-wilm/awesome-bionimformatics">awesome-bionimformatics</a>)</p>"""
     nbRawHtml: """<div class="brent-cols">
@@ -60,13 +60,12 @@ without knowing they run Nim.
 template vindaarSlide = # 3.3
   slide:
     storyTitle("☀️", "Sebastian Schmidt", "Vindaar")
-    nbText: """
-A PhD student in Physics searching for solar axions
+    nbRawHtml: """<p class="story-intro">A PhD student in Physics searching for solar axions
 at CERN's CAST:
-the entire analysis code base is written in Nim.
+the entire analysis code base is written in Nim.<br>
 He ended up building an important part
-of the data stack in Nim
-
+of the data stack in Nim</p>"""
+    nbText: """
 ```nim
 # how many axions the Sun sends us at energy E_a,
 # per keV, cm² and second; units checked when compiling
@@ -116,7 +115,7 @@ analysis framework: the extra work delayed the thesis,
 and he says he learned way more.
 """
     nbRawHtml: """<style>
-.reveal .brent-intro { font-size: 0.8em; }
+.reveal .story-intro { font-size: 0.8em; }
 .reveal h3 .gh-mark { height: 0.8em; width: 0.8em; vertical-align: -0.05em; margin-right: 0.15em; }
 .reveal .brent-cols { display: grid; grid-template-columns: auto 1fr; gap: 1.2em; align-items: center; }
 .reveal .brent-cols table { font-size: 0.5em; margin: 0; }
