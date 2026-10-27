@@ -79,32 +79,52 @@ it records a program run in a trace file, and lets
 you step backwards as well as forwards.
 It is written in Nim and Rust.
 
-**[moe](https://github.com/fox0430/moe)** is a Vim-like
-editor for the terminal, written in Nim.
+**[Vim³](https://github.com/oakes/vim_cubed)**,
+by Zach Oakes, is Vim on the faces of a spinning cube.
+Its README opens with "Most people use vim in two
+stupid dimensions. But not me. I use it in three".
+It is written in Nim, on top of his
+[paravim](https://github.com/paranim/paravim),
+Vim embedded in an OpenGL game engine.
 
 ## Education
 
-**[configlet](https://github.com/exercism/configlet)**
-is the official tool that keeps the tracks of
-[Exercism](https://exercism.org) consistent:
-every exercise in every one of its dozens of programming
-languages goes through it. It is written in Nim.
+[Exercism](https://exercism.org) is a free, non-profit
+platform to learn programming languages by solving
+exercises, with mentors who review your solutions.
+It has dozens of language tracks (Nim among them),
+each a GitHub repository of exercises and tests,
+maintained by volunteers.
+
+Keeping all those tracks consistent is the job of
+**[configlet](https://github.com/exercism/configlet)**,
+the official tool for managing track repositories.
+Every track downloads it, and runs it in its CI:
+it lints the track configuration, syncs exercise
+descriptions and tests from the shared problem
+specifications, formats the files, and creates new
+exercises. A single binary, written in Nim.
 
 ## Industry and AI research
 
 **Reddit**: Andre von Houck (@treeform) used Nim at
 Reddit for internal analytics and data tools.
-Along the way he wrote many of the most used Nim
-libraries: [pixie](https://github.com/treeform/pixie)
-for 2D graphics, [fidget](https://github.com/treeform/fidget)
-for user interfaces, [jsony](https://github.com/treeform/jsony)
-for JSON, and more.
+Along the way he wrote some of the most used Nim
+libraries, such as [pixie](https://github.com/treeform/pixie)
+for 2D graphics and [jsony](https://github.com/treeform/jsony)
+for JSON.
 
 **[Softmax](https://github.com/Metta-AI)**, a company
 researching cooperation and alignment between AI agents,
-has Nim as the main language of its GitHub organization,
-with game engines and environments for AI research
-such as polyworld and bitworld.
+is where Andre works now. Nim is the main language
+of its GitHub organization, with game engines and
+environments for AI research such as polyworld
+and bitworld.
+
+**Avju Solutions**, a Norwegian company, has Peter
+Munch-Ellingsen (@PMunch), a long time Nim contributor
+and author of many Nim packages, as its CTO,
+and builds its software in Nim.
 
 **[CxPlanner](https://cxplanner.com/)**, a Danish
 company making software to plan and commission
