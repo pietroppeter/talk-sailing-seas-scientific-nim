@@ -93,11 +93,11 @@ or move where the libraries are
 """
     nbRawHtml: """<div class="rocks-quotes">
 <figure><blockquote>I mostly switched to rust since that's where
-the bioinformatics libs are, but I still really like nim</blockquote>
+the bioinformatics libs are, but <strong>I still really like nim</strong></blockquote>
 <figcaption>Brent Pedersen, personal communication, 2026</figcaption></figure>
 <figure><blockquote>by choosing Nim [...] I underestimated
 the amount of code I would / had to write [...]
-I learned <em>way</em> more than I would have otherwise</blockquote>
+<em>I learned way more than I would have otherwise</em></blockquote>
 <figcaption>Vindaar, in his thesis</figcaption></figure>
 </div>"""
     speakerNote """
