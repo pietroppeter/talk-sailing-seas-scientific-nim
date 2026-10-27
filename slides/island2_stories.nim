@@ -12,25 +12,27 @@ template brentSlide = # 3.2
 
 ### @brentp · bioinformatics
 
-Genomics tools in Nim, each with its paper,
-installed from bioconda:
-**hts-nim**, **mosdepth**, **somalier**, **slivar**
-
-```nim
-import hts
+Genomics tools in Nim, each with its paper
+"""
+    nbRawHtml: """<div class="brent-cols">
+<table class="brent-table">
+<thead><tr><th>tool</th><th>citations</th><th>stars</th></tr></thead>
+<tbody>
+<tr><td><a href="https://github.com/brentp/mosdepth">mosdepth</a></td><td>1452</td><td>878</td></tr>
+<tr><td><a href="https://github.com/brentp/somalier">somalier</a></td><td>172</td><td>341</td></tr>
+<tr><td><a href="https://github.com/brentp/slivar">slivar</a></td><td>141</td><td>274</td></tr>
+<tr><td><a href="https://github.com/brentp/hts-nim">hts-nim</a></td><td>18</td><td>159</td></tr>
+</tbody></table>
+<pre><code class="language-nim">import hts
 var b: Bam
 open(b, "sample.bam", index=true)
-for record in b.query("6", 30816675, 32816675):
-  if record.mapping_quality > 10u:
-    echo record.chrom, record.start, record.stop
-```
-"""
+for r in b.query("6", 30816675, 32816675):
+  if r.mapping_quality > 10u:
+    echo r.chrom, r.start, r.stop</code></pre>
+</div>"""
     reference """
-[hts-nim](https://github.com/brentp/hts-nim) (Bioinformatics 2018),
-[mosdepth](https://github.com/brentp/mosdepth) (Bioinformatics 2018),
-[somalier](https://github.com/brentp/somalier) (Genome Medicine 2020),
-[slivar](https://github.com/brentp/slivar) (npj Genomic Medicine 2021);
-[explained here](island2_brentp_explainer.html)
+citations from Google Scholar, stars from GitHub (October 2026);
+[the tools and the genomics behind them, explained](island2_brentp_explainer.html)
 """
     speakerNote """
 hts-nim wraps htslib, the C library behind samtools.
@@ -99,6 +101,10 @@ analysis framework: the extra work delayed the thesis,
 and he says he learned way more.
 """
     nbRawHtml: """<style>
+.reveal .brent-cols { display: grid; grid-template-columns: auto 1fr; gap: 1.2em; align-items: center; }
+.reveal .brent-cols table { font-size: 0.6em; margin: 0; }
+.reveal .brent-cols table td:nth-child(n+2), .reveal .brent-cols table th:nth-child(n+2) { text-align: right; font-variant-numeric: tabular-nums; }
+.reveal .brent-cols pre { font-size: 0.42em; width: 100%; margin: 0; }
 .reveal .rocks-quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; }
 .reveal .rocks-quotes figure { margin: 0; }
 .reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
