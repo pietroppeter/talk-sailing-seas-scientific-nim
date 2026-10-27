@@ -58,7 +58,8 @@ template vindaarSlide = # 3.3
     nbText: """
 ### Sebastian Schmidt · @Vindaar
 
-A PhD searching for solar axions at CERN's CAST:
+A PhD student in Physics searching for solar axions
+at CERN's CAST:
 the entire analysis code base is written in Nim
 
 ```nim
