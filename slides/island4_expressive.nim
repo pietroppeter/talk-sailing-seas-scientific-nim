@@ -58,6 +58,9 @@ Where does the shadow of the mast top fall?
           mastTop = pt(0, 0, 12)
           shadow = (sun + mastTop) * sea
         echo shadow
+      nbTextSmall """
+[Explained step by step here](island4_operators_explainer.html).
+"""
       speakerNote """
 Three points make the plane of the sea,
 the sun and the mast top make a line,

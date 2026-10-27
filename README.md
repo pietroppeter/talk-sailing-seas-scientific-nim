@@ -36,6 +36,7 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `my.nim`: helpers and AgileLab theme; run it directly for a style test deck (deplyed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/my.html)
 - `slides/thank_you.nim`: the animated Thank You slide (a p5nim sketch); run it directly to build the slide on its own (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/thank_you.html)
 - `slides/thank_you_explainer.nim`: a nimib page that explains the code of the Thank You slide step by step (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/thank_you_explainer.html)
+- `slides/island4_operators_explainer.nim`: a nimib page that explains the custom operators example of Island 4 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island4_operators_explainer.html)
 - `slides/`: one file per slide (or group of slides)
 - `openspec/`: the talk is prepared with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (see below)
 
@@ -49,6 +50,7 @@ nim r index.nim   # writes docs/index.html
 nim r my.nim      # style test deck, writes docs/my.html
 nim r slides/thank_you.nim  # the Thank You slide on its own, writes docs/thank_you.html
 nim r slides/thank_you_explainer.nim  # explainer of the Thank You slide, writes docs/thank_you_explainer.html
+nim r slides/island4_operators_explainer.nim  # explainer of the custom operators slides, writes docs/island4_operators_explainer.html
 ```
 
 Outputs go to `docs/` (set by `homeDir` in `nimib.toml`), which is what gets published on GitHub Pages: the `pages` workflow builds the slides on every push to `main` and deploys `docs/`. Generated html is not committed.

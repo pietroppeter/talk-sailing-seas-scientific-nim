@@ -8,7 +8,7 @@ Two language features that make Nim good for scientific use: custom operators wr
 
 5.1 **Island 4** - section title on the map.
 5.2 **Custom operators** - hand-written geometry: `Line` and `Plane` types over `Point` and `Vec`, `+` joins (two points make a line, a line and a point a plane), `*` meets (a line hits a plane in a point); `Point + Point` is not a point, so the types let it mean the line through them [example].
-5.3 **A shadow at sea** - the sea is the plane through three points, the sun and the mast top make a line, and their meet is where the shadow of the mast top falls [example].
+5.3 **A shadow at sea** - the sea is the plane through three points, the sun and the mast top make a line, and their meet is where the shadow of the mast top falls [example]; the slide links its explainer.
 5.4 **Units with a macro** - Vindaar's unchained: units checked at compile time, plain floats at run time; its `declareUnits` macro adds the nautical mile and the knot to SI, and the macro writes the types, aliases and conversions while `*`, `/` and `+` are macros that work out the unit of the result.
 5.5 **Hull speed** - the speed of a wave as long as the boat, `sqrt(g * waterline / (2 * PI))` with the waterline in feet, converted to knots, and the hours to sail 30 nautical miles; adding a length to an acceleration does not compile [example].
 5.6 **Rocks ahead** - with great power: macros can make code hard to read for newcomers; concepts (compile-time duck typing) were not robust until possibly recently.
@@ -19,6 +19,8 @@ Unchanged: 0-4, 6-9
 
 - ADDED: Island 4 examples (Pietro, 2026-10-27): the custom operators example is geometry (points, lines, planes, with join and meet), hand-written so it fits on a slide, and the metaprogramming example is Vindaar's unchained, where macros generate units and the operators between them. Both are sailing themed (a shadow at sea, nautical units and hull speed) to stay in the voyage. Alternative: hand-written physical units for the easy example, closer to unchained but a repeat of the second example.
 - ADDED: The sailing units live in their own module (`slides/island4_units.nim`) and only `NauticalMile`, `nmi`, `Knot` and `knot` are exported to the deck: `declareUnits` also generates the compound SI types again, which would be ambiguous next to unchained's. The knot's short name is `knot`, not `kn`, because Nim identifiers are case insensitive after the first letter and `kn` clashes with `kN` (kilonewton).
+
+- ADDED: Code explainers (Pietro, 2026-10-27): slides have limited space for code, so an example that deserves more gets an explainer, a nimib document linked from its slide, for people who want to explore further. The first is for the custom operators example (`docs/island4_operators_explainer.html`). Alternative: longer code on the slides, or links to the source on GitHub.
 
 ## Risks / Trade-offs
 
