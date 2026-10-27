@@ -466,6 +466,43 @@ without ever knowing they are written in Nim.
 """
 
 nbText """
+## Others followed
+
+A library is a success when other people build on it.
+The hts-nim
+[wiki](https://github.com/brentp/hts-nim/wiki/Example-uses-of-hts-nim)
+lists tools by other authors, among them:
+[quad](https://github.com/andreas-wilm/quad) (base
+qualities in BAM files) and decontanimate (cleaning FASTQ
+files) by Andreas Wilm,
+[nimnexus](https://github.com/Avsecz/nimnexus) (ChIP-nexus
+data) by Žiga Avsec,
+[kraf](https://github.com/SeqOne/kraf) and
+[clinvcf](https://github.com/SeqOne/clinvcf) from the
+genomics company SeqOne,
+[seq-collection](https://github.com/danielecook/seq-collection)
+by Daniel Cook,
+[conduit](https://github.com/NatPRoach/conduit)
+(transcriptome assembly without a reference) and
+sscocaller (crossovers from single-cell sperm sequencing).
+
+One goes all the way to a paper:
+[BamToCov](https://github.com/telatin/bamtocov) by Giovanni
+Birolo and Andrea Telatin
+([Bioinformatics 2022](https://doi.org/10.1093/bioinformatics/btac125)),
+coverage from BAM and CRAM files with a very small memory
+footprint, installed from bioconda. It is written in Nim
+on top of hts-nim, and its README points readers to the
+hts-nim paper and to Brent's
+[nim-lapper](https://github.com/brentp/nim-lapper)
+interval library, which they used at first.
+Telatin also wrote [covtools](https://github.com/telatin/covtools),
+in the same wiki list.
+So hts-nim did what a good library does: it made the next
+person's Nim tool a lot cheaper to write.
+"""
+
+nbText """
 ## A polyglot toolmaker
 
 Nim is one chapter of a longer story. On
