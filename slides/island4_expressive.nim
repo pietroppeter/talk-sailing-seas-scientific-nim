@@ -105,13 +105,11 @@ and provides an API to add your own units
           nbRawHtml siUnitsHtml()
         column:
           nbRawHtml newUnitsHtml()
-      nbTextSmall """
-The macro writes the types, the aliases and the conversions;
-`*`, `/` and `+` are macros that work out the unit of the result.
-"""
       speakerNote """
 Left: two SI base units as unchained declares them (its si_units.nim),
 right: our two new units (slides/island4_units.nim).
+The macro writes the types, the aliases and the conversions;
+`*`, `/` and `+` are macros that work out the unit of the result.
 A macro is Nim code that runs in the compiler and writes Nim code.
 declareUnits reads this block and generates distinct float types
 (SolarMass, EarthMass) with their short names and conversions.
