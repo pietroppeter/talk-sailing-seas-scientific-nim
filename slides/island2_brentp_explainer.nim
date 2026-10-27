@@ -486,18 +486,28 @@ by Daniel Cook,
 (transcriptome assembly without a reference) and
 sscocaller (crossovers from single-cell sperm sequencing).
 
-One goes all the way to a paper:
-[BamToCov](https://github.com/telatin/bamtocov) by Giovanni
-Birolo and Andrea Telatin
-([Bioinformatics 2022](https://doi.org/10.1093/bioinformatics/btac125)),
-coverage from BAM and CRAM files with a very small memory
-footprint, installed from bioconda. It is written in Nim
-on top of hts-nim, and its README points readers to the
-hts-nim paper and to Brent's
-[nim-lapper](https://github.com/brentp/nim-lapper)
+Some went all the way to a paper. Two Nim tools built
+on hts-nim (they list `hts` among their Nimble
+dependencies):
+
+| Tool | Authors | Paper | What it does |
+|---|---|---|---|
+| [BamToCov](https://github.com/telatin/bamtocov) | Giovanni Birolo, Andrea Telatin | [Bioinformatics 2022](https://doi.org/10.1093/bioinformatics/btac125) | coverage from BAM/CRAM with a very small memory footprint |
+| [sgcocaller](https://github.com/ruqianl/sgcocaller) | Ruqian Lyu, ..., Davis McCarthy | [Nucleic Acids Research 2022](https://doi.org/10.1093/nar/gkac764) | haplotypes and crossovers from single-gamete sequencing |
+
+BamToCov's README points readers to the hts-nim paper
+and to Brent's [nim-lapper](https://github.com/brentp/nim-lapper)
 interval library, which they used at first.
-Telatin also wrote [covtools](https://github.com/telatin/covtools),
-in the same wiki list.
+sgcocaller grew out of sscocaller, the single-sperm
+crossover caller in the wiki list.
+Andrea Telatin also wrote
+[SeqFu](https://github.com/telatin/seqfu2)
+([Bioengineering 2021](https://doi.org/10.3390/bioengineering8050059)),
+a Nim suite of utilities for FASTA and FASTQ files,
+and covtools, in the same wiki list; he also keeps a
+[Nim for bioinformatics](https://telatin.github.io/nim-for-bioinformatics/)
+site. More Nim libraries for biology are collected in
+[awesome-bionimformatics](https://github.com/andreas-wilm/awesome-bionimformatics).
 So hts-nim did what a good library does: it made the next
 person's Nim tool a lot cheaper to write.
 """
