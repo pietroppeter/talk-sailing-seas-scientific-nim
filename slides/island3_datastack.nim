@@ -42,7 +42,8 @@ Let's try them on a dataset you all know.
 344 penguins, three species, three islands near Palmer Station, Antarctica.
 [The explainer](island3_penguins_explainer.html) explores them further:
 missing values, group and summarize, three plots,
-Simpson's paradox with tensors, k-means clustering.
+Simpson's paradox with tensors, k-means clustering,
+and what else is in Arraymancer.
 """
       reference """
 Data: Gorman, Williams and Fraser (2014),
@@ -55,11 +56,37 @@ and to the R crowd (palmerpenguins).
 We use seaborn's CSV, missing values are empty fields.
 """
     slide: # 4.4
+      nbText "## Tensors: Arraymancer"
+      nbCode:
+        let df = readCsv("data/penguins.csv") # Datamancer, next
+          .filter(f{`body_mass_g` > 0.0}) # drop missing
+        let cols = ["bill_length_mm", "bill_depth_mm",
+                    "flipper_length_mm", "body_mass_g"]
+        let X = stack(cols.mapIt(df[it, float]), axis = 1) # 342 x 4
+        let Z = (X -. X.mean(axis = 0)) /. X.std(axis = 0)
+        let C = Z.transpose * Z / float(X.shape[0] - 1) # correlations
+        echo C.map_inline(x.round(2))
+      nbTextSmall """
+Inspired by NumPy and PyTorch: a solid ndarray,
+with the seeds of scikit-learn (k-means, PCA)
+and of PyTorch (autograd, layers, CUDA).
+"""
+      speakerNote """
+Bottom of the stack: tensors.
+Read the CSV (with Datamancer, next slide) and drop the missing,
+then stack four columns into a 342 x 4 matrix, standardize each
+column with broadcasting (`-.` and `/.`, a dot makes the broadcast
+visible), and a matrix product gives the 4 x 4 correlation matrix.
+Flipper length and body mass: 0.87.
+Arraymancer is by Mamy (mratsim).
+Honest status: the ndarray is the solid part.
+Machine learning is a handful of algorithms,
+deep learning works but its API is marked unstable.
+Last release October 2024, a few commits a year since.
+"""
+    slide: # 4.5
       nbText "## Dataframes: Datamancer"
       nbCode:
-        let df = readCsv("data/penguins.csv")
-          .filter(f{`body_mass_g` > 0.0}) # drop missing
-
         echo df.group_by("species").summarize(
           f{float: "mass (g)" << mean(`body_mass_g`)},
           f{float: "flipper (mm)" << mean(`flipper_length_mm`)})
@@ -70,11 +97,12 @@ Inspired by dplyr, built on Arraymancer.
 Reads like dplyr or pandas: read, filter, group by, summarize.
 f{...} is a formula: a macro that turns the expression
 into a typed, compiled loop over the columns.
-Missing numbers are NaN, so `> 0.0` drops them.
+Missing numbers are NaN, so the `> 0.0` filter
+of the previous slide drops them.
 Mean body mass and flipper length per species:
 Gentoo are the heavy ones, with the longest flippers.
 """
-    slide: # 4.5
+    slide: # 4.6
       nbText "## Plots: ggplotnim"
       nbTextSmall """
 A port of ggplot2, using Datamancer dataframes.
@@ -91,27 +119,6 @@ data, aesthetics, then layers added with `+`.
 Flipper length and body mass go together,
 and the species form clusters.
 Backends: PNG/PDF via cairo, SVG, TikZ, Vega-Lite.
-"""
-    slide: # 4.6
-      nbText "## Tensors: Arraymancer"
-      nbCode:
-        let cols = ["bill_length_mm", "bill_depth_mm",
-                    "flipper_length_mm", "body_mass_g"]
-        let X = stack(cols.mapIt(df[it, float]), axis = 1) # 342 x 4
-        let Z = (X -. X.mean(axis = 0)) /. X.std(axis = 0)
-        let C = Z.transpose * Z / float(X.shape[0] - 1) # correlations
-        echo C.map_inline(x.round(2))
-      nbTextSmall """
-More than an ndarray: linear algebra, autograd, neural networks,
-CPU, CUDA and OpenCL backends.
-"""
-      speakerNote """
-Every column is a tensor underneath: stack four of them
-into a 342 x 4 matrix, standardize each column with
-broadcasting (`-.` and `/.`, a dot makes the broadcast visible),
-and a matrix product gives the 4 x 4 correlation matrix.
-Flipper length and body mass: 0.87, as the plot showed.
-Arraymancer is by Mamy (mratsim).
 """
     slide: # 4.7
       nbText "## SciNim"
@@ -137,14 +144,16 @@ and donated to SciNim.
     slide: # 4.8
       nbText "## Rocks ahead"
       nbText """
-- no scikit-learn: ML algorithms are scattered
+- beyond the ndarray, only seeds: a few ML algorithms (no scikit-learn), a small neural network library (no PyTorch)
 - multiple tensor libraries
 - the ecosystem depends on a few contributors (Vindaar, mratsim, Clonkk, HugoGranstrom): when life happens, development stops
 """
       speakerNote """
 The pieces are good and you can do real work with them.
-Classic machine learning has no scikit-learn:
-the algorithms are scattered across libraries.
+Beyond the ndarray there are only seeds:
+a few classic ML algorithms, no scikit-learn,
+and a small neural network library, no PyTorch
+(flambeau binds libtorch instead).
 There is more than one tensor library.
 And a handful of people carry the stack:
 when life happens to them, development stops.

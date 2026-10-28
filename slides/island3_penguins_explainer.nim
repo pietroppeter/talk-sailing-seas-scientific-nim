@@ -205,12 +205,53 @@ Gentoo in a cluster of its own.
 Adelie and Chinstrap overlap in size and shape,
 so the other two clusters mix them:
 the measurements alone do not tell those two apart.
-Arraymancer also has PCA, DBSCAN, a least squares solver
-and neural networks.
 What Nim lacks is a library that collects the classic
 algorithms behind one consistent interface,
 like scikit-learn does for Python,
 with models, pipelines, cross validation and metrics.
+"""
+
+nbText """
+## What else is in Arraymancer
+
+Arraymancer's README says it is inspired by NumPy and PyTorch,
+and it targets three uses: n-dimensional arrays,
+classic machine learning as in scikit-learn,
+and deep learning.
+The three are not at the same stage.
+
+**Tensors, the NumPy part, are solid.**
+Tensors of any element type up to rank 7,
+slicing with steps and masks, explicit broadcasting,
+map and reduce with OpenMP, reshaping and stacking,
+complex numbers, einsum, convolution,
+linear algebra through BLAS and LAPACK
+(solve, least squares, SVD, QR, LU, eigenvalues),
+a k-d tree for nearest neighbors,
+and reading and writing CSV, `.npy`, HDF5 and images.
+There is no FFT and no histogram.
+
+**Machine learning, the scikit-learn part, is a seed.**
+k-means (above), DBSCAN, PCA, least squares
+and a few metrics.
+There are no classifiers or regressors,
+no cross validation and no pipelines.
+
+**Deep learning, the PyTorch part, is small but real.**
+Autograd, a `network` macro to declare models,
+linear, convolution, GRU, embedding and graph layers,
+SGD and Adam, and CUDA (with cuDNN) and OpenCL backends,
+which have fewer features than the CPU one.
+In October 2026 attention and normalization layers arrived,
+with an example that trains a small GPT-2-like model
+on Shakespeare.
+The README still calls the deep learning interface unstable.
+To use PyTorch itself from Nim, there is
+[flambeau](https://github.com/SciNim/flambeau),
+bindings to libtorch.
+
+The last release, v0.7.33, is from October 2024;
+the main branch has received fixes and new layers since.
 """
 
 nbText """
@@ -237,9 +278,9 @@ Vindaar wrote Datamancer and ggplotnim for his PhD analysis,
 and every plot in his thesis is made with ggplotnim
 (see Island 2).
 Three things hold the stack back.
-There is no scikit-learn: the classic machine learning
-algorithms are scattered across libraries,
-with no consistent interface.
+Beyond the ndarray there are only seeds:
+a few classic machine learning algorithms, no scikit-learn,
+and a small neural network library, no PyTorch.
 There is more than one tensor library.
 And the ecosystem depends on a few contributors,
 Vindaar, mratsim, Clonkk and HugoGranstrom among them:
