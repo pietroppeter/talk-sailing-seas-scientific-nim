@@ -46,6 +46,7 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `slides/thank_you_explainer.nim`: a nimib page that explains the code of the Thank You slide step by step (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/thank_you_explainer.html)
 - `slides/island2_brentp_explainer.nim`: a nimib page that explains Brent Pedersen's genomics tools in Nim, with the bioinformatics background (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_brentp_explainer.html)
 - `slides/island2_vindaar_explainer.nim`: a nimib page that explains Vindaar's physics PhD thesis in plain words (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_vindaar_explainer.html)
+- `slides/island2_qex_explainer.nim`: a nimib page that explains lattice QCD and the QEX framework in plain words (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_qex_explainer.html)
 - `slides/island2_beyond_explainer.nim`: a nimib page with Nim success stories outside scientific computing (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_beyond_explainer.html)
 - `slides/island3_penguins_explainer.nim`: a nimib page that explores the penguins dataset with the Nim data stack of Island 3 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island3_penguins_explainer.html)
 - `slides/island5_operators_explainer.nim`: a nimib page that explains the custom operators example of Island 5 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_operators_explainer.html)
@@ -65,6 +66,7 @@ nim r slides/thank_you.nim  # the Thank You slide on its own, writes docs/thank_
 nim r slides/thank_you_explainer.nim  # explainer of the Thank You slide, writes docs/thank_you_explainer.html
 nim r slides/island2_brentp_explainer.nim  # explainer of Brent Pedersen's tools (Island 2), writes docs/island2_brentp_explainer.html
 nim r slides/island2_vindaar_explainer.nim  # Vindaar's thesis in plain words (Island 2), writes docs/island2_vindaar_explainer.html
+nim r slides/island2_qex_explainer.nim  # lattice QCD and QEX in plain words (Island 2), writes docs/island2_qex_explainer.html
 nim r slides/island2_beyond_explainer.nim  # Nim success stories beyond science (Island 2), writes docs/island2_beyond_explainer.html
 nim r slides/island5_operators_explainer.nim  # explainer of the custom operators slides, writes docs/island5_operators_explainer.html
 nim r slides/island5_units_explainer.nim  # explainer of the units slides, writes docs/island5_units_explainer.html
