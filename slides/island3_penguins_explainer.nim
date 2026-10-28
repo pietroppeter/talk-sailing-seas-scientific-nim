@@ -1,10 +1,12 @@
-import std / math
+import std / [math, strutils]
 # only `%` from json: its `{}` would get in the way of `f{...}` formulas
 from std / json import `%`, `[]=`
 import nimib
 import nimib / highlight
 import ggplotnim
 import arraymancer / ml # k-means
+import plotly
+import nbplotly # nbPlotly: an interactive nim-plotly plot in nimib
 
 # A nimib document that explains the penguins exploration of Island 3
 # (slides 4.2 to 4.7, in slides/island3_datastack.nim):
@@ -148,6 +150,37 @@ put a number on it.
 """
 
 nbText """
+The same plot, interactive, with
+[nim-plotly](https://github.com/SciNim/nim-plotly),
+the Nim bindings to plotly.js:
+hover on a penguin to see its island and sex,
+click on a species in the legend to hide it.
+One trace per species, built from the groups of the dataframe:
+"""
+nbCode:
+  var traces: seq[Trace[float]]
+  for (key, sub) in groups(df.group_by("species")):
+    let t = Trace[float](mode: PlotMode.Markers,
+                         `type`: PlotType.Scatter, name: $key[0][1])
+    t.xs = sub["bill_length_mm", float].toSeq1D
+    t.ys = sub["bill_depth_mm", float].toSeq1D
+    let islands = sub["island", string].toSeq1D
+    let sexes = sub["sex", string].toSeq1D
+    for i in 0 ..< sub.len:
+      t.text.add islands[i] & ", " & sexes[i].toLowerAscii
+    traces.add t
+  let bills = Plot[float](traces: traces, layout: Layout(
+    xaxis: Axis(title: "bill length (mm)"),
+    yaxis: Axis(title: "bill depth (mm)")))
+nbPlotly(bills)
+nbText """
+`nbPlotly` is a small helper of this repository
+([slides/nbplotly.nim](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim/blob/main/slides/nbplotly.nim)):
+it turns the plot into JSON and adds a div and a script
+that draw it with plotly.js.
+"""
+
+nbText """
 ## Tensors
 
 Every column of a dataframe is a tensor underneath,
@@ -237,7 +270,7 @@ and a few metrics.
 There are no classifiers or regressors,
 no cross validation and no pipelines.
 
-**Deep learning, the PyTorch part, is small but real.**
+**Deep learning, the PyTorch part, is a compact framework.**
 Autograd, a `network` macro to declare models,
 linear, convolution, GRU, embedding and graph layers,
 SGD and Adam, and CUDA (with cuDNN) and OpenCL backends,
@@ -278,9 +311,8 @@ Vindaar wrote Datamancer and ggplotnim for his PhD analysis,
 and every plot in his thesis is made with ggplotnim
 (see Island 2).
 Three things hold the stack back.
-Beyond the ndarray there are only seeds:
-a few classic machine learning algorithms, no scikit-learn,
-and a small neural network library, no PyTorch.
+Classic machine learning is only seeds:
+a few algorithms, no scikit-learn.
 There is more than one tensor library.
 And the ecosystem depends on a few contributors,
 Vindaar, mratsim, Clonkk and HugoGranstrom among them:

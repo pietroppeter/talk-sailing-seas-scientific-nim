@@ -1,8 +1,9 @@
 import nimib, nimiSlides
 import std / [math, sequtils]
 import ggplotnim
+import arraymancer / linear_algebra # solve
 import ../my
-export math, sequtils, ggplotnim
+export math, sequtils, ggplotnim, linear_algebra
 
 # Section 4: Island 3: Data Stack (see the latest outline in openspec)
 # The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2 and K3.
@@ -58,35 +59,34 @@ We use seaborn's CSV, missing values are empty fields.
     slide: # 4.4
       nbText "## Tensors: Arraymancer"
       nbCode:
-        let df = readCsv("data/penguins.csv") # Datamancer, next
-          .filter(f{`body_mass_g` > 0.0}) # drop missing
-        let cols = ["bill_length_mm", "bill_depth_mm",
-                    "flipper_length_mm", "body_mass_g"]
-        let X = stack(cols.mapIt(df[it, float]), axis = 1) # 342 x 4
-        let Z = (X -. X.mean(axis = 0)) /. X.std(axis = 0)
-        let C = Z.transpose * Z / float(X.shape[0] - 1) # correlations
-        echo C.map_inline(x.round(2))
+        let M = arange(1.0, 13.0).reshape(3, 4) # as in NumPy
+        echo M[1.._, 2..3]         # slicing
+        echo M -. M.mean(axis = 0) # explicit broadcasting
+        let A = [[2.0, 1.0], [1.0, 3.0]].toTensor
+        echo solve(A, [3.0, 5.0].toTensor) # linear system, with LAPACK
       nbTextSmall """
-Inspired by NumPy and PyTorch: a solid ndarray,
-with the seeds of scikit-learn (k-means, PCA)
-and of PyTorch (autograd, layers, CUDA).
+Inspired by NumPy and PyTorch: a solid ndarray with linear algebra,<br>
+a compact deep learning framework, and the seeds of scikit-learn.
 """
       speakerNote """
-Bottom of the stack: tensors.
-Read the CSV (with Datamancer, next slide) and drop the missing,
-then stack four columns into a 342 x 4 matrix, standardize each
-column with broadcasting (`-.` and `/.`, a dot makes the broadcast
-visible), and a matrix product gives the 4 x 4 correlation matrix.
-Flipper length and body mass: 0.87.
+Bottom of the stack: tensors, as in NumPy.
+A 3 x 4 matrix from a range, sliced with ranges,
+centered column by column with broadcasting
+(`-.`: a dot makes the broadcast visible),
+and a linear system solved with LAPACK.
 Arraymancer is by Mamy (mratsim).
 Honest status: the ndarray is the solid part.
-Machine learning is a handful of algorithms,
-deep learning works but its API is marked unstable.
+Deep learning is a compact framework that works
+(autograd, layers, now transformers), its API marked unstable;
+classic machine learning is a handful of algorithms.
 Last release October 2024, a few commits a year since.
 """
     slide: # 4.5
       nbText "## Dataframes: Datamancer"
       nbCode:
+        let df = readCsv("data/penguins.csv")
+          .filter(f{`body_mass_g` > 0.0}) # drop missing
+
         echo df.group_by("species").summarize(
           f{float: "mass (g)" << mean(`body_mass_g`)},
           f{float: "flipper (mm)" << mean(`flipper_length_mm`)})
@@ -97,8 +97,7 @@ Inspired by dplyr, built on Arraymancer.
 Reads like dplyr or pandas: read, filter, group by, summarize.
 f{...} is a formula: a macro that turns the expression
 into a typed, compiled loop over the columns.
-Missing numbers are NaN, so the `> 0.0` filter
-of the previous slide drops them.
+Missing numbers are NaN, so `> 0.0` drops them.
 Mean body mass and flipper length per species:
 Gentoo are the heavy ones, with the longest flippers.
 """
@@ -144,16 +143,14 @@ and donated to SciNim.
     slide: # 4.8
       nbText "## Rocks ahead"
       nbText """
-- beyond the ndarray, only seeds: a few ML algorithms (no scikit-learn), a small neural network library (no PyTorch)
+- classic ML is only seeds: a few algorithms, no scikit-learn
 - multiple tensor libraries
 - the ecosystem depends on a few contributors (Vindaar, mratsim, Clonkk, HugoGranstrom): when life happens, development stops
 """
       speakerNote """
 The pieces are good and you can do real work with them.
-Beyond the ndarray there are only seeds:
-a few classic ML algorithms, no scikit-learn,
-and a small neural network library, no PyTorch
-(flambeau binds libtorch instead).
+Classic machine learning is only seeds:
+a few algorithms in Arraymancer, no scikit-learn.
 There is more than one tensor library.
 And a handful of people carry the stack:
 when life happens to them, development stops.
