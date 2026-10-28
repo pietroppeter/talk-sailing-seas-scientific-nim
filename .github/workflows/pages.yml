@@ -49,6 +49,7 @@ jobs:
           nim r slides/thank_you_explainer.nim
           nim r slides/island2_brentp_explainer.nim
           nim r slides/island2_vindaar_explainer.nim
+          nim r slides/island2_qex_explainer.nim
           nim r slides/island2_beyond_explainer.nim
           nim r slides/island3_penguins_explainer.nim
           nim r slides/island5_operators_explainer.nim

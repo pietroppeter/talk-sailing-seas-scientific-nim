@@ -2,7 +2,7 @@ import nimib, nimiSlides
 import ../my
 
 # Section 3: Island 2: Success Stories (see the latest outline in openspec)
-# Two competent people did real science with Nim, one in bioinformatics and one in physics.
+# Competent people did real science with Nim: in bioinformatics, in physics and in lattice QCD.
 # Carries K3 (ready for more).
 
 const githubMark = """<svg class="gh-mark" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>"""
@@ -19,8 +19,8 @@ template storiesIntroSlide = # 3.2
 How do we define success stories in scientific computing?
 By looking at people who used Nim to advance science.
 
-The following are two stories:<br>
-🧬 Bioinformatics and ☀️ Physics
+The following are three stories:<br>
+🧬 Bioinformatics, ☀️ Physics and ⚛️ Lattice QCD
 """
     reference """
 Beyond science, Nim runs on the web, in blockchains,
@@ -114,7 +114,45 @@ with physical units in the types, checked at compile time.
 Why Nim, in his words: "the language gets out of my way".
 """
 
-template rocksAheadSlide = # 3.5
+template qexSlide = # 3.5
+  slide:
+    nbRawHtml "<h3>⚛️ Osborn &amp; Jin · <a href=\"https://github.com/jcosborn/qex\">" & githubMark & "QEX</a></h3>"
+    nbRawHtml: """<p class="story-intro">Two physicists at Argonne National Laboratory
+build a lattice QCD framework in Nim:
+since 2016, still very active (298 commits in 2026).<br>
+Others use it for new physics</p>"""
+    nbText: """
+```nim
+# the plaquette: go around the smallest squares
+# of the space-time lattice, add up what you get
+threads:
+  m := 0
+  for mu in 1..<nd:
+    for nu in 0..<mu:
+      m += (t[mu]^*g[nu]) * (t[nu]^*g[mu]).adj
+  tr = trace(m)
+```
+"""
+    reference """
+[Paper](https://arxiv.org/abs/1612.02750) (2016),
+[code](https://github.com/jcosborn/qex),
+[new physics](https://arxiv.org/abs/2409.02062) (PRL 2025);
+[lattice QCD and QEX in plain words](island2_qex_explainer.html)
+"""
+    speakerNote """
+QEX is Quantum EXpressions, by James Osborn and Xiao-Yong Jin.
+Lattice QCD computes how quarks and gluons bind into protons,
+on a grid of space-time points, on supercomputers.
+Since 2024 it is the most active scientific Nim project we found.
+The excerpt is from its examples: the plaquette,
+written like the physics formula, run in parallel threads.
+Curtis Peterson (Colorado) added Pauli-Villars
+staggered simulations, used in papers with Anna Hasenfratz,
+like symmetric mass generation (Phys. Rev. Lett. 2025).
+Its docs are a book written with nimibook.
+"""
+
+template rocksAheadSlide = # 3.6
   slide:
     nbText: """
 ## Rocks ahead
@@ -157,4 +195,5 @@ template island2StoriesSection* =
     storiesIntroSlide
     brentSlide
     vindaarSlide
+    qexSlide
     rocksAheadSlide
