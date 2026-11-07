@@ -1,4 +1,5 @@
 import nimib, nimiSlides
+import tabelline
 import ../my
 
 # Section 3: Island 2: Success Stories (see the latest outline in openspec)
@@ -42,18 +43,23 @@ template brentSlide = # 3.3
 with 1,944 citations and 1,833 stars.<br>
 Others followed
 (<a href="https://github.com/andreas-wilm/awesome-bionimformatics">awesome-bionimformatics</a>)</p>"""
-    nbRawHtml: """<div class="brent-cols">
-<table class="brent-table">
-<thead><tr><th>tool</th><th>year</th><th>citations</th><th>stars</th></tr></thead>
-<tbody>
-<tr><td><a href="https://github.com/brentp/mosdepth">mosdepth</a></td><td>2018</td><td>1452</td><td>878</td></tr>
-<tr><td><a href="https://github.com/brentp/somalier">somalier</a></td><td>2020</td><td>172</td><td>341</td></tr>
-<tr><td><a href="https://github.com/brentp/slivar">slivar</a></td><td>2021</td><td>141</td><td>274</td></tr>
-<tr><td><a href="https://github.com/brentp/duphold">duphold</a></td><td>2019</td><td>93</td><td>109</td></tr>
-<tr><td><a href="https://github.com/quinlan-lab/STRling">STRling</a></td><td>2022</td><td>68</td><td>72</td></tr>
-<tr><td><a href="https://github.com/brentp/hts-nim">hts-nim</a></td><td>2018</td><td>18</td><td>159</td></tr>
-</tbody></table>
-<pre><code class="language-nim"># read a file of DNA reads aligned to the genome
+    let brentTools = @[
+      (tool: "[mosdepth](https://github.com/brentp/mosdepth)", year: 2018, citations: 1452, stars: 878),
+      (tool: "[somalier](https://github.com/brentp/somalier)", year: 2020, citations: 172, stars: 341),
+      (tool: "[slivar](https://github.com/brentp/slivar)", year: 2021, citations: 141, stars: 274),
+      (tool: "[duphold](https://github.com/brentp/duphold)", year: 2019, citations: 93, stars: 109),
+      (tool: "[STRling](https://github.com/quinlan-lab/STRling)", year: 2022, citations: 68, stars: 72),
+      (tool: "[hts-nim](https://github.com/brentp/hts-nim)", year: 2018, citations: 18, stars: 159)]
+    let brentTable = tabella(brentTools, rownameCol = "tool")
+      .tabStubhead("tool")
+      .fmtMarkdown("tool")
+      .fmtInteger("year", useSeps = false)
+      .fmtBar("citations", color = agileLightBlue, width = "3.5em")
+      .fmtInteger("stars")
+      .slideLook(fontSize = "0.5em")
+    nbRawHtml: """<div class="brent-cols">"""
+    nbTable brentTable
+    nbRawHtml: """<pre><code class="language-nim"># read a file of DNA reads aligned to the genome
 import hts
 var b: Bam
 open(b, "sample.bam", index=true)
@@ -142,8 +148,6 @@ and he says he learned way more.
 .reveal .story-intro { font-size: 0.8em; }
 .reveal h3 .gh-mark { height: 0.8em; width: 0.8em; vertical-align: -0.05em; margin-right: 0.15em; }
 .reveal .brent-cols { display: grid; grid-template-columns: auto 1fr; gap: 1.2em; align-items: center; }
-.reveal .brent-cols table { font-size: 0.5em; margin: 0; }
-.reveal .brent-cols table td:nth-child(n+2), .reveal .brent-cols table th:nth-child(n+2) { text-align: right; font-variant-numeric: tabular-nums; }
 .reveal .brent-cols pre { font-size: 0.42em; width: 100%; margin: 0; }
 .reveal .rocks-quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; }
 .reveal .rocks-quotes figure { margin: 0; }

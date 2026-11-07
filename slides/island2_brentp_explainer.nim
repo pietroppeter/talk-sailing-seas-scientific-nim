@@ -1,6 +1,7 @@
-import std / [strutils, json, random, math, algorithm]
+import std / [strutils, json, random, math, algorithm, sequtils]
 import nimib
 import nimib / highlight
+import tabelline, tabelline / nimib
 
 # A nimib document that explains the bioinformatics work
 # of Brent Pedersen (@brentp), the first success story of
@@ -22,6 +23,8 @@ nbRawHtml("<style>\n" & """
 pre { overflow-x: auto; }
 .note { border-left: 4px solid #02A4BD; padding-left: 1em; }
 table { font-size: 0.9em; }
+/* tabelline tables stripe (or not) on their own, not with the page's style */
+.tabella tbody tr:nth-child(even) { background-color: transparent; }
 """ & "</style>")
 
 nbText """
@@ -123,13 +126,24 @@ nbText """
 
 The data flows through a few standard formats:
 
-| Format | What is in it |
-|---|---|
-| FASTQ | raw reads, with a quality score for each base |
-| BAM / CRAM | reads aligned to the reference |
-| VCF / BCF | variants and genotypes, one row per variant |
-| BED | plain text list of regions, `chrom start end` |
+"""
 
+# the tables of this page are made with tabelline
+# (great tables for Nim, after R's gt and Python's Great Tables)
+let formats = tableData:
+  format: ["FASTQ", "BAM / CRAM", "VCF / BCF", "BED"]
+  content: ["raw reads, with a quality score for each base",
+            "reads aligned to the reference",
+            "variants and genotypes, one row per variant",
+            "plain text list of regions, `chrom start end`"]
+let formatsTable = tabella(formats, rownameCol = "format"):
+  tabStubhead "format"
+  colsLabel "content", "what is in it"
+  fmtMarkdown "content"
+  tabStyle style.text(weight = "bold"), loc.stub()
+nbTable formatsTable
+
+nbText """
 The aligned reads of a 30X genome take tens of
 gigabytes, while its variants fit in about a gigabyte.
 BAM is the binary, compressed version of SAM, a text
@@ -295,13 +309,25 @@ the price paid for the speed.
 From the mosdepth README, on a 30X genome
 (per-base depth, single thread, BAM):
 
-| Tool | Run time |
-|---|---|
-| mosdepth | 25 min |
-| samtools depth | 50 min |
-| bedtools genomecov | 2 h 14 min |
-| sambamba | 2 h 24 min |
+"""
 
+let runMinutes = [25, 50, 134, 144]
+let runs = tableData:
+  tool: ["mosdepth", "samtools depth", "bedtools genomecov", "sambamba"]
+  time: ["25 min", "50 min", "2 h 14 min", "2 h 24 min"]
+  minutes: runMinutes
+  slower: runMinutes.mapIt(it / runMinutes[0])
+let runsTable = tabella(runs, rownameCol = "tool"):
+  tabStubhead "tool"
+  colsLabel {"time": "run time", "minutes": "", "slower": "vs mosdepth"}
+  fmtBar "minutes", color = "#02A4BD", width = "10em", showValue = false
+  fmtNumber "slower", decimals = 1, pattern = "{x}×"
+  colsAlign alRight, "time"
+  tabStyle style.text(weight = "bold"), loc.stub(rows = 0), loc.body(rows = 0)
+  tabSourceNote "30X genome, per-base depth, single thread, BAM (mosdepth README)."
+nbTable runsTable
+
+nbText """
 With 3 threads mosdepth goes down to about 14 minutes,
 and window mode to under 9.
 
@@ -429,15 +455,32 @@ of their papers on
 [Google Scholar](https://scholar.google.com/citations?user=tDf0VkUAAAAJ)
 (both as of October 2026):
 
-| Tool | What it does | Stars | Citations |
-|---|---|---|---|
-| [mosdepth](https://github.com/brentp/mosdepth) | depth from BAM/CRAM | 878 | 1,452 |
-| [somalier](https://github.com/brentp/somalier) | sample identity and relatedness | 341 | 172 |
-| [slivar](https://github.com/brentp/slivar) | variant filtering with expressions | 274 | 141 |
-| [hts-nim](https://github.com/brentp/hts-nim) | htslib for Nim | 159 | 18 |
-| [duphold](https://github.com/brentp/duphold) | adds depth evidence to deletion and duplication calls | 109 | 93 |
-| [STRling](https://github.com/quinlan-lab/STRling) | finds expansions of short tandem repeats (with Harriet Dashnow, Quinlan lab) | 72 | 68 |
+"""
 
+let tools = tableData:
+  tool: ["[mosdepth](https://github.com/brentp/mosdepth)",
+         "[somalier](https://github.com/brentp/somalier)",
+         "[slivar](https://github.com/brentp/slivar)",
+         "[hts-nim](https://github.com/brentp/hts-nim)",
+         "[duphold](https://github.com/brentp/duphold)",
+         "[STRling](https://github.com/quinlan-lab/STRling)"]
+  does: ["depth from BAM/CRAM", "sample identity and relatedness",
+         "variant filtering with expressions", "htslib for Nim",
+         "adds depth evidence to deletion and duplication calls",
+         "finds expansions of short tandem repeats (with Harriet Dashnow, Quinlan lab)"]
+  stars: [878, 341, 274, 159, 109, 72]
+  citations: [1452, 172, 141, 18, 93, 68]
+let toolsTable = tabella(tools, rownameCol = "tool"):
+  tabStubhead "tool"
+  colsLabel "does", "what it does"
+  fmtMarkdown "tool"
+  fmtBar "stars", color = "#F4C542", width = "6em"
+  fmtBar "citations", color = "#02A4BD", width = "6em"
+  colsWidth {"does": "40%"}
+  tabSourceNote "Stars from GitHub, citations from Google Scholar, October 2026."
+nbTable toolsTable
+
+nbText """
 These are the six Nim tools with a paper (2018 to 2022):
 together 1,944 citations and 1,833 stars.
 Some of his other Nim tools have no paper, like
@@ -490,11 +533,23 @@ Some went all the way to a paper. Two Nim tools built
 on hts-nim (they list `hts` among their Nimble
 dependencies):
 
-| Tool | Authors | Paper | What it does |
-|---|---|---|---|
-| [BamToCov](https://github.com/telatin/bamtocov) | Giovanni Birolo, Andrea Telatin | [Bioinformatics 2022](https://doi.org/10.1093/bioinformatics/btac125) | coverage from BAM/CRAM with a very small memory footprint |
-| [sgcocaller](https://github.com/ruqianl/sgcocaller) | Ruqian Lyu, ..., Davis McCarthy | [Nucleic Acids Research 2022](https://doi.org/10.1093/nar/gkac764) | haplotypes and crossovers from single-gamete sequencing |
+"""
 
+let followers = tableData:
+  tool: ["[BamToCov](https://github.com/telatin/bamtocov)",
+         "[sgcocaller](https://github.com/ruqianl/sgcocaller)"]
+  does: ["coverage from BAM/CRAM with a very small memory footprint",
+         "haplotypes and crossovers from single-gamete sequencing"]
+  authors: ["Giovanni Birolo, Andrea Telatin", "Ruqian Lyu, ..., Davis McCarthy"]
+  paper: ["[Bioinformatics 2022](https://doi.org/10.1093/bioinformatics/btac125)",
+          "[Nucleic Acids Research 2022](https://doi.org/10.1093/nar/gkac764)"]
+let followersTable = tabella(followers, rownameCol = "tool"):
+  tabStubhead "tool"
+  colsLabel "does", "what it does"
+  fmtMarkdown ["tool", "paper"]
+nbTable followersTable
+
+nbText """
 BamToCov's README points readers to the hts-nim paper
 and to Brent's [nim-lapper](https://github.com/brentp/nim-lapper)
 interval library, which they used at first.
@@ -520,15 +575,30 @@ Nim is one chapter of a longer story. On
 key projects, each with a maintained repository and a
 paper, and they span four languages:
 
-| Tool | Language | Paper |
-|---|---|---|
-| [cyvcf2](https://github.com/brentp/cyvcf2) | Python and Cython | Bioinformatics 2017 |
-| [vcfanno](https://github.com/brentp/vcfanno) | Go | Genome Biology 2016 |
-| [mosdepth](https://github.com/brentp/mosdepth) | Nim | Bioinformatics 2018 |
-| [somalier](https://github.com/brentp/somalier) | Nim | Genome Medicine 2020 |
-| [slivar](https://github.com/brentp/slivar) | Nim | npj Genomic Medicine 2021 |
-| [echtvar](https://github.com/brentp/echtvar) | Rust | Nucleic Acids Research 2023 |
+"""
 
+# in the order of the papers, to see the language change over the years
+let polyglot = tableData:
+  year: [2016, 2017, 2018, 2020, 2021, 2023]
+  tool: ["[vcfanno](https://github.com/brentp/vcfanno)",
+         "[cyvcf2](https://github.com/brentp/cyvcf2)",
+         "[mosdepth](https://github.com/brentp/mosdepth)",
+         "[somalier](https://github.com/brentp/somalier)",
+         "[slivar](https://github.com/brentp/slivar)",
+         "[echtvar](https://github.com/brentp/echtvar)"]
+  language: ["Go", "Python and Cython", "Nim", "Nim", "Nim", "Rust"]
+  journal: ["Genome Biology", "Bioinformatics", "Bioinformatics",
+            "Genome Medicine", "npj Genomic Medicine", "Nucleic Acids Research"]
+let polyglotTable = tabella(polyglot):
+  colsMoveToStart ["year"]
+  colsLabel "journal", "paper"
+  fmtMarkdown "tool"
+  fmt("year", proc (v: Value): string = $v)   # no thousands separator in a year
+  tabStyle style.fill("#D9F2F6"), loc.body(rows = where(it["language"] == "Nim"))
+  tabStyle style.text(weight = "bold"), loc.body("language", rows = where(it["language"] == "Nim"))
+nbTable polyglotTable
+
+nbText """
 He describes mosdepth as "written in Nim for maximum
 performance", echtvar as "written in Rust for maximum
 performance", and vcfanno as "written in Go for speed

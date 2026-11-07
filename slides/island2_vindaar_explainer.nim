@@ -1,6 +1,7 @@
 import std / [strutils, json, math]
 import nimib
 import nimib / highlight
+import tabelline, tabelline / nimib
 
 # A nimib document that explains, in plain words, the PhD
 # thesis of Sebastian Schmidt (@Vindaar), the second success
@@ -21,6 +22,8 @@ nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
 nbRawHtml("<style>\n" & """
 pre { overflow-x: auto; }
 table { font-size: 0.9em; }
+/* tabelline tables stripe (or not) on their own, not with the page's style */
+.tabella tbody tr:nth-child(even) { background-color: transparent; }
 """ & "</style>")
 
 nbText """
@@ -161,13 +164,33 @@ Monte Carlo).
 ## The result
 
 No sign of axions. That gives limits, at 95% confidence:
+"""
 
-| coupling | this thesis | previous best |
-|---|---|---|
-| axion-electron × axion-photon (GeV⁻¹) | 7.35e-23 | 8.1e-23 (CAST 2013) |
-| axion-photon (GeV⁻¹) | 9.0e-11 | 6.6e-11 (CAST 2017) |
-| chameleon-photon | 3.1e10 | 5.74e10 |
+# the limits as a display table, made with tabelline
+# (great tables for Nim, after R's gt and Python's Great Tables)
+let limits = tableData:
+  coupling: ["axion-electron × axion-photon (GeV⁻¹)", "axion-photon (GeV⁻¹)", "chameleon-photon"]
+  thesis: [7.35e-23, 9.0e-11, 3.1e10]
+  previous: [8.1e-23, 6.6e-11, 5.74e10]
+  source: ["CAST 2013", "CAST 2017", nil]
+  better: [true, false, true]
+let limitsTable = tabella(limits, rownameCol = "coupling"):
+  tabStubhead "coupling"
+  tabSpanner "previous best", ["previous", "source"]
+  colsLabel {"thesis": "this thesis", "previous": "limit", "better": "new best?"}
+  # as many digits as the thesis gives
+  fmtScientific ["thesis", "previous"], decimals = 1
+  fmtScientific "thesis", rows = 0, decimals = 2
+  fmtScientific "previous", rows = 2, decimals = 2
+  fmtTf "better", trueText = "✓", falseText = "✗"
+  colsAlign alCenter, "better"
+  tabStyle style.text(weight = "bold"), loc.body("thesis")
+  tabStyle style.text(color = "#2E7D32", weight = "bold"), loc.body("better", rows = [0, 2])
+  tabStyle style.text(color = "#C62828", weight = "bold"), loc.body("better", rows = 1)
+  tabSourceNote "Limits at 95% confidence; smaller is better."
+nbTable limitsTable
 
+nbText """
 Smaller is better. The first line improves on the
 previous CAST result; on axion-photon alone the
 detector was not expected to beat the best limit,
