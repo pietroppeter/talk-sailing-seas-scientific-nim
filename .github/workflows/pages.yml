@@ -55,7 +55,10 @@ jobs:
           nim r slides/island5_units_explainer.nim
           nim r slides/emilia.nim
           scripts/build-themes.sh
-          nim r slides/themes_explainer.nim
+          nim r devlog/setting_sail.nim
+          nim r devlog/dressing_the_voyage.nim
+          nim r devlog/drawing_the_map.nim
+          nim r devlog/index.nim
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs

@@ -3,9 +3,11 @@
 ## Build the deck with a theme: `nim r -d:slideTheme=pirate index.nim` (pirate, book or chart);
 ## the default `agile` is the AgileLab theme of my.nim and is unchanged.
 ## Each theme is css on top of the AgileLab theme, openly licensed fonts vendored in
-## docs/assets/fonts (scripts/vendor-fonts.sh) and one hand-made svg map of the voyage,
-## styled by the theme's css.
-import std / [math, strutils, strformat]
+## docs/assets/fonts (scripts/vendor-fonts.sh) and a map of the voyage drawn by code
+## from one shared geometry (maps/), in the style of the theme.
+import std / [strutils, strformat]
+import maps / [base, pixel, chart, engraved]
+export base
 
 const slideTheme* {.strdefine.} = "agile"
   ## agile (default), pirate, book or chart
@@ -13,122 +15,19 @@ const slideTheme* {.strdefine.} = "agile"
 const themed* = slideTheme != "agile"
 
 # --- the voyage map -------------------------------------------------------------------
+# One geometry (maps/geometry.nim), one map per theme drawn from it:
+# the base svg styled by css (agile and the explainer), pixel art (pirate),
+# a nautical chart (chart) and a hand-drawn 19th century chart (book).
 
-type Pt = tuple[x, y: float]
-
-const
-  mapW = 960.0
-  mapH = 540.0
-  islandAt: array[7, Pt] = [(250.0, 140.0), (345.0, 365.0), (495.0, 185.0), (620.0, 400.0),
-                            (705.0, 150.0), (865.0, 235.0), (825.0, 430.0)]
-  islandR = [46.0, 40.0, 54.0, 44.0, 40.0, 46.0, 38.0]
-  labelBelow = [false, true, false, true, false, false, true]
-  routeStart: Pt = (120.0, 250.0) # leaving the mainland
-  routeEnd: Pt = (105.0, 470.0)   # back on land
-
-func f1(x: float): string = formatFloat(x, ffDecimal, 1)
-
-func blob(c: Pt, r: float, seed: float, n = 12): string =
-  ## closed svg path of an irregular island: a wobbly circle smoothed with Catmull-Rom splines
-  var pts: seq[Pt]
-  for i in 0 ..< n:
-    let t = 2 * PI * i.float / n.float
-    let rr = r * (1 + 0.20 * sin(3 * t + seed) + 0.10 * sin(5 * t + 2.3 * seed) + 0.05 * cos(7 * t + seed))
-    pts.add (c.x + rr * cos(t), c.y + 0.8 * rr * sin(t))
-  result = "M" & f1(pts[0].x) & "," & f1(pts[0].y)
-  for i in 0 ..< n:
-    let p0 = pts[(i - 1 + n) mod n]
-    let p1 = pts[i]
-    let p2 = pts[(i + 1) mod n]
-    let p3 = pts[(i + 2) mod n]
-    result.add &" C{f1(p1.x + (p2.x - p0.x) / 6)},{f1(p1.y + (p2.y - p0.y) / 6)} " &
-      &"{f1(p2.x - (p3.x - p1.x) / 6)},{f1(p2.y - (p3.y - p1.y) / 6)} {f1(p2.x)},{f1(p2.y)}"
-  result.add " Z"
-
-func routePoints(): seq[Pt] =
-  result.add routeStart
-  for p in islandAt: result.add p
-  result.add [(600.0, 505.0), (330.0, 500.0), routeEnd]
-
-func routeSegments(pts: seq[Pt]): seq[string] =
-  ## open Catmull-Rom spline through `pts`, one cubic svg segment per pair of points
-  for i in 0 ..< pts.len - 1:
-    let p0 = pts[max(i - 1, 0)]
-    let p1 = pts[i]
-    let p2 = pts[i + 1]
-    let p3 = pts[min(i + 2, pts.high)]
-    result.add &"C{f1(p1.x + (p2.x - p0.x) / 6)},{f1(p1.y + (p2.y - p0.y) / 6)} " &
-      &"{f1(p2.x - (p3.x - p1.x) / 6)},{f1(p2.y - (p3.y - p1.y) / 6)} {f1(p2.x)},{f1(p2.y)}"
-
-const mainland = "M0,0 L150,0 C135,40 90,60 105,110 C120,160 150,200 125,250 " &
-  "C100,300 60,320 85,370 C110,420 140,450 120,490 C105,515 90,530 95,540 L0,540 Z"
-
-func compass(c: Pt, r: float): string =
-  ## an eight-pointed compass rose
-  result = &"""<g class="compass" transform="translate({f1(c.x)},{f1(c.y)})">"""
-  result.add &"""<circle r="{f1(r)}" class="compass-ring"/><circle r="{f1(r * 0.82)}" class="compass-ring"/>"""
-  for k in 0 ..< 8:
-    let a = k.float * PI / 4 - PI / 2
-    let long = k mod 2 == 0
-    let l = if long: r * 1.15 else: r * 0.6
-    let w = if long: r * 0.16 else: r * 0.12
-    let tip = (l * cos(a), l * sin(a))
-    let left = (w * cos(a - PI / 2), w * sin(a - PI / 2))
-    let right = (w * cos(a + PI / 2), w * sin(a + PI / 2))
-    result.add &"""<path class="compass-point{(if long: " long" else: "")}" d="M{f1(left[0])},{f1(left[1])} L{f1(tip[0])},{f1(tip[1])} L{f1(right[0])},{f1(right[1])} Z"/>"""
-  result.add &"""<text class="compass-n" y="{f1(-r * 1.3)}" text-anchor="middle">N</text></g>"""
-
-const soundings = [(180.0, 60.0, 12), (420.0, 70.0, 23), (560.0, 290.0, 31), (470.0, 300.0, 18),
-  (760.0, 300.0, 27), (560.0, 60.0, 40), (920.0, 360.0, 35), (240.0, 280.0, 9), (210.0, 420.0, 7),
-  (480.0, 450.0, 21), (700.0, 470.0, 26), (600.0, 90.0, 33), (380.0, 250.0, 15), (930.0, 500.0, 38)]
-
-func voyageMap*(islands: openArray[string], current: int, id = ""): string =
-  ## svg map of the voyage: the mainland on the left, seven islands, the route;
-  ## `current` (1..7) is the island of the section, 0 for the whole map, 8 for back on land.
-  ## Every theme draws all of it: its css shows, hides and colors the parts.
-  ## Pattern ids are unique per map (`id`, default the slide number): reveal.js hides the other
-  ## slides, and a fill pointing to a pattern in a hidden slide is not painted.
-  let id = if id.len > 0: id else: $current
-  result = &"""<svg class="voyage-map" viewBox="0 0 {mapW.int} {mapH.int}" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<pattern id="hatch-{id}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="6" class="hatch-line"/></pattern>
-<pattern id="grid-{id}" width="120" height="90" patternUnits="userSpaceOnUse"><path d="M120,0 L0,0 0,90" class="grid-line"/></pattern>
-</defs>
-<rect class="sea" width="{mapW.int}" height="{mapH.int}"/>
-<rect class="grid" width="{mapW.int}" height="{mapH.int}" fill="url(#grid-{id})"/>
-<g class="waves">"""
-  for (x, y) in [(170.0, 330.0), (420.0, 110.0), (560.0, 260.0), (760.0, 330.0), (930.0, 150.0), (470.0, 470.0), (690.0, 60.0)]:
-    result.add &"""<path d="M{f1(x)},{f1(y)} q8,-7 16,0 q8,7 16,0"/>"""
-  result.add "</g>\n<g class=\"soundings\">"
-  for (x, y, d) in soundings:
-    result.add &"""<text x="{f1(x)}" y="{f1(y)}">{d}</text>"""
-  result.add "</g>\n<g class=\"contours\">"
-  for i, c in islandAt:
-    for k in 1 .. 3:
-      result.add &"""<path class="contour c{k}" d="{blob(c, islandR[i] + 9.0 * k.float, i.float * 1.7)}"/>"""
-  result.add &"""</g>
-<path class="land mainland" d="{mainland}"/>
-<path class="land-hatch mainland" d="{mainland}" fill="url(#hatch-{id})"/>
-"""
-  let segs = routeSegments(routePoints())
-  let start = "M" & f1(routeStart.x) & "," & f1(routeStart.y) & " "
-  result.add &"""<path class="route" d="{start}{segs.join(" ")}"/>"""
-  let done = if current == 8: segs.len elif current >= 1: current else: 0
-  if done > 0:
-    result.add &"""<path class="route-done" d="{start}{segs[0 ..< done].join(" ")}"/>"""
-  for i, c in islandAt:
-    let n = i + 1
-    let state = if n == current: " current" elif current == 8 or n < current: " visited" else: ""
-    let d = blob(c, islandR[i], i.float * 1.7)
-    result.add &"""<path class="island{state}" d="{d}"/><path class="island-hatch{state}" d="{d}" fill="url(#hatch-{id})"/>"""
-    let ly = if labelBelow[i]: c.y + islandR[i] * 0.8 + 28 else: c.y - islandR[i] * 0.8 - 14
-    result.add &"""<text class="label{state}" x="{f1(c.x)}" y="{f1(ly)}" text-anchor="middle"><tspan class="num">{n}</tspan> {islands[i]}</text>"""
-    if n == current:
-      result.add &"""<g class="x-mark" transform="translate({f1(c.x)},{f1(c.y)})"><path d="M-13,-13 L13,13 M13,-13 L-13,13"/></g>"""
-      result.add &"""<g class="light" transform="translate({f1(c.x)},{f1(c.y)})"><path d="M0,0 C-9,-14 -6,-30 0,-38 C6,-30 9,-14 0,0 Z"/><circle r="4"/></g>"""
-  result.add compass((900.0, 78.0), 30.0)
-  result.add &"""<text class="land-label" x="40" y="300" transform="rotate(-90 40 300)" text-anchor="middle">the mainland</text>"""
-  result.add "\n</svg>"
+proc voyageMap*(islands: openArray[string], current: int, id = ""): string =
+  ## the map of the voyage in the theme of the build; `current` (1..7) is the island
+  ## of the section, 0 for the whole map, 8 for back on land
+  let v = defaultVoyage()
+  case slideTheme
+  of "pirate": pixelMap(v, islands, current)
+  of "chart": chartMap(v, islands, current, id)
+  of "book": engravedMap(v, islands, current, id)
+  else: baseMap(v, islands, current, id)
 
 # --- css --------------------------------------------------------------------------------
 
@@ -194,7 +93,7 @@ func pirateCss(): string =
 .reveal .rocks-quotes blockquote em {{ color: #ffffff; text-decoration: underline; }}
 .reveal .rocks-quotes figcaption {{ font-family: "Germania One", serif; font-size: 1.1em; color: #5a1a0c; }}
 .reveal .title-slide h2 {{ font-size: 1.85em; line-height: 1.05; }}
-.reveal .title-art {{ opacity: 0.3; }}
+.reveal .title-art {{ opacity: 0.35; }}
 .voyage-map .sea {{ rx: 18px; }}
 .reveal .voyage-map {{ filter: drop-shadow(3px 4px 0 rgba(90,50,20,0.35)); }}
 .voyage-map .sea {{ fill: #8fc9c0; fill-opacity: 0.55; }}
@@ -360,9 +259,9 @@ func chartCss(): string =
 
 func themeCss*(): string =
   case slideTheme
-  of "pirate": commonCss & pirateCss()
-  of "book": commonCss & bookCss()
-  of "chart": commonCss & chartCss()
+  of "pirate": commonCss & pirateCss() & pixelMapCss
+  of "book": commonCss & bookCss() & engravedMapCss
+  of "chart": commonCss & chartCss() & chartMapCss
   else: ""
 
 # --- theme specific slide parts ---------------------------------------------------------

@@ -1,22 +1,16 @@
-import std / [strutils, json]
+import std / [strutils]
 import nimib
-import nimib / highlight
 import ../my
+import devlog
 
-# A nimib document, a research post: three themes for the slides,
+# A talk log post, a research post: three themes for the slides,
 # tried on a few real slides before one is picked:
 #   scripts/build-themes.sh   (docs/index_<theme>.html, screenshots in docs/images/themes)
-#   nim r slides/themes_explainer.nim
-# writes docs/themes_explainer.html.
+#   nim r devlog/dressing_the_voyage.nim
 
-# this path writes the page to docs/, not docs/slides/
-nbInit(thisFileRel = "themes_explainer.nim")
-# but with it nimib cannot find this file,
-# so give the "Show Source" button its source here
-const ownSource = staticRead("themes_explainer.nim")
-nb.doc.source = ownSource
-nb.doc.context["source"] = %nb.doc.source
-nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
+nbInit(thisFileRel = "devlog/dressing_the_voyage.nim")
+const ownSource = staticRead("dressing_the_voyage.nim")
+nb.useDevlogPost("dressing-the-voyage", ownSource)
 nbRawHtml("<style>\n" & """
 pre { overflow-x: auto; }
 figure { margin: 1em 0; }
@@ -50,7 +44,7 @@ proc shots(theme: string) =
   ## the five slides of the experiment, in one theme, as a grid of screenshots
   var html = "<div class=\"shots\">\n"
   for s in ["0", "5.0", "5.1", "5.3", "4.4"]:
-    html.add "<a href=\"images/themes/" & theme & "-" & s & ".jpg\"><img src=\"images/themes/" &
+    html.add "<a href=\"../images/themes/" & theme & "-" & s & ".jpg\"><img src=\"../images/themes/" &
       theme & "-" & s & ".jpg\" alt=\"" & theme & " theme, slide " & s & "\"></a>\n"
   html.add "</div>"
   nbRawHtml html
@@ -64,8 +58,6 @@ proc swatches(colors: openArray[(string, string, string)]) =
   nbRawHtml html
 
 nbText """
-# Dressing the voyage: three themes for the slides
-
 The talk [Sailing Seas of Scientific
 Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/)
 is a sea voyage: we leave the mainland of scientific computing
@@ -198,9 +190,9 @@ with `pirate`, `book` or `chart`
 (`scripts/build-themes.sh` builds all three).
 Without the define the deck is unchanged.
 The whole deck in each theme:
-[pirate](index_pirate.html),
-[book](index_book.html),
-[chart](index_chart.html).
+[pirate](../index_pirate.html),
+[book](../index_book.html),
+[chart](../index_chart.html).
 
 All fonts are from Google Fonts, under the SIL Open Font License,
 and are vendored in `docs/assets/fonts`
@@ -209,14 +201,17 @@ so the slides still work offline at the venue.
 Textures are svg noise filters written in the css,
 so there are no image files either.
 
-The map is drawn by code, in `themes.nim`:
+The map is drawn by code (in `maps/`):
 seven wobbly islands (circles with a few sine waves on the radius,
 smoothed with Catmull-Rom splines),
 depth contours around them, the mainland, a dashed route,
 a compass rose, waves and soundings.
-One svg has every layer,
+In this first version one svg has every layer,
 and each theme's css decides which layers to show and how they look.
-Here it is with every layer visible and no theme:
+The screenshots below show that first version.
+Here it is with every layer visible and no theme
+(the [next post](2026-11-07-drawing-the-map.html)
+goes further: one geometry, a richer map per theme):
 """
 nbCode:
   let svg = voyageMap(islands, 3, id = "bare")
@@ -251,7 +246,7 @@ but its D reads like a V ("Vata Stack"):
 a heading font must be readable from the back of the room.
 These are the candidates I compared (all OFL):
 """
-nbRawHtml """<figure><img src="images/themes/pirate-heading-fonts.jpg" alt="heading font candidates">
+nbRawHtml """<figure><img src="../images/themes/pirate-heading-fonts.jpg" alt="heading font candidates">
 <figcaption>Heading font candidates on parchment: Germania One won for readability, New Rocker was the runner up.</figcaption></figure>"""
 swatches([("#ecd9a8", "#3b2412", "parchment"), ("#5a1a0c", "#fff", "headings"),
   ("#b3261e", "#fff", "strong, X, route"), ("#11747a", "#fff", "emphasis"),
@@ -363,4 +358,5 @@ and redo the slides that need it, section by section,
 starting from the map slides.
 """
 
+nb.devlogFooter("dressing-the-voyage")
 nbSave
