@@ -50,8 +50,18 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `slides/island3_penguins_explainer.nim`: a nimib page that explores the penguins dataset with the Nim data stack of Island 3 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island3_penguins_explainer.html)
 - `slides/island5_operators_explainer.nim`: a nimib page that explains the custom operators example of Island 5 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_operators_explainer.html)
 - `slides/island5_units_explainer.nim`: a nimib page that explains the units example of Island 5, with unchained (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_units_explainer.html)
+- `themes.nim` and `maps/`: three themes explored for the slides (pirate adventure game, old book of sea tales, nautical chart), not adopted yet; `maps/geometry.nim` is the one geometry of the voyage map, drawn by `maps/pixel.nim`, `maps/chart.nim` and `maps/engraved.nim`; `scripts/build-themes.sh` builds the deck in each theme (`docs/index_<theme>.html`)
+- `devlog/`: the talk log, see below
 - `slides/`: one file per slide (or group of slides)
 - `openspec/`: the talk is prepared with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (see below)
+
+## Talk log
+
+The repository holds the slides of the talk, the explainers that go deeper into their examples, and a talk log: posts on how the talk evolves, built with nimib from `devlog/` (the list of posts is in `devlog/devlog.nim`). Index: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/
+
+- [Setting sail](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/2026-11-07-setting-sail.html) (7 November 2026): how the talk got from an accepted abstract to a deck with seven islands
+- [Dressing the voyage](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/2026-11-07-dressing-the-voyage.html) (7 November 2026): what Ines Montani teaches about slides, and three themes tried on real slides
+- [Drawing the map](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/2026-11-07-drawing-the-map.html) (7 November 2026): one geometry for the map of the voyage, drawn as pixel art, as a nautical chart and as a hand-drawn chart
 
 ## setup
 

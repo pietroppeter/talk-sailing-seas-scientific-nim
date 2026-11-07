@@ -1,6 +1,8 @@
 import std / [strutils, strformat, json, math]
 export strutils
 import nimib, nimiSlides
+import themes
+export themes
 
 const
   agileLightBlue* = "#02A4BD"
@@ -152,6 +154,7 @@ const
   katexAssets = "assets/katex"
   p5Assets = "assets/p5"
   highlightAssets = "assets/highlight" # highlight.js styles, vendored by scripts/vendor-assets.sh
+  fontAssets = "assets/fonts" # fonts of the explored themes, vendored by scripts/vendor-fonts.sh
 
 const codeTheme* {.strdefine.} = "atom-one-light"
   ## highlight.js style for code blocks, one of the files in docs/assets/highlight
@@ -170,6 +173,8 @@ func vendoredRevealCss(blk: JsonNode, nb: Nb): string =
 <link rel="stylesheet" href="{reveal}/dist/theme/{theme}.css" />
 <link rel="stylesheet" href="{nb.assetPath(highlightAssets)}/{codeTheme}.css" />
 """
+  if themed: # fonts of the themes explored in slides/themes_explainer.nim
+    result.add &"""<link rel="stylesheet" href="{nb.assetPath(fontAssets)}/fonts.css" />"""
   if nb.doc.context{"p5"}.getBool:
     result.add &"""<script src="{nb.assetPath(p5Assets)}/p5.min.js"></script>"""
 
@@ -248,6 +253,8 @@ template myInit*(sourceFileRel = "my.nim") =
   useRevealLatex
   agileTheme()
   imageLeftStyle
+  when themed: # -d:slideTheme=pirate|book|chart, see themes.nim
+    nb.addStyle: themeCss()
   nb.backend.funcs["NbDoc"] = agileNbDocToHtml
 
 
@@ -264,12 +271,27 @@ const islands* = [
 template mapSlide*(n: int) =
   ## placeholder for the map of the voyage: island `n` (1..7) highlighted,
   ## 0 for the whole map, 8 for back on land (all islands visited)
-  slide:
-    var md = (if n == 0: "## The map\n\n" elif n == 8: "## Back on land\n\n" else: "## Island " & $n & "\n\n")
-    for i, island in islands:
-      let item = "Island " & $(i + 1) & ": " & island
-      md.add "- " & (if i + 1 == n: "**" & item & "**" elif n == 8 or i + 1 < n: item & " ✓" else: item) & "\n"
-    nbText md
+  when themed: # the voyage map drawn by themes.nim
+    slide:
+      nbRawHtml: "<div class=\"map-slide\">" & mapHeading(islands, n) & "\n" & voyageMap(islands, n) & "</div>"
+  else:
+    slide:
+      var md = (if n == 0: "## The map\n\n" elif n == 8: "## Back on land\n\n" else: "## Island " & $n & "\n\n")
+      for i, island in islands:
+        let item = "Island " & $(i + 1) & ": " & island
+        md.add "- " & (if i + 1 == n: "**" & item & "**" elif n == 8 or i + 1 < n: item & " ✓" else: item) & "\n"
+      nbText md
+
+template themedTitle*(body: untyped) =
+  ## the title slide's content; a theme adds a class for its css and, behind it, the map of the voyage
+  when themed:
+    nbRawHtml: "<div class=\"title-art\">" & voyageMap(islands, 0, "title") & "</div><div class=\"title-slide\"><div class=\"title-box\">"
+    body
+    when slideTheme == "chart":
+      nbRawHtml: "<p class=\"scale\">SCALE 1 : 30 MINUTES</p>"
+    nbRawHtml: "</div></div>"
+  else:
+    body
 
 template placeholderSlide*(id, title, description: string) =
   ## draft slide from the outline: the published deck shows only the title and a draft marker,
