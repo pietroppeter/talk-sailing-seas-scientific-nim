@@ -4,3 +4,5 @@ requires "https://github.com/SciNim/unchained"
 requires "arraymancer >= 0.7.33"
 requires "datamancer >= 0.5.1"
 requires "ggplotnim >= 0.7.6"
+requires "https://github.com/pietroppeter/tabelline#head"
+requires "nimib >= 0.4.3" # tabelline's nbTable block

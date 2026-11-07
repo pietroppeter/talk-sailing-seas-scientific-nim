@@ -1,6 +1,7 @@
 import nimib, nimiSlides
 import std / [math, sequtils]
 import ggplotnim
+import tabelline except Column, readCsv
 import ../my
 export math, sequtils, ggplotnim
 
@@ -8,6 +9,22 @@ export math, sequtils, ggplotnim
 # The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2 and K3.
 # Paths are relative to docs/ (nimib's homeDir): the data is docs/data/penguins.csv,
 # the plot is written to docs/images/penguins.png when the deck is built.
+
+# the table of slide 4.2, made here and not in the (dirty) template below,
+# so that tabelline's names do not meet Datamancer's where the template is used
+proc stackTable*(): Tabella =
+  let stack = @[
+    (part: "Tensors", python: "NumPy", r: "arrays, matrices",
+     nim: "[Arraymancer](https://github.com/mratsim/Arraymancer)"),
+    (part: "Dataframes", python: "pandas", r: "dplyr",
+     nim: "[Datamancer](https://github.com/SciNim/Datamancer)"),
+    (part: "Plots", python: "matplotlib", r: "ggplot2",
+     nim: "[ggplotnim](https://github.com/Vindaar/ggplotnim)")]
+  tabella(stack, rownameCol = "part")
+    .colsLabel({"python": "Python", "r": "R", "nim": "Nim"})
+    .fmtMarkdown("nim")
+    .highlightCols("nim")
+    .slideLook(fontSize = "0.85em")
 
 # dirty: Datamancer's `f{...}` formulas read `f` and type hints like `float`
 # as plain identifiers, which a normal template would bind to symbols
@@ -21,13 +38,7 @@ The building blocks of data science, as in the
 [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)
 by Jake VanderPlas:
 """
-      nbText """
-| | Python | R | Nim |
-|---|---|---|---|
-| Tensors | NumPy | arrays, matrices | [Arraymancer](https://github.com/mratsim/Arraymancer) |
-| Dataframes | pandas | dplyr | [Datamancer](https://github.com/SciNim/Datamancer) |
-| Plots | matplotlib | ggplot2 | [ggplotnim](https://github.com/Vindaar/ggplotnim) |
-"""
+      nbTable stackTable()
       speakerNote """
 Nim has the same three building blocks.
 Arraymancer is by Mamy (mratsim).
