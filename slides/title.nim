@@ -3,7 +3,8 @@ import ../my
 
 template titleSlide* =
   slide:
-    nbText """
+    themedTitle:
+      nbText """
 ## Sailing Seas of Scientific Nim
 
 **Pietro Peterlongo, AgileLab**
@@ -11,4 +12,4 @@ template titleSlide* =
 *Compute Paris, Nov 2026*
 
 """
-    reference "[github.com/pietroppeter/talk-sailing-seas-scientific-nim](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim)"
+      reference "[github.com/pietroppeter/talk-sailing-seas-scientific-nim](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim)"

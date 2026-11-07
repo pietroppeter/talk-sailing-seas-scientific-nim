@@ -50,6 +50,7 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `slides/island3_penguins_explainer.nim`: a nimib page that explores the penguins dataset with the Nim data stack of Island 3 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island3_penguins_explainer.html)
 - `slides/island5_operators_explainer.nim`: a nimib page that explains the custom operators example of Island 5 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_operators_explainer.html)
 - `slides/island5_units_explainer.nim`: a nimib page that explains the units example of Island 5, with unchained (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_units_explainer.html)
+- `slides/themes_explainer.nim`: a research post that tries three themes for the slides (pirate adventure game, old book of sea tales, nautical chart) on a few real slides; `themes.nim` holds them and `scripts/build-themes.sh` builds the deck in each theme (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/themes_explainer.html)
 - `slides/`: one file per slide (or group of slides)
 - `openspec/`: the talk is prepared with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (see below)
 

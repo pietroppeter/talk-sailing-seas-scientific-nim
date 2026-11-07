@@ -54,6 +54,8 @@ jobs:
           nim r slides/island5_operators_explainer.nim
           nim r slides/island5_units_explainer.nim
           nim r slides/emilia.nim
+          scripts/build-themes.sh
+          nim r slides/themes_explainer.nim
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs
