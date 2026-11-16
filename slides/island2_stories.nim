@@ -54,8 +54,8 @@ Others followed
       .tabStubhead("tool")
       .fmtMarkdown("tool")
       .fmtInteger("year", useSeps = false)
-      .fmtBar("citations", color = agileLightBlue, width = "3.5em")
-      .fmtInteger("stars")
+      .barBefore("citations")
+      .fmtInteger(["citations", "stars"])
       .slideLook(fontSize = "0.5em")
     nbRawHtml: """<div class="brent-cols">"""
     nbTable brentTable
@@ -147,7 +147,7 @@ and he says he learned way more.
     nbRawHtml: """<style>
 .reveal .story-intro { font-size: 0.8em; }
 .reveal h3 .gh-mark { height: 0.8em; width: 0.8em; vertical-align: -0.05em; margin-right: 0.15em; }
-.reveal .brent-cols { display: grid; grid-template-columns: auto 1fr; gap: 1.2em; align-items: center; }
+.reveal .brent-cols { display: grid; grid-template-columns: max-content 1fr; gap: 1.2em; align-items: center; }
 .reveal .brent-cols pre { font-size: 0.42em; width: 100%; margin: 0; }
 .reveal .rocks-quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; }
 .reveal .rocks-quotes figure { margin: 0; }

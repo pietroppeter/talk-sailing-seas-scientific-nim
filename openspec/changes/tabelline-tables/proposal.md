@@ -6,11 +6,11 @@ The deck and the explainers show their tables as plain Markdown or hand-written 
 
 ## What Changes
 
-- Dependency: tabelline (`requires "https://github.com/pietroppeter/tabelline#head"`); nimib moves from 0.4.1 to 0.4.3, which tabelline's `nbTable` block needs.
-- `my.nim`: `slideLook` (the deck's font, colours and transparent background for a tabelline table, undoing reveal.js' table styles) and `highlightCols` (the theme's light blue behind columns); a "A table" demo slide in the style test deck.
+- Dependency: tabelline 0.2 (`requires "https://github.com/pietroppeter/tabelline >= 0.2.0"`); nimib moves from 0.4.1 to 0.4.3, which tabelline's `nbTable` block needs.
+- `my.nim`: `barBefore` (a nanoplot bar beside each number of a column, from one zero line), `slideLook` (the deck's font, colours and transparent background for a tabelline table, undoing reveal.js' table styles) and `highlightCols` (the theme's light blue behind columns); a "A table" demo slide in the style test deck.
 - Slide 3.3 (Brent Pedersen): the tools table, with links, citations as bars and stars.
 - Slide 4.2 (The stack): the Python / R / Nim table, with the Nim column highlighted.
-- Brent Pedersen explainer: five tables (file formats, run times with bars and "vs mosdepth", tools with stars and citations as bars, tools by others, the polyglot table in year order with the Nim rows highlighted).
+- Brent Pedersen explainer: five tables (file formats, run times with bars and "vs mosdepth", tools with citations as bars and a total row, tools by others, the polyglot table in year order with the Nim rows highlighted).
 - Vindaar explainer: the limits table, with scientific notation, a "previous best" spanner and a "new best?" column.
 - Living outline: no section changes, one Decisions entry for tables.
 

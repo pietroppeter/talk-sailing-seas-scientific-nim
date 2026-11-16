@@ -311,6 +311,19 @@ proc slideLook*(t: sink Tabella, fontSize = "0.6em"): Tabella =
     # reveal.js styles every table: undo its cell borders and padding
     extraCss = " th, td { border-bottom: none; padding-left: 0.6em; padding-right: 0.6em; }")
 
+proc slideBars*(): NanoplotOptions =
+  ## nanoplot options for bars on slides: the theme's light blue
+  nanoplotOptions(dataBarFillColor = agileLightBlue, dataBarStrokeColor = agileLightBlue)
+
+proc barBefore*(t: sink Tabella, column: string, plotHeight = "1em",
+                options = slideBars()): Tabella =
+  ## a bar for each number of `column` (a nanoplot), in an unlabelled column just before it,
+  ## all bars from one zero line, so they compare; the number stays visible beside its bar
+  let bar = column & "Bar"
+  t.colsAdd(bar, proc (r: Row): Value = r[column], before = column)
+    .fmtNanoplot(bar, plotType = "bar", plotHeight = plotHeight, options = options)
+    .colsLabel(bar, "")
+
 proc highlightCols*(t: sink Tabella, cols: ColSel): Tabella =
   ## the theme's light blue behind `cols`, from the label to the last row
   t.tabStyle(style.fill("#D9F2F6") & style.text(weight = "bold"), loc.body(cols), loc.columnLabels(cols))
@@ -367,7 +380,7 @@ Text with *italic*, **strong** and [link](recurse.com)
       .tabStubhead("boat")
       .colsLabel("length", "length (m)")
       .fmtNumber("length", decimals = 1)
-      .fmtBar("crew", color = agileLightBlue, width = "4em")
+      .barBefore("crew")
       .highlightCols("length")
       .tabSourceNote("made with tabelline, slideLook and highlightCols in my.nim")
     nbTable fleetTable.slideLook

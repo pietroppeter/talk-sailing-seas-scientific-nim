@@ -128,6 +128,19 @@ The data flows through a few standard formats:
 
 """
 
+# horizontal bars of one colour, for nanoplots of a single value
+proc bars(color: string): NanoplotOptions =
+  nanoplotOptions(dataBarFillColor = color, dataBarStrokeColor = color)
+
+proc barBefore(t: sink Tabella, column: string, plotHeight = "0.9em",
+                options = bars("#02A4BD")): Tabella =
+  ## a bar for each number of `column` (a nanoplot), in an unlabelled column just before it,
+  ## all bars from one zero line, so they compare; the number stays visible beside its bar
+  let bar = column & "Bar"
+  t.colsAdd(bar, proc (r: Row): Value = r[column], before = column)
+    .fmtNanoplot(bar, plotType = "bar", plotHeight = plotHeight, options = options)
+    .colsLabel(bar, "")
+
 # the tables of this page are made with tabelline
 # (great tables for Nim, after R's gt and Python's Great Tables)
 let formats = tableData:
@@ -320,7 +333,7 @@ let runs = tableData:
 let runsTable = tabella(runs, rownameCol = "tool"):
   tabStubhead "tool"
   colsLabel {"time": "run time", "minutes": "", "slower": "vs mosdepth"}
-  fmtBar "minutes", color = "#02A4BD", width = "10em", showValue = false
+  fmtNanoplot "minutes", plotType = "bar", plotHeight = "1.5em", options = bars("#02A4BD")
   fmtNumber "slower", decimals = 1, pattern = "{x}×"
   colsAlign alRight, "time"
   tabStyle style.text(weight = "bold"), loc.stub(rows = 0), loc.body(rows = 0)
@@ -474,8 +487,13 @@ let toolsTable = tabella(tools, rownameCol = "tool"):
   tabStubhead "tool"
   colsLabel "does", "what it does"
   fmtMarkdown "tool"
-  fmtBar "stars", color = "#F4C542", width = "6em"
-  fmtBar "citations", color = "#02A4BD", width = "6em"
+  fmtInteger ["stars", "citations"]
+  # a bar beside the citations, as on the slide (a bar alone shows its number only on hover)
+  barBefore "citations"
+  grandSummaryRows:
+    total: agg.sum
+    columns = ["stars", "citations"]
+    missingText = ""
   colsWidth {"does": "40%"}
   tabSourceNote "Stars from GitHub, citations from Google Scholar, October 2026."
 nbTable toolsTable
