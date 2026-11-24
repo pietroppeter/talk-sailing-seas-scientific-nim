@@ -311,7 +311,62 @@ a clustering method by Frey and Dueck (Science, 2007)
 in which the points exchange messages until some of
 them emerge as exemplars, the centers of the clusters,
 without fixing the number of clusters beforehand.
+"""
 
+nbText """
+### Affinity propagation in brief
+
+Most clustering methods ask first how many clusters you
+want (k-means needs k) and then invent centers.
+Affinity propagation starts from a similarity between
+every pair of points (for example minus their squared
+distance) and lets the data choose: every point is a
+candidate exemplar, and the points exchange two kinds
+of messages until a few candidates win.
+
+- The **responsibility** r(i, k), sent from point i to
+  candidate k: how well k would serve as i's exemplar,
+  compared with the other candidates for i.
+- The **availability** a(i, k), sent back from k to i:
+  how much sense it makes for i to pick k, given how
+  many other points already back k.
+
+Each round updates both messages (with some damping, so
+they do not oscillate); a point is an exemplar when
+r(k, k) + a(k, k) > 0, and every other point joins the
+exemplar most similar to it.
+The number of clusters is not fixed, it follows from
+the *preference*, the similarity of each point with
+itself: a higher preference makes more exemplars.
+The exemplars are real data points, not averages, and
+the similarity can be anything you can compute for a
+pair, even one that is not a distance.
+The price is the n × n matrices: time and memory grow
+with the square of the points, so it fits thousands or
+tens of thousands of points, not millions.
+
+It is used where a representative example says more
+than an average, or where only similarities are
+available. The original paper clustered face images
+(picking representative faces), found genes in
+microarray data, chose a few sentences to summarize a
+manuscript, and found cities that are easy to reach by
+air; in bioinformatics it clusters protein and gene
+sequences from their alignment scores, which is where
+R's apcluster comes from.
+A playful use is a color palette: cluster the colors
+of an image and keep the exemplars.
+[appalette](https://claude.ai/artifact/SW4Bqy8xrCmWeMrq22ST8L)
+does that in the browser, with a perceptual color
+difference (CIEDE2000) as the similarity: you see the
+palettes that stay stable as the preference changes,
+and keep the colors you like.
+The algorithm also runs step by step in naffprop's own
+[How exemplars emerge](https://pietroppeter.github.io/naffprop/),
+the figure on the naffprop slide.
+"""
+
+nbText """
 scikit-learn and R both have it, with different
 features: R's [apcluster](https://cran.r-project.org/package=apcluster)
 has more of them (a preference as a quantile, ask for
