@@ -1,0 +1,33 @@
+{
+  "runtime": "CPython 3.12.3 / NumPy 2.4.4",
+  "results": [
+    {
+      "impl": "numpy (thesis vander)",
+      "size": 4,
+      "iters": 250000,
+      "seconds": 0.7534690150000642,
+      "checksum": 16.08888888888889
+    },
+    {
+      "impl": "numpy (np.vander builtin)",
+      "size": 4,
+      "iters": 250000,
+      "seconds": 0.8498052609999149,
+      "checksum": 16.08888888888889
+    },
+    {
+      "impl": "numpy (thesis vander)",
+      "size": 2000,
+      "iters": 1,
+      "seconds": 0.014903653000033046,
+      "checksum": 3.684802627825497e+84
+    },
+    {
+      "impl": "numpy (np.vander builtin)",
+      "size": 2000,
+      "iters": 1,
+      "seconds": 0.014614673999972183,
+      "checksum": 3.684802627825497e+84
+    }
+  ]
+}

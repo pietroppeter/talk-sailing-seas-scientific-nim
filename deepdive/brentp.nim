@@ -1,0 +1,671 @@
+import std / [strutils, json, random, math, algorithm, sequtils]
+import nimib
+import deepdive # useDeepDive, and the blocks of blocks.nim
+import nimib / highlight
+import tabelline, tabelline / nimib
+
+# A nimib document that explains the bioinformatics work
+# of Brent Pedersen (@brentp), the first success story of
+# Island 2 (slide 3.2, in slides/island2_stories.nim):
+#   nim r deepdive/brentp.nim
+# writes docs/deepdive/brentp.html.
+# The toy code below runs when the page is built;
+# the hts-nim and slivar snippets are quoted, not run.
+
+nbInit(thisFileRel = "deepdive/brentp.nim")
+const ownSource = staticRead("brentp.nim")
+nb.useDeepDive("brentp", ownSource)
+nbText """
+# Brent Pedersen: genomics tools in Nim
+
+In the talk [Sailing Seas of Scientific
+Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html),
+Island 2 tells two success stories in forty seconds each.
+The first is Brent Pedersen (@brentp on GitHub),
+who wrote a set of genomics tools in Nim that are
+published in journals, installed from bioconda
+and used in many labs.
+
+A slide can only name them. This page takes the time
+to explain what they do, starting from the biology
+you need to follow along (no background assumed),
+then going tool by tool: hts-nim, mosdepth, slivar,
+somalier and a few more. Two of the ideas are small
+enough to rebuild here in a few lines of Nim, and that
+code runs when this page is built, so the output you
+see below each block is real.
+"""
+
+nbText """
+## Genomics in five minutes
+
+**DNA and the genome.** Your DNA is a long string over
+a four letter alphabet, the bases A, C, G and T.
+The human genome is about 3.1 billion bases, split into
+chromosomes (1 to 22, plus X and Y, and the small
+mitochondrial one). You carry two copies of each
+chromosome, one from each parent (X and Y aside).
+Positions in the genome are written like
+`chr6:30816675`, a chromosome and an offset.
+
+**The reference.** To talk about differences we need
+something to compare to: the *reference genome*,
+a consensus human sequence. There are two versions in
+common use, GRCh37 (also called hg19) and GRCh38
+(hg38), and coordinates differ between them.
+
+**Variants and genotypes.** Two people differ at a few
+million positions. A *variant* is a position where a
+sample differs from the reference: a single base change
+(SNP), a small insertion or deletion (indel), or a large
+rearrangement (a *structural variant*, SV, such as a
+deletion or a duplication of thousands of bases).
+Since you have two copies, at each variant you are
+*hom_ref* (both copies like the reference),
+*het* (one copy each, heterozygous) or
+*hom_alt* (both copies with the alternate allele).
+That pair of alleles is your *genotype* there.
+
+**Sequencing.** Machines cannot read a chromosome end
+to end. Short-read sequencing (Illumina) shatters the
+DNA into millions of fragments and reads about 150
+bases from each end of each fragment (a *read pair*,
+or two *mates*). Long-read technologies exist too,
+but short reads are still the workhorse.
+Sequencing the whole genome is *WGS*; sequencing only
+the protein-coding parts (about 1-2% of the genome,
+captured with probes) is *whole exome sequencing*, WES.
+
+**Alignment.** Each read is then placed (*aligned*,
+or *mapped*) on the reference, where it fits best.
+The aligner also says how sure it is, the *mapping
+quality*: a read from a repeated region could come
+from many places, and gets a low score.
+
+**Depth.** Pile up all aligned reads and count, for
+each base of the reference, how many reads cover it:
+that is the *depth*, or *coverage*. "30X WGS" means the
+reads cover each base about 30 times on average.
+Depth tells you if you have enough evidence to call
+a genotype at a position, and dips or bumps in depth
+over a long stretch hint at deletions or duplications.
+
+**Variant calling.** Where the reads in the pile
+disagree with the reference, a *variant caller*
+decides which genotype best explains them, and writes
+the result for one or many samples.
+
+**Families and rare disease.** A classic design in
+clinical genomics is the *trio*: a sick child and both
+healthy parents. A *de novo* variant is one the child
+has and neither parent has: a new mutation, and a prime
+suspect for a rare genetic disease. A *pedigree file*
+(`.ped`) says who is whose parent and who is affected.
+
+**Population frequency.** A variant that many healthy
+people carry is unlikely to cause a rare disease.
+[gnomAD](https://gnomad.broadinstitute.org/) is a large
+database of how often each variant is seen in the
+population, used to filter out the common ones.
+"""
+
+nbText """
+## The file formats
+
+The data flows through a few standard formats:
+
+"""
+
+# horizontal bars of one colour, for nanoplots of a single value
+proc bars(color: string): NanoplotOptions =
+  nanoplotOptions(dataBarFillColor = color, dataBarStrokeColor = color)
+
+proc barBefore(t: sink Tabella, column: string, plotHeight = "0.9em",
+                options = bars("#02A4BD")): Tabella =
+  ## a bar for each number of `column` (a nanoplot), in an unlabelled column just before it,
+  ## all bars from one zero line, so they compare; the number stays visible beside its bar
+  let bar = column & "Bar"
+  t.colsAdd(bar, proc (r: Row): Value = r[column], before = column)
+    .fmtNanoplot(bar, plotType = "bar", plotHeight = plotHeight, options = options)
+    .colsLabel(bar, "")
+
+# the tables of this page are made with tabelline
+# (great tables for Nim, after R's gt and Python's Great Tables)
+let formats = tableData:
+  format: ["FASTQ", "BAM / CRAM", "VCF / BCF", "BED"]
+  content: ["raw reads, with a quality score for each base",
+            "reads aligned to the reference",
+            "variants and genotypes, one row per variant",
+            "plain text list of regions, `chrom start end`"]
+let formatsTable = tabella(formats, rownameCol = "format"):
+  tabStubhead "format"
+  colsLabel "content", "what is in it"
+  fmtMarkdown "content"
+  tabStyle style.text(weight = "bold"), loc.stub()
+nbTable formatsTable
+
+nbText """
+The aligned reads of a 30X genome take tens of
+gigabytes, while its variants fit in about a gigabyte.
+BAM is the binary, compressed version of SAM, a text
+format with one line per read. CRAM compresses further
+by storing only the differences from the reference.
+BCF is to VCF what BAM is to SAM.
+An *index* (`.bai`, `.crai`, `.csi`, `.tbi`) lets a
+program jump to a region without reading the whole file.
+
+Each aligned read in a BAM carries, among other things:
+its chromosome and start position, its mapping quality,
+a set of *flags* (is it paired, is its mate mapped, is it
+on the reverse strand, is it a duplicate...),
+and a *CIGAR* string that says how it aligns:
+`151M` means 151 bases that match position by position,
+`100M2D51M` means 100 bases, then 2 bases of the
+reference missing from the read (a deletion), then 51
+more.
+
+All of these formats are read and written by
+[htslib](https://github.com/samtools/htslib), a C
+library, and the command line tools built on it,
+[samtools](https://www.htslib.org/) and bcftools.
+Almost every genomics tool, in any language, sits on
+htslib somewhere.
+"""
+
+nbText """
+## hts-nim: htslib, from Nim
+
+[hts-nim](https://github.com/brentp/hts-nim) is a Nim
+wrapper of htslib. The paper
+([Bioinformatics 2018](https://doi.org/10.1093/bioinformatics/bty358),
+with Aaron Quinlan, University of Utah;
+[preprint](https://www.biorxiv.org/content/10.1101/261735))
+makes the case in one line: scripting languages are easy
+to write but come with a substantial performance cost,
+especially acute at the scale of modern genomics data;
+Nim compiles to C, is fast, garbage collected, gives
+control over memory reuse, and has a syntax that feels
+familiar to Python (and Perl) users.
+
+This is the example from the hts-nim README (quoted,
+not run here: it needs htslib and a real BAM file),
+with comments for what each line does:
+"""
+
+nbShowCode """
+import hts
+
+# open a BAM (or CRAM) file, and its index
+var b: Bam
+open(b, "tests/HG02002.bam", index=true,
+     fai="/data/human/g1k_v37_decoy.fa")
+
+# every read in the file
+for record in b:
+  if record.mapping_quality > 10u:
+    echo record.chrom, record.start, record.stop
+
+# only the reads in a 2 million base region
+# of chromosome 6 (the index makes this fast)
+for record in b.query("6", 30816675, 32816675):
+  # flags: properly paired and on the reverse strand
+  if record.flag.proper_pair and record.flag.reverse:
+    # the CIGAR, one operation at a time
+    for op in record.cigar:
+      echo $op, " ", op.consumes.reference, " ",
+           op.consumes.query
+    # tags: extra fields, here NM = number of
+    # mismatches against the reference
+    var mismatches = tag[int](record, "NM")
+    if not mismatches.isNone and mismatches.get < 3:
+      var rg = tag[string](record, "RG")"""
+
+nbText """
+For a Python user this reads almost like
+[pysam](https://github.com/pysam-developers/pysam),
+the Python wrapper of the same library, but it compiles
+to a native binary that runs at the speed of C and
+ships as a single executable.
+The hts-nim repository also has
+[hts-nim-tools](https://github.com/brentp/hts-nim-tools),
+small command line examples, and its
+[wiki](https://github.com/brentp/hts-nim/wiki/Example-uses-of-hts-nim)
+lists about fifteen projects by other people built on
+it, including two from SeqOne, a genomics company.
+
+Wrapping a C library is Island 4 of the talk:
+hts-nim is a real world example of how far that goes.
+"""
+
+nbText """
+## mosdepth: how deep is the coverage?
+
+[mosdepth](https://github.com/brentp/mosdepth)
+([Bioinformatics 2018](https://doi.org/10.1093/bioinformatics/btx699))
+computes depth from a BAM or CRAM: per base, as the mean
+over fixed-size windows (used to find copy number changes,
+CNVs), as the mean over the regions of a BED file (the
+exome capture regions, say), or as the fraction of bases
+covered at least 10, 20, 30 times (a standard quality
+check: "is 95% of the exome covered at 20X?").
+
+It is the most used of Brent's tools: the paper has
+about 1,450 citations on Google Scholar and the repo
+about 900 stars on GitHub (October 2026).
+
+**The trick.** Instead of piling up reads base by base,
+mosdepth allocates one array of integers as long as the
+chromosome. For each aligned read it adds 1 at the
+position where the read starts and subtracts 1 where it
+ends. The depth at a position is then the cumulative sum
+of the array up to that position. One pass over the
+reads, one pass over the array, no per-read objects.
+(The real tool also follows the CIGAR, so that a read
+with a deletion does not count over the deleted bases,
+and avoids counting twice the overlap of two mates.)
+
+Here is the idea on a toy chromosome of 60 bases
+with 12 random reads of length 15:
+"""
+
+nbCode:
+  randomize(2026)
+  const chromLen = 60
+  const readLen = 15
+  var reads: seq[(int, int)] # (start, stop), stop excluded
+  for i in 1 .. 12:
+    let start = rand(chromLen - readLen)
+    reads.add (start, start + readLen)
+  reads.sort()
+
+  # the mosdepth array: +1 at start, -1 at stop
+  var delta = newSeq[int](chromLen + 1)
+  for (start, stop) in reads:
+    inc delta[start]
+    dec delta[stop]
+
+  # depth = cumulative sum
+  var depth = newSeq[int](chromLen)
+  var running = 0
+  for i in 0 ..< chromLen:
+    running += delta[i]
+    depth[i] = running
+
+  # draw the reads and the depth
+  for (start, stop) in reads:
+    echo " ".repeat(start) & "=".repeat(stop - start)
+  echo "-".repeat(chromLen)
+  echo depth.join("")
+  echo "max depth: ", depth.max,
+    ", mean depth: ", formatFloat(depth.sum / chromLen, ffDecimal, 1)
+
+nbText """
+Each row of `=` is a read; the bottom row is the depth
+at each base, and it matches what you get by counting
+the reads above it. The same few lines scale to the
+249 million bases of chromosome 1: the README notes
+that the array then takes about 1 GB of memory,
+the price paid for the speed.
+
+From the mosdepth README, on a 30X genome
+(per-base depth, single thread, BAM):
+
+"""
+
+let runMinutes = [25, 50, 134, 144]
+let runs = tableData:
+  tool: ["mosdepth", "samtools depth", "bedtools genomecov", "sambamba"]
+  time: ["25 min", "50 min", "2 h 14 min", "2 h 24 min"]
+  minutes: runMinutes
+  slower: runMinutes.mapIt(it / runMinutes[0])
+let runsTable = tabella(runs, rownameCol = "tool"):
+  tabStubhead "tool"
+  colsLabel {"time": "run time", "minutes": "", "slower": "vs mosdepth"}
+  fmtNanoplot "minutes", plotType = "bar", plotHeight = "1.5em", options = bars("#02A4BD")
+  fmtNumber "slower", decimals = 1, pattern = "{x}×"
+  colsAlign alRight, "time"
+  tabStyle style.text(weight = "bold"), loc.stub(rows = 0), loc.body(rows = 0)
+  tabSourceNote "30X genome, per-base depth, single thread, BAM (mosdepth README)."
+nbTable runsTable
+
+nbText """
+With 3 threads mosdepth goes down to about 14 minutes,
+and window mode to under 9.
+"""
+nbNote """
+One honest note from the README: mosdepth "must be built
+with the `--mm:refc` flag for optimal performance and
+correct operation", that is with Nim's older memory
+manager, not the ORC default of Nim 2.
+"""
+
+nbText """
+## slivar: one-line rules for families
+
+[slivar](https://github.com/brentp/slivar)
+([npj Genomic Medicine 2021](https://www.nature.com/articles/s41525-021-00227-3))
+filters and annotates variants in a VCF with short
+expressions, written in JavaScript, applied to every
+family in a cohort. Given a VCF with 200 trios and their
+pedigree file, an expression that talks about `kid`,
+`mom` and `dad` is tested on each of the 200 trios.
+This is the de novo rule from the README:
+"""
+
+nbShowCode("""variant.FILTER == 'PASS' &&
+variant.call_rate > 0.95 &&   // genotype known for most of the cohort
+INFO.gnomad_af < 0.001 &&     // rare in gnomAD
+kid.het && mom.hom_ref && dad.hom_ref &&
+kid.DP > 7 && mom.DP > 7 && dad.DP > 7 &&  // enough depth in all three
+(mom.AD[1] + dad.AD[1]) == 0  // no read with the variant in the parents""", lang = "javascript")
+
+nbText """
+Read it with the glossary above: the variant passed the
+caller's filters, is rare in the population, the child is
+heterozygous, both parents look like the reference,
+each of the three has more than 7 reads there (`DP`,
+the depth), and not a single parental read supports the
+alternate allele (`AD`, the allele depths: `AD[0]` reads
+for the reference, `AD[1]` for the alternate).
+
+slivar also annotates variants with gnomAD frequencies
+at more than 30,000 variants per second from a 1.5 GB
+compressed file, and finds compound heterozygotes
+(two different damaging variants, one from each parent,
+in the same gene). The paper uses it to estimate how
+many candidate variants a rare disease study should
+expect per trio, after good filtering: about ten per
+exome, under twenty per genome.
+
+How does a Nim program run JavaScript? slivar embeds
+[duktape](https://duktape.org/), a small JavaScript
+engine written in C, through a Nim wrapper
+(duktape-nim, also by Brent). Interop again, in the
+other direction: the fast loop is Nim, the user-facing
+rules are JavaScript.
+
+Here is the same de novo rule written as a Nim proc,
+on four made-up variants in one trio:
+"""
+
+nbCode:
+  type
+    Genotype = enum homRef, het, homAlt
+    Call = object
+      gt: Genotype
+      depth: int     # DP
+      altReads: int  # AD[1]
+    TrioVariant = object
+      name: string
+      popFreq: float # gnomAD allele frequency
+      kid, mom, dad: Call
+
+  proc isDeNovo(v: TrioVariant): bool =
+    v.popFreq < 0.001 and
+      v.kid.gt == het and v.mom.gt == homRef and v.dad.gt == homRef and
+      v.kid.depth > 7 and v.mom.depth > 7 and v.dad.depth > 7 and
+      v.mom.altReads + v.dad.altReads == 0
+
+  let variants = [
+    TrioVariant(name: "chr2:1000", popFreq: 0.0,
+      kid: Call(gt: het, depth: 31, altReads: 14),
+      mom: Call(gt: homRef, depth: 28), dad: Call(gt: homRef, depth: 35)),
+    TrioVariant(name: "chr7:2000 (common)", popFreq: 0.12,
+      kid: Call(gt: het, depth: 30, altReads: 15),
+      mom: Call(gt: homRef, depth: 29), dad: Call(gt: homRef, depth: 33)),
+    TrioVariant(name: "chr9:3000 (dad has 2 alt reads)", popFreq: 0.0,
+      kid: Call(gt: het, depth: 27, altReads: 12),
+      mom: Call(gt: homRef, depth: 30), dad: Call(gt: homRef, depth: 25, altReads: 2)),
+    TrioVariant(name: "chr12:4000 (mom depth 5)", popFreq: 0.0,
+      kid: Call(gt: het, depth: 33, altReads: 16),
+      mom: Call(gt: homRef, depth: 5), dad: Call(gt: homRef, depth: 31)),
+  ]
+  for v in variants:
+    echo (if v.isDeNovo: "de novo   " else: "filtered  "), v.name
+
+nbText """
+## somalier: is this sample who we think it is?
+
+Large studies handle thousands of samples, and tubes get
+swapped, labels get mixed, a "sibling" turns out to be a
+duplicate. [somalier](https://github.com/brentp/somalier)
+([Genome Medicine 2020](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-020-00761-2))
+checks it quickly. It first *extracts*, for each sample,
+the genotypes at a fixed set of common variant sites (a
+small "sketch" of the sample), directly from the BAM/CRAM
+or from a VCF. Then it *relates* all the sketches:
+for every pair of samples it measures how many genotypes
+they share and computes their relatedness, which should
+be about 1 for the same person, 0.5 for parent and child
+or siblings, 0 for unrelated people. Comparing that with
+the pedigree file flags the swaps.
+The relate step is fast: per the README, under 2 seconds
+for 600 samples and about a minute for 4,500, with an
+interactive HTML report
+([example](https://brentp.github.io/somalier/ex.html)).
+"""
+
+nbText """
+## And more
+
+His main Nim tools, with GitHub stars and the citations
+of their papers on
+[Google Scholar](https://scholar.google.com/citations?user=tDf0VkUAAAAJ)
+(both as of October 2026):
+
+"""
+
+let tools = tableData:
+  tool: ["[mosdepth](https://github.com/brentp/mosdepth)",
+         "[somalier](https://github.com/brentp/somalier)",
+         "[slivar](https://github.com/brentp/slivar)",
+         "[hts-nim](https://github.com/brentp/hts-nim)",
+         "[duphold](https://github.com/brentp/duphold)",
+         "[STRling](https://github.com/quinlan-lab/STRling)"]
+  does: ["depth from BAM/CRAM", "sample identity and relatedness",
+         "variant filtering with expressions", "htslib for Nim",
+         "adds depth evidence to deletion and duplication calls",
+         "finds expansions of short tandem repeats (with Harriet Dashnow, Quinlan lab)"]
+  stars: [878, 341, 274, 159, 109, 72]
+  citations: [1452, 172, 141, 18, 93, 68]
+let toolsTable = tabella(tools, rownameCol = "tool"):
+  tabStubhead "tool"
+  colsLabel "does", "what it does"
+  fmtMarkdown "tool"
+  fmtInteger ["stars", "citations"]
+  # a bar beside the citations, as on the slide (a bar alone shows its number only on hover)
+  barBefore "citations"
+  grandSummaryRows:
+    total: agg.sum
+    columns = ["stars", "citations"]
+    missingText = ""
+  colsWidth {"does": "40%"}
+  tabSourceNote "Stars from GitHub, citations from Google Scholar, October 2026."
+nbTable toolsTable
+
+nbText """
+These are the six Nim tools with a paper (2018 to 2022):
+together 1,944 citations and 1,833 stars.
+Some of his other Nim tools have no paper, like
+[jigv](https://github.com/brentp/jigv) (132 stars),
+self-contained igv.js pages to look at reads and variants,
+and [seqcover](https://github.com/brentp/seqcover)
+(51 stars), coverage across many genes and samples. hts-nim and slivar also appear in a review
+of VCF tools,
+["A spectrum of free software tools for processing the VCF
+variant call format"](https://doi.org/10.1371/journal.pcbi.1009123)
+(PLoS Computational Biology 2022), which Brent co-authored.
+
+duphold is a nice follow-up of the depth story: a
+structural variant caller may claim a deletion from the
+shape of the read pairs, and duphold checks whether the
+depth actually drops there ("we will be skeptical of
+deletion calls that do not have lower than average
+coverage"). Altogether he has 32 Nim repositories,
+including small libraries like
+[nim-lapper](https://github.com/brentp/nim-lapper)
+(fast interval overlaps) that others reuse.
+Several of these tools are installed from
+[bioconda](https://bioconda.github.io/), the conda
+channel of bioinformatics, so many users run them
+without ever knowing they are written in Nim.
+"""
+
+nbText """
+## Others followed
+
+A library is a success when other people build on it.
+The hts-nim
+[wiki](https://github.com/brentp/hts-nim/wiki/Example-uses-of-hts-nim)
+lists tools by other authors, among them:
+[quad](https://github.com/andreas-wilm/quad) (base
+qualities in BAM files) and decontanimate (cleaning FASTQ
+files) by Andreas Wilm,
+[nimnexus](https://github.com/Avsecz/nimnexus) (ChIP-nexus
+data) by Žiga Avsec,
+[kraf](https://github.com/SeqOne/kraf) and
+[clinvcf](https://github.com/SeqOne/clinvcf) from the
+genomics company SeqOne,
+[seq-collection](https://github.com/danielecook/seq-collection)
+by Daniel Cook,
+[conduit](https://github.com/NatPRoach/conduit)
+(transcriptome assembly without a reference) and
+sscocaller (crossovers from single-cell sperm sequencing).
+
+Some went all the way to a paper. Two Nim tools built
+on hts-nim (they list `hts` among their Nimble
+dependencies):
+
+"""
+
+let followers = tableData:
+  tool: ["[BamToCov](https://github.com/telatin/bamtocov)",
+         "[sgcocaller](https://github.com/ruqianl/sgcocaller)"]
+  does: ["coverage from BAM/CRAM with a very small memory footprint",
+         "haplotypes and crossovers from single-gamete sequencing"]
+  authors: ["Giovanni Birolo, Andrea Telatin", "Ruqian Lyu, ..., Davis McCarthy"]
+  paper: ["[Bioinformatics 2022](https://doi.org/10.1093/bioinformatics/btac125)",
+          "[Nucleic Acids Research 2022](https://doi.org/10.1093/nar/gkac764)"]
+let followersTable = tabella(followers, rownameCol = "tool"):
+  tabStubhead "tool"
+  colsLabel "does", "what it does"
+  fmtMarkdown ["tool", "paper"]
+nbTable followersTable
+
+nbText """
+BamToCov's README points readers to the hts-nim paper
+and to Brent's [nim-lapper](https://github.com/brentp/nim-lapper)
+interval library, which they used at first.
+sgcocaller grew out of sscocaller, the single-sperm
+crossover caller in the wiki list.
+Andrea Telatin also wrote
+[SeqFu](https://github.com/telatin/seqfu2)
+([Bioengineering 2021](https://doi.org/10.3390/bioengineering8050059)),
+a Nim suite of utilities for FASTA and FASTQ files,
+and covtools, in the same wiki list; he also keeps a
+[Nim for bioinformatics](https://telatin.github.io/nim-for-bioinformatics/)
+site. More Nim libraries for biology are collected in
+[awesome-bionimformatics](https://github.com/andreas-wilm/awesome-bionimformatics).
+So hts-nim did what a good library does: it made the next
+person's Nim tool a lot cheaper to write.
+"""
+
+nbText """
+## A polyglot toolmaker
+
+Nim is one chapter of a longer story. On
+[his website](https://brentp.github.io/) Brent lists six
+key projects, each with a maintained repository and a
+paper, and they span four languages:
+
+"""
+
+# in the order of the papers, to see the language change over the years
+let polyglot = tableData:
+  year: [2016, 2017, 2018, 2020, 2021, 2023]
+  tool: ["[vcfanno](https://github.com/brentp/vcfanno)",
+         "[cyvcf2](https://github.com/brentp/cyvcf2)",
+         "[mosdepth](https://github.com/brentp/mosdepth)",
+         "[somalier](https://github.com/brentp/somalier)",
+         "[slivar](https://github.com/brentp/slivar)",
+         "[echtvar](https://github.com/brentp/echtvar)"]
+  language: ["Go", "Python and Cython", "Nim", "Nim", "Nim", "Rust"]
+  journal: ["Genome Biology", "Bioinformatics", "Bioinformatics",
+            "Genome Medicine", "npj Genomic Medicine", "Nucleic Acids Research"]
+let polyglotTable = tabella(polyglot):
+  colsMoveToStart ["year"]
+  colsLabel "journal", "paper"
+  fmtMarkdown "tool"
+  fmt("year", proc (v: Value): string = $v)   # no thousands separator in a year
+  tabStyle style.fill("#D9F2F6"), loc.body(rows = where(it["language"] == "Nim"))
+  tabStyle style.text(weight = "bold"), loc.body("language", rows = where(it["language"] == "Nim"))
+nbTable polyglotTable
+
+nbText """
+He describes mosdepth as "written in Nim for maximum
+performance", echtvar as "written in Rust for maximum
+performance", and vcfanno as "written in Go for speed
+and reliability". The same person, the same goal (fast,
+simple tools for genomic variants), and over the years
+the language changed with the tools and libraries
+around it. Before all of these he co-wrote
+[pybedtools](https://github.com/daler/pybedtools)
+(Bioinformatics 2011), a Python library.
+
+Some ideas travel across the languages. slivar's
+"filter variants with a user expression" came back in
+Rust twice: [vcfexpress](https://github.com/brentp/vcfexpress)
+(Bioinformatics 2025), with Lua as the expression
+language, and [htsvcf](https://github.com/brentp/htsvcf),
+JavaScript expressions on top of
+[rust-htslib](https://github.com/rust-bio/rust-htslib),
+the Rust counterpart of hts-nim, maintained by the
+rust-bio community. He wrote about building htsvcf with
+AI coding tools on [his blog](https://brentp.github.io/blog/),
+and about why he likes to add a scripting interface to
+command line tools.
+
+For the talk this is a good illustration of its last
+message: languages are tools with tradeoffs, and a good
+toolmaker picks up the one that fits the job and the
+ecosystem of the moment.
+"""
+
+nbText """
+## Why this is a success story
+
+For the talk the point is simple: a competent scientist
+picked a niche language and used it to build tools for
+real research. They are published in peer reviewed
+journals, cited and installed by people who never need
+to know which language they are written in.
+Nim gave him a scripting-like syntax with the speed
+of C, and the C ecosystem of genomics (htslib, duktape,
+libBigWig) a few lines of wrapping away.
+
+The rocks ahead are real too: the genomics ecosystem
+in Nim is small, so he wrapped or wrote what he needed
+himself, from the htslib bindings to an interval tree.
+In the end he moved on. When Pietro got in touch about
+this talk, Brent answered (personal communication, 2026):
+
+> I mostly switched to rust since that's where the
+> bioinformatics libs are, but I still really like nim
+
+Libraries attract people, and people write libraries:
+a small ecosystem has a hard time keeping even its
+pioneers. That is the price of being early, and one of
+the shortcomings the talk comes back to at the end.
+
+## Sources
+
+[hts-nim paper](https://doi.org/10.1093/bioinformatics/bty358),
+[mosdepth paper](https://doi.org/10.1093/bioinformatics/btx699),
+[slivar paper](https://www.nature.com/articles/s41525-021-00227-3),
+[somalier paper](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-020-00761-2),
+[duphold paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6479422/),
+the READMEs of each repository, and
+[his Nim repositories](https://github.com/brentp?tab=repositories&language=nim&sort=stargazers).
+"""
+
+nbSave

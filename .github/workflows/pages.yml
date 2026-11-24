@@ -1,0 +1,63 @@
+# Builds the slides into docs/ and publishes docs/ to GitHub Pages.
+# Pull requests only build (to check that the slides compile), pushes to main also deploy.
+name: pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04 # libpcre3 (needed by nimib's markdown) is gone from newer images
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install Nim and atlas
+        run: sudo bash scripts/install-nim.sh
+      # deps/ is reused until the pinned commits (atlas.lock) or atlas.config change; atlas rep then only fetches what is missing
+      - uses: actions/cache@v5
+        with:
+          path: deps
+          key: deps-v3-${{ hashFiles('atlas.lock', 'deps/atlas.config') }}
+          restore-keys: deps-v3-
+      # Nim's build folder: Nim recompiles only the C files whose content changed
+      - uses: actions/cache@v5
+        with:
+          path: ~/.cache/nim
+          key: nimcache-${{ github.run_id }}
+          restore-keys: nimcache-
+      - name: Install dependencies
+        run: |
+          # cairo: ggplotnim saves its PNG plots with it; BLAS/LAPACK: loaded by Arraymancer at startup
+          sudo apt-get install -y libcairo2 libblas3 liblapack3
+          # the committed atlas.config wins over a restored cache (pkgOverrides: nim-plotly and ggplotnim both need a webview)
+          git checkout -- deps/atlas.config
+          # every dependency at the commit pinned in atlas.lock
+          atlas rep atlas.lock
+      - name: Build slides, deep dives and talk log
+        # every page, then checks that no page loads anything from the network (see the script)
+        run: nim r --hints:off build.nim
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

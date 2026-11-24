@@ -1,0 +1,187 @@
+import nimib, nimiSlides
+import tabelline
+import ../my
+
+# Section 3: Island 2: Success Stories (see outline.md)
+# Competent people did real science with Nim: in bioinformatics, in physics and in lattice QCD.
+# Carries K3 (ready for more).
+
+template storiesIntroSlide = # 3.2
+  slide:
+    nbText: """
+## Success stories
+
+How do we define success stories in scientific computing?
+By looking at people who used Nim to advance science.
+
+The following are three stories:  
+🧬 Bioinformatics, ☀️ Physics and ⚛️ Lattice QCD
+"""
+    reference """
+Beyond science, Nim runs on the web, in blockchains,
+security tools, games, chips and more:
+[Nim success stories beyond science](deepdive/beyond_science.html)
+"""
+    speakerNote """
+Success here means people who used Nim to advance science:
+published, cited, used by others.
+For the curious, the deep dive collects stories
+outside science, to show the breadth.
+"""
+
+template brentSlide = # 3.3
+  slide:
+    nbGithubTitle("🧬 Brent Pedersen", "brentp")
+    nbLede("""Genomics researcher and software developer:
+6 papers on 6 Nim tools (2018-2022),
+with 1,944 citations and 1,833 stars.  
+Others followed
+([awesome-bionimformatics](https://github.com/andreas-wilm/awesome-bionimformatics))""", "story")
+    let brentTools = @[
+      (tool: "[mosdepth](https://github.com/brentp/mosdepth)", year: 2018, citations: 1452, stars: 878),
+      (tool: "[somalier](https://github.com/brentp/somalier)", year: 2020, citations: 172, stars: 341),
+      (tool: "[slivar](https://github.com/brentp/slivar)", year: 2021, citations: 141, stars: 274),
+      (tool: "[duphold](https://github.com/brentp/duphold)", year: 2019, citations: 93, stars: 109),
+      (tool: "[STRling](https://github.com/quinlan-lab/STRling)", year: 2022, citations: 68, stars: 72),
+      (tool: "[hts-nim](https://github.com/brentp/hts-nim)", year: 2018, citations: 18, stars: 159)]
+    let brentTable = tabella(brentTools, rownameCol = "tool")
+      .tabStubhead("tool")
+      .fmtMarkdown("tool")
+      .fmtInteger("year", useSeps = false)
+      .barBefore("citations")
+      .fmtInteger(["citations", "stars"])
+      .slideLook(fontSize = "0.5em")
+    nbDiv("brent-cols", ""):
+      nbTable brentTable
+      nbShowCode """
+# read a file of DNA reads aligned to the genome
+import hts
+var b: Bam
+open(b, "sample.bam", index=true)
+# reads in a region of chromosome 6
+for r in b.query("6", 30816675, 32816675):
+  # keep reads placed with confidence
+  if r.mapping_quality > 10u:
+    # where each read sits on the genome
+    echo r.chrom, r.start, r.stop
+"""
+    reference """
+[brentp.github.io](https://brentp.github.io/);
+citations from Google Scholar, stars from GitHub (October 2026);
+[the tools and the genomics behind them, explained](deepdive/brentp.html)
+"""
+    speakerNote """
+hts-nim wraps htslib, the C library behind samtools.
+The point of its paper: scripting languages are easy,
+but slow at the scale of modern genomics data;
+Nim gives a scripting-like syntax without that cost.
+mosdepth computes sequencing depth: per base on a 30X genome
+in about half the time of samtools (its README benchmark).
+Many users install these tools from bioconda
+without knowing they run Nim.
+"""
+
+template vindaarSlide = # 3.4
+  slide:
+    nbGithubTitle("☀️ Sebastian Schmidt", "Vindaar")
+    nbLede("""A PhD student in Physics searching for solar axions
+at CERN's CAST:
+the entire analysis code base is written in Nim.  
+He ended up building an important part
+of the data stack in Nim""", "story")
+    nbText: """
+```nim
+# how many axions the Sun sends us at energy E_a,
+# per keV, cm² and second; units checked when compiling
+proc axionFluxPrimakoff(E_a: keV,
+                        g_aγ: GeV⁻¹): keV⁻¹•cm⁻²•s⁻¹ =
+  let g₁₀ = g_aγ / 1e-10.GeV⁻¹
+  result = g₁₀^2 * 3.821e10.cm⁻²•s⁻¹•keV⁻¹ *
+    (E_a / 1.keV)^3 / (exp(E_a / (1.103.keV)) - 1)
+```
+"""
+    reference """
+[Thesis](https://doi.org/10.48565/bonndoc-303) (University of Bonn, 2024),
+[source](https://github.com/Vindaar/phd),
+[code](https://github.com/Vindaar/TimepixAnalysis),
+[data](https://zenodo.org/uploads/10521887);
+[the thesis in plain words](deepdive/vindaar.html)
+"""
+    speakerNote """
+A GridPix detector at the CERN Axion Solar Telescope.
+Code, thesis and data are all public.
+The excerpt is from the thesis: the axion flux,
+with physical units in the types, checked at compile time.
+Why Nim, in his words: "the language gets out of my way".
+"""
+
+template qexSlide = # 3.5
+  slide:
+    nbGithubTitle("⚛️ Osborn &amp; Jin", "jcosborn/qex", "QEX")
+    nbLede("""Two physicists at Argonne National Laboratory
+build a lattice QCD framework in Nim:
+since 2016, still very active (298 commits in 2026).  
+Others use it for new physics""", "story")
+    nbText: """
+```nim
+# the plaquette: go around the smallest squares
+# of the space-time lattice, add up what you get
+threads:
+  m := 0
+  for mu in 1..<nd:
+    for nu in 0..<mu:
+      m += (t[mu]^*g[nu]) * (t[nu]^*g[mu]).adj
+  tr = trace(m)
+```
+"""
+    reference """
+[Paper](https://arxiv.org/abs/1612.02750) (2016),
+[code](https://github.com/jcosborn/qex),
+[new physics](https://arxiv.org/abs/2409.02062) (PRL 2025);
+[lattice QCD and QEX in plain words](deepdive/qex.html)
+"""
+    speakerNote """
+QEX is Quantum EXpressions, by James Osborn and Xiao-Yong Jin.
+Lattice QCD computes how quarks and gluons bind into protons,
+on a grid of space-time points, on supercomputers.
+Since 2024 it is the most active scientific Nim project we found.
+The excerpt is from its examples: the plaquette,
+written like the physics formula, run in parallel threads.
+Curtis Peterson (Colorado) added Pauli-Villars
+staggered simulations, used in papers with Anna Hasenfratz,
+like symmetric mass generation (Phys. Rev. Lett. 2025).
+Its docs are a book written with nimibook.
+"""
+
+template rocksAheadSlide = # 3.6
+  slide:
+    nbText: """
+## Rocks ahead
+
+A tiny ecosystem: pioneers build what they need,
+or move where the libraries are
+"""
+    nbDiv("rocks-quotes", ""):
+      nbQuote("""I mostly switched to rust since that's where
+the bioinformatics libs are, but **I still really like nim**""",
+        "Brent Pedersen, personal communication, 2026")
+      nbQuote("""by choosing Nim [...] I underestimated
+the amount of code I would / had to write [...]
+*I learned way more than I would have otherwise*""",
+        "Vindaar, in his thesis")
+    speakerNote """
+Brent: his newer tools are in Rust, because that is
+where the bioinformatics libraries are; he still likes Nim.
+Vindaar: from the thesis appendix on why he wrote his own
+analysis framework: the extra work delayed the thesis,
+and he says he learned way more.
+"""
+
+template island2StoriesSection* =
+  slide:
+    mapSlide(2) # 3.1
+    storiesIntroSlide
+    brentSlide
+    vindaarSlide
+    qexSlide
+    rocksAheadSlide

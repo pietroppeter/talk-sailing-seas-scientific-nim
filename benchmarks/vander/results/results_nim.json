@@ -1,0 +1,33 @@
+{
+  "runtime": "Nim 2.2.11",
+  "results": [
+    {
+      "impl": "nim (static)",
+      "size": 4,
+      "iters": 250000,
+      "seconds": 0.006806256,
+      "checksum": 16.088888888888892
+    },
+    {
+      "impl": "nim (with dispatch)",
+      "size": 4,
+      "iters": 250000,
+      "seconds": 0.012579181,
+      "checksum": 16.088888888888892
+    },
+    {
+      "impl": "nim (static)",
+      "size": 2000,
+      "iters": 1,
+      "seconds": 0.003142799,
+      "checksum": 3.684802627825493e+84
+    },
+    {
+      "impl": "nim (with dispatch)",
+      "size": 2000,
+      "iters": 1,
+      "seconds": 0.005006526,
+      "checksum": 3.684802627825493e+84
+    }
+  ]
+}
