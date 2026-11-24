@@ -86,7 +86,7 @@ Outputs go to `docs/` (set by `homeDir` in `nimib.toml`), which is what gets pub
 
 reveal.js and KaTeX are not loaded from CDNs: local copies live in `docs/assets/` (committed) and `my.nim` points the slides to them, so the deck also works offline. `scripts/vendor-assets.sh` downloads them again (change versions there). Images go in `docs/images/`.
 
-nim-markdown needs PCRE at runtime (`libpcre.so.3`, e.g. `apt install libpcre3`).
+nim-markdown needs PCRE at runtime (`libpcre.so.3`, e.g. `apt install libpcre3`). ggplotnim needs Cairo (`apt install libcairo2`, or `brew install cairo` on macOS, where `nim.cfg` links it from `/opt/homebrew/lib`).
 
 `scripts/screenshot.sh docs/index.html shots/` renders each slide to a png with headless Chromium.
 
