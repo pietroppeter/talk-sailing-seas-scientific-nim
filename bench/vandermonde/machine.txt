@@ -1,0 +1,4 @@
+cpu: Intel(R) Xeon(R) Processor @ 2.10GHz
+python: Python 3.13.18, NumPy 2.5.3
+nim: Nim 2.2.4 -d:release
+date: 2026-11-24

@@ -9,6 +9,7 @@ Pietro builds the talk on his laptop, sometimes on a train with a poor connectio
 ## Decision
 
 - **One command** (Pietro, 2026-11-24): `nim r build.nim` builds every page into `docs/`, or a group (`slides`, `deepdives`, `devlog`, `themes`, `check`). Slides, deep dives, talk log and the site index are one program, `all.nim` (one compile, about 30 seconds instead of 100), after the all.nim trick of tabelline and nanuq; each theme is a compile of its own. Deep dives and talk log posts are found by file name.
+- **One part of the deck on its own** (Pietro, 2026-11-24): `nim r build.nim island1` (or any section of `deck.nim`: intro, island1 to island7, conclusion, ...) builds only that part, in the deck's look, into `docs/slides_<section>.html` (`-d:section` in `deck.nim`), so one island can be reviewed and shared as an artifact without the whole talk. `scripts/bundle-page.py` copies a built page with the files it loads into a folder ready to publish as a claude.ai artifact.
 - **Offline**: no page loads anything from the network. reveal.js, KaTeX, p5.js, highlight.js and its styles, water.css, nimib's assets, plotly.js and the fonts are vendored in `docs/assets/` (`scripts/vendor-assets.sh`, `scripts/vendor-fonts.sh`); pages call `nb.usePage` (`offline.nim` rewrites nimib's head to the local copies).
 - **Checks**, run by every build: nothing loaded from another site, no broken link between pages, no `nbRawHtml` in a page, no `#>` note for Claude left in the sources (fails only in CI, listed locally so the `local-changes` branch still builds; see [agents-skills.md](agents-skills.md)).
 - **Pinned dependencies** (Pietro, 2026-11-24): atlas, with every dependency at a commit in `atlas.lock`, replayed with `atlas rep atlas.lock` locally and in CI; `deps/atlas.config` overrides the webview package (nim-plotly and ggplotnim need different ones) and a gitlab mirror.
@@ -31,3 +32,4 @@ Pietro builds the talk on his laptop, sometimes on a train with a poor connectio
 - 2026-10-26: Pages, `docs/`, vendored reveal.js and KaTeX (PR #6); `scripts/install-nim.sh` (PR #4).
 - 2026-11-24: every page offline (PR #29); `build.nim` and `all.nim` (PR #30); link check, pinned dependencies, site index. Moved from the OpenSpec slides-tooling spec and the un-archived change offline-builds to this record.
 - 2026-11-24: check for `#>` notes for Claude.
+- 2026-11-24: build one section of the deck (`nim r build.nim island1`), bundle a page for an artifact.

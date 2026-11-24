@@ -20,6 +20,9 @@ type
     summary*: string ## one line, for the lists
 
 const deepDives* = @[
+  DeepDive(slug: "vandermonde", section: "Island 1 · Accessible Performance",
+    title: "The Vandermonde matrix, with for loops",
+    summary: "The benchmark of the performance slide: the same loops in Python and Nim, NumPy, Bezanson's case study, the caveats, and how far down Nim goes."),
   DeepDive(slug: "beyond_science", section: "Island 2 · Success Stories",
     title: "Nim success stories beyond science",
     summary: "What people who are not scientists built with Nim: a web front-end, an Ethereum client, games, chip SDKs, business software."),
