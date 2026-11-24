@@ -17,6 +17,8 @@ The deck wears the AgileLab theme of `my.nim`. Following Ines Montani's advice o
 
 - Keeping AgileLab only: the safe default, still on the table.
 
+- Quarto itself (render the deck with Quarto): not an option, the deck is nimib; only its look is borrowed ([slides.md](slides.md)).
+
 ## Consequences
 
 - Until a theme is picked, the themed decks are built and published next to the default one, listed on the site index.
@@ -24,4 +26,5 @@ The deck wears the AgileLab theme of `my.nim`. Following Ines Montani's advice o
 ## History
 
 - 2026-11-07: three themes and the maps explored (PR #26).
+- 2026-11-24: Quarto's proportions adopted for the deck (recorded in [slides.md](slides.md)); the themes build on top of them.
 - 2026-11-24: themed decks renamed `slides_<theme>.html`; this record created.
