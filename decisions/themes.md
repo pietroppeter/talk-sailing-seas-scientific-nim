@@ -39,3 +39,4 @@ The deck wears the AgileLab theme of `my.nim`. Following Ines Montani's advice o
 - 2026-11-24: the nautical chart adopted for the deck, with a thin frame; the voyage map redrawn as a professional chart on seven real islands, with lore.
 - 2026-11-24: Pietro's islands (Leros in the middle) and the Gulf of Trieste as the mainland, in three arrangements.
 - 2026-11-24: the gulf from OpenStreetMap; Milos for Chios and the new order; islands closer; a course of straight legs between real ports; names can be hidden.
+- 2026-11-24: the names of the sections larger on the chart, the current one in magenta, a sailing boat in its port.

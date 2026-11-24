@@ -252,13 +252,19 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
   for i, isl in v.islands:
     let n = i + 1
     var lp = isl.labelPos
-    let half = 4.3 * (names[i].len + 4).float # about half the width of the name, at its size
-    lp.x = clamp(lp.x, half + 10, v.w - half - 10)
     let state = islandState(n, current)
+    let size = if n == current: 17.0 else: 14.5
+    if not isl.labelBelow: lp.y -= 2
+    let half = 0.37 * size * (names[i].len + 4).float # about half the width of the name, at its size
+    lp.x = clamp(lp.x, half + 10, v.w - half - 10)
     result.add &"""<text class="cname{state}" x="{f1(lp.x)}" y="{f1(lp.y)}" text-anchor="middle">{n} · {names[i].toUpperAscii}</text>"""
     if n == current:
       let c = isl.cape((1.0, -0.25))
       result.add lightSvg(c, lightChars[i], flip = c.x > v.w - 140)
+  # the boat: in the port of the island of the section, in Trieste before and after the voyage
+  if v.route.len > 0:
+    let at = if current in 1 .. 7 and current < v.route.len: v.route[current] else: v.route[0]
+    result.add &"""<text class="boat" x="{f1(at.x)}" y="{f1(at.y - 3)}" text-anchor="middle">⛵</text>"""
   # the title block, the names of land and sea, the source of the coasts
   let sub =
     if current in 1 .. 7: &"CHART {current} OF 7 · {names[current - 1].toUpperAscii}"
@@ -289,8 +295,10 @@ const chartMapCss* = """
 .chart-map .real-name { font-family: "Space Grotesk", sans-serif; font-size: 6.5px; letter-spacing: 0.18em; fill: #5b4a26; }
 .chart-map .note { font-size: 6px; fill: #4a5763; }
 .chart-map .bearing { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 8px; fill: #b0167a; }
-.chart-map .cname { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 11.5px; letter-spacing: 0.1em; fill: #1f2a33; paint-order: stroke; stroke: #fdfcf7; stroke-width: 3px; }
-.chart-map .cname.current { fill: #b0167a; }
+.chart-map .cname { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 14.5px; letter-spacing: 0.06em; fill: #13334c; paint-order: stroke; stroke: #fdfcf7; stroke-width: 4px; stroke-linejoin: round; }
+.chart-map .cname.visited { fill: #4d6475; }
+.chart-map .cname.current { fill: #b0167a; font-size: 17px; }
+.chart-map .boat { font-size: 26px; font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif; }
 .chart-map .light-char { font-family: "Spectral", serif; font-style: italic; font-size: 8px; fill: #b0167a; paint-order: stroke; stroke: #fdfcf7; stroke-width: 2px; }
 .chart-map .tb-title { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.22em; fill: #1f2a33; }
 .chart-map .tb-sub { font-family: "Space Grotesk", sans-serif; font-size: 7.5px; letter-spacing: 0.3em; fill: #1f2a33; }
