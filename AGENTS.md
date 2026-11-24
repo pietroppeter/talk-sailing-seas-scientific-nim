@@ -1,6 +1,6 @@
 # Working on the talk
 
-Notes for coding agents (and people) changing this repository. What the talk says and why is in `openspec/` (specs, the living outline, background notes); how the repository is laid out and built is in README.md. This file holds the working rules that are easy to miss.
+Notes for coding agents (and people) changing this repository. What the talk says and why is in `decisions/` (one decision record per domain), the plan of the talk in `outline.md`, background notes in `notes/`; how the repository is laid out and built is in README.md. This file holds the working rules that are easy to miss.
 
 ## The repository is public
 
@@ -32,5 +32,6 @@ Everything committed (code, specs, notes, commit messages, PR descriptions) is p
 ## Changes
 
 - One PR per concern.
+- A change that changes a decision updates its record in `decisions/` in the same PR: the bullet under Decision, and a line in History (see `decisions/README.md`). A change to sections, slides or timing updates `outline.md`. Records are updated in place, not added per decision.
 - Open decisions and loose ends go in `OPEN-POINTS.md`, the one list of them.
 - Deviations from the submitted abstract go in README.md, "Changes from the submitted abstract"; the abstract itself stays verbatim.

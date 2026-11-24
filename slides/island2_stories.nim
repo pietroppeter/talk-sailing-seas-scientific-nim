@@ -2,7 +2,7 @@ import nimib, nimiSlides
 import tabelline
 import ../my
 
-# Section 3: Island 2: Success Stories (see the latest outline in openspec)
+# Section 3: Island 2: Success Stories (see outline.md)
 # Competent people did real science with Nim: in bioinformatics, in physics and in lattice QCD.
 # Carries K3 (ready for more).
 

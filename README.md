@@ -48,7 +48,7 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `themes.nim` and `maps/`: three themes explored for the slides (pirate adventure game, old book of sea tales, nautical chart), not adopted yet; `maps/geometry.nim` is the one geometry of the voyage map, drawn by `maps/pixel.nim`, `maps/chart.nim` and `maps/engraved.nim`; `nim r build.nim themes` builds the deck in each theme (`docs/index_<theme>.html`)
 - `devlog/`: the talk log, see below
 - `slides/`: one file per slide (or group of slides), and the helpers they share
-- `openspec/`: the talk is prepared with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (see below)
+- `decisions/`, `outline.md`, `notes/`: how the talk is prepared (see below)
 
 ## Deep dives
 
@@ -121,17 +121,12 @@ Every deep dive, talk log page and index has a review mode (`review.nim` and `do
 
 `scripts/screenshot.sh docs/slides.html shots/` renders each slide to a png with headless Chromium.
 
-## OpenSpec
+## Decisions and outline
 
-The talk is prepared with spec-driven development using [OpenSpec](https://github.com/Fission-AI/OpenSpec) and a custom `talk` workflow schema:
-
-- `openspec/specs/`: the talk's source of truth (requirements from the abstract above, audience, key messages, format and slot, slides tooling)
-- `openspec/outline.md`: the living outline (sections, timing, slides); each change carries an outline delta that archive merges in
-- `openspec/changes/`: iterations of the talk in progress, each with proposal → specs (deltas) → outline (sections and slides) → tasks
-- `openspec/schemas/talk/`: the custom schema and its templates
-- `openspec/reference/`: background notes (conference, slides setup, references)
-
-Install the CLI with `npm install -g @fission-ai/openspec` (cloud sessions do this in a SessionStart hook). In Claude Code: `/opsx:explore`, `/opsx:propose <idea>`, `/opsx:apply`, `/opsx:archive`.
+- `decisions/`: lightweight decision records (after [MADR](https://adr.github.io/madr/)), one per domain (the talk, tone and key messages, the islands, slides, themes, deep dives, talk log, build and CI, review, agents and skills), updated in place: what holds today, the options set aside, and a history line per change.
+- `outline.md`: the living plan of the talk: sections, timing and slides.
+- `notes/`: background notes (the conference, how the slides are set up, references).
+- `OPEN-POINTS.md`: open decisions and loose ends.
 
 ## License
 

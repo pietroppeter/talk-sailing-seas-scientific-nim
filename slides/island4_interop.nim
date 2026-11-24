@@ -1,7 +1,7 @@
 import nimib, nimiSlides
 import ../my
 
-# Section 5: Island 4: Interoperability (see the latest outline in openspec)
+# Section 5: Island 4: Interoperability (see outline.md)
 # Nim is easy to combine with other languages, in both directions. Carries K2 (interop superpower) and K3.
 
 template island4InteropSection* =

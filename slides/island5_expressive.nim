@@ -10,7 +10,7 @@ export math, island5_vectors
 export unchained except pT
 export SolarMass, Msun, EarthMass, Mearth
 
-# Section 6: Island 5: An Expressive Language (see the latest outline in openspec)
+# Section 6: Island 5: An Expressive Language (see outline.md)
 # Two language features that make Nim good for scientific use. Carries K2 (metaprogramming superpower).
 
 proc newUnitsCode: string =

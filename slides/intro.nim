@@ -1,7 +1,7 @@
 import nimib, nimiSlides
 import ../my
 
-# Section 1: Intro: leaving the mainland (see the latest outline in openspec)
+# Section 1: Intro: leaving the mainland (see outline.md)
 # Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim's. Carries K1 and K4.
 
 template introSection* =

@@ -1,7 +1,7 @@
 import nimib, nimiSlides
 import ../my
 
-# Section 9: Conclusion: back on land (see the latest outline in openspec)
+# Section 9: Conclusion: back on land (see outline.md)
 # Takeaways and an opinionated reflection on why Nim is still niche. Carries K1, K3 and K4.
 
 template conclusionSection* =

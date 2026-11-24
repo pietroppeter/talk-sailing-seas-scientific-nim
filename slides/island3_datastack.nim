@@ -6,7 +6,7 @@ import tabelline except Column, readCsv
 import ../my
 export math, sequtils, ggplotnim, linear_algebra
 
-# Section 4: Island 3: Data Stack (see the latest outline in openspec)
+# Section 4: Island 3: Data Stack (see outline.md)
 # The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2 and K3.
 # Paths are relative to docs/ (nimib's homeDir): the data is docs/data/penguins.csv,
 # the plot is written to docs/images/penguins.png when the deck is built.
