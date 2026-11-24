@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# The mini benchmark of the performance slide (2.3) and of its deep dive (deepdive/vandermonde.nim):
+# The mini benchmark of the performance slide (2.2) and of its deep dive (deepdive/vandermonde.nim):
 # the Vandermonde matrix with for loops in Python and in Nim, and with NumPy's np.vander,
 # best of a few runs, in two cases:
 #   large: one 1000 x 100 matrix (the slide)

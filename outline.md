@@ -14,16 +14,16 @@ K1-K4 are the key messages in [decisions/tone.md](decisions/tone.md). Why the ou
 |---|---------|---------|---------|
 | 0 | Opening: title and about me | 1 | 01:00 |
 | 1 | Intro: leaving the mainland | 2 | 03:00 |
-| 2 | Island 1: Accessible Performance | 1.5 | 04:30 |
-| 3 | Island 2: Success Stories | 2.5 | 07:00 |
-| 4 | Island 3: Data Stack | 3.5 | 10:30 |
-| 5 | Island 4: Interoperability | 3 | 13:30 |
-| 6 | Island 5: An Expressive Language | 2.5 | 16:00 |
-| 7 | Island 6: Interactivity | 2.5 | 18:30 |
-| 8 | Island 7: Notebook | 2.5 | 21:00 |
-| 9 | Conclusion: back on land | 2.5 | 23:30 |
+| 2 | Island 1: Accessible Performance | 1 | 04:00 |
+| 3 | Island 2: Success Stories | 2.5 | 06:30 |
+| 4 | Island 3: Data Stack | 3.5 | 10:00 |
+| 5 | Island 4: Interoperability | 3 | 13:00 |
+| 6 | Island 5: An Expressive Language | 2.5 | 15:30 |
+| 7 | Island 6: Interactivity | 2.5 | 18:00 |
+| 8 | Island 7: Notebook | 2.5 | 20:30 |
+| 9 | Conclusion: back on land | 2.5 | 23:00 |
 
-Total 23.5 minutes of content, leaving 6.5 minutes for Q&A and slack.
+Total 23 minutes of content, leaving 7 minutes for Q&A and slack.
 
 ## Sections
 
@@ -45,13 +45,12 @@ Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim'
 1.3 **Nim's tradeoffs** - the abstract's question "is there space for one more?" reframed: this talk is about Nim's specific tradeoffs, seven islands, and we won't hide where Nim falls short.
 1.4 **The map** - the seven islands on one map, used again as a progress marker at each section start.
 
-### 2. Island 1: Accessible Performance (~1.5 min)
+### 2. Island 1: Accessible Performance (~1 min)
 
-Nim is as easy to write as Python and as fast as C, passed through quickly in two slides (Pietro, 2026-11-24: performance is a given): Mamy's talk in the same session goes deeper. Carries K2.
+Nim is as easy to write as Python and as fast as C, passed through quickly in one slide (Pietro, 2026-11-24: performance is a given): Mamy's talk in the same session goes deeper. Carries K2.
 
 2.1 **Island 1** - section title on the map.
-2.2 **The Vandermonde matrix** - what the benchmark computes (Pietro, 2026-11-24): the matrix written out with KaTeX (one row per point, its powers), and one line on what it is for: fitting a polynomial to points means solving $V a = y$. More in the deep dive (uses, determinant, conditioning, references).
-2.3 **Reads like Python, runs like C** - the Vandermonde matrix with for loops, Python and Nim side by side (the code of `bench/vandermonde`), and a mini benchmark table: Python loops, NumPy's `np.vander`, Nim loops (one 1000 x 100 matrix, Nim row highlighted, times read from `bench/vandermonde/results.csv`). One line in orange: *No ceiling*, down to SIMD, threads, GPUs and assembly (Mamy's talk in this session only in the speaker notes, Pietro). A reference line with the machine and a link to the deep dive (`deepdive/vandermonde.html`). The speaker says that in Nim you are allowed to write for loops (in Python you call NumPy, whose loop is in C), and that "no ceiling" means you can go down to assembly and optimise all you want.
+2.2 **Reads like Python, runs like C** - one sentence on what the Vandermonde matrix is (row $i$ holds the powers of $x_i$; more in the deep dive), then the Vandermonde matrix with for loops, Python and Nim side by side (the code of `bench/vandermonde`), and a mini benchmark table: Python loops, NumPy's `np.vander`, Nim loops (one 1000 x 100 matrix, Nim row highlighted, times read from `bench/vandermonde/results.csv`). One line in orange: *No ceiling*, down to SIMD, threads, GPUs and assembly (Mamy's talk in this session only in the speaker notes, Pietro). A reference line with the machine and a link to the deep dive (`deepdive/vandermonde.html`). The speaker says that in Nim you are allowed to write for loops (in Python you call NumPy, whose loop is in C), and that "no ceiling" means you can go down to assembly and optimise all you want.
 
 ### 3. Island 2: Success Stories (~2.5 min)
 
