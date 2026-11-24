@@ -40,7 +40,7 @@ const slideBlocksCss = """
 .reveal .rocks-quotes figure { margin: 0; }
 .reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
 .reveal .rocks-quotes figcaption { font-size: 0.55em; margin-top: 0.5em; }
-/* a page of the site live in a slide (nbFrame), e.g. naffprop's figure on slide 5.4 */
+/* a page of the site live in a slide (nbFrame), e.g. naffprop's figure on slide 5.5 */
 .reveal iframe.frame { width: 100%; height: 500px; border: 1px solid #ddd; border-radius: 6px; background: white; }
 /* code in nimiSlides' columns (a grid) fills its column */
 .reveal [style*="grid"] > div > pre { width: 100%; }

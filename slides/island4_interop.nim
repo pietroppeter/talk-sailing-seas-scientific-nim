@@ -27,9 +27,7 @@ with `importc`, `importcpp`, `importjs`
       nbCode:
         echo j0(1.0) # the Bessel function J0, from C
       nbText """
-**Through bridges**: Python ([nimpy](https://github.com/yglukhov/nimpy)),
-R ([rnim](https://github.com/SciNim/rnim)),
-Julia ([nimjl](https://github.com/SciNim/nimjl))
+**Through bridges**: Python, R, Julia (next slide)
 """
       nbTextSmall """
 [Interoperability, the deep dive](deepdive/interoperability.html)
@@ -40,10 +38,56 @@ Nim compiles to C, C++ and JavaScript, so their libraries
 are one pragma away: here the Bessel function from C's math library,
 called when the slide was built (J0 of 1).
 Python, R and Julia have their own runtime: bridges embed it
-or load Nim from it. nimpy for Python is mature and works both ways,
-rnim and nimjl are younger (rocks ahead).
+or load Nim from it (next slide).
 """
     slide: # 5.3
+      nbText "## Bridges: Python, R, Julia"
+      nbTextSmall """
+Each bridge embeds the other runtime, and its functions
+are called like Nim procs:
+"""
+      columns:
+        column:
+          nbText "**Python** · [nimpy](https://github.com/yglukhov/nimpy)"
+          nbShowCode """
+import nimpy
+
+let np = pyImport "numpy"
+let m = np.mean([1, 2, 3])
+echo m.to(float)  # 2.0
+"""
+        column:
+          nbText "**R** · [rnim](https://github.com/SciNim/rnim)"
+          nbShowCode """
+import rnim
+
+let R = setupR()
+let s = R.sum(@[1, 2, 3])
+echo s.to(int)  # 6
+"""
+        column:
+          nbText "**Julia** · [nimjl](https://github.com/SciNim/nimjl)"
+          nbShowCode """
+import nimjl
+
+Julia.init()
+let r = Julia.sqrt(4.0)
+echo r.to(float)  # 2.0
+"""
+      nbTextSmall """
+nimpy also works the other way (next slide);
+rnim is a prototype, nimjl needs Julia installed.
+"""
+      speakerNote """
+Three micro examples, from each library's README (shown, not run:
+the build would need numpy, R and Julia).
+nimpy imports a Python module and calls it with Nim values;
+rnim starts an embedded R and calls its functions by name;
+nimjl starts the Julia VM and does the same.
+Conversions back to Nim are explicit with `to`.
+Maturity differs: nimpy is the one to rely on.
+"""
+    slide: # 5.4
       nbText "## Write it in Nim, use it from Python"
       nbTextSmall """
 `uv add nimlang`: the Nim compiler in a Python wheel,
@@ -81,7 +125,7 @@ from one Linux machine, so Python users pip install a Nim-powered library
 without a Nim compiler. That is what Rust has with PyO3 and maturin,
 which made Rust the default for fast Python libraries (polars, pydantic-core).
 """
-    slide: # 5.4
+    slide: # 5.5
       nbText "## A real package: naffprop"
       columns:
         column:
@@ -116,11 +160,11 @@ On the right, live: its interactive explanation, the paper's Fig. 1A one iterati
 at a time; the same Nim code compiled to JavaScript (press Play).
 Also mine, from this year, mostly written with an AI agent (its README says so).
 """
-    slide: # 5.5
+    slide: # 5.6
       nbText "## Rocks ahead"
       nbText """
 - bridges of different maturity: nimpy is solid, rnim a prototype, nimjl needs Julia installed
-- packaging Nim for Python had no maintained tool for years; nimlang is new and alpha
+- packaging Nim for Python had no maintained tool for years; `nimlang-pypy` is new and alpha
 - few Python users know Nim: fewer examples and fewer people to ask than with Rust
 """
       speakerNote """

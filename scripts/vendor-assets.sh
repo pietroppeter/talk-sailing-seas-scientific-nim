@@ -97,7 +97,7 @@ cp "$tmp/plotly/package/plotly.min.js" "$plotly/"
 echo "$PLOTLY_VERSION" > "$plotly/VERSION"
 
 # naffprop's interactive figure "How exemplars emerge" (a nimib page with Nim compiled to JS),
-# shown next to the naffprop slide (5.4): the page from GitHub Pages without its Google Fonts
+# shown next to the naffprop slide (5.5): the page from GitHub Pages without its Google Fonts
 # (the system fonts stand in) and with only the figure visible, for an iframe
 naffprop="$assets/naffprop"
 rm -rf "$naffprop"
