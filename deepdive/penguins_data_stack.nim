@@ -304,8 +304,13 @@ And on the penguins it has never seen,
 species by species:
 """
 nbCode:
-  let guess = model.forward(xTest).value
-    .argmax(axis = 1).squeeze(1)
+  # the species with the highest score, row by row
+  # (argmax(axis = 1) does this, but its C code fails with Nim 2.2.12)
+  let scores = model.forward(xTest).value
+  var guess = newTensor[int](scores.shape[0])
+  for i in 0 ..< scores.shape[0]:
+    for k in 1 ..< 3:
+      if scores[i, k] > scores[i, guess[i]]: guess[i] = k
   for k, name in speciesNames:
     let these = yTest ==. k
     let right = (guess ==. yTest) and these

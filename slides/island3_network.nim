@@ -42,6 +42,14 @@ proc networkCode*: string =
   const source = staticRead("island3_network.nim")
   source.split("# >>> network\n")[1].split("# <<< network")[0].strip
 
+proc bestOf*(scores: Tensor[float32]): Tensor[int] =
+  ## the column of the highest score in each row: the network's guess
+  ## (as argmax(axis = 1), whose generated C code does not compile with Nim 2.2.12)
+  result = newTensor[int](scores.shape[0])
+  for i in 0 ..< scores.shape[0]:
+    for j in 1 ..< scores.shape[1]:
+      if scores[i, j] > scores[i, result[i]]: result[i] = j
+
 proc accuracy*(predicted, actual: Tensor[int]): string =
   ## the share of right answers, as a percentage
   $int(100 * (predicted ==. actual).astype(float).mean) & "%"
@@ -59,7 +67,7 @@ template networkSlide* =
       for epoch in 1 .. 300:
         model.forward(xTrain).sparse_softmax_cross_entropy(yTrain).backprop()
         optim.update()
-      let guess = model.forward(xTest).value.argmax(axis = 1).squeeze(1)
+      let guess = model.forward(xTest).value.bestOf # the top score
       echo "right on unseen penguins: ", accuracy(guess, yTest)
     nbTextSmall """
 Autograd, layers, optimizers;
