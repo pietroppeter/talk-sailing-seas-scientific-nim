@@ -4,6 +4,7 @@
 import std / json
 import nimib
 import maps / [pixel, chart, engraved]
+import blocks # codeLanguageCss
 
 const
   tokens = """
@@ -34,6 +35,21 @@ a[href$="emilia.html"], a[href$="emilia.html"]:hover { color: inherit; text-deco
 .gallery img { width: 100%; border: 1px solid var(--line); }
 .swatches { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0.5em 0 1em; }
 .swatch { font-size: 0.75em; padding: 0.4em 0.6em; border-radius: 4px; border: 1px solid var(--swatch-line); }
+/* an app compiled to JavaScript (nbApp, which Karax renders into): sliders in a sidebar, then a canvas */
+.app { border: 1px solid var(--line); border-radius: 6px; padding: 0.8em; }
+.app > div { display: flex; flex-wrap: wrap; gap: 1em; align-items: flex-start; }
+.app .sidebar { display: flex; flex-direction: column; gap: 0.6em; flex: 0 0 13em; }
+.app label { display: grid; grid-template-columns: 1fr auto; font-size: 0.9em; }
+.app input { grid-column: 1 / 3; width: 100%; margin: 0.2em 0 0; }
+/* code you drag (nbCodeStage, zogyn): the code as an svg, its slider lines move */
+.code-stage svg { display: block; width: min(100%, 460px); height: auto; overflow: visible; touch-action: none; user-select: none; font-family: monospace; font-size: 14px; }
+.code-stage text, .code-stage tspan { fill: currentColor; }
+.code-stage .item { transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1); }
+.code-stage .item.grab { cursor: grab; }
+.code-stage .item.lifted { transition: none; cursor: grabbing; }
+.code-stage .handle { fill: var(--accent); fill-opacity: 0.1; }
+.code-stage .lifted .handle { fill-opacity: 0.3; }
+.app canvas { flex: 1 1 18em; min-width: 0; max-width: 100%; height: auto; }
 .drawing svg { width: 100%; height: auto; display: block; }
 .drawing.engraved { background: var(--engraved-paper); }
 .eyebrow { font-size: 0.8em; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
@@ -88,7 +104,7 @@ proc addCss(nb: var Nb, css: string) =
 
 proc useTalkStyle*(nb: var Nb) =
   ## the CSS of every nimib page: tokens, the blocks of blocks.nim, the plain voyage map
-  nb.addCss(tokens & pageCss & bareMapCss)
+  nb.addCss(tokens & pageCss & codeLanguageCss & bareMapCss)
 
 proc useMapStyle*(nb: var Nb) =
   ## for a page that shows the voyage maps in the themes' looks (maps/): their CSS and fonts

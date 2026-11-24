@@ -13,6 +13,10 @@
 ##                                        deck's look; any of deck.nim's `sections` (intro, island1 to
 ##                                        island7, conclusion, ...): to review or publish one island
 ##
+## Every build also exports the Shiny apps of shiny/ with shinylive into docs/shiny/
+## (scripts/shinylive.sh), once: about 50 MB, not committed, and the first export needs
+## the network. Offline and without them, a link to docs/shiny/ is only a warning outside CI.
+##
 ## Any group also builds the site index (index.nim, docs/index.html), which lists everything.
 ##
 ## slides, deep dives and devlog are built by one program (all.nim): one compile, however many
@@ -79,6 +83,8 @@ proc linksResolve(): bool =
       let url = caps[0]
       if url.len == 0 or url.contains(':') or url.startsWith("//"): continue
       if not fileExists(page.parentDir / url) and not dirExists(page.parentDir / url):
+        if "shiny/" in url and not dirExists("docs/shiny") and getEnv("CI").len == 0:
+          continue # exported by scripts/shinylive.sh, which needs the network once (see shinyApps)
         broken.add page & ": " & url
   if broken.len > 0:
     echo "== broken links between pages:"
@@ -86,6 +92,14 @@ proc linksResolve(): bool =
     return false
   echo "== check: every link between pages resolves"
   true
+
+proc shinyApps() =
+  ## the Shiny apps exported with shinylive (scripts/shinylive.sh), when they are missing
+  if dirExists("docs/shiny/plant"): return
+  echo "== bash scripts/shinylive.sh"
+  if execCmd("bash scripts/shinylive.sh") != 0:
+    if getEnv("CI").len > 0: quit "build: failed: scripts/shinylive.sh", 1
+    echo "== warning: the Shiny apps could not be exported (offline?), links to docs/shiny/ are not checked"
 
 proc noRawHtml(): bool =
   ## true when no page uses nbRawHtml: pages use the blocks of blocks.nim (see the nimib-blocks skill)
@@ -138,5 +152,6 @@ when isMainModule:
     run "nim r " & nimFlags(extra) & " -d:deckSection=" & g & " deck.nim"
   if "looks" in groups:
     run "nim r " & nimFlags(extra) & " -d:deckLook=centered all.nim"
+  shinyApps()
   let checks = [check(), linksResolve(), noRawHtml(), noAgentNotes()]
   if false in checks: quit 1

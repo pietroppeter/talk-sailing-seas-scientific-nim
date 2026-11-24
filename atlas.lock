@@ -84,6 +84,18 @@
       "commit": "bb647e1ca21af25ffdc423bcb96feeeeae963ca2",
       "version": ""
     },
+    "karax": {
+      "dir": "$deps/karax",
+      "url": "https://github.com/karaxnim/karax",
+      "commit": "a1eaaa87af756c21db4524c38cad4a004218f740",
+      "version": ""
+    },
+    "zogyn": {
+      "dir": "$deps/zogyn",
+      "url": "https://github.com/pietroppeter/zogyn",
+      "commit": "055520bfcac80dbb1f85479ba28ac05f1064719a",
+      "version": ""
+    },
     "latexdsl": {
       "dir": "$deps/latexdsl",
       "url": "https://github.com/Vindaar/LatexDSL",
@@ -282,6 +294,8 @@
     "--path:\"deps/ginger/src\"",
     "--path:\"deps/jsbind\"",
     "--path:\"deps/jsony/src\"",
+    "--path:\"deps/karax\"",
+    "--path:\"deps/zogyn/src\"",
     "--path:\"deps/latexdsl/src\"",
     "--path:\"deps/markdown/src\"",
     "--path:\"deps/nimblas\"",
@@ -334,6 +348,8 @@
       "requires \"plotly >= 0.3.3\"",
       "requires \"https://github.com/pietroppeter/tabelline >= 0.2.0\"",
       "requires \"nimib >= 0.4.3\" # tabelline's nbTable block",
+      "requires \"karax >= 1.5.0\" # the plant app of Island 6 (slides/island6_plant_app.nim)",
+      "requires \"https://github.com/pietroppeter/zogyn >= 0.1.0\" # its code you drag (slides/island6_plant_code.nim)",
       ""
     ]
   },
