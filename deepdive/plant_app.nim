@@ -339,7 +339,13 @@ The attempts so far:
   hot code reloading, which would avoid that, is
   experimental in Nim and in the kernel. Its last commit is
   from 2022: it may still work, it is not maintained.
-- cicak, Pietro's current experiment.
+- [cicak](https://github.com/pietroppeter/cicak), Pietro's
+  current experiment, in research: each input becomes a
+  Nim module, which a long-running process loads with hot
+  code reloading, while incremental compilation (`nim ic`)
+  keeps each step cheap. Its [dev
+  log](https://pietroppeter.github.io/cicak/) has the
+  research and a first proof of concept.
 
 nimib goes the other way: no REPL, the document is a Nim
 program that you run again (Island 7).
