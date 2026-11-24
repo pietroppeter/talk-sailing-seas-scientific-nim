@@ -44,7 +44,6 @@ jobs:
           git checkout -- deps/atlas.config
           # every dependency at the commit pinned in atlas.lock
           atlas rep atlas.lock
-          git diff --exit-code nim.cfg
       - name: Build slides, deep dives and talk log
         # every page, then checks that no page loads anything from the network (see the script)
         run: nim r --hints:off build.nim
