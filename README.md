@@ -73,11 +73,13 @@ The repository holds the slides of the talk, the deep dives that go deeper into 
 
 ## setup
 
-Dependencies are managed with atlas (requires Nim >= 2.0, e.g. installed with grabnim):
+Dependencies are managed with atlas (requires Nim >= 2.0, e.g. installed with grabnim) and pinned in `atlas.lock`: every dependency at the commit the pages were last built with, the same on every machine and in CI:
 
 ```
-atlas install
+atlas rep atlas.lock
 ```
+
+To change a dependency: edit the `.nimble` file (or `atlas update <name>`), `atlas install`, build, then `atlas pin` to write the new commits to `atlas.lock`. Check that its `dir` entries and `nim.cfg` keep plain names (`deps/tabelline`, not `deps/tabelline.pietroppeter.github.com`): some atlas setups add the host to a folder name.
 
 nim-markdown needs PCRE at runtime (`libpcre.so.3`, e.g. `apt install libpcre3`). ggplotnim needs Cairo (`apt install libcairo2`, or `brew install cairo` on macOS, where `nim.cfg` links it from `/opt/homebrew/lib`).
 
