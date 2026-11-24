@@ -27,6 +27,27 @@ newNbBlock(NbShowCode):
       result.add &"""
 <p class="code-caption">{inlineMd(blk.caption)}</p>"""
 
+const codeLanguageCss* = """
+/* a small tag in the top right corner of every code block, saying its language:
+   nbCode and nbShowCode (Nim, highlighted when the page is built), and nbShowCode
+   with lang = "python" or "julia" (highlighted in the browser) */
+pre:has(> code) { position: relative; }
+/* the tag gets a line of its own above the code, so it never covers it (also on a phone) */
+pre:has(> code.nim), pre:has(> code.language-nim), pre:has(> code.python),
+pre:has(> code.language-python), pre:has(> code.language-julia) { padding-top: 1.1em; }
+pre:has(> code.nim)::before, pre:has(> code.language-nim)::before,
+pre:has(> code.python)::before, pre:has(> code.language-python)::before,
+pre:has(> code.language-julia)::before {
+  position: absolute; top: 0.2em; right: 0.6em; z-index: 1;
+  font-family: system-ui, sans-serif; font-size: 0.7em; line-height: 1.2;
+  opacity: 0.6; pointer-events: none;
+}
+pre:has(> code.nim)::before, pre:has(> code.language-nim)::before { content: "👑 Nim"; }
+pre:has(> code.python)::before, pre:has(> code.language-python)::before { content: "🐍 Python"; }
+pre:has(> code.language-julia)::before { content: "🤹 Julia"; }
+"""
+  ## used by the pages (talkstyle.nim) and the slides (my.nim)
+
 proc showCode*(nb: var Nb, code: string, lang = "nim", caption = "") =
   let html = if lang == "nim": highlightNim(code.strip) else: xmltree.escape(code.strip)
   nb.add newNbShowCode(html = html, lang = lang, caption = caption)
