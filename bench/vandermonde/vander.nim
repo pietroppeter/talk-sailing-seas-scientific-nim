@@ -9,7 +9,7 @@ proc vander(x: seq[float], n: int): seq[seq[float]] =
   for i in 0 ..< x.len:
     for j in 1 ..< n:
       v[i][j] = v[i][j-1] * x[i]
-  v
+  return v
 # <<< vander
 
 let

@@ -46,8 +46,7 @@ nbShowCode(vanderPyCode, lang = "python",
 
 nbText """
 And in Nim, line by line the same,
-with types on the parameters and the result,
-and the last expression (`v`) as the value returned:
+with types on the parameters and the result:
 """
 nbCode:
   proc vander(x: seq[float], n: int): seq[seq[float]] =
@@ -55,7 +54,7 @@ nbCode:
     for i in 0 ..< x.len:
       for j in 1 ..< n:
         v[i][j] = v[i][j-1] * x[i]
-    v
+    return v
 
   for row in vander(@[1.0, 2.0, 3.0, 4.0], 4):
     echo row
@@ -75,7 +74,7 @@ nbTable benchTable("large", "1000 × 100")
 nbText "Measured with " & benchMachineInfo() & "."
 
 nbText """
-The Python loops are about 15 times slower than the others.
+The Python loops are more than ten times slower than the others.
 That is why Python programmers are told not to write
 for loops on numbers: `np.vander` is fast because its loop
 is in C, inside NumPy. In Nim the loop *is* the fast code:
@@ -130,7 +129,8 @@ A mini benchmark is a hint, not a proof:
 - **Noise.** On the cloud machine where these numbers
   were measured, the Nim time of the large case
   moves between about 0.24 and 0.37 ms from one run of
-  `run.sh` to the next, while NumPy stays at 0.29 ms.
+  `run.sh` to the next, NumPy's around 0.3 ms,
+  and Python's between about 4 and 5.5 ms.
   Nim and NumPy are in the same range,
   neither is clearly faster.
 - **The same algorithm, not the best one.**
