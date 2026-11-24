@@ -2,17 +2,12 @@
 ## Build the posts first: the index refuses to build if a listed post was not built.
 import std / [os, algorithm, json]
 import nimib
-import nimib / highlight
 import devlog
 
 nbInit(thisFileRel = "devlog/index.nim")
-nb.useOfflineAssets
 const ownSource = staticRead("index.nim")
-nb.doc.source = ownSource
-nb.doc.context["source"] = %ownSource
-nb.doc.context["source_highlighted"] = %highlightNim(ownSource)
+nb.usePage(ownSource)
 nb.title = "Talk log · Sailing Seas of Scientific Nim"
-nbRawHtml "<style>\n" & devlogCss & "</style>"
 
 # nimib runs from docs/ (see nimib.toml)
 for p in devlogPosts:
@@ -23,21 +18,19 @@ nbText """
 # Talk log
 
 Notes on how the talk
-[Sailing Seas of Scientific Nim](../index.html)
+[Sailing Seas of Scientific Nim](../slides.html)
 (Compute Paris, 26 November 2026) is made, newest first.
-The repository holds three things:
+The [site](../index.html) holds three things:
 the slides of the talk,
-the [explainers](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim#readme)
-that go deeper into the examples of the slides,
+the [deep dives](../deepdive/index.html)
+that go deeper into what the slides only sketch,
 and this log, which tells how the talk evolves.
 Everything is built in public, with nimib.
 """
 
-var items = "<ol class=\"devlog-posts\">\n"
+var items: seq[PageItem]
 for p in devlogPosts.reversed:
-  items.add "<li><time datetime=\"" & p.date & "\">" & longDate(p.date) & " · " & $p.kind & "</time>\n" &
-    "<a href=\"" & p.fileName & "\">" & p.title & "</a>\n<p>" & p.summary & "</p></li>\n"
-items.add "</ol>"
-nbRawHtml items
+  items.add PageItem(url: p.fileName, title: p.title, eyebrow: longDate(p.date) & " · " & $p.kind, summary: p.summary)
+nbPageList items
 
 nbSave

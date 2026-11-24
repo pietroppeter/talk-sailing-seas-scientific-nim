@@ -2,7 +2,7 @@
 
 Talk by Pietro Peterlongo at [Compute! Paris 2026](https://compute.events/paris2026/), Thursday 26 November 2026, 14:40-15:10, Room 108 (session "A Babel of Compilers"). In the programme it is titled **Sailing the Seas of Scientific Nim**: [talk page](https://pretalx.com/compute-paris-2026/talk/8EM8ZA/).
 
-Slides: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/
+Site: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/ (lists everything: slides, deep dives, talk log). Slides: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html
 
 ## Abstract
 
@@ -40,25 +40,32 @@ The abstract and description above are kept verbatim as submitted. While prepari
 
 Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSlides](https://github.com/HugoGranstrom/nimiSlides):
 
-- `index.nim`: the presentation, it imports the slides from `slides/`
-- `my.nim`: helpers and AgileLab theme; run it directly for a style test deck (deplyed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/my.html)
+- `deck.nim`: the presentation (`docs/slides.html`), it imports the slides from `slides/`
+- `index.nim`: the site index (`docs/index.html`), which lists the slides, the deep dives and the talk log
+- `my.nim`: helpers and AgileLab theme; run it directly for a style test deck (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/my.html)
 - `slides/thank_you.nim`: the animated Thank You slide (a p5nim sketch); run it directly to build the slide on its own (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/thank_you.html)
-- `slides/thank_you_explainer.nim`: a nimib page that explains the code of the Thank You slide step by step (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/thank_you_explainer.html)
-- `slides/island2_brentp_explainer.nim`: a nimib page that explains Brent Pedersen's genomics tools in Nim, with the bioinformatics background (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_brentp_explainer.html)
-- `slides/island2_vindaar_explainer.nim`: a nimib page that explains Vindaar's physics PhD thesis in plain words (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_vindaar_explainer.html)
-- `slides/island2_qex_explainer.nim`: a nimib page that explains lattice QCD and the QEX framework in plain words (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_qex_explainer.html)
-- `slides/island2_beyond_explainer.nim`: a nimib page with Nim success stories outside scientific computing (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_beyond_explainer.html)
-- `slides/island3_penguins_explainer.nim`: a nimib page that explores the penguins dataset with the Nim data stack of Island 3 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island3_penguins_explainer.html)
-- `slides/island5_operators_explainer.nim`: a nimib page that explains the custom operators example of Island 5 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_operators_explainer.html)
-- `slides/island5_units_explainer.nim`: a nimib page that explains the units example of Island 5, with unchained (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_units_explainer.html)
+- `deepdive/`: the deep dives, see below
 - `themes.nim` and `maps/`: three themes explored for the slides (pirate adventure game, old book of sea tales, nautical chart), not adopted yet; `maps/geometry.nim` is the one geometry of the voyage map, drawn by `maps/pixel.nim`, `maps/chart.nim` and `maps/engraved.nim`; `nim r build.nim themes` builds the deck in each theme (`docs/index_<theme>.html`)
 - `devlog/`: the talk log, see below
-- `slides/`: one file per slide (or group of slides)
-- `openspec/`: the talk is prepared with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (see below)
+- `slides/`: one file per slide (or group of slides), and the helpers they share
+- `decisions/`, `outline.md`, `notes/`: how the talk is prepared (see below)
+
+## Deep dives
+
+A slide has room for little, so a topic the slides only sketch gets a deep dive: a nimib page in `deepdive/`, linked from its slide, whose code runs when the page is built. The list is in `deepdive/deepdive.nim`; `deepdive/index.nim` lists them all (https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/).
+
+- [Nim success stories beyond science](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/beyond_science.html) (`deepdive/beyond_science.nim`, Island 2)
+- [Brent Pedersen: genomics tools in Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/brentp.html) (`deepdive/brentp.nim`, Island 2)
+- [Vindaar's thesis in plain words](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/vindaar.html) (`deepdive/vindaar.nim`, Island 2)
+- [Lattice QCD and QEX in plain words](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/qex.html) (`deepdive/qex.nim`, Island 2)
+- [Penguins with the Nim data stack](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/penguins_data_stack.html) (`deepdive/penguins_data_stack.nim`, Island 3)
+- [Custom operators: points, lines and planes](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/operators.html) (`deepdive/operators.nim`, Island 5)
+- [Units with unchained](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/units_macros.html) (`deepdive/units_macros.nim`, Island 5)
+- [How the Thank You slide works](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/thank_you_sketch.html) (`deepdive/thank_you_sketch.nim`, the Thank You slide)
 
 ## Talk log
 
-The repository holds the slides of the talk, the explainers that go deeper into their examples, and a talk log: posts on how the talk evolves, built with nimib from `devlog/` (the list of posts is in `devlog/devlog.nim`). Index: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/
+The repository holds the slides of the talk, the deep dives that go deeper into what they only sketch, and a talk log: posts on how the talk evolves, built with nimib from `devlog/` (the list of posts is in `devlog/devlog.nim`). Index: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/
 
 - [Setting sail](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/2026-11-07-setting-sail.html) (7 November 2026): how the talk got from an accepted abstract to a deck with seven islands
 - [Dressing the voyage](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/2026-11-07-dressing-the-voyage.html) (7 November 2026): what Ines Montani teaches about slides, and three themes tried on real slides
@@ -66,11 +73,13 @@ The repository holds the slides of the talk, the explainers that go deeper into 
 
 ## setup
 
-Dependencies are managed with atlas (requires Nim >= 2.0, e.g. installed with grabnim):
+Dependencies are managed with atlas (requires Nim >= 2.0, e.g. installed with grabnim) and pinned in `atlas.lock`: every dependency at the commit the pages were last built with, the same on every machine and in CI:
 
 ```
-atlas install
+atlas rep atlas.lock
 ```
+
+To change a dependency: edit the `.nimble` file (or `atlas update <name>`), `atlas install`, build, then `atlas pin` to write the new commits to `atlas.lock`. Check that its `dir` entries and `nim.cfg` keep plain names (`deps/tabelline`, not `deps/tabelline.pietroppeter.github.com`): some atlas setups add the host to a folder name.
 
 nim-markdown needs PCRE at runtime (`libpcre.so.3`, e.g. `apt install libpcre3`). ggplotnim needs Cairo (`apt install libcairo2`, or `brew install cairo` on macOS, where `nim.cfg` links it from `/opt/homebrew/lib`).
 
@@ -80,36 +89,45 @@ nim-markdown needs PCRE at runtime (`libpcre.so.3`, e.g. `apt install libpcre3`)
 
 ```
 nim r build.nim                     # everything, as the pages workflow does
-nim r build.nim slides              # the deck (docs/index.html), the style test deck (docs/my.html), the Thank You slide, the easter egg
-nim r build.nim explainers          # every slides/*_explainer.nim (docs/<name>_explainer.html)
+nim r build.nim slides              # the deck (docs/slides.html), the style test deck (docs/my.html), the Thank You slide, the easter egg
+nim r build.nim deepdives           # every deepdive/*.nim, then the deep dives index (docs/deepdive/)
 nim r build.nim devlog              # every talk log post, then the talk log index (docs/devlog/)
-nim r build.nim themes              # the deck once per explored theme (docs/index_<theme>.html)
-nim r build.nim check               # only check that no built page loads anything from the network
-nim r build.nim slides explainers   # groups combine; flags after -- go to nim: nim r build.nim explainers -- -d:release
+nim r build.nim themes              # the deck once per explored theme (docs/slides_<theme>.html)
+nim r build.nim check               # only the checks: nothing loaded from the network, no broken link between pages, no nbRawHtml
+nim r build.nim slides deepdives    # groups combine; flags after -- go to nim: nim r build.nim deepdives -- -d:release
 ```
 
-Slides, explainers and the talk log are built by one program, `all.nim`: one compile however many pages (about 30 seconds instead of 100 with a compile per page). Each theme is a compile of its own, since the theme is chosen at compile time. Every build ends with the offline check. Explainers (`slides/*_explainer.nim`) and talk log posts (`devlog/*.nim`) are found by name, so a new one needs no change to `all.nim`, to the workflow or here. A single page still builds on its own with `nim r <file>`, e.g. `nim r index.nim` for the deck or `nim r slides/island5_units_explainer.nim` for one explainer.
+Slides, deep dives, the talk log and the site index are built by one program, `all.nim`: one compile however many pages (about 30 seconds instead of 100 with a compile per page). Each theme is a compile of its own, since the theme is chosen at compile time. Every build ends with the offline check. Explainers (`slides/*_explainer.nim`) and talk log posts (`devlog/*.nim`) are found by name, so a new one needs no change to `all.nim`, to the workflow or here. A single page still builds on its own with `nim r <file>`, e.g. `nim r index.nim` for the deck or `nim r slides/island5_units_explainer.nim` for one explainer.
 
 Outputs go to `docs/` (set by `homeDir` in `nimib.toml`), which is what gets published on GitHub Pages: the `pages` workflow runs `nim r build.nim` on every push to `main` and deploys `docs/`. Generated html is not committed.
 
 ## Offline
 
-Every page works offline: nothing is loaded from a CDN. Local copies of what the pages need live in `docs/assets/` (committed): reveal.js, KaTeX, p5.js and the code themes for the slides (`my.nim` points the slides to them), water.css and nimib's highlight.js for the explainers and the talk log (`offline.nim`: `nb.useOfflineAssets` after `nbInit`), plotly.js for the interactive plots (`slides/nbplotly.nim`), and the fonts of the explored themes. `scripts/vendor-assets.sh` and `scripts/vendor-fonts.sh` download them again (change versions there). `nim r build.nim check` (run at the end of every build) fails when a page still loads something from the network. Images go in `docs/images/`.
+Every page works offline: nothing is loaded from a CDN. Local copies of what the pages need live in `docs/assets/` (committed): reveal.js, KaTeX, p5.js and the code themes for the slides (`my.nim` points the slides to them), water.css and nimib's highlight.js for the deep dives, the indexes and the talk log (`offline.nim`, through `nb.usePage`), plotly.js for the interactive plots (`slides/nbplotly.nim`), and the fonts of the explored themes. `scripts/vendor-assets.sh` and `scripts/vendor-fonts.sh` download them again (change versions there). `nim r build.nim check` (run at the end of every build) fails when a page still loads something from the network.
 
-`scripts/screenshot.sh docs/index.html shots/` renders each slide to a png with headless Chromium.
+## Blocks, not HTML
 
-## OpenSpec
+Pages say what they show with nimib's blocks and the talk's own, never with HTML (see the nimib-blocks skill of [pietroppeter/skills](https://github.com/pietroppeter/skills), enabled for this repository in `.claude/settings.json`):
 
-The talk is prepared with spec-driven development using [OpenSpec](https://github.com/Fission-AI/OpenSpec) and a custom `talk` workflow schema:
+- `blocks.nim`: the custom blocks (`nbShowCode` for code shown and not run, `nbImg`, `nbGallery`, `nbFrame`, `nbDrawing`, `nbSwatches`, `nbSketch`, `nbLede`, `nbEyebrow`, `nbQuote`, `nbNote`, `nbGithubTitle`, `nbPager`, `nbPageList`), shared by slides, deep dives and the talk log
+- `talkstyle.nim`: the CSS and colours of the deep dives, the indexes and the talk log; the slides' style is in `my.nim` (and `themes.nim`)
+- `page.nim`: a deep dive (via `nb.useDeepDive`), an index or a talk log post starts with `nb.usePage(ownSource)` after `nbInit` (assets, style, "Show Source")
 
-- `openspec/specs/`: the talk's source of truth (requirements from the abstract above, audience, key messages, format and slot, slides tooling)
-- `openspec/outline.md`: the living outline (sections, timing, slides); each change carries an outline delta that archive merges in
-- `openspec/changes/`: iterations of the talk in progress, each with proposal → specs (deltas) → outline (sections and slides) → tasks
-- `openspec/schemas/talk/`: the custom schema and its templates
-- `openspec/reference/`: background notes (conference, slides setup, references)
+`nim r build.nim check` also fails when a page uses `nbRawHtml`: make a block instead. Images go in `docs/images/`.
 
-Install the CLI with `npm install -g @fission-ai/openspec` (cloud sessions do this in a SessionStart hook). In Claude Code: `/opsx:explore`, `/opsx:propose <idea>`, `/opsx:apply`, `/opsx:archive`.
+## Review mode
+
+Every deep dive, talk log page and index has a review mode (`review.nim` and `docs/assets/review.js`, ported from [tabelline](https://github.com/pietroppeter/tabelline)): under the title, the page's version (the commits that changed its source) and a **✎ Review** button. In review mode, select words and comment on them, or add a note on the whole page; comments stay in the browser. **Export** gives one text, Markdown with a YAML block, to paste in a Claude Code chat: the `nimib-review` skill (`.claude/skills/nimib-review`) applies each comment to the page's source. `nb.usePage(ownSource, withReview = false)` leaves it out. The slides have no review mode.
+
+`scripts/screenshot.sh docs/slides.html shots/` renders each slide to a png with headless Chromium.
+
+## Decisions and outline
+
+- `decisions/`: lightweight decision records (after [MADR](https://adr.github.io/madr/)), one per domain (the talk, tone and key messages, the islands, slides, themes, deep dives, talk log, build and CI, review, agents and skills), updated in place: what holds today, the options set aside, and a history line per change.
+- `outline.md`: the living plan of the talk: sections, timing and slides.
+- `notes/`: background notes (the conference, how the slides are set up, references).
+- `OPEN-POINTS.md`: open decisions and loose ends.
 
 ## License
 
-MIT (see `LICENSE`), except `slides/thank_you.nim` and `slides/thank_you_explainer.nim` (which quotes it): the animation of the Thank You slide is based on [a sketch by Okazz](https://openprocessing.org/sketch/3044593), licensed under [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/), so those files are licensed under CC BY-NC-SA 3.0 too.
+MIT (see `LICENSE`), except `slides/thank_you.nim` and `deepdive/thank_you_sketch.nim` (which quotes it): the animation of the Thank You slide is based on [a sketch by Okazz](https://openprocessing.org/sketch/3044593), licensed under [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/), so those files are licensed under CC BY-NC-SA 3.0 too.

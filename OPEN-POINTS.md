@@ -4,7 +4,7 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 ## Decisions
 
-- [ ] Theme: pick pirate, book or chart (or keep the AgileLab default). Today the default deck is unchanged and a theme only applies with `-d:slideTheme=pirate|book|chart` (`nim r build.nim themes` builds `docs/index_<theme>.html`). Adopting one is its own OpenSpec change.
+- [ ] Theme: pick pirate, book or chart (or keep the AgileLab default). Today the default deck is unchanged and a theme only applies with `-d:slideTheme=pirate|book|chart` (`nim r build.nim themes` builds `docs/slides_<theme>.html`). Adopting one updates `decisions/themes.md`.
 - [ ] Timing: with QEX, Island 2 is 2.5 minutes and the talk 23.5 minutes. Keep, or should the QEX slide replace something?
 
 ## Unanswered points from merged PRs
@@ -13,27 +13,24 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 - [ ] Rocks ahead (4.8) contributor list: add Angel Ezquerra ("Vindaar, mratsim, Clonkk, HugoGranstrom, Angel Ezquerra"), or replace names with numbers ("one person wrote 60% of the commits")?
 - [ ] Add a short lucidrains line on 4.4, e.g. "October 2026: GPT-2-like transformers, by lucidrains" (promise in Arraymancer #582, shipped in #695)?
-- [ ] Archive the OpenSpec change `arraymancer-scope` (merge its outline delta into `openspec/outline.md`).
 
 ### #25 QEX success story (Island 2)
 
 - [ ] Slide title "Osborn & Jin · QEX": Xiao-Yong Jin's GitHub handle is unknown. Do you know it?
 - [ ] Verify from a paper's acknowledgments that arXiv:2412.10322 and arXiv:2409.02062 ran on QEX, and that Curtis Peterson added the Pauli-Villars code (claims came from search summaries).
 - [ ] Rocks ahead (3.6): say something about QEX, like "a small team"? Unchanged for now.
-- [ ] Archive the OpenSpec change `island2-qex`.
 
 ### #26 Themes and talk log
 
-- [ ] The talk log post *Setting sail* leaves out how the work is done (with Claude, OpenSpec). Should the log mention it?
+- [ ] The talk log post *Setting sail* leaves out how the work is done (with Claude, decision records). Should the log mention it?
 - [ ] Merging published the talk log (`docs/devlog/`) and the themed decks on Pages: check you are fine with them being public.
 
 ### #27 tabelline tables
 
-- [ ] On a phone the explainer tools table scrolls sideways a little for the citations column: drop the "what it does" column there, or fine as is?
+- [ ] On a phone the brentp deep dive tools table scrolls sideways a little for the citations column: drop the "what it does" column there, or fine as is?
 - [ ] Slide 3.3: with the content-sized table, the code box reaches further right than before. Shrink it?
-- [ ] Archive the OpenSpec change `tabelline-tables`.
 
-## Outline still to fill (`openspec/outline.md`)
+## Outline still to fill (`outline.md`)
 
 Placeholder slides that still need content:
 
@@ -42,11 +39,10 @@ Placeholder slides that still need content:
 - [ ] 2.2 to 2.4 Island 1 Accessible Performance: Python vs Nim side by side, which benchmark for "Runs like C", "No ceiling".
 - [ ] 5.2 to 5.5 Island 4 Interoperability: which C library to wrap, which bridges (Python, R, Julia) and their maturity, the Nim-from-Python example, packaging rocks ahead.
 - [ ] 6.6 Island 5 rocks ahead (macros readability, concepts).
-- [ ] 7.2 to 7.4 Island 6 Interactivity: which Shiny app to port, the Nim JS port, no REPL. Reference: "The end of Shiny" in `openspec/reference/refs.md` (D3 with the JS backend).
+- [ ] 7.2 to 7.4 Island 6 Interactivity: which Shiny app to port, the Nim JS port, no REPL. Reference: "The end of Shiny" in `notes/refs.md` (D3 with the JS backend).
 - [ ] 8.2 to 8.4 Island 7 Notebook: literate computing, nimib, rocks ahead vs Jupyter.
 - [ ] 9.2 to 9.5 Conclusion: for the beginner, for the builder, your language seen from Nim, why still niche (your views on governance, tooling, Nimony and NIF).
-- [ ] Code explainers for the new code-heavy slides (one nimib explainer per code slide).
-- [ ] The outline does not yet include the three un-archived changes above (Arraymancer first in Island 3 and renumbered 4.4 to 4.6, QEX as 3.5 and rocks ahead 3.6, tabelline on 3.3 and 4.2).
+- [ ] Deep dives for the new code-heavy slides (one nimib page in deepdive/ per code slide).
 
 ## Upstream drafts on hold
 

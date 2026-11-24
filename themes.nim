@@ -1,6 +1,6 @@
-## Slide themes explored in slides/themes_explainer.nim (a proof of concept, not the deck's style yet).
+## Slide themes explored in the talk log (devlog/dressing_the_voyage.nim) (a proof of concept, not the deck's style yet).
 ##
-## Build the deck with a theme: `nim r -d:slideTheme=pirate index.nim` (pirate, book or chart);
+## Build the deck with a theme: `nim r -d:slideTheme=pirate deck.nim` (pirate, book or chart);
 ## the default `agile` is the AgileLab theme of my.nim and is unchanged.
 ## Each theme is css on top of the AgileLab theme, openly licensed fonts vendored in
 ## docs/assets/fonts (scripts/vendor-fonts.sh) and a map of the voyage drawn by code
@@ -16,7 +16,7 @@ const themed* = slideTheme != "agile"
 
 # --- the voyage map -------------------------------------------------------------------
 # One geometry (maps/geometry.nim), one map per theme drawn from it:
-# the base svg styled by css (agile and the explainer), pixel art (pirate),
+# the base svg styled by css (agile and the talk log), pixel art (pirate),
 # a nautical chart (chart) and a hand-drawn 19th century chart (book).
 
 proc voyageMap*(islands: openArray[string], current: int, id = ""): string =

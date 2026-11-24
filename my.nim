@@ -5,7 +5,8 @@ import themes
 export themes
 import tabelline
 import offline # freshRenderer
-export offline
+import blocks # nbImg, nbShowCode, nbSketch, ... (pages and slides share them)
+export offline, blocks
 import tabelline / nimib as tabellineNimib
 # only nbTable: tabelline's other names (Column, readCsv, ...) clash with Datamancer's,
 # so a slide file that makes a table imports tabelline itself
@@ -26,30 +27,30 @@ newNbBlock(NbTextSmall of NbText):
 template nbTextSmall*(ttext: string) =
   nb.add newNbTextSmall(text = ttext)
 
-newNbBlock(NbImg):
-  url: string
-  width: string
-  caption: string
-  alt: string
-  toHtml:
-    &"""<figure>
-<img src="{blk.url}" alt="{blk.alt}" width="{blk.width}">
-<figcaption>{blk.caption}</figcaption>
-</figure>"""
-
-func img*(nb: var Nb, url: string, width: string, caption = "", alt = "") =
-  let blk = newNbImg(url = nb.doc.relToRoot(url), width = width, caption = caption,
-    alt = if alt.len == 0: caption else: alt)
-  nb.add blk
-
-template nbImg*(url: string, width: string, caption = "", alt = "") =
-  nb.img(url, width, caption, alt)
-
 template reference*(text: string) =
   nbTextSmall: text
 
+const slideBlocksCss = """
+/* blocks of blocks.nim on the slides, and the layouts of Island 2 */
+.reveal .lede.story { font-size: 0.8em; }
+.reveal h3 .gh-mark { height: 0.8em; width: 0.8em; vertical-align: -0.05em; margin-right: 0.15em; }
+.reveal .brent-cols { display: grid; grid-template-columns: max-content 1fr; gap: 1.2em; align-items: center; }
+.reveal .brent-cols pre { font-size: 0.42em; width: 100%; margin: 0; }
+.reveal .rocks-quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; }
+.reveal .rocks-quotes figure { margin: 0; }
+.reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
+.reveal .rocks-quotes figcaption { font-size: 0.55em; margin-top: 0.5em; }
+/* code in nimiSlides' columns (a grid) fills its column */
+.reveal [style*="grid"] > div > pre { width: 100%; }
+"""
+
+template useSoftBackground* =
+  ## the deck's off-white background, for a deck without the AgileLab theme (slides/emilia.nim)
+  nb.addStyle ":root { --r-background-color: " & softWhite & "; }"
+
 template agileTheme*() =
   setSlidesTheme(White)
+  nb.addStyle slideBlocksCss
   nb.addStyle: """
 :root {
   --r-background-color: $2;
@@ -180,7 +181,7 @@ func vendoredRevealCss(blk: JsonNode, nb: Nb): string =
 <link rel="stylesheet" href="{reveal}/dist/theme/{theme}.css" />
 <link rel="stylesheet" href="{nb.assetPath(highlightAssets)}/{codeTheme}.css" />
 """
-  if themed: # fonts of the themes explored in slides/themes_explainer.nim
+  if themed: # fonts of the themes explored in the talk log (devlog/dressing_the_voyage.nim)
     result.add &"""<link rel="stylesheet" href="{nb.assetPath(fontAssets)}/fonts.css" />"""
   if nb.doc.context{"p5"}.getBool:
     result.add &"""<script src="{nb.assetPath(p5Assets)}/p5.min.js"></script>"""
@@ -245,9 +246,35 @@ template useRevealLatex* =
   ## nimib's `useLatex` stores the KaTeX html there, so the math plugin is never loaded
   nb.doc.context["latex"] = %true
 
+const sketchCss = """
+.reveal .slides section:has(> .sketch) {
+  top: 0 !important;
+  height: var(--slide-height);
+  padding: 0;
+}
+.reveal .sketch {
+  position: absolute;
+  inset: 0;
+}
+.thank-you-link {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  line-height: 1.3;
+}
+.thank-you-link p { margin: 0; }
+/* the credit line, smaller than the link above it */
+.thank-you-link small + small { opacity: 0.7; }
+.thank-you-link small + small p { font-size: 0.67em; }
+"""
+
 template useP5* =
-  ## load the vendored p5.js in the head, for slides with a p5nim sketch (see slides/thank_you.nim)
+  ## load the vendored p5.js in the head, for slides with a p5nim sketch (see slides/thank_you.nim):
+  ## a slide with an nbSketch is the sketch, full screen
   nb.doc.context["p5"] = %true
+  nb.addStyle sketchCss
 
 template useVendoredAssets* =
   ## load reveal.js and KaTeX from docs/assets instead of CDNs
@@ -280,7 +307,7 @@ template mapSlide*(n: int) =
   ## 0 for the whole map, 8 for back on land (all islands visited)
   when themed: # the voyage map drawn by themes.nim
     slide:
-      nbRawHtml: "<div class=\"map-slide\">" & mapHeading(islands, n) & "\n" & voyageMap(islands, n) & "</div>"
+      nbDrawing(mapHeading(islands, n) & "\n" & voyageMap(islands, n), "map-slide")
   else:
     slide:
       var md = (if n == 0: "## The map\n\n" elif n == 8: "## Back on land\n\n" else: "## Island " & $n & "\n\n")
@@ -292,11 +319,12 @@ template mapSlide*(n: int) =
 template themedTitle*(body: untyped) =
   ## the title slide's content; a theme adds a class for its css and, behind it, the map of the voyage
   when themed:
-    nbRawHtml: "<div class=\"title-art\">" & voyageMap(islands, 0, "title") & "</div><div class=\"title-slide\"><div class=\"title-box\">"
-    body
-    when slideTheme == "chart":
-      nbRawHtml: "<p class=\"scale\">SCALE 1 : 30 MINUTES</p>"
-    nbRawHtml: "</div></div>"
+    nbDrawing(voyageMap(islands, 0, "title"), "title-art")
+    nbDiv("title-slide", ""):
+      nbDiv("title-box", ""):
+        body
+        when slideTheme == "chart":
+          nbLede("SCALE 1 : 30 MINUTES", "scale")
   else:
     body
 
@@ -306,20 +334,28 @@ template placeholderSlide*(id, title, description: string) =
   slide:
     nbText "## " & title
     nbText "*draft*"
-    nbText "<small>slide " & id & "</small>"
+    nbTextSmall "slide " & id
     speakerNote description
+
+newNbBlock(NbImageLeft of NbContainer):
+  url: string
+  width: float
+  toHtml:
+    # the width is a parameter of the layout, so it goes in a css variable on the element
+    &"""<div class="img-left" style="--img-left-width: {blk.width}">
+<img class="img-left-image" src="{blk.url}" alt="">
+<div class="img-left-text">""" & nbContainerToHtml(blk, nb) & """</div>
+<div class="img-left-logo"></div>
+</div>"""
 
 template imageLeftSlide*(url: string, width: float, body: untyped) =
   ## slide with an image on the left, full screen height and `width` (0..1) of the screen width,
   ## cropped to fill; the slide content is vertically centered on the right
   slide:
-    nbRawHtml: "<div class=\"img-left\" style=\"--img-left-width: " & $width & "\">\n" &
-      "<img class=\"img-left-image\" src=\"" & nb.doc.relToRoot(url) & "\" alt=\"\">\n" &
-      "<div class=\"img-left-text\">"
-    body
-    nbRawHtml: """</div>
-<div class="img-left-logo"></div>
-</div>"""
+    let imgLeft = newNbImageLeft(@[], nb.doc.relToRoot(url), width) # positional: the parameters share the fields' names
+    nb.withContainer(imgLeft):
+      body
+    nb.add imgLeft
 
 template imageLeftSlide*(url: string, body: untyped) =
   imageLeftSlide(url, 0.4, body)
@@ -359,7 +395,7 @@ template testSlide* =
 
 ### H3 header
 
-Text with *italic*, **strong** and [link](recurse.com)
+Text with *italic*, **strong** and [link](https://www.recurse.com)
 
 > a quote
 """

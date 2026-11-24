@@ -1,7 +1,7 @@
 import nimib, nimiSlides
 import ../my
 
-# Section 8: Island 7: Notebook (see the latest outline in openspec)
+# Section 8: Island 7: Notebook (see outline.md)
 # The literate computing paradigm Jupyter made central, and a Nim option that goes in an unexpected direction. Carries K2 and K3.
 
 template island7NotebookSection* =
