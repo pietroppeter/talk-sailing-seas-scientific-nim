@@ -1,5 +1,6 @@
 import std / [math, strutils, strformat, json]
 import nimib
+import ../offline # nimib's theme and KaTeX from docs/assets
 import nimib / highlight
 import unchained
 from island5_units import SolarMass, Msun, EarthMass, Mearth
@@ -12,6 +13,7 @@ from island5_units import SolarMass, Msun, EarthMass, Mearth
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "island5_units_explainer.nim")
+nb.useOfflineAssets
 # but with it nimib cannot find this file,
 # so give the "Show Source" button its source here
 const ownSource = staticRead("island5_units_explainer.nim")

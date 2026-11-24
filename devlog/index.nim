@@ -6,6 +6,7 @@ import nimib / highlight
 import devlog
 
 nbInit(thisFileRel = "devlog/index.nim")
+nb.useOfflineAssets
 const ownSource = staticRead("index.nim")
 nb.doc.source = ownSource
 nb.doc.context["source"] = %ownSource

@@ -43,25 +43,9 @@ jobs:
           # the committed atlas.config wins over a restored cache (pkgOverrides: nim-plotly and ggplotnim both need a webview)
           git checkout -- deps/atlas.config
           atlas install
-      - name: Build slides
-        run: |
-          nim r index.nim
-          nim r my.nim
-          nim r slides/thank_you.nim
-          nim r slides/thank_you_explainer.nim
-          nim r slides/island2_brentp_explainer.nim
-          nim r slides/island2_vindaar_explainer.nim
-          nim r slides/island2_qex_explainer.nim
-          nim r slides/island2_beyond_explainer.nim
-          nim r slides/island3_penguins_explainer.nim
-          nim r slides/island5_operators_explainer.nim
-          nim r slides/island5_units_explainer.nim
-          nim r slides/emilia.nim
-          scripts/build-themes.sh
-          nim r devlog/setting_sail.nim
-          nim r devlog/dressing_the_voyage.nim
-          nim r devlog/drawing_the_map.nim
-          nim r devlog/index.nim
+      - name: Build slides, explainers and talk log
+        # every page, then checks that no page loads anything from the network (see the script)
+        run: scripts/build.sh
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs

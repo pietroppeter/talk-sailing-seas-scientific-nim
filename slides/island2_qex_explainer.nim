@@ -1,5 +1,6 @@
 import std / [json, math, random, strformat]
 import nimib
+import ../offline # nimib's theme and KaTeX from docs/assets
 import nimib / highlight
 
 # A nimib document that explains, in plain words, lattice QCD
@@ -12,6 +13,7 @@ import nimib / highlight
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "island2_qex_explainer.nim")
+nb.useOfflineAssets
 # but with it nimib cannot find this file,
 # so give the "Show Source" button its source here
 const ownSource = staticRead("island2_qex_explainer.nim")
