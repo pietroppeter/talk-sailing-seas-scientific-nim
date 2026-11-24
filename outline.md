@@ -78,13 +78,15 @@ The basic building blocks of the data ecosystem, through an exploration of the p
 
 ### 5. Island 4: Interoperability (~3 min)
 
-Nim is easy to combine with other languages, in both directions. Carries K2 (interop superpower) and K3.
+Two messages (Pietro, 2026-11-24): Nim's small ecosystem is not a problem, because Nim reaches the bigger ones (C, C++ and JavaScript natively, Python, R and Julia through bridges); and Nim can be the language where you write the fast algorithm that other languages use. Carries K2 (interop superpower) and K3. Deep dive: `deepdive/interoperability.nim`.
 
 5.1 **Island 4** - section title on the map.
-5.2 **Wrapping C and C++** - calling an existing C library from Nim in a few lines [tbd: library].
-5.3 **Bridges** - two-way bridges to Python, R and Julia, with an honest maturity rating for each [tbd: which libraries].
-5.4 **Nim from Python** - a Nim function imported and called from Python, "almost like Rust" [example] [tbd: example].
-5.5 **Rocks ahead** - packaging and distribution of Nim extensions [tbd].
+5.2 **Small ecosystem, big neighbours** - natively C, C++, JavaScript with `importc`, `importcpp`, `importjs`: C's Bessel function `j0` declared in one line and called when the slide is built; through bridges Python, R, Julia (next slide); link to the deep dive [example].
+5.3 **Bridges: Nim calls Python, R, Julia** - three columns, one micro example each from the libraries' READMEs (shown, not run): nimpy calls numpy's `mean`, rnim R's `sum`, nimjl Julia's `sqrt`; rnim is a prototype, nimjl needs Julia [example].
+5.4 **Bridges, the other way: Nim inside** - the same three columns the other way, a Nim `add` compiled as a library and called: nimpy's `exportpy` from Python, rnim's `exportR` from R (with the R wrapper rnim writes), the C ABI (`exportc, dynlib`) from Julia's `ccall` [example].
+5.5 **Write it in Nim, use it from Python** - `nimlang-pypi`, installed with `uv add nimlang` (the Nim compiler in a Python wheel, `zig cc` as C compiler): `fib` in Nim with nimpy's `exportpy`, then a recorded terminal session that builds it and times it against `slow.py` (95.8 ms vs 11.5 ms); it also builds the wheels, so Python users of a Nim-powered library need no Nim compiler, as Rust does with maturin [example].
+5.6 **A real package: naffprop** - affinity propagation with R's apcluster features behind scikit-learn's API, the algorithm in Nim, built with nimlang-pypi, wheels for five platforms, 1.1 to 2.9 times faster than scikit-learn [example]; on the right, live in an iframe, its interactive figure "How exemplars emerge" (the same Nim compiled to JavaScript, vendored in `docs/assets/naffprop/` by `scripts/vendor-assets.sh`).
+5.7 **Rocks ahead** - bridges of different maturity (nimpy solid, rnim a prototype, nimjl needs Julia); no maintained packaging tool for years, `nimlang-pypi` new and alpha; few Python users know Nim, compared with Rust.
 
 ### 6. Island 5: An Expressive Language (~2.5 min)
 
@@ -103,7 +105,7 @@ Nim compiles to JavaScript: a snappy port of a fun Shiny app, the generative pla
 
 7.1 **Island 6** - section title on the map.
 7.2 **🌱 A Shiny plant** - Nick Strayer's Shiny for Python app (2022): four sliders (leafiness, order, waviness, simplicity) and a plant drawn by matplotlib; a screenshot with the plant's equations beside it (LaTeX: x, y and the range of t), and a link to the app running on the site with shinylive (Python in the browser with Pyodide, exported by `scripts/shinylive.sh`). One line of numbers: 16 MB to download, 8 s to the first plot, 0.4 s per slider move. The speaker notes say that the shared link no longer runs (Shiny removed the layout it used, a two-line fix).
-7.3 **🌿 The Nim plant** - the same app in Nim, compiled to JavaScript, live in the slide (`slides/island6_plant_app.nim`: Karax and a canvas bound with importjs), beside its Karax code (`buildHtml`). One line of numbers: first plot in 30 ms, 250× sooner than Shiny; 200 KB, 80× lighter; link to the deep dive. A variant to try (`nim r build.nim island6 -- -d:dragVariant`) makes the slider lines of the code draggable, the app's sliders following (zogyn, `slides/island6_plant_code.nim`); the slide does not mention it, the deep dive explains the trick. The speaker says it is not a fair fight: shinylive brings all of Python, Nim translates the program and draws its own plot.
+7.3 **🌿 The Nim plant** - the same app in Nim, compiled to JavaScript, live in the slide (`slides/island6_plant_app.nim`: Karax and a canvas bound with importjs), beside its Karax code (`buildHtml`). One line of numbers: first plot in 30 ms, 250× sooner than Shiny; 300 KB, 50× lighter; link to the deep dive. Easter egg: the slider lines of the code can be dragged, the app's sliders following (zogyn, `slides/island6_plant_code.nim`); nothing on the slide shows it, the deep dive explains the trick (`-d:dragVariant=false` builds the plain slide). The speaker says it is not a fair fight: shinylive brings all of Python, Nim translates the program and draws its own plot.
 7.4 **Rocks ahead** - no REPL yet, only experiments (nim secret, INim, jupyternim, cicak); a REPL fits interpreted or JIT languages, Nim is statically typed and compiled ahead of time; so no Jupyter- or Marimo-style interactivity in Nim (nimib goes another way: next island).
 
 ### 8. Island 7: Notebook (~2.5 min)

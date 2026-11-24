@@ -2,9 +2,9 @@ import nimib, nimiSlides
 import ../my
 import island6_plant_code # karaxCode
 
-const dragVariant {.booldefine.} = false
-  ## slide 7.3 with the slider lines of the code you drag (zogyn), to try later:
-  ## `nim r build.nim island6 -- -d:dragVariant`
+const dragVariant {.booldefine.} = true
+  ## slide 7.3 with the slider lines of the code you drag (zogyn): a secret, nothing
+  ## on the slide shows it; `-d:dragVariant=false` builds the plain slide
 
 # Section 7: Island 6: Interactivity (see outline.md)
 # Nim compiles to JavaScript: a snappy port of a fun Shiny app. Carries K2 (JavaScript backend superpower).
@@ -57,18 +57,18 @@ a two-line fix. Numbers measured locally, no network counted.
       nbTextSmall """
 Nim and [Karax](https://github.com/karaxnim/karax), compiled to
 JavaScript: first plot in 30 ms, 250× sooner than Shiny (8 s);
-200 KB, 80× lighter (16 MB) ·
+300 KB, 50× lighter (16 MB) ·
 [the code, explained](deepdive/plant_app.html)
 """
       speakerNote """
 Move the sliders: the same plant, the same curve,
 written in Nim and compiled to JavaScript when the deck is built.
-(With -d:dragVariant: drag a slider line in the code, the sliders
-follow, a trick of zogyn explained in the deep dive; not said on the slide.)
+Easter egg, not said on the slide: drag a slider line in the code,
+the sliders follow (zogyn; the trick is explained in the deep dive).
 The page is Karax: buildHtml describes the sidebar and the canvas
 from the state, Karax renders it again after every slider move,
 and the canvas is bound with importjs in a few lines.
-About 250 times faster to the first plot, 80 times lighter,
+About 250 times faster to the first plot, 50 times lighter,
 and each move is drawn on the next frame instead of 0.4 s later.
 Not a fair fight: shinylive brings all of Python;
 Nim translates the program into the language of the browser,

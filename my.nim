@@ -52,15 +52,21 @@ const slideBlocksCss = """
 .reveal .code-stage .item { transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1); }
 .reveal .code-stage .item.grab { cursor: grab; }
 .reveal .code-stage .item.lifted { transition: none; cursor: grabbing; }
-.reveal .code-stage .handle { fill: var(--r-link-color); fill-opacity: 0.1; }
-.reveal .code-stage .lifted .handle { fill-opacity: 0.3; }
+.reveal .code-stage .handle { fill: var(--r-link-color); fill-opacity: 0; } /* a secret: no hint that the lines move */
+.reveal .code-stage .lifted .handle { fill-opacity: 0; }
 /* imageAside: a picture with something smaller beside it (slide 7.2) */
 .reveal .img-aside { display: grid; grid-template-columns: 2fr 1fr; gap: 1em; align-items: center; margin-top: 0.6em; }
 .reveal .img-aside img { width: 100%; margin: 0; }
 .reveal .img-aside-text { font-size: 0.6em; }
+/* a page of the site live in a slide (nbFrame), e.g. naffprop's figure on slide 5.6 */
+.reveal iframe.frame { width: 100%; height: 500px; border: 1px solid #ddd; border-radius: 6px; background: white; }
 /* Island 1: Python and Nim side by side, each column as wide as its code */
 .reveal .perf-cols { display: grid; grid-template-columns: max-content 1fr; gap: 0.6em; margin-bottom: 0.6em; }
 .reveal .perf-cols pre { font-size: 0.45em; width: 100%; margin: 0; }
+/* compactColumns: three narrow columns of code (Island 4 bridges), smaller code */
+.reveal .compact-cols pre { font-size: 0.5em; }
+/* a table on its own in a slide (not in a layout's grid) gets room above and below */
+.reveal .slides section > .tabella { margin: 0.8em 0; }
 /* code in nimiSlides' columns (a grid) fills its column */
 .reveal [style*="grid"] > div > pre { width: 100%; }
 """
@@ -438,6 +444,11 @@ template imageLeftSlide*(url: string, width: float, body: untyped) =
     nb.withContainer(imgLeft):
       body
     nb.add imgLeft
+
+template compactColumns*(body: untyped) =
+  ## nimiSlides' `columns`, with smaller code, for three narrow columns of code
+  nbDiv(classes = "compact-cols", styles = "display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); column-gap: 0.8em;"):
+    body
 
 template imageLeftSlide*(url: string, body: untyped) =
   imageLeftSlide(url, 0.4, body)

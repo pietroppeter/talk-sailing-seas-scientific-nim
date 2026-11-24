@@ -60,6 +60,7 @@ A slide has room for little, so a topic the slides only sketch gets a deep dive:
 - [Vindaar's thesis in plain words](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/vindaar.html) (`deepdive/vindaar.nim`, Island 2)
 - [Lattice QCD and QEX in plain words](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/qex.html) (`deepdive/qex.nim`, Island 2)
 - [Penguins with the Nim data stack](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/penguins_data_stack.html) (`deepdive/penguins_data_stack.nim`, Island 3)
+- [Interoperability: Nim with other languages](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/interoperability.html) (`deepdive/interoperability.nim`, Island 4)
 - [Custom operators: points, lines and planes](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/operators.html) (`deepdive/operators.nim`, Island 5)
 - [Units with unchained](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/units_macros.html) (`deepdive/units_macros.nim`, Island 5)
 - [A plant in the browser](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/plant_app.html) (`deepdive/plant_app.nim`, Island 6)
