@@ -32,6 +32,12 @@ a[href$="emilia.html"], a[href$="emilia.html"]:hover { color: inherit; text-deco
 .gallery img { width: 100%; border: 1px solid var(--line); }
 .swatches { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0.5em 0 1em; }
 .swatch { font-size: 0.75em; padding: 0.4em 0.6em; border-radius: 4px; border: 1px solid var(--swatch-line); }
+/* an app compiled to JavaScript (nbApp): sliders in a sidebar, then a canvas */
+.app { display: flex; flex-wrap: wrap; gap: 1em; align-items: flex-start; border: 1px solid var(--line); border-radius: 6px; padding: 0.8em; }
+.app .sidebar { display: flex; flex-direction: column; gap: 0.6em; flex: 0 0 13em; }
+.app label { display: grid; grid-template-columns: 1fr auto; font-size: 0.9em; }
+.app input { grid-column: 1 / 3; width: 100%; margin: 0.2em 0 0; }
+.app canvas { flex: 1 1 18em; min-width: 0; max-width: 100%; height: auto; }
 .drawing svg { width: 100%; height: auto; display: block; }
 .drawing.engraved { background: var(--engraved-paper); }
 .eyebrow { font-size: 0.8em; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }

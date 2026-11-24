@@ -101,12 +101,12 @@ Two language features that make Nim good for scientific use: custom operators wr
 
 ### 7. Island 6: Interactivity (~2.5 min)
 
-Nim compiles to JavaScript: a snappy port of a fun Shiny app. Carries K2 (JavaScript backend superpower).
+Nim compiles to JavaScript: a snappy port of a fun Shiny app, the generative plant of Nick Strayer. Carries K2 (JavaScript backend superpower). The deep dive (`deepdive/plant_app.html`) has the code, the numbers, what the JavaScript backend can and cannot do, and the REPL attempts.
 
 7.1 **Island 6** - section title on the map.
-7.2 **The original Shiny app** - what the app does and why it is fun [tbd: which app].
-7.3 **The Nim port** - the same app compiled to JavaScript, running in the browser [example].
-7.4 **Rocks ahead** - no REPL, so no Jupyter- or Marimo-style interactivity in Nim yet.
+7.2 **🌱 A Shiny plant** - Nick Strayer's Shiny for Python app (2022): four sliders (leafiness, order, waviness, simplicity) and a plant drawn by matplotlib; a screenshot, and a link to the app running on the site with shinylive (Python in the browser with Pyodide, exported by `scripts/shinylive.sh`). One line of numbers: 16 MB to download, 8 s to the first plot, 0.4 s per slider move. The speaker notes say that the shared link no longer runs (Shiny removed the layout it used, a two-line fix).
+7.3 **🌿 The Nim plant** - the same app in Nim, compiled to JavaScript, live in the slide (`slides/island6_plant_app.nim`: std/dom and a canvas bound with importjs, no framework): 96 KB, draws again in under 1 ms; link to the deep dive. The speaker says it is not a fair fight: shinylive brings all of Python, Nim translates the program and draws its own plot.
+7.4 **Rocks ahead** - no REPL yet, only experiments (nim secret, INim, jupyternim, cicak); a REPL fits interpreted or JIT languages, Nim is statically typed and compiled ahead of time; so no Jupyter- or Marimo-style interactivity in Nim (nimib goes another way: next island).
 
 ### 8. Island 7: Notebook (~2.5 min)
 

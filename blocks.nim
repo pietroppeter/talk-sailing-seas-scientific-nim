@@ -135,6 +135,16 @@ template nbSketch*(id: string) =
   ## the element a p5nim sketch draws in (the sketch's `parent`), filled by nbJsFromCode
   nb.add newNbSketch(id)
 
+newNbBlock(NbApp):
+  id: string
+  toHtml:
+    &"""<div id="{blk.id}" class="app"></div>"""
+
+template nbApp*(id: string) =
+  ## the element an app compiled to JavaScript builds itself in (a sidebar and a canvas,
+  ## see slides/island6_plant_app.nim), filled by nbJsFromCode
+  nb.add newNbApp(id)
+
 # -------------------------------------------------------------------------------------------- text
 
 newNbBlock(NbLede):

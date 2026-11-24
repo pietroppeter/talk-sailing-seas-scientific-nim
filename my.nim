@@ -40,6 +40,11 @@ const slideBlocksCss = """
 .reveal .rocks-quotes figure { margin: 0; }
 .reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
 .reveal .rocks-quotes figcaption { font-size: 0.55em; margin-top: 0.5em; }
+/* an app compiled to JavaScript (nbApp, slide 7.3): sliders in a sidebar, then a canvas */
+.reveal .app { display: flex; gap: 1.2em; align-items: center; justify-content: center; margin: 0.4em 0; }
+.reveal .app .sidebar { display: flex; flex-direction: column; gap: 0.5em; width: 10em; font-size: 0.6em; text-align: left; }
+.reveal .app label { display: grid; grid-template-columns: 1fr auto; }
+.reveal .app input { grid-column: 1 / 3; width: 100%; margin: 0.2em 0 0; }
 /* code in nimiSlides' columns (a grid) fills its column */
 .reveal [style*="grid"] > div > pre { width: 100%; }
 """

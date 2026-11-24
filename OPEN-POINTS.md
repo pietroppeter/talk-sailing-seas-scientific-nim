@@ -9,6 +9,13 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 ## Unanswered points from merged PRs
 
+### Island 6 Interactivity (the plant app)
+
+- [ ] cicak: the deep dive and slide 7.4 only call it "Pietro's current experiment". Add a link or a line on what it does?
+- [ ] Slide 7.2 shows a screenshot of the Shiny app and links the live one (it needs a few seconds and 16 MB to start). Embed it live in the slide instead?
+- [ ] The numbers (16 MB, 8 s, 0.4 s; 96 KB, under 1 ms) were measured on a cloud machine with headless Chromium; check them on the presentation laptop.
+- [ ] "The end of Shiny" (`notes/refs.md`, D3 with the JS backend) is not used: mention it in the deep dive or the speaker notes?
+
 ### #24 Arraymancer scope (Island 3)
 
 - [ ] Rocks ahead (4.8) contributor list: add Angel Ezquerra ("Vindaar, mratsim, Clonkk, HugoGranstrom, Angel Ezquerra"), or replace names with numbers ("one person wrote 60% of the commits")?
@@ -38,7 +45,6 @@ Placeholder slides that still need content:
 - [ ] 2.2 to 2.4 Island 1 Accessible Performance: Python vs Nim side by side, which benchmark for "Runs like C", "No ceiling".
 - [ ] 5.2 to 5.5 Island 4 Interoperability: which C library to wrap, which bridges (Python, R, Julia) and their maturity, the Nim-from-Python example, packaging rocks ahead.
 - [ ] 6.6 Island 5 rocks ahead (macros readability, concepts).
-- [ ] 7.2 to 7.4 Island 6 Interactivity: which Shiny app to port, the Nim JS port, no REPL. Reference: "The end of Shiny" in `notes/refs.md` (D3 with the JS backend).
 - [ ] 8.2 to 8.4 Island 7 Notebook: literate computing, nimib, rocks ahead vs Jupyter.
 - [ ] 9.2 to 9.5 Conclusion: for the beginner, for the builder, your language seen from Nim, why still niche (your views on governance, tooling, Nimony and NIF).
 - [ ] Deep dives for the new code-heavy slides (one nimib page in deepdive/ per code slide).
