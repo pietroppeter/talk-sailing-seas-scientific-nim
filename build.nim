@@ -5,7 +5,7 @@
 ##   nim r build.nim deepdives            every deep dive (deepdive/*.nim), then the deep dives index
 ##   nim r build.nim devlog               every talk log post, then the talk log index
 ##   nim r build.nim themes               the deck once per explored theme (docs/slides_<theme>.html)
-##   nim r build.nim looks                the deck and the style test deck in Quarto's look (slides_quarto.html, my_quarto.html)
+##   nim r build.nim looks                the deck and the style test deck in the earlier centered look (slides_centered.html, my_centered.html)
 ##   nim r build.nim check                only the checks: nothing loaded from the network, no broken link between pages
 ##   nim r build.nim slides deepdives     groups combine
 ##
@@ -117,6 +117,6 @@ when isMainModule:
     for t in themes:
       run "nim r " & nimFlags(extra) & " -d:slideTheme=" & t & " all.nim"
   if "looks" in groups:
-    run "nim r " & nimFlags(extra) & " -d:deckLook=quarto all.nim"
+    run "nim r " & nimFlags(extra) & " -d:deckLook=centered all.nim"
   let checks = [check(), linksResolve(), noRawHtml()]
   if false in checks: quit 1

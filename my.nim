@@ -200,11 +200,14 @@ const
   highlightAssets = "assets/highlight" # highlight.js styles, vendored by scripts/vendor-assets.sh
   fontAssets = "assets/fonts" # fonts of the explored themes, vendored by scripts/vendor-fonts.sh
 
-const deckLook* {.strdefine.} = "agile"
-  ## the proportions of the deck: `agile` (reveal.js' White theme: 960x700, centered, 42px text)
-  ## or `quarto` (Quarto's reveal.js look: 1050x700, top-left aligned, 40px text, tighter margins),
-  ## built on the side as docs/slides_quarto.html with `nim r build.nim looks`
+const deckLook* {.strdefine.} = "quarto"
+  ## the proportions of the deck: `quarto` (default, Quarto's reveal.js look: 1050x700, top-left aligned,
+  ## 40px text, tighter margins) or `centered` (the earlier look, reveal.js' White theme: 960x700,
+  ## centered, 42px text, upper-case headings), built on the side as docs/slides_centered.html
+  ## with `nim r build.nim looks`
 const quartoLook* = deckLook == "quarto"
+const sideLook* = not quartoLook
+  ## a deck in a look other than the default, built on the side
 
 const codeTheme* {.strdefine.} = "atom-one-light"
   ## highlight.js style for code blocks, one of the files in docs/assets/highlight
@@ -335,7 +338,7 @@ template myInit*(sourceFileRel = "my.nim") =
   useRevealLatex
   agileTheme()
   imageLeftStyle
-  when quartoLook: # -d:deckLook=quarto
+  when quartoLook: # the default; -d:deckLook=centered for the earlier look
     nb.addStyle quartoCss
   when themed: # -d:slideTheme=pirate|book|chart, see themes.nim
     nb.addStyle: themeCss()
@@ -507,8 +510,8 @@ template buildStyleDeck*() =
   ## the style test deck, docs/my.html
   myInit("my.nim")
   testSlide
-  when quartoLook:
-    nb.doc.filename = "my_quarto.html"
+  when sideLook:
+    nb.doc.filename = "my_" & deckLook & ".html"
   nbSave
 
 when isMainModule:

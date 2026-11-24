@@ -5,7 +5,6 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 ## Decisions
 
 - [ ] Theme: pick pirate, book or chart (or keep the AgileLab default). Today the default deck is unchanged and a theme only applies with `-d:slideTheme=pirate|book|chart` (`nim r build.nim themes` builds `docs/slides_<theme>.html`). Adopting one updates `decisions/themes.md`.
-- [ ] Quarto look: make `-d:deckLook=quarto` (Quarto's reveal.js proportions, AgileLab branding kept, `docs/slides_quarto.html`) the default deck? It aligns slides top-left and drops the upper-case headings. Adopting it updates `decisions/themes.md`.
 - [ ] Timing: with QEX, Island 2 is 2.5 minutes and the talk 23.5 minutes. Keep, or should the QEX slide replace something?
 
 ## Unanswered points from merged PRs
