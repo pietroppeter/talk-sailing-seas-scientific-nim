@@ -63,7 +63,7 @@ template island1PerformanceSection* =
       nbTable benchTable().slideLook(fontSize = "0.5em").highlightRows(where(it["impl"] == "Nim loops"))
       nbTextSmall """
 *No ceiling*: when you need it, go down to SIMD, threads,
-GPUs and assembly. Mamy's talk, in this session.
+GPUs and assembly.
 """
       reference &"""
 Best of 100 runs: {benchMachineInfo()}.
@@ -79,5 +79,5 @@ In Nim you are allowed to write for loops:
 the loop is compiled, and it runs as fast as NumPy's C loop.
 No ceiling: Nim compiles to C, so you can go as low as you want,
 SIMD intrinsics, threads, GPU kernels, inline assembly.
-Mamy's talk shows how far that goes.
+Mamy's talk, in this same session, shows how far that goes.
 """

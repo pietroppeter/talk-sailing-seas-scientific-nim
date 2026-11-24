@@ -33,7 +33,6 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 ### Island 1 in one slide (Vandermonde benchmark)
 
 - [ ] Run `bash bench/vandermonde/run.sh` on the presentation laptop and commit `results.csv` and `machine.txt`, so the slide shows the machine of the talk (today: a cloud machine, where Nim and NumPy are close and Nim's time moves between runs).
-- [ ] Slide 2.2 mentions Mamy's talk as "in this session": before or after this one? Name it if useful.
 
 ## Outline still to fill (`outline.md`)
 
