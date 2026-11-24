@@ -2,7 +2,7 @@
 ## conventions of real charts (Admiralty and NOAA): buff land with a thin coastline, three
 ## blue tints for the shallows (darker where shallower) and white paper beyond, depth contours
 ## at 5, 10 and 20 metres, soundings in metres with their decimal as a subscript, rocks, a magenta
-## compass rose with a magnetic ring, a magenta course line with its bearings, a light on the island
+## compass rose with a magnetic ring, a magenta course line, a light on the island
 ## of the section, upright names for land, italic names for water, a title block, a source note
 ## and a fine graduated border.
 ## The sea floor is the distance field of maps/geometry.nim, stretched by fractal noise so the
@@ -68,11 +68,6 @@ func soundingText(d: float, p: Pt): string =
     &"""<text x="{f1(p.x)}" y="{f1(p.y)}">{m}</text>"""
 
 # --- the furniture of a chart ---------------------------------------------------------------
-
-func bearing(a, b: Pt): int =
-  ## true bearing from a to b, degrees from north, clockwise
-  let deg = radToDeg(arctan2(b.x - a.x, -(b.y - a.y)))
-  (int(round(deg)) + 360) mod 360
 
 func roseSvg(c: Pt, r: float): string =
   ## a compass rose as on charts: a true ring with degrees and a magnetic ring inside
@@ -155,6 +150,13 @@ const lightChars = ["Fl 5s 30m 22M", "Fl(2) 10s 14M", "Fl(3) 15s 25M", "Fl W 5s 
                     "Oc(2) 6s 12M", "Fl 10s 19M", "Fl(4) 20s 23M"]
   ## the characteristics of the islands' lights (made up, in the style of real ones)
 
+func anchorSvg(at: Pt): string =
+  ## the anchor of the charts, drawn over a pale halo so it reads on land, shoal and deep water
+  let d = "M0,-7.5 V9 M-5,-3.5 H5 M-8,3.5 Q-7,9.5 0,10 Q7,9.5 8,3.5 M-9.5,5.5 L-8,3.5 L-6,5.2 M9.5,5.5 L8,3.5 L6,5.2"
+  &"""<g class="anchor" transform="translate({f1(at.x)},{f1(at.y - 4)})">""" &
+    &"""<circle cx="0" cy="1.5" r="13" class="anchor-halo"/>""" &
+    &"""<circle cx="0" cy="-9.6" r="2.2" fill="none"/><path d="{d}" fill="none"/></g>"""
+
 proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): string =
   let id = if id.len > 0: id else: $current
   let f = v.field
@@ -229,25 +231,13 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
     if d > 3 and d < 7 and metres(bed.at(p)) < 5:
       result.add &"""<g transform="translate({f1(p.x)},{f1(p.y)})" stroke="{ink}" stroke-width="0.6"><line x1="-3" x2="3"/><line y1="-3" y2="3"/><circle cx="-2" cy="-2" r="0.5" fill="{ink}" stroke="none"/><circle cx="2" cy="-2" r="0.5" fill="{ink}" stroke="none"/><circle cx="-2" cy="2" r="0.5" fill="{ink}" stroke="none"/><circle cx="2" cy="2" r="0.5" fill="{ink}" stroke="none"/></g>"""
       inc placed
-  # the course: dashed ahead, solid where sailed, a bearing on every leg sailed
+  # the course: dashed ahead, solid where sailed
   result.add &"""<g mask="url(#chart-sea-{id})">"""
   result.add &"""<path d="{svgPath(course, closed = false)}" fill="none" stroke="{magenta}" stroke-width="1" stroke-dasharray="6 4" opacity="0.6"/>"""
   let done = v.routeDone(current)
   if done.len > 0:
     result.add &"""<path d="{svgPath(done, closed = false)}" fill="none" stroke="{magenta}" stroke-width="1.8"/>"""
   result.add "</g>"
-  if done.len > 0:
-    let upTo = if current == 8: v.route.high else: current
-    for k in 0 ..< upTo:
-      let l = if v.straightRoute: v.leg(k) else: @[v.route[k], v.route[k + 1]]
-      for j in 0 ..< l.high: # a bearing on each straight stretch long enough to carry it
-        let a = l[j]
-        let b = l[j + 1]
-        if hypot(b.x - a.x, b.y - a.y) < 45: continue
-        let m: Pt = ((a.x + b.x) / 2, (a.y + b.y) / 2)
-        var ang = radToDeg(arctan2(b.y - a.y, b.x - a.x))
-        if ang > 90 or ang < -90: ang += 180
-        result.add &"""<text class="bearing" transform="translate({f1(m.x)},{f1(m.y)}) rotate({f1(ang)})" y="-4" text-anchor="middle">{bearing(a, b):03}°</text>"""
   # names of the islands of the talk, and the light on the island of the section
   for i, isl in v.islands:
     let n = i + 1
@@ -261,10 +251,13 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
     if n == current:
       let c = isl.cape((1.0, -0.25))
       result.add lightSvg(c, lightChars[i], flip = c.x > v.w - 140)
-  # the boat: in the port of the island of the section, in Trieste before and after the voyage
+  # an anchor, in the port of the island of the section; in the first port before the voyage,
+  # in the last one after it
   if v.route.len > 0:
-    let at = if current in 1 .. 7 and current < v.route.len: v.route[current] else: v.route[0]
-    result.add &"""<text class="boat" x="{f1(at.x)}" y="{f1(at.y - 3)}" text-anchor="middle">⛵</text>"""
+    let at = if current in 1 .. 7 and current < v.route.len: v.route[current]
+             elif current == 8: v.route[^1]
+             else: v.route[0]
+    result.add anchorSvg(at)
   # the title block, the names of land and sea, the source of the coasts
   let sub =
     if current in 1 .. 7: &"CHART {current} OF 7 · {names[current - 1].toUpperAscii}"
@@ -294,11 +287,11 @@ const chartMapCss* = """
 .chart-map .spot, .chart-map .grad, .chart-map .note { font-family: "Space Grotesk", sans-serif; font-size: 7px; fill: #1f2a33; }
 .chart-map .real-name { font-family: "Space Grotesk", sans-serif; font-size: 6.5px; letter-spacing: 0.18em; fill: #5b4a26; }
 .chart-map .note { font-size: 6px; fill: #4a5763; }
-.chart-map .bearing { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 8px; fill: #b0167a; }
 .chart-map .cname { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 14.5px; letter-spacing: 0.06em; fill: #13334c; paint-order: stroke; stroke: #fdfcf7; stroke-width: 4px; stroke-linejoin: round; }
 .chart-map .cname.visited { fill: #4d6475; }
 .chart-map .cname.current { fill: #b0167a; font-size: 17px; }
-.chart-map .boat { font-size: 26px; font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif; }
+.chart-map .anchor { stroke: #b0167a; stroke-width: 2.1px; stroke-linecap: round; stroke-linejoin: round; }
+.chart-map .anchor-halo { fill: #fdfcf7; fill-opacity: 0.8; stroke: #b0167a; stroke-width: 0.8px; }
 .chart-map .light-char { font-family: "Spectral", serif; font-style: italic; font-size: 8px; fill: #b0167a; paint-order: stroke; stroke: #fdfcf7; stroke-width: 2px; }
 .chart-map .tb-title { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.22em; fill: #1f2a33; }
 .chart-map .tb-sub { font-family: "Space Grotesk", sans-serif; font-size: 7.5px; letter-spacing: 0.3em; fill: #1f2a33; }

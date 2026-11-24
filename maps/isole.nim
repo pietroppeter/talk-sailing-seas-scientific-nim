@@ -504,20 +504,23 @@ const triesteGulf*: seq[Pt] = @[
 
 const triesteAt* = 1078 ## the point of `triesteGulf` on the coast of Trieste
 
+func coastPoint*(o: Pt, angle, unitsPerKm: float, at: Pt, p: Pt): Pt =
+  ## where the place `p` (longitude, latitude) goes on the map, when the coast is turned `angle`
+  ## degrees clockwise and its point `o` is at `at`
+  let kLon = 111.32 * cos(degToRad(o.y))
+  let a = degToRad(-angle)
+  let e = (p.x - o.x) * kLon
+  let n = (p.y - o.y) * 110.57
+  # turned clockwise, y down
+  (at.x + unitsPerKm * (e * cos(a) - n * sin(a)), at.y - unitsPerKm * (e * sin(a) + n * cos(a)))
+
 func coastPolygon*(lonLat: seq[Pt], anchor: int, angle, unitsPerKm: float, at: Pt, w, h: float,
                    rough = 4.0, reach = 60.0): seq[Pt] =
   ## a stretch of real coast as the mainland of a w × h map: turned `angle` degrees clockwise
   ## (90 puts the land of the Gulf of Trieste south), `unitsPerKm` map units to a kilometre, its point
   ## `anchor` at `at`, then closed to the edges of the map: the land is on the right of the coast's way
-  let o = lonLat[anchor]
-  let kLon = 111.32 * cos(degToRad(o.y))
-  let a = degToRad(-angle)
   var line: seq[Pt]
-  for p in lonLat:
-    let e = (p.x - o.x) * kLon
-    let n = (p.y - o.y) * 110.57
-    # turned clockwise, y down
-    line.add (at.x + unitsPerKm * (e * cos(a) - n * sin(a)), at.y - unitsPerKm * (e * sin(a) + n * cos(a)))
+  for p in lonLat: line.add coastPoint(lonLat[anchor], angle, unitsPerKm, at, p)
   # the coast runs on past its ends down to the edges of the map, in lines that wander by fractal
   # noise (capes and bays every few units) so they do not look drawn with a ruler
   proc wander(p, q: Pt): seq[Pt] =
@@ -557,7 +560,8 @@ type
     coastAngle*, coastScale*: float ## degrees clockwise; map units to a kilometre
     trieste*: Pt               ## where the port of Trieste goes (point `triesteAt` of the coast)
     slots*: seq[Slot]
-    via*: seq[seq[Pt]]         ## turning points of each leg: Trieste to island 1, ..., island 7 back to Trieste
+    via*: seq[seq[Pt]]         ## turning points of each leg: the first port to island 1, ..., island 7 to the last port
+    setOut*, landfall*: Pt     ## the ports on the coast where the voyage starts and ends (longitude, latitude)
     compassAt*, landLabel*, titleAt*: Pt
 
 const islandPicks* = [
@@ -572,11 +576,27 @@ const islandPicks* = [
   ("Leros", (26.8517, 37.1300), "Leros: Lakki, one of the largest natural harbours of the Mediterranean"),
 ]
 
+const
+  piran* = (13.5683, 45.5285) ## the harbour of Piran, where the voyage sets out
+  koper* = (13.7297, 45.5480) ## the harbour of Koper (Capodistria), where it ends
+
 func slot(i: int, center: Pt, size: float, labelBelow = false, rotate = 0.0, note = "", near: seq[string] = @[]): Slot =
   Slot(near: near, real: islandPicks[i][0], port: islandPicks[i][1], lore: islandPicks[i][2], center: center,
     size: size, labelBelow: labelBelow, rotate: rotate, note: note)
 
 let layouts* = @[
+  Layout(name: "gulf", coastFrom: 0, coastTo: 1239, coastAngle: 95, coastScale: 10.3, trieste: (505.0, 540.0),
+    slots: @[slot(0, (175.0, 245.0), 80, note = "Volcano (active)"), slot(1, (240.0, 110.0), 100),
+             slot(2, (395.0, 75.0), 100, labelBelow = true), slot(3, (575.0, 75.0), 95, labelBelow = true),
+             slot(4, (730.0, 115.0), 110), slot(5, (790.0, 250.0), 75, labelBelow = true, near = @["La Maddalena"]),
+             slot(6, (480.0, 260.0), 90, labelBelow = true)],
+    # the course as Pietro sketched it (2026-11-24): out of Piran, around the islands clockwise,
+    # into Koper
+    setOut: piran, landfall: koper,
+    via: @[@[(386.0, 320.0)], @[], @[(328.0, 176.0), (330.0, 52.0), (389.0, 43.0)], @[(408.0, 28.0), (566.0, 24.0)],
+           @[(578.0, 18.0), (756.0, 40.0)], @[(790.0, 86.0), (708.0, 86.0), (708.0, 268.0), (744.0, 293.0)],
+           @[(774.0, 296.0), (621.0, 339.0), (499.0, 348.0), (499.0, 296.0)], @[(499.0, 330.0), (470.0, 400.0)]],
+    compassAt: (905.0, 200.0), landLabel: (150.0, 525.0), titleAt: (165.0, 440.0)),
   Layout(name: "ring", coastFrom: 0, coastTo: 1239, coastAngle: 95, coastScale: 8.2, trieste: (500.0, 545.0),
     slots: @[slot(0, (180.0, 300.0), 80, note = "Volcano (active)"), slot(1, (215.0, 165.0), 100),
              slot(2, (380.0, 100.0), 100), slot(3, (585.0, 100.0), 95),
@@ -585,16 +605,7 @@ let layouts* = @[
     via: @[@[(480.0, 420.0), (395.0, 318.0), (230.0, 300.0)], @[], @[(335.0, 92.0)], @[(410.0, 62.0), (586.0, 52.0)],
            @[(586.0, 52.0), (700.0, 52.0), (760.0, 128.0)], @[(760.0, 128.0), (680.0, 140.0), (680.0, 240.0), (705.0, 322.0)],
            @[(705.0, 322.0), (600.0, 345.0), (445.0, 302.0)], @[(445.0, 302.0), (480.0, 420.0)]],
-    compassAt: (905.0, 60.0), landLabel: (180.0, 525.0), titleAt: (790.0, 480.0)),
-  Layout(name: "gulf", coastFrom: 0, coastTo: 1239, coastAngle: 95, coastScale: 10.3, trieste: (505.0, 540.0),
-    slots: @[slot(0, (175.0, 245.0), 80, note = "Volcano (active)"), slot(1, (240.0, 110.0), 100),
-             slot(2, (395.0, 75.0), 100), slot(3, (575.0, 75.0), 95),
-             slot(4, (730.0, 115.0), 110), slot(5, (790.0, 250.0), 75, labelBelow = true, near = @["La Maddalena"]),
-             slot(6, (480.0, 260.0), 90, labelBelow = true)],
-    via: @[@[(490.0, 420.0), (395.0, 318.0), (230.0, 250.0)], @[], @[(350.0, 66.0)], @[(425.0, 36.0), (576.0, 28.0)],
-           @[(576.0, 28.0), (690.0, 28.0), (745.0, 74.0)], @[(745.0, 74.0), (665.0, 85.0), (670.0, 190.0), (712.0, 268.0)],
-           @[(712.0, 268.0), (600.0, 330.0), (445.0, 305.0)], @[(445.0, 305.0), (490.0, 420.0)]],
-    compassAt: (905.0, 60.0), landLabel: (150.0, 525.0), titleAt: (165.0, 440.0)),
+    compassAt: (905.0, 60.0), landLabel: (180.0, 525.0), titleAt: (790.0, 480.0))
 ]
 
 proc layoutVoyage*(l: Layout): Voyage =
@@ -608,7 +619,10 @@ proc layoutVoyage*(l: Layout): Voyage =
   result.titleAt = l.titleAt
   result.landLabelAngle = 0
   result.islands.setLen 0
-  result.route = @[l.trieste]
+  let o = triesteGulf[triesteAt]
+  template port(p: Pt): Pt =
+    if p == (0.0, 0.0): l.trieste else: coastPoint(o, l.coastAngle, l.coastScale, l.trieste, p)
+  result.route = @[port(l.setOut)]
   for s in l.slots:
     result.islands.add realIsland(s.real, s.center, s.size, s.labelBelow, s.rotate)
     result.islands[^1].lore = s.lore
@@ -621,7 +635,7 @@ proc layoutVoyage*(l: Layout): Voyage =
       for p in isole[name].outline: islet.add pl.toMap((o.x + p.x, o.y + p.y))
       result.islets.add islet
     result.route.add pl.toMap(main.kmOf(s.port))
-  result.route.add l.trieste
+  result.route.add port(l.landfall)
   result.straightRoute = true
   result.via = l.via
 
