@@ -52,8 +52,16 @@ nbText """
 A C function is declared in Nim with its signature and
 the `importc` pragma; `header` tells the compiler which
 C header declares it.
-The Bessel function `j0` is in the C math library and
-not in Nim's standard library:
+The [Bessel function](https://en.wikipedia.org/wiki/Bessel_function)
+`j0` is in the C math library and not in Nim's
+standard library.
+Bessel functions are the solutions of a differential
+equation that shows up wherever something vibrates or
+spreads in a circle or a cylinder: a drum skin, heat in
+a pipe, light through a round aperture.
+`j0` is the first of them, J₀, a wave that slowly dies
+out; its zeros set the circles that stay still on a
+vibrating drum skin:
 """
 nbCode:
   proc j0(x: cdouble): cdouble {.importc, header: "<math.h>".}
@@ -99,8 +107,21 @@ v.pushBack(2.5)
 echo v.size  # 2
 """, caption = "a C++ `std::vector` used from Nim, compiled with `nim cpp`"
 nbText """
-`#` is the receiver and `@` the remaining arguments, so
-one line per method is enough.
+For readers new to C++: `std::vector` is the C++
+standard library's growable array, the equivalent of
+Nim's `seq` or a Python list.
+`push_back` is its method that appends an element at
+the end (Python's `append`, Nim's `add`), and `size`
+returns how many elements it holds.
+In the `importcpp` pattern, `#` is the object the method
+is called on and `@` the remaining arguments, so
+`v.pushBack(1.5)` becomes `v.push_back(1.5)` in the C++
+that Nim generates: one line per method is enough.
+To read more: [std::vector on
+cppreference](https://en.cppreference.com/w/cpp/container/vector)
+and the [importcpp
+pragma](https://nim-lang.org/docs/manual.html#implementation-specific-pragmas-importcpp-pragma)
+in the Nim manual.
 """
 
 nbText """
