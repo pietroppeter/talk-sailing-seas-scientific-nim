@@ -15,7 +15,7 @@ me (Pietro Peterlongo)
 
 - ~~Data Scientist~~ Delivery Manager @ AgileLab (since 2024)
 - community organizer (Python Milan, PyData Milan)
-- passionate about Nim (since 2018), open source "notebook" since 
+- passionate about Nim (since 2018), open source "notebook" since 2020
 - Applied Math Background (from Geosciences to Cryptography)
   - (unfinished) PhD in Paris (LMD, ENS)
 
