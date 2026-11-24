@@ -100,6 +100,8 @@ const quartoCss = """
 .reveal .slides { text-align: left; }
 .reveal .slides > section:first-child { text-align: center; }
 .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; font-weight: 600; }
+/* a second heading on a slide (e.g. About AgileLab under About me) starts a new part: more room above it */
+.reveal .slides section > h2:not(:first-child) { margin-top: 1em; }
 .reveal p, .reveal .slides section, .reveal .slides section > section { line-height: 1.3; }
 .reveal ul, .reveal ol { margin-left: 1em; }
 .reveal li { padding-left: 0; }
