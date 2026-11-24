@@ -110,12 +110,13 @@ Nim compiles to JavaScript: a snappy port of a fun Shiny app, the generative pla
 
 ### 8. Island 7: Notebook (~2.5 min)
 
-The literate computing paradigm Jupyter made central, and a Nim option that goes in an unexpected direction. Carries K2 and K3.
+The literate computing paradigm Jupyter made central, and nimib, the Nim option that goes in an unexpected direction: the notebook is a plain Nim program you run, not a kernel you talk to. Carries K2 and K3. Deep dive: `deepdive/notebook.html`.
 
 8.1 **Island 7** - section title on the map.
-8.2 **Literate computing** - from Knuth to Jupyter: why notebooks matter in science.
-8.3 **nimib** - a notebook that is a plain Nim program producing html; this very deck is made with it.
-8.4 **Rocks ahead** - honest trade-offs of the nimib approach compared to Jupyter.
+8.2 **Literate computing** - Knuth's quote (*Literate Programming*, 1984: "Let us concentrate rather on explaining to human beings what we want a computer to do"), then three lines: IPython (2001) and Jupyter (2014) by Fernando Pérez, code, results and story, the lab notebook of science; the price, hidden state, cells out of order, JSON files hard to review; plain files again with Quarto, Pluto.jl, marimo. Speaker notes: Pérez is a keynote of the conference, "literate computing", the 2019 study of 1.4 million GitHub notebooks (Pimentel et al.: about one in four ran, 4% gave the same results).
+8.3 **nimib: a notebook is a Nim program** - a tiny nimib document on the left (the horizon seen from the deck of a boat: `nbText`, `nbCode` with `sqrt(2 * earth * eyes)`, a `nbText` that uses the result), and on the right what it renders, as a page: really rendered from the left when the deck is built (`nimibCode`). One line: run the file, get the page; no kernel, no hidden state, diffs, review and CI like any code; every page of this talk, this deck too, is made with nimib [example].
+8.4 **What you can make with nimib** - pages (the deep dives, Show Source, review mode), slides (nimiSlides), books (nimibook: QEX docs, SciNim's getting started), interactive pages (Nim compiled to JavaScript, the plant of Island 6), READMEs (Markdown backend), your own blocks (tables, maps, plotly); link to the deep dive.
+8.5 **Rocks ahead** - no kernel: every change compiles and reruns the whole document (seconds; caching by hand); made to explain more than to explore; a small community, two maintainers, docs behind the code.
 
 ### 9. Conclusion: back on land (~2.5 min)
 

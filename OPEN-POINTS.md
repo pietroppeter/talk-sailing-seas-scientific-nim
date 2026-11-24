@@ -46,9 +46,14 @@ Placeholder slides that still need content:
 
 - [ ] 1.1 to 1.3 Intro: the mainland map, why so many languages, Nim's tradeoffs.
 - [ ] 6.6 Island 5 rocks ahead (macros readability, concepts).
-- [ ] 8.2 to 8.4 Island 7 Notebook: literate computing, nimib, rocks ahead vs Jupyter.
 - [ ] 9.2 to 9.5 Conclusion: for the beginner, for the builder, your language seen from Nim, why still niche (your views on governance, tooling, Nimony and NIF).
 - [ ] Deep dives for the new code-heavy slides (one nimib page in deepdive/ per code slide).
+
+### Island 7 Notebook
+
+- [ ] Facts to confirm: Hugo Granström as co-maintainer of nimib ("two maintainers"), SciNim's getting started built with nimibook, nimibex and nimib.py under nimib-land.
+- [ ] Slide 8.4 is a list: show screenshots instead (a deep dive, a nimibook, the review mode)?
+- [ ] Slide 8.2 quotes the 2019 notebook study only in the speaker notes; say it on the slide?
 
 ## Upstream drafts on hold
 
