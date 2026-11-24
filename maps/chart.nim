@@ -270,7 +270,7 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
       let c = isl.cape((-1.0, 0.5))
       result.add &"""<text x="{f1(c.x - 5)}" y="{f1(c.y + 10)}" text-anchor="end" class="chart-note">{isl.note}</text>"""
   result.add &"""<text class="land-name" {v.landLabelAttrs} text-anchor="middle">THE MAINLAND</text>"""
-  result.add &"""<text class="note" x="{f1(v.w - 12)}" y="{f1(v.h - 12)}" text-anchor="end">Coasts of the islands © OpenStreetMap contributors (ODbL)</text>"""
+  result.add &"""<text class="note" x="{f1(v.w - 12)}" y="{f1(v.h - 12)}" text-anchor="end">Coasts: islands © OpenStreetMap contributors (ODbL) · mainland, the Gulf of Trieste, Natural Earth</text>"""
   result.add roseSvg(rose, 34)
   result.add "</g>"
   result.add borderSvg(v.w, v.h)

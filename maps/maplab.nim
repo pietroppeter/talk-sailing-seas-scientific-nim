@@ -15,7 +15,7 @@ when isMainModule:
     "<title>The voyage map, all charts</title><link rel=\"stylesheet\" href=\"assets/fonts/fonts.css\">" &
     "<style>body{margin:0;padding:12px;background:#f6f3ea;font-family:'Space Grotesk',sans-serif;color:#13334c}" &
     "h1{font-size:20px;margin:8px 0 12px} svg{width:100%;max-width:1200px;height:auto;display:block;margin:0 auto 18px}" &
-    chartMapCss & "</style></head><body><h1>The voyage map: arrangements</h1>"
+    chartMapCss & "</style></head><body><h1>The voyage map: three arrangements, then every chart of the first</h1>"
   for l in layouts:
     page.add "<h1>Arrangement: " & l.name & "</h1>\n" & chartMap(layoutVoyage(l), names, 0, "lay-" & l.name) & "\n"
   if showAll:
