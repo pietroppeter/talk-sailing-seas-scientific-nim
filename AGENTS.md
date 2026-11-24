@@ -11,7 +11,7 @@ Everything committed (code, specs, notes, commit messages, PR descriptions) is p
 - Dependencies are pinned in `atlas.lock`: `atlas rep atlas.lock` clones them into `deps/` (not committed), and `nim.cfg` (committed) puts them on the path. Never commit a `nim.cfg` that atlas rewrote with host-suffixed folders (`deps/tabelline.pietroppeter.github.com`): use plain names, as in `atlas.lock`. To change a dependency, see README.md (Setup).
 - Runtime libraries: libpcre3 (nimib's markdown), libcairo2 (ggplotnim), libblas3 and liblapack3 (Arraymancer). On Debian/Ubuntu run `apt-get update` first. In a sandbox without Nim, `scripts/install-nim.sh` builds it.
 - `nim r build.nim` builds every page into `docs/` and runs the checks; `nim r build.nim slides|deepdives|devlog|themes|check` builds one group. Slides, deep dives, talk log and the site index are one compile (`all.nim`), about 30 seconds. A single page still builds on its own (`nim r deepdive/operators.nim`).
-- The checks fail when a page loads anything from the network (vendor it in `docs/assets/` with `scripts/vendor-assets.sh`), when a link between pages is broken, or when a page uses `nbRawHtml`. Keep them green.
+- The checks fail when a page loads anything from the network (vendor it in `docs/assets/` with `scripts/vendor-assets.sh`), when a link between pages is broken, when a page uses `nbRawHtml`, or (in CI) when a `#>` note for Claude is left. Keep them green.
 - Generated HTML is not committed: CI (`.github/workflows/pages.yml`) builds on every PR and deploys `docs/` from `main`.
 
 ## Pages
@@ -35,3 +35,9 @@ Everything committed (code, specs, notes, commit messages, PR descriptions) is p
 - A change that changes a decision updates its record in `decisions/` in the same PR: the bullet under Decision, and a line in History (see `decisions/README.md`). A change to sections, slides or timing updates `outline.md`. Records are updated in place, not added per decision.
 - Open decisions and loose ends go in `OPEN-POINTS.md`, the one list of them.
 - Deviations from the submitted abstract go in README.md, "Changes from the submitted abstract"; the abstract itself stays verbatim.
+
+## The local-changes branch and notes for Claude
+
+- Pietro keeps a long-lived `local-changes` branch, pushed from his laptop when he has a connection. Each push becomes a PR into `main` with his commits unchanged, plus a commit on top that handles the notes. Merge it with a merge commit, never squash or rebase, so that `git rebase origin/main` on `local-changes` replays only what is new.
+- A note for Claude is a run of lines starting (after indentation) with `#>`, the first one `#> Claude: ...`. It works the same in Nim code, inside `nbText` strings and in `.md` files (`#>` is not a Markdown heading). Do what it asks, then delete the whole note.
+- No note reaches `main`: the build lists any line starting with `#>` and fails on it in CI (`build.nim`, `noAgentNotes`). Never start a line with `#>` for anything else.
