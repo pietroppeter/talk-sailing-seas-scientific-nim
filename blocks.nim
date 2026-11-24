@@ -44,7 +44,7 @@ pre:has(> code.language-julia)::before {
 }
 pre:has(> code.nim)::before, pre:has(> code.language-nim)::before { content: "👑 Nim"; }
 pre:has(> code.python)::before, pre:has(> code.language-python)::before { content: "🐍 Python"; }
-pre:has(> code.language-julia)::before { content: "Julia"; }
+pre:has(> code.language-julia)::before { content: "🤹 Julia"; }
 """
   ## used by the pages (talkstyle.nim) and the slides (my.nim)
 
