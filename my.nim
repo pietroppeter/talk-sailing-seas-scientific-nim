@@ -41,10 +41,19 @@ const slideBlocksCss = """
 .reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
 .reveal .rocks-quotes figcaption { font-size: 0.55em; margin-top: 0.5em; }
 /* an app compiled to JavaScript (nbApp, slide 7.3): sliders in a sidebar, then a canvas */
-.reveal .app { display: flex; gap: 1.2em; align-items: center; justify-content: center; margin: 0.4em 0; }
+.reveal .app > div { display: flex; gap: 1.2em; align-items: center; justify-content: center; margin: 0.4em 0; }
 .reveal .app .sidebar { display: flex; flex-direction: column; gap: 0.5em; width: 10em; font-size: 0.6em; text-align: left; }
 .reveal .app label { display: grid; grid-template-columns: 1fr auto; }
 .reveal .app input { grid-column: 1 / 3; width: 100%; margin: 0.2em 0 0; }
+/* code you drag (nbCodeStage, zogyn, slide 7.3): the code as an svg, its slider lines move */
+.reveal .code-stage { width: 100%; }
+.reveal .code-stage svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: none; user-select: none; font-family: var(--r-code-font); font-size: 14px; }
+.reveal .code-stage text, .reveal .code-stage tspan { fill: currentColor; }
+.reveal .code-stage .item { transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1); }
+.reveal .code-stage .item.grab { cursor: grab; }
+.reveal .code-stage .item.lifted { transition: none; cursor: grabbing; }
+.reveal .code-stage .handle { fill: var(--r-link-color); fill-opacity: 0.1; }
+.reveal .code-stage .lifted .handle { fill-opacity: 0.3; }
 /* imageAside: a picture with something smaller beside it (slide 7.2) */
 .reveal .img-aside { display: grid; grid-template-columns: 2fr 1fr; gap: 1em; align-items: center; margin-top: 0.6em; }
 .reveal .img-aside img { width: 100%; margin: 0; }

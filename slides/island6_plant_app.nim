@@ -1,12 +1,14 @@
 ## The plant app of Island 6: Nick Strayer's Shiny for Python app
-## (shiny/plant/app.py), ported to Nim and compiled to JavaScript.
+## (shiny/plant/app.py), ported to Nim with Karax and compiled to JavaScript.
 ## JavaScript only: the slides and the deep dive import it inside nbJsFromCode
 ## and call `plantApp` with the id of an nbApp block.
-import std / [dom, strutils]
+import std / [strutils, math]
+include karax / prelude # Karax: buildHtml, its tags, setRenderer
+import karax / kdom
 import island6_plant
 
 # ------------------------------------------------------- the canvas, from Nim
-# std/dom has no canvas: the five calls the app needs, bound with importjs
+# Karax has no canvas API: the calls the app needs, bound with importjs
 
 type Context2d = ref object
 proc getContext2d(canvas: Element): Context2d {.importjs: "#.getContext('2d')".}
@@ -35,50 +37,52 @@ proc plot(canvas: Element, w, h: float, x, y: seq[float]) =
   ctx.stroke()
 
 # ----------------------------------------------------------------- the app
-# like Shiny: a sidebar of sliders and a plot; moving a slider draws again
+# like Shiny: a sidebar of sliders and a plot. Karax renders the html
+# from the state and renders it again after every event
 
-proc slider(parent: Element, label: string, min, max, value: float,
-            step = 1.0, onInput: proc (v: float)) =
-  ## a labelled slider that shows its value and calls `onInput` when moved
-  let box = document.createElement("label")
-  let name = document.createElement("span")
-  let shown = document.createElement("output")
-  let input = document.createElement("input")
-  name.innerText = cstring(label)
-  shown.innerText = cstring(if step < 1: $value else: $value.int)
-  input.setAttr("type", "range")
-  input.setAttr("min", cstring($min))
-  input.setAttr("max", cstring($max))
-  input.setAttr("step", cstring($step))
-  input.value = cstring($value)
-  input.addEventListener("input", proc (e: Event) =
-    shown.innerText = input.value
-    onInput(parseFloat($input.value)))
-  box.appendChild(name)
-  box.appendChild(shown)
-  box.appendChild(input)
-  parent.appendChild(box)
+proc slider(name: string, value, min, max: float, step: float,
+            update: proc (v: float)): VNode =
+  ## a labelled slider that shows its value and calls `update` when moved.
+  ## The range counts steps (0 to 100 for 0 to 1 by 0.01): Karax sets the
+  ## value of an input before its type, so a range would round 0.2 to 0
+  let steps = proc (v: float): cstring = cstring($int(round(v / step)))
+  buildHtml(label):
+    span: text name
+    span: text (if step < 1: value.formatFloat(ffDecimal, 2) else: $value.int)
+    input(`type` = "range", min = steps(min), max = steps(max),
+          value = steps(value)):
+      proc oninput(ev: Event, n: VNode) = update(parseFloat($n.value) * step)
 
-proc plantApp*(id: string, w = 640.0, h = 440.0) =
-  ## the app, inside the element with id `id`, with a plot of w x h pixels
-  let app = document.getElementById(cstring(id))
-  let sidebar = document.createElement("div")
-  let canvas = document.createElement("canvas")
-  canvas.setAttr("width", cstring($w.int))
-  canvas.setAttr("height", cstring($h.int))
-  sidebar.classList.add("sidebar")
-  app.appendChild(sidebar)
-  app.appendChild(canvas)
+template slider(field: untyped, min, max: float, step = 1.0): VNode =
+  ## a slider for a field of the plant (`p.order`), named after it, that sets it
+  slider(astToStr(field).split('.')[^1].capitalizeAscii, field.float, min, max, step,
+         proc (v: float) = field = typeof(field)(v))
+
+proc setOrder(e: Element, i: int) {.importjs: "#.style.order = #".}
+
+proc plantApp*(id: string, w = 640.0, h = 440.0): proc (order: seq[int]) =
+  ## the app, inside the element with id `id`, with a plot of w x h pixels.
+  ## It returns a proc that shows the sliders in another order (`@[1, 0, 2, 3]`
+  ## puts Order first): the code you drag on the slide (island6_plant_code.nim)
   var p = Plant(leafiness: 39, order: 9, waviness: 4, simplicity: 0.2)
+  var sliders = @[0, 1, 2, 3]
+  let plotId = cstring(id & "-plot")
+  let (pw, ph) = (cstring($w.int), cstring($h.int)) # the plot, in pixels
+  proc render(): VNode =
+    buildHtml(tdiv):
+      tdiv(class = "sidebar"):
+        slider(p.leafiness, 0, 100)
+        slider(p.order, 0, 20)
+        slider(p.waviness, 0, 10)
+        slider(p.simplicity, 0, 1, 0.01)
+      canvas(id = plotId,
+             width = pw, height = ph)
   proc draw() =
     let (x, y) = p.curve
-    canvas.plot(w, h, x, y)
-  sidebar.slider("Leafiness", 0, 100, 39, onInput = proc (v: float) =
-    p.leafiness = v.int; draw())
-  sidebar.slider("Order", 0, 20, 9, onInput = proc (v: float) =
-    p.order = v.int; draw())
-  sidebar.slider("Waviness", 0, 10, 4, onInput = proc (v: float) =
-    p.waviness = v.int; draw())
-  sidebar.slider("Simplicity", 0, 1, 0.2, step = 0.01, onInput = proc (v: float) =
-    p.simplicity = v; draw())
-  draw()
+    getElementById(plotId).plot(w, h, x, y)
+    for i, e in document.querySelectorAll(cstring("#" & id & " .sidebar > label")):
+      e.setOrder(sliders.find(i)) # its place in the flex column of the sidebar
+  setRenderer(render, root = id, clientPostRenderCallback = draw)
+  result = proc (order: seq[int]) =
+    sliders = order
+    draw()

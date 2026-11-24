@@ -3,6 +3,7 @@ import nimib
 import deepdive # useDeepDive, and the blocks of blocks.nim
 import ggplotnim
 import ../slides/island6_plant # the curve, the same module the app runs
+import ../slides/island6_plant_code # karaxCode, the code of the app you drag
 
 # The deep dive of Island 6 (Interactivity): the plant app, a Shiny for
 # Python app ported to Nim and compiled to JavaScript, and what Nim's
@@ -14,6 +15,7 @@ import ../slides/island6_plant # the curve, the same module the app runs
 const
   appSource = staticRead("../slides/island6_plant_app.nim")
   plantSource = staticRead("../slides/island6_plant.nim")
+  codeSource = staticRead("../slides/island6_plant_code.nim")
   shinySource = staticRead("../shiny/plant/app.py")
   shinyOriginal = staticRead("../shiny/plant_original.py")
 
@@ -69,9 +71,15 @@ a REPL.
 This is the app in Nim. Move the sliders:
 """
 nbApp("plant")
+nbText """
+This is its page, in [Karax](https://github.com/karaxnim/karax):
+grab the line of a slider and drag it up or down,
+the sliders of the app follow.
+"""
+nbCodeStage("plant-code", karaxCode)
 nbJsFromCode:
-  import ../slides/island6_plant_app
-  plantApp("plant")
+  import ../slides/[island6_plant_app, island6_plant_code]
+  plantCode("plant-code", plantApp("plant"))
 
 nbText """
 The plant is drawn again on every move of a slider,
@@ -177,15 +185,20 @@ nbText """
 
 The app is in
 [`slides/island6_plant_app.nim`](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim/blob/main/slides/island6_plant_app.nim),
-about 80 lines, with no framework: it builds the sidebar
-and the canvas itself, with the browser's DOM, from Nim.
+about 90 lines. Its page is made with
+[Karax](https://github.com/karaxnim/karax), the framework
+for web pages of Nim's author: `buildHtml` describes the
+html from the state of the app (the code above), and
+Karax renders it again after every event, changing only
+what changed in the page.
 
 ### Talking to JavaScript
 
-Nim's standard library has `std/dom`, the browser's
-document as Nim types: elements, events, `getElementById`.
-It has no canvas, so the app binds the few calls it needs
-itself, with `importjs`: each line says which JavaScript
+Karax, like Nim's standard library (`std/dom`), has the
+browser's document as Nim types: elements, events,
+`getElementById`.
+Neither has the canvas, so the app binds the few calls it
+needs itself, with `importjs`: each line says which JavaScript
 to write for a Nim call (`#` is the first argument,
 `$1` the name of the proc, `@` all the arguments).
 A JavaScript library is wrapped the same way, a call at a
@@ -212,13 +225,39 @@ nbText """
 ### Sliders, and drawing again
 
 A slider is a label, the value and an `<input>` of type
-range; when it moves, it calls a closure that updates the
-plant and draws it again.
+range, in `buildHtml`; when it moves, it calls a closure
+that updates the plant, and Karax renders the page again
+and calls `draw`, which plots the plant.
+A template makes a slider from a field of the plant
+(`slider(p.order, 0, 20)`): its name is the name of the
+field, and moving it sets the field.
 The four sliders mirror the Shiny ones, with the same
 ranges and defaults.
 """
 nbShowCode(excerpt(appSource, "proc slider", ""),
   caption = "slides/island6_plant_app.nim")
+
+nbText """
+### Code you drag
+
+The code at the top of the page is not a picture: its
+slider lines are a sortable list of
+[zogyn](https://github.com/pietroppeter/zogyn), Pietro's
+library of declarative dragging, a Nim port of
+[Dragology](https://github.com/declarative-dragging/dragology)
+(Horowitz, Blinn and Heer, UIST 2026).
+You do not write drag handlers: for the element you grab,
+you list the states the drag can reach (here every place
+of that line among the slider lines), zogyn draws each
+one without showing it, and shows the one that puts the
+line closest to the pointer.
+When the line is dropped, the app gets the new order of
+the sliders.
+The code is the page's own highlighted code block, which
+`plantCode` turns into an svg stage when the page opens.
+"""
+nbShowCode(excerpt(codeSource, "  proc renderCode", ""),
+  caption = "slides/island6_plant_code.nim")
 
 nbText """
 The page calls the app inside an `nbJsFromCode` block of
@@ -229,9 +268,10 @@ The slide does the same.
 """
 nbShowCode("""
 nbApp("plant")
+nbCodeStage("plant-code", karaxCode)
 nbJsFromCode:
-  import ../slides/island6_plant_app
-  plantApp("plant")""", caption = "deepdive/plant_app.nim")
+  import ../slides/[island6_plant_app, island6_plant_code]
+  plantCode("plant-code", plantApp("plant"))""", caption = "deepdive/plant_app.nim")
 
 nbText """
 ## Side by side
@@ -242,10 +282,16 @@ network is not counted), on 24 November 2026:
 
 | | Shiny (shinylive) | Nim (JavaScript) |
 |---|---|---|
-| files on the site | about 48 MB | 96 KB of JavaScript |
-| downloaded by the page | about 16 MB | 96 KB |
-| first plot after opening | about 8 s | at once |
-| plot again after a slider moves | about 0.4 s | under 1 ms |
+| files on the site | about 48 MB | 300 KB of JavaScript |
+| downloaded by the page | about 16 MB | 300 KB |
+| first plot after opening | about 8 s | about 30 ms |
+| plot again after a slider moves | about 0.4 s | the next frame |
+
+The 300 KB are the app, Karax and zogyn, as nimib writes
+them (180 KB minified); the plain app, with no framework
+and no dragging, was 96 KB.
+Drawing the plant takes under 1 ms: Karax waits for the
+next frame of the browser (16 ms) to render.
 
 This is not a fair fight, and it is not meant as one.
 Shinylive brings a whole Python, numpy and matplotlib to
@@ -297,9 +343,13 @@ What people build with it:
 - [Karax](https://github.com/karaxnim/karax), a framework
   for single page applications by Nim's author, with a
   virtual DOM; [the Nim forum](https://forum.nim-lang.org)
-  is written in it. The [first version of this
+  is written in it, and so is the app above. The [first
+  version of this
   app](https://nimib.land/nblog/drafts/plant_app.html), in
   Pietro's nblog, used Karax with a few slider widgets.
+- [zogyn](https://github.com/pietroppeter/zogyn), the
+  dragging of the code above: its engine is pure Nim, so
+  its tests run natively, and its stage runs in the browser.
 - [p5nim](https://github.com/pietroppeter/p5nim), Nim
   bindings for p5.js: the animation of [the last
   slide](thank_you_sketch.html) of this talk is one.

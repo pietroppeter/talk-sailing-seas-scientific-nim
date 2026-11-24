@@ -1,5 +1,6 @@
 import nimib, nimiSlides
 import ../my
+import island6_plant_code # karaxCode
 
 # Section 7: Island 6: Interactivity (see outline.md)
 # Nim compiles to JavaScript: a snappy port of a fun Shiny app. Carries K2 (JavaScript backend superpower).
@@ -35,19 +36,32 @@ a two-line fix. Numbers measured locally, no network counted.
 """
     slide: # 7.3
       nbText "## 🌿 The Nim plant"
-      nbApp("plant")
+      columns:
+        column:
+          nbCodeStage("plant-code", karaxCode)
+        column:
+          nbApp("plant")
       nbJsFromCode:
-        import ../slides/island6_plant_app
-        plantApp("plant", 600, 380)
+        import ../slides/[island6_plant_app, island6_plant_code]
+        plantCode("plant-code", plantApp("plant", 330, 360), 350)
       nbTextSmall """
-Nim compiled to JavaScript: 96 KB, draws again in under 1 ms ·
+Nim, [Karax](https://github.com/karaxnim/karax) and
+[zogyn](https://github.com/pietroppeter/zogyn) (drag a slider line),
+compiled to JavaScript: first plot in 30 ms, 250× sooner
+than Shiny (8 s); 300 KB, 50× lighter (16 MB) ·
 [the code, explained](deepdive/plant_app.html)
 """
       speakerNote """
 Move the sliders: the same plant, the same curve,
 written in Nim and compiled to JavaScript when the deck is built.
-No framework: the browser's DOM from std/dom,
-the canvas bound with importjs in a few lines.
+Then drag a slider line in the code: the sliders follow.
+The code is a stage of zogyn, my declarative dragging library:
+the slider lines are a sortable list.
+The page is Karax: buildHtml describes the sidebar and the canvas
+from the state, Karax renders it again after every slider move,
+and the canvas is bound with importjs in a few lines.
+About 250 times faster to the first plot, 50 times lighter,
+and each move is drawn on the next frame instead of 0.4 s later.
 Not a fair fight: shinylive brings all of Python;
 Nim translates the program into the language of the browser,
 and draws its own plot, since ggplotnim needs Cairo (C).
