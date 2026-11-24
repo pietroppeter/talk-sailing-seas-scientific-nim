@@ -3,6 +3,11 @@ export strutils
 import nimib, nimiSlides
 import themes
 export themes
+import tabelline
+import tabelline / nimib as tabellineNimib
+# only nbTable: tabelline's other names (Column, readCsv, ...) clash with Datamancer's,
+# so a slide file that makes a table imports tabelline itself
+export tabellineNimib
 
 const
   agileLightBlue* = "#02A4BD"
@@ -317,6 +322,34 @@ template imageLeftSlide*(url: string, width: float, body: untyped) =
 template imageLeftSlide*(url: string, body: untyped) =
   imageLeftSlide(url, 0.4, body)
 
+proc slideLook*(t: sink Tabella, fontSize = "0.6em"): Tabella =
+  ## the deck's look for a tabelline table: the slide's font, colours and background,
+  ## the theme's blue for the rules, column labels in bold
+  t.tabOptions(tableFontNames = "inherit", tableFontSize = fontSize, tableFontColor = agileDarkBlue,
+    tableBackgroundColor = "transparent", tableMarginLeft = "auto", tableMarginRight = "auto",
+    tableBorderTopColor = agileDarkBlue, tableBorderBottomColor = agileDarkBlue,
+    columnLabelsBorderBottomColor = agileDarkBlue, columnLabelsFontWeight = "bold",
+    tableBodyHlinesColor = "#D8DCE6", dataRowPadding = "0.25em",
+    # reveal.js styles every table: undo its cell borders and padding
+    extraCss = " th, td { border-bottom: none; padding-left: 0.6em; padding-right: 0.6em; }")
+
+proc slideBars*(): NanoplotOptions =
+  ## nanoplot options for bars on slides: the theme's light blue
+  nanoplotOptions(dataBarFillColor = agileLightBlue, dataBarStrokeColor = agileLightBlue)
+
+proc barBefore*(t: sink Tabella, column: string, plotHeight = "1em",
+                options = slideBars()): Tabella =
+  ## a bar for each number of `column` (a nanoplot), in an unlabelled column just before it,
+  ## all bars from one zero line, so they compare; the number stays visible beside its bar
+  let bar = column & "Bar"
+  t.colsAdd(bar, proc (r: Row): Value = r[column], before = column)
+    .fmtNanoplot(bar, plotType = "bar", plotHeight = plotHeight, options = options)
+    .colsLabel(bar, "")
+
+proc highlightCols*(t: sink Tabella, cols: ColSel): Tabella =
+  ## the theme's light blue behind `cols`, from the label to the last row
+  t.tabStyle(style.fill("#D9F2F6") & style.text(weight = "bold"), loc.body(cols), loc.columnLabels(cols))
+
 template testSlide =
   slide:
     nbText """
@@ -358,6 +391,21 @@ Text with *italic*, **strong** and [link](recurse.com)
         1.34 * sqrt(b.length / 0.3048)
       let boat = Boat(name: "Nimbus", length: 9.0)
       echo boat.name, ": ", hullSpeed(boat).round(1), " knots"
+  slide:
+    nbText "### A table"
+    let fleet = @[(boat: "Nimbus", length: 9.0, crew: 4),
+                  (boat: "Cumulus", length: 12.5, crew: 6),
+                  (boat: "Stratus", length: 7.2, crew: 2)]
+    # inside a template: rows as named tuples (`tableData:` column names get mangled there)
+    # and chained verbs (the `tabella(data): body` form does not compile there yet)
+    let fleetTable = tabella(fleet, rownameCol = "boat")
+      .tabStubhead("boat")
+      .colsLabel("length", "length (m)")
+      .fmtNumber("length", decimals = 1)
+      .barBefore("crew")
+      .highlightCols("length")
+      .tabSourceNote("made with tabelline, slideLook and highlightCols in my.nim")
+    nbTable fleetTable.slideLook
   slide:
     slide:
       nbText "## A vertical stack"
