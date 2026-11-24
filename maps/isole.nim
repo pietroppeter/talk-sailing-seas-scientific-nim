@@ -577,7 +577,7 @@ const islandPicks* = [
 ]
 
 const
-  piran* = (13.5683, 45.5285) ## the harbour of Piran, where the voyage sets out
+  portoroz* = (13.5960, 45.5145) ## the marina of Portorož, in the bay south of Piran: where the voyage sets out
   koper* = (13.7297, 45.5480) ## the harbour of Koper (Capodistria), where it ends
 
 func slot(i: int, center: Pt, size: float, labelBelow = false, rotate = 0.0, note = "", near: seq[string] = @[]): Slot =
@@ -585,27 +585,31 @@ func slot(i: int, center: Pt, size: float, labelBelow = false, rotate = 0.0, not
     size: size, labelBelow: labelBelow, rotate: rotate, note: note)
 
 let layouts* = @[
+  Layout(name: "ring", coastFrom: 0, coastTo: 1239, coastAngle: 95, coastScale: 8.2, trieste: (500.0, 545.0),
+    slots: @[slot(0, (180.0, 300.0), 80, note = "Volcano (active)"), slot(1, (215.0, 165.0), 100),
+             slot(2, (380.0, 100.0), 100, labelBelow = true), slot(3, (585.0, 100.0), 95, labelBelow = true),
+             slot(4, (765.0, 192.0), 110), slot(5, (790.0, 325.0), 75, labelBelow = true, near = @["La Maddalena"]),
+             slot(6, (480.0, 265.0), 90, labelBelow = true)],
+    # the course as Pietro sketched it (2026-11-24): out of Portorož, around the islands clockwise,
+    # into Koper
+    setOut: portoroz, landfall: koper,
+    via: @[@[(400.0, 340.0), (250.0, 262.0)], @[], @[(300.0, 214.0), (300.0, 58.0), (372.0, 58.0)],
+           @[(380.0, 42.0), (594.0, 42.0)], @[(600.0, 42.0), (781.0, 42.0)],
+           @[(770.0, 160.0), (700.0, 160.0), (700.0, 318.0)],
+           @[(720.0, 372.0), (500.0, 372.0), (455.0, 330.0)], @[(455.0, 330.0), (440.0, 420.0)]],
+    compassAt: (905.0, 60.0), landLabel: (180.0, 525.0), titleAt: (790.0, 480.0)),
   Layout(name: "gulf", coastFrom: 0, coastTo: 1239, coastAngle: 95, coastScale: 10.3, trieste: (505.0, 540.0),
     slots: @[slot(0, (175.0, 245.0), 80, note = "Volcano (active)"), slot(1, (240.0, 110.0), 100),
              slot(2, (395.0, 75.0), 100, labelBelow = true), slot(3, (575.0, 75.0), 95, labelBelow = true),
              slot(4, (730.0, 115.0), 110), slot(5, (790.0, 250.0), 75, labelBelow = true, near = @["La Maddalena"]),
              slot(6, (480.0, 260.0), 90, labelBelow = true)],
-    # the course as Pietro sketched it (2026-11-24): out of Piran, around the islands clockwise,
+    # the course as Pietro sketched it (2026-11-24): out of Portorož, around the islands clockwise,
     # into Koper
-    setOut: piran, landfall: koper,
+    setOut: portoroz, landfall: koper,
     via: @[@[(386.0, 320.0)], @[], @[(328.0, 176.0), (330.0, 52.0), (389.0, 43.0)], @[(408.0, 28.0), (566.0, 24.0)],
            @[(578.0, 18.0), (756.0, 40.0)], @[(790.0, 86.0), (708.0, 86.0), (708.0, 268.0), (744.0, 293.0)],
            @[(774.0, 296.0), (621.0, 339.0), (499.0, 348.0), (499.0, 296.0)], @[(499.0, 330.0), (470.0, 400.0)]],
-    compassAt: (905.0, 200.0), landLabel: (150.0, 525.0), titleAt: (165.0, 440.0)),
-  Layout(name: "ring", coastFrom: 0, coastTo: 1239, coastAngle: 95, coastScale: 8.2, trieste: (500.0, 545.0),
-    slots: @[slot(0, (180.0, 300.0), 80, note = "Volcano (active)"), slot(1, (215.0, 165.0), 100),
-             slot(2, (380.0, 100.0), 100), slot(3, (585.0, 100.0), 95),
-             slot(4, (765.0, 192.0), 110), slot(5, (790.0, 325.0), 75, labelBelow = true, near = @["La Maddalena"]),
-             slot(6, (480.0, 265.0), 90, labelBelow = true)],
-    via: @[@[(480.0, 420.0), (395.0, 318.0), (230.0, 300.0)], @[], @[(335.0, 92.0)], @[(410.0, 62.0), (586.0, 52.0)],
-           @[(586.0, 52.0), (700.0, 52.0), (760.0, 128.0)], @[(760.0, 128.0), (680.0, 140.0), (680.0, 240.0), (705.0, 322.0)],
-           @[(705.0, 322.0), (600.0, 345.0), (445.0, 302.0)], @[(445.0, 302.0), (480.0, 420.0)]],
-    compassAt: (905.0, 60.0), landLabel: (180.0, 525.0), titleAt: (790.0, 480.0))
+    compassAt: (905.0, 200.0), landLabel: (150.0, 525.0), titleAt: (165.0, 440.0))
 ]
 
 proc layoutVoyage*(l: Layout): Voyage =
@@ -634,8 +638,13 @@ proc layoutVoyage*(l: Layout): Voyage =
       var islet: seq[Pt]
       for p in isole[name].outline: islet.add pl.toMap((o.x + p.x, o.y + p.y))
       result.islets.add islet
-    result.route.add pl.toMap(main.kmOf(s.port))
+    var near = @[result.islands[^1].polygon]
+    for islet in result.islets: near.add islet
+    result.route.add harbour(near, pl.toMap(main.kmOf(s.port)))
   result.route.add port(l.landfall)
+  let coast = @[result.coast]
+  result.route[0] = harbour(coast, result.route[0])
+  result.route[^1] = harbour(coast, result.route[^1])
   result.straightRoute = true
   result.via = l.via
 

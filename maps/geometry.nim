@@ -188,6 +188,41 @@ func signedDistance*(lands: seq[seq[Pt]], p: Pt): float =
       j = i
   if inside: -best else: best
 
+func harbour*(lands: seq[seq[Pt]], p: Pt, search = 16.0, reach = 22.0): Pt =
+  ## the most sheltered water near `p`: a point close to the shore (3.5 to 7 units off, room for the anchor) from which
+  ## the most directions meet land within `reach`, the closer to `p` the better. An outline drawn
+  ## at a few units per kilometre puts a real harbour on the shore or out on a point; this finds
+  ## the bay it is in.
+  result = p
+  var best = -Inf
+  const rays = 24
+  var y = -search
+  while y <= search:
+    var x = -search
+    while x <= search:
+      let q: Pt = (p.x + x, p.y + y)
+      let off = hypot(x, y)
+      if off <= search:
+        let d = signedDistance(lands, q)
+        if d >= 3.5 and d <= 7:
+          var hits = 0
+          for k in 0 ..< rays:
+            let a = 2 * PI * k.float / rays
+            var t = 2.0
+            while t <= reach:
+              let r: Pt = (q.x + t * cos(a), q.y + t * sin(a))
+              var land = false
+              for poly in lands:
+                if pointInPolygon(r, poly): land = true; break
+              if land: inc hits; break
+              t += 1.5
+          let score = hits.float - 0.1 * off
+          if score > best:
+            best = score
+            result = q
+      x += 1
+    y += 1
+
 proc field*(v: Voyage, cell = 4.0): Field =
   ## the distance field of the map, cached: the same geometry is drawn by many slides
   var cache {.global.}: Table[Hash, Field]

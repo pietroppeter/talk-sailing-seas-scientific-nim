@@ -2,7 +2,7 @@
 ## conventions of real charts (Admiralty and NOAA): buff land with a thin coastline, three
 ## blue tints for the shallows (darker where shallower) and white paper beyond, depth contours
 ## at 5, 10 and 20 metres, soundings in metres with their decimal as a subscript, rocks, a magenta
-## compass rose with a magnetic ring, a magenta course line, a light on the island
+## compass rose with a magnetic ring, a magenta course line, an anchor in the port
 ## of the section, upright names for land, italic names for water, a title block, a source note
 ## and a fine graduated border.
 ## The sea floor is the distance field of maps/geometry.nim, stretched by fractal noise so the
@@ -118,13 +118,6 @@ func borderSvg(w, h: float): string =
     inc k
   result.add "</g>"
 
-func lightSvg(at: Pt, character: string, flip = false): string =
-  ## a light: a magenta flare from a black dot, and its characteristic in italic
-  let s = if flip: -1.0 else: 1.0
-  result = &"""<g transform="translate({f1(at.x)},{f1(at.y)})"><path d="M0,0 C{f1(-5 * s)},-7 {f1(-3 * s)},-19 {f1(2 * s)},-24 C{f1(5 * s)},-17 {f1(4 * s)},-7 0,0 Z" fill="{magenta}" opacity="0.85"/><circle r="1.8" fill="{ink}"/>"""
-  let anchor = if flip: "end" else: "start"
-  result.add &"""<text x="{f1(8 * s)}" y="-10" text-anchor="{anchor}" class="light-char">{character}</text></g>"""
-
 func cape(isl: Island, dir: Pt): Pt =
   ## the point of the coast farthest out in direction `dir`
   var best = -Inf
@@ -146,15 +139,11 @@ func summit(f: Field, isl: Island): Pt =
       dx += 3
     dy += 3
 
-const lightChars = ["Fl 5s 30m 22M", "Fl(2) 10s 14M", "Fl(3) 15s 25M", "Fl W 5s 20M",
-                    "Oc(2) 6s 12M", "Fl 10s 19M", "Fl(4) 20s 23M"]
-  ## the characteristics of the islands' lights (made up, in the style of real ones)
-
 func anchorSvg(at: Pt): string =
   ## the anchor of the charts, drawn over a pale halo so it reads on land, shoal and deep water
   let d = "M0,-7.5 V9 M-5,-3.5 H5 M-8,3.5 Q-7,9.5 0,10 Q7,9.5 8,3.5 M-9.5,5.5 L-8,3.5 L-6,5.2 M9.5,5.5 L8,3.5 L6,5.2"
-  &"""<g class="anchor" transform="translate({f1(at.x)},{f1(at.y - 4)})">""" &
-    &"""<circle cx="0" cy="1.5" r="13" class="anchor-halo"/>""" &
+  &"""<g class="anchor" transform="translate({f1(at.x)},{f1(at.y)}) scale(0.62) translate(0,-1.5)">""" &
+    &"""<circle cx="0" cy="1.5" r="12.5" class="anchor-halo"/>""" &
     &"""<circle cx="0" cy="-9.6" r="2.2" fill="none"/><path d="{d}" fill="none"/></g>"""
 
 proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): string =
@@ -238,7 +227,7 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
   if done.len > 0:
     result.add &"""<path d="{svgPath(done, closed = false)}" fill="none" stroke="{magenta}" stroke-width="1.8"/>"""
   result.add "</g>"
-  # names of the islands of the talk, and the light on the island of the section
+  # names of the islands of the talk
   for i, isl in v.islands:
     let n = i + 1
     var lp = isl.labelPos
@@ -248,9 +237,6 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
     let half = 0.37 * size * (names[i].len + 4).float # about half the width of the name, at its size
     lp.x = clamp(lp.x, half + 10, v.w - half - 10)
     result.add &"""<text class="cname{state}" x="{f1(lp.x)}" y="{f1(lp.y)}" text-anchor="middle">{n} · {names[i].toUpperAscii}</text>"""
-    if n == current:
-      let c = isl.cape((1.0, -0.25))
-      result.add lightSvg(c, lightChars[i], flip = c.x > v.w - 140)
   # an anchor, in the port of the island of the section; in the first port before the voyage,
   # in the last one after it
   if v.route.len > 0:
@@ -290,9 +276,8 @@ const chartMapCss* = """
 .chart-map .cname { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 14.5px; letter-spacing: 0.06em; fill: #13334c; paint-order: stroke; stroke: #fdfcf7; stroke-width: 4px; stroke-linejoin: round; }
 .chart-map .cname.visited { fill: #4d6475; }
 .chart-map .cname.current { fill: #b0167a; font-size: 17px; }
-.chart-map .anchor { stroke: #b0167a; stroke-width: 2.1px; stroke-linecap: round; stroke-linejoin: round; }
-.chart-map .anchor-halo { fill: #fdfcf7; fill-opacity: 0.8; stroke: #b0167a; stroke-width: 0.8px; }
-.chart-map .light-char { font-family: "Spectral", serif; font-style: italic; font-size: 8px; fill: #b0167a; paint-order: stroke; stroke: #fdfcf7; stroke-width: 2px; }
+.chart-map .anchor { stroke: #b0167a; stroke-width: 2.6px; stroke-linecap: round; stroke-linejoin: round; }
+.chart-map .anchor-halo { fill: #fdfcf7; fill-opacity: 0.85; stroke: none; }
 .chart-map .tb-title { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.22em; fill: #1f2a33; }
 .chart-map .tb-sub { font-family: "Space Grotesk", sans-serif; font-size: 7.5px; letter-spacing: 0.3em; fill: #1f2a33; }
 .chart-map .chart-note { font-family: "Spectral", serif; font-style: italic; font-size: 8px; fill: #1f2a33; paint-order: stroke; stroke: #fdfcf7; stroke-width: 2px; }

@@ -4,7 +4,7 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 ## Decisions
 
-- [ ] Voyage map (chart theme adopted 2026-11-24): confirm the gulf arrangement (ring kept in `docs/maplab.html`), the lore lines, when to hide the names (`-d:islandNames=false`), coastal views (drawn profiles of an island seen from the sea, as on real charts) not done yet. See `decisions/themes.md`.
+- [ ] Voyage map (chart theme adopted 2026-11-24): the lore lines, when to hide the names (`-d:islandNames=false`), coastal views (drawn profiles of an island seen from the sea, as on real charts) not done yet. See `decisions/themes.md`.
 - [ ] Timing: with QEX, Island 2 is 2.5 minutes; with Island 1 down to one slide (1 minute) the talk is 23 minutes. Keep, or should the QEX slide replace something?
 
 ## Unanswered points from merged PRs
