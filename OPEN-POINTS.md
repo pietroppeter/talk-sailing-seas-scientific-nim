@@ -44,7 +44,6 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 Placeholder slides that still need content:
 
-- [ ] 1.1 to 1.3 Intro: the mainland map, why so many languages, Nim's tradeoffs.
 - [ ] 6.6 Island 5 rocks ahead (macros readability, concepts).
 - [ ] 8.2 to 8.4 Island 7 Notebook: literate computing, nimib, rocks ahead vs Jupyter.
 - [ ] 9.2 to 9.5 Conclusion: for the beginner, for the builder, your language seen from Nim, why still niche (your views on governance, tooling, Nimony and NIF).

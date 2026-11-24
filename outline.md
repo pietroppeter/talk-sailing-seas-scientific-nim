@@ -40,9 +40,9 @@ Title and speaker, before the voyage starts. Not part of the intro section.
 
 Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim's. Carries K1 and K4.
 
-1.1 **The mainland** - a map of scientific computing languages over time: Fortran, C, C++, R, Python, Julia.
-1.2 **Why so many languages?** - each language came to solve a problem the previous ones did not; the two-language problem as the classic example.
-1.3 **Nim's tradeoffs** - the abstract's question "is there space for one more?" reframed: this talk is about Nim's specific tradeoffs, seven islands, and we won't hide where Nim falls short.
+1.1 **The mainland** - "Each language came to solve a problem the previous ones did not, and each one has a price": a table of Fortran (1957), C (1972), C++ (1985), Python (1991), R (1993), Julia (2012) with what each came to do and its price, and a last highlighted row, Nim (2008), with "?" and "this talk". The speaker names the two-language problem (Python's slow loops, the reason for Julia) and asks the abstract's question: is there space for one more?
+1.2 **Nim's tradeoffs** - one line on what Nim is (general purpose, statically typed, compiled to C, C++ and JavaScript, reads like Python), then two columns: *You get* (reads like Python, runs like C; macros, JavaScript, interop; one language, script to library) and *You pay* (a compile step, no REPL; a tiny ecosystem; few people know it). Reference: Andreas Rumpf, 2008 as Nimrod, 1.0 in 2019, 2.0 in 2023. The speaker says each island shows something on the left and most end with something on the right.
+1.3 **The voyage** - how to read the talk: a niche language is an exotic land and from a boat you only see the coast; 🏝️ seven islands (themes where Nim shows its powers), 🪨 rocks ahead (where Nim falls short), 🤿 deep dives (a page for what a slide only sketches), with a link to the talk's site.
 1.4 **The map** - the seven islands on one map, used again as a progress marker at each section start.
 
 ### 2. Island 1: Accessible Performance (~1 min)
