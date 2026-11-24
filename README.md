@@ -46,12 +46,23 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `slides/thank_you_explainer.nim`: a nimib page that explains the code of the Thank You slide step by step (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/thank_you_explainer.html)
 - `slides/island2_brentp_explainer.nim`: a nimib page that explains Brent Pedersen's genomics tools in Nim, with the bioinformatics background (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_brentp_explainer.html)
 - `slides/island2_vindaar_explainer.nim`: a nimib page that explains Vindaar's physics PhD thesis in plain words (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_vindaar_explainer.html)
+- `slides/island2_qex_explainer.nim`: a nimib page that explains lattice QCD and the QEX framework in plain words (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_qex_explainer.html)
 - `slides/island2_beyond_explainer.nim`: a nimib page with Nim success stories outside scientific computing (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island2_beyond_explainer.html)
 - `slides/island3_penguins_explainer.nim`: a nimib page that explores the penguins dataset with the Nim data stack of Island 3 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island3_penguins_explainer.html)
 - `slides/island5_operators_explainer.nim`: a nimib page that explains the custom operators example of Island 5 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_operators_explainer.html)
 - `slides/island5_units_explainer.nim`: a nimib page that explains the units example of Island 5, with unchained (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_units_explainer.html)
+- `themes.nim` and `maps/`: three themes explored for the slides (pirate adventure game, old book of sea tales, nautical chart), not adopted yet; `maps/geometry.nim` is the one geometry of the voyage map, drawn by `maps/pixel.nim`, `maps/chart.nim` and `maps/engraved.nim`; `scripts/build-themes.sh` builds the deck in each theme (`docs/index_<theme>.html`)
+- `devlog/`: the talk log, see below
 - `slides/`: one file per slide (or group of slides)
 - `openspec/`: the talk is prepared with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (see below)
+
+## Talk log
+
+The repository holds the slides of the talk, the explainers that go deeper into their examples, and a talk log: posts on how the talk evolves, built with nimib from `devlog/` (the list of posts is in `devlog/devlog.nim`). Index: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/
+
+- [Setting sail](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/2026-11-07-setting-sail.html) (7 November 2026): how the talk got from an accepted abstract to a deck with seven islands
+- [Dressing the voyage](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/2026-11-07-dressing-the-voyage.html) (7 November 2026): what Ines Montani teaches about slides, and three themes tried on real slides
+- [Drawing the map](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/devlog/2026-11-07-drawing-the-map.html) (7 November 2026): one geometry for the map of the voyage, drawn as pixel art, as a nautical chart and as a hand-drawn chart
 
 ## setup
 
@@ -65,6 +76,7 @@ nim r slides/thank_you.nim  # the Thank You slide on its own, writes docs/thank_
 nim r slides/thank_you_explainer.nim  # explainer of the Thank You slide, writes docs/thank_you_explainer.html
 nim r slides/island2_brentp_explainer.nim  # explainer of Brent Pedersen's tools (Island 2), writes docs/island2_brentp_explainer.html
 nim r slides/island2_vindaar_explainer.nim  # Vindaar's thesis in plain words (Island 2), writes docs/island2_vindaar_explainer.html
+nim r slides/island2_qex_explainer.nim  # lattice QCD and QEX in plain words (Island 2), writes docs/island2_qex_explainer.html
 nim r slides/island2_beyond_explainer.nim  # Nim success stories beyond science (Island 2), writes docs/island2_beyond_explainer.html
 nim r slides/island5_operators_explainer.nim  # explainer of the custom operators slides, writes docs/island5_operators_explainer.html
 nim r slides/island5_units_explainer.nim  # explainer of the units slides, writes docs/island5_units_explainer.html
