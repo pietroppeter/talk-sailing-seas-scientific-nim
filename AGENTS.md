@@ -40,5 +40,6 @@ Everything committed (code, specs, notes, commit messages, PR descriptions) is p
 ## The local-changes branch and notes for Claude
 
 - Pietro keeps a long-lived `local-changes` branch, pushed from his laptop when he has a connection. Each push becomes a PR into `main` with his commits unchanged, plus a commit on top that handles the notes. Merge it with a merge commit, never squash or rebase, so that `git rebase origin/main` on `local-changes` replays only what is new.
+- The remote `local-changes` follows `main`: after every push to `main`, `.github/workflows/local-changes.yml` fast-forwards it when it has no commit of its own (once its batch PR is merged). Pietro updates his copy with `git pull --rebase`.
 - A note for Claude is a run of lines starting (after indentation) with `#>`, the first one `#> Claude: ...`. It works the same in Nim code, inside `nbText` strings and in `.md` files (`#>` is not a Markdown heading). Do what it asks, then delete the whole note.
 - No note reaches `main`: the build lists any line starting with `#>` and fails on it in CI (`build.nim`, `noAgentNotes`). Never start a line with `#>` for anything else.
