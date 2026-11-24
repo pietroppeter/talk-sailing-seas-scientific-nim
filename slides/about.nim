@@ -1,7 +1,7 @@
 import nimib, nimiSlides
 import ../my
 
-#> can you make sure that the about agilelab title is spaced vertically a little bit more with respect to the rest?
+# Opening, slide 0.2: about me (not part of the intro section, like the title slide)
 
 template aboutSlide* =
   slide:
