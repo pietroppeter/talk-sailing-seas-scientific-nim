@@ -1,0 +1,7 @@
+case,impl,ms,checksum
+large,Python loops,5.5282,8527003.923142
+large,NumPy np.vander,0.3307,8527003.923142
+large,Nim loops,0.2383,8527003.923142
+small,Python loops,275.5449,15.459000
+small,NumPy np.vander,680.3033,15.459000
+small,Nim loops,29.1770,15.459000

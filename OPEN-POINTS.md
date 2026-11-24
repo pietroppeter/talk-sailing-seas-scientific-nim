@@ -5,7 +5,7 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 ## Decisions
 
 - [ ] Theme: pick pirate, book or chart (or keep the AgileLab default). Today the default deck is unchanged and a theme only applies with `-d:slideTheme=pirate|book|chart` (`nim r build.nim themes` builds `docs/slides_<theme>.html`). Adopting one updates `decisions/themes.md`.
-- [ ] Timing: with QEX, Island 2 is 2.5 minutes and the talk 23.5 minutes. Keep, or should the QEX slide replace something?
+- [ ] Timing: with QEX, Island 2 is 2.5 minutes; with Island 1 down to one slide (1 minute) the talk is 23 minutes. Keep, or should the QEX slide replace something?
 
 ## Unanswered points from merged PRs
 
@@ -36,12 +36,15 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 - [ ] On a phone the brentp deep dive tools table scrolls sideways a little for the citations column: drop the "what it does" column there, or fine as is?
 - [ ] Slide 3.3: with the content-sized table, the code box reaches further right than before. Shrink it?
 
+### Island 1 in one slide (Vandermonde benchmark)
+
+- [ ] Run `bash bench/vandermonde/run.sh` on the presentation laptop and commit `results.csv` and `machine.txt`, so the slide shows the machine of the talk (today: a cloud machine, where Nim and NumPy are close and Nim's time moves between runs).
+
 ## Outline still to fill (`outline.md`)
 
 Placeholder slides that still need content:
 
 - [ ] 1.1 to 1.3 Intro: the mainland map, why so many languages, Nim's tradeoffs.
-- [ ] 2.2 to 2.4 Island 1 Accessible Performance: Python vs Nim side by side, which benchmark for "Runs like C", "No ceiling".
 - [ ] 5.2 to 5.5 Island 4 Interoperability: which C library to wrap, which bridges (Python, R, Julia) and their maturity, the Nim-from-Python example, packaging rocks ahead.
 - [ ] 6.6 Island 5 rocks ahead (macros readability, concepts).
 - [ ] 8.2 to 8.4 Island 7 Notebook: literate computing, nimib, rocks ahead vs Jupyter.

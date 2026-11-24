@@ -96,6 +96,7 @@ nim r build.nim deepdives           # every deepdive/*.nim, then the deep dives 
 nim r build.nim devlog              # every talk log post, then the talk log index (docs/devlog/)
 nim r build.nim themes              # the deck once per explored theme (docs/slides_<theme>.html)
 nim r build.nim check               # only the checks: nothing loaded from the network, no broken link between pages, no nbRawHtml
+nim r build.nim island1             # one part of the deck on its own (docs/slides_island1.html): intro, island1 to island7, conclusion, ...
 nim r build.nim slides deepdives    # groups combine; flags after -- go to nim: nim r build.nim deepdives -- -d:release
 ```
 

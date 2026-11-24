@@ -58,6 +58,9 @@ const slideBlocksCss = """
 .reveal .img-aside { display: grid; grid-template-columns: 2fr 1fr; gap: 1em; align-items: center; margin-top: 0.6em; }
 .reveal .img-aside img { width: 100%; margin: 0; }
 .reveal .img-aside-text { font-size: 0.6em; }
+/* Island 1: Python and Nim side by side, each column as wide as its code */
+.reveal .perf-cols { display: grid; grid-template-columns: max-content 1fr; gap: 0.6em; margin-bottom: 0.6em; }
+.reveal .perf-cols pre { font-size: 0.45em; width: 100%; margin: 0; }
 /* code in nimiSlides' columns (a grid) fills its column */
 .reveal [style*="grid"] > div > pre { width: 100%; }
 """
@@ -116,8 +119,9 @@ const quartoCss = """
   --r-heading-text-transform: none;
 }
 .reveal .slides { text-align: left; }
-.reveal .slides > section:first-child { text-align: center; }
 .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; font-weight: 600; }
+/* a second heading on a slide (e.g. About AgileLab under About me) starts a new part: more room above it */
+.reveal .slides section > h2:not(:first-child) { margin-top: 1em; }
 .reveal p, .reveal .slides section, .reveal .slides section > section { line-height: 1.3; }
 .reveal ul, .reveal ol { margin-left: 1em; }
 .reveal li { padding-left: 0; }
@@ -227,6 +231,11 @@ const quartoLook* = deckLook == "quarto"
 const sideLook* = not quartoLook
   ## a deck in a look other than the default, built on the side
 
+const deckSection* {.strdefine.} = ""
+  ## build one part of the deck on its own (see deck.nim): `nim r build.nim island1`.
+  ## The first slide is then that part's map slide, not the title, so it is not centered
+const titleFirst* = deckSection in ["", "title"]
+
 const codeTheme* {.strdefine.} = "atom-one-light"
   ## highlight.js style for code blocks, one of the files in docs/assets/highlight
   ## (try another with `nim r -d:codeTheme=github my.nim`)
@@ -270,7 +279,7 @@ func agileMainToHtml(doc: NbDoc, nb: Nb): string =
   # Quarto's reveal.js settings (quarto-cli, format-reveal.ts): a wider slide, a larger margin
   # around it, and slides aligned at the top instead of centered; the title slide stays centered
   let layout = when quartoLook: "width: 1050, height: 700, margin: 0.1, center: false," else: ""
-  let centerTitle = when quartoLook: "document.querySelector('.reveal .slides > section')?.classList.add('center');" else: ""
+  let centerTitle = when quartoLook and titleFirst: "document.querySelector('.reveal .slides > section')?.classList.add('center');" else: ""
   result = withNewlines:
     hlHtmlF"""
 <div class="reveal">
@@ -358,6 +367,8 @@ template myInit*(sourceFileRel = "my.nim") =
   imageLeftStyle
   when quartoLook: # the default; -d:deckLook=centered for the earlier look
     nb.addStyle quartoCss
+    when titleFirst: # the title slide stays centered
+      nb.addStyle ".reveal .slides > section:first-child { text-align: center; }"
   when themed: # -d:slideTheme=pirate|book|chart, see themes.nim
     nb.addStyle: themeCss()
   nb.backend.funcs["NbDoc"] = agileNbDocToHtml
@@ -476,6 +487,10 @@ proc barBefore*(t: sink Tabella, column: string, plotHeight = "1em",
 proc highlightCols*(t: sink Tabella, cols: ColSel): Tabella =
   ## the theme's light blue behind `cols`, from the label to the last row
   t.tabStyle(style.fill("#D9F2F6") & style.text(weight = "bold"), loc.body(cols), loc.columnLabels(cols))
+
+proc highlightRows*(t: sink Tabella, rows: RowSel): Tabella =
+  ## the theme's light blue behind `rows`, from the stub to the last column
+  t.tabStyle(style.fill("#D9F2F6") & style.text(weight = "bold"), loc.body(rows = rows), loc.stub(rows = rows))
 
 template testSlide* =
   slide:
