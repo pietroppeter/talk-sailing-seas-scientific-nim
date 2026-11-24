@@ -6,7 +6,8 @@
 ##   nim r build.nim devlog               every talk log post, then the talk log index
 ##   nim r build.nim themes               the deck once per explored theme (docs/slides_<theme>.html)
 ##   nim r build.nim looks                the deck and the style test deck in the earlier centered look (slides_centered.html, my_centered.html)
-##   nim r build.nim check                only the checks: nothing loaded from the network, no broken link between pages
+##   nim r build.nim check                only the checks: nothing loaded from the network, no broken link between pages,
+##                                        no nbRawHtml, no `#>` note for Claude left (fails in CI, a warning locally)
 ##   nim r build.nim slides deepdives     groups combine
 ##
 ## Any group also builds the site index (index.nim, docs/index.html), which lists everything.
@@ -97,6 +98,17 @@ proc noRawHtml(): bool =
     return false
   true
 
+proc noAgentNotes(): bool =
+  ## true when no tracked text file has a line starting with `#>`: a note for Claude from the
+  ## local-changes branch (AGENTS.md, "Notes for Claude"), to be handled and removed before
+  ## main. On main (CI sets CI=true) a note fails the build; locally it is only listed.
+  let (output, code) = execCmdEx("git grep -nI -E \"^[[:space:]]*#>\" -- . \":!docs/assets\"")
+  if code != 0 or output.strip.len == 0: return true
+  let inCi = getEnv("CI").len > 0
+  echo "== notes for Claude (#>) still in the sources", (if inCi: ":" else: " (a warning outside CI):")
+  echo output.strip
+  not inCi
+
 when isMainModule:
   setCurrentDir(currentSourcePath().parentDir)
   var groups, extra: seq[string]
@@ -118,5 +130,5 @@ when isMainModule:
       run "nim r " & nimFlags(extra) & " -d:slideTheme=" & t & " all.nim"
   if "looks" in groups:
     run "nim r " & nimFlags(extra) & " -d:deckLook=centered all.nim"
-  let checks = [check(), linksResolve(), noRawHtml()]
+  let checks = [check(), linksResolve(), noRawHtml(), noAgentNotes()]
   if false in checks: quit 1
