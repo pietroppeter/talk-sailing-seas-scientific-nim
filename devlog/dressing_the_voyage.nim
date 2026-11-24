@@ -5,7 +5,7 @@ import devlog
 
 # A talk log post, a research post: three themes for the slides,
 # tried on a few real slides before one is picked:
-#   scripts/build-themes.sh   (docs/index_<theme>.html, screenshots in docs/images/themes)
+#   nim r build.nim themes   (docs/index_<theme>.html, screenshots in docs/images/themes)
 #   nim r devlog/dressing_the_voyage.nim
 
 nbInit(thisFileRel = "devlog/dressing_the_voyage.nim")
@@ -187,7 +187,7 @@ plus openly licensed fonts and one map.
 Pick a theme when building the deck:
 `nim r -d:slideTheme=pirate index.nim`,
 with `pirate`, `book` or `chart`
-(`scripts/build-themes.sh` builds all three).
+(`nim r build.nim themes` builds all three).
 Without the define the deck is unchanged.
 The whole deck in each theme:
 [pirate](../index_pirate.html),

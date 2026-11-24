@@ -5,7 +5,7 @@ import ../maps / [base, pixel, chart, engraved]
 import devlog
 
 # A talk log post: the map of the voyage, one geometry and one map per theme.
-#   nim r devlog/drawing_the_map.nim   (screenshots in docs/images/maps come from scripts/build-themes.sh builds)
+#   nim r devlog/drawing_the_map.nim   (screenshots in docs/images/maps come from `nim r build.nim themes` builds)
 
 nbInit(thisFileRel = "devlog/drawing_the_map.nim")
 const ownSource = staticRead("drawing_the_map.nim")
@@ -150,7 +150,7 @@ nbText """
 ## In the slides
 
 The map slide of Island 3 in each theme
-(build the whole deck in a theme with `scripts/build-themes.sh`:
+(build the whole deck in a theme with `nim r build.nim themes`:
 [pirate](../index_pirate.html), [book](../index_book.html), [chart](../index_chart.html)):
 """
 var shots = "<div class=\"shots\">"

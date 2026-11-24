@@ -10,7 +10,7 @@ import ../my
 # (https://creativecommons.org/licenses/by-nc-sa/3.0/), so this file is licensed under
 # CC BY-NC-SA 3.0 too, unlike the rest of the repository (MIT).
 
-nbInit(thisFileRel = "emilia.nim", theme = revealTheme)
+nbInit(thisFileRel = "emilia.nim", theme = revealTheme, renderer = freshRenderer())
 useVendoredAssets
 useP5
 setSlidesTheme(White)

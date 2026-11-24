@@ -1,4 +1,15 @@
 {
+  "extraKnownMarketplaces": {
+    "pietroppeter-skills": {
+      "source": {
+        "source": "github",
+        "repo": "pietroppeter/skills"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "nimib@pietroppeter-skills": true
+  },
   "hooks": {
     "SessionStart": [
       {

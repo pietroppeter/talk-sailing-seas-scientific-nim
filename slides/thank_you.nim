@@ -178,8 +178,11 @@ template thankYouSlide* =
           fill(lerpColor(d.col, target.col, e)) # from its grid color to its letter's color
           ellipse(x, y, size, size)
 
-when isMainModule:
+template buildThankYou*() =
   # the slide on its own: `nim r slides/thank_you.nim` writes docs/thank_you.html
   myInit("thank_you.nim")
   thankYouSlide
   nbSave
+
+when isMainModule:
+  buildThankYou()

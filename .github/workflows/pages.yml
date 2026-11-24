@@ -45,7 +45,7 @@ jobs:
           atlas install
       - name: Build slides, explainers and talk log
         # every page, then checks that no page loads anything from the network (see the script)
-        run: scripts/build.sh
+        run: nim r --hints:off build.nim
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs

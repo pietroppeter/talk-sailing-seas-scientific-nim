@@ -36,5 +36,12 @@ func offlineHead(blk: JsonNode, nb: Nb): string =
     result = result.replace(cdn, assets & "/" & local)
   doAssert "katex@" & katexVersion notin result, "offline.nim: nimib's KaTeX html changed, update localKatex"
 
+proc freshRenderer*(): NbRender =
+  ## a copy of nimib's html renderer, for one page: a theme changes the renderer it is given,
+  ## and nbInit gives every page the same one (nbToHtml), so when all.nim builds every page in one
+  ## program, a deck's reveal.js theme would leak into the explainers that come after it
+  NbRender(funcs: nbToHtml.funcs, partials: nbToHtml.partials)
+
 proc useOfflineAssets*(nb: var Nb) =
+  nb.backend = freshRenderer()
   nb.backend.partials["head"] = offlineHead
