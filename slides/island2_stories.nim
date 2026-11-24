@@ -29,54 +29,51 @@ For the curious, the deep dive collects stories
 outside science, to show the breadth.
 """
 
-template brentSlide = # 3.3
+template bioSlide = # 3.3
   slide:
-    nbGithubTitle("🧬 Brent Pedersen", "brentp")
-    nbLede("""Genomics researcher and software developer:
-6 papers on 6 Nim tools (2018-2022),
-with 1,944 citations and 1,833 stars.  
-Others followed
-([awesome-bionimformatics](https://github.com/andreas-wilm/awesome-bionimformatics))""", "story")
-    let brentTools = @[
-      (tool: "[mosdepth](https://github.com/brentp/mosdepth)", year: 2018, citations: 1452, stars: 878),
-      (tool: "[somalier](https://github.com/brentp/somalier)", year: 2020, citations: 172, stars: 341),
-      (tool: "[slivar](https://github.com/brentp/slivar)", year: 2021, citations: 141, stars: 274),
-      (tool: "[duphold](https://github.com/brentp/duphold)", year: 2019, citations: 93, stars: 109),
-      (tool: "[STRling](https://github.com/quinlan-lab/STRling)", year: 2022, citations: 68, stars: 72),
-      (tool: "[hts-nim](https://github.com/brentp/hts-nim)", year: 2018, citations: 18, stars: 159)]
-    let brentTable = tabella(brentTools, rownameCol = "tool")
+    nbText "### 🧬 Nim in Bioinformatics"
+    nbLede("""Started by Brent Pedersen
+([@brentp](https://github.com/brentp)) with hts-nim (2018):
+6 papers on Nim tools he wrote or co-wrote, 1,944 citations.  
+Others followed, with papers of their own""", "story")
+    let bioTools = @[
+      (tool: "[mosdepth](https://github.com/brentp/mosdepth)", by: "Brent Pedersen",
+       paper: "Bioinformatics 2018", stars: 883),
+      (tool: "[somalier](https://github.com/brentp/somalier)", by: "Brent Pedersen",
+       paper: "Genome Medicine 2020", stars: 345),
+      (tool: "[slivar](https://github.com/brentp/slivar)", by: "Brent Pedersen",
+       paper: "npj Genomic Medicine 2021", stars: 275),
+      (tool: "[SeqFu](https://github.com/telatin/seqfu2)", by: "Andrea Telatin",
+       paper: "Bioengineering 2021", stars: 133),
+      (tool: "[STRling](https://github.com/quinlan-lab/STRling)", by: "Harriet Dashnow",
+       paper: "Genome Biology 2022", stars: 72),
+      (tool: "[BamToCov](https://github.com/telatin/bamtocov)", by: "Giovanni Birolo",
+       paper: "Bioinformatics 2022", stars: 68)]
+    let bioTable = tabella(bioTools, rownameCol = "tool")
       .tabStubhead("tool")
+      .colsLabel("by", "first author")
       .fmtMarkdown("tool")
-      .fmtInteger("year", useSeps = false)
-      .barBefore("citations")
-      .fmtInteger(["citations", "stars"])
+      .barBefore("stars")
+      .fmtInteger("stars")
       .slideLook(fontSize = "0.5em")
-    nbDiv("brent-cols", ""):
-      nbTable brentTable
-      nbShowCode """
-# read a file of DNA reads aligned to the genome
-import hts
-var b: Bam
-open(b, "sample.bam", index=true)
-# reads in a region of chromosome 6
-for r in b.query("6", 30816675, 32816675):
-  # keep reads placed with confidence
-  if r.mapping_quality > 10u:
-    # where each read sits on the genome
-    echo r.chrom, r.start, r.stop
-"""
+    nbTable bioTable
     reference """
-[brentp.github.io](https://brentp.github.io/);
-citations from Google Scholar, stars from GitHub (October 2026);
-[the tools and the genomics behind them, explained](deepdive/brentp.html)
+Stars from GitHub (November 2026), citations from Google Scholar (October 2026);
+more tools in [awesome-bionimformatics](https://github.com/andreas-wilm/awesome-bionimformatics);
+[the tools, the people and the genomics, explained](deepdive/bioinformatics.html)
 """
     speakerNote """
-hts-nim wraps htslib, the C library behind samtools.
-The point of its paper: scripting languages are easy,
-but slow at the scale of modern genomics data;
+Brent Pedersen started it: hts-nim wraps htslib,
+the C library behind samtools, and its paper says
+scripting languages are easy but slow at genome scale;
 Nim gives a scripting-like syntax without that cost.
-mosdepth computes sequencing depth: per base on a 30X genome
-in about half the time of samtools (its README benchmark).
+mosdepth computes sequencing depth in about half
+the time of samtools.
+Others followed: SeqFu (Quadram Institute), BamToCov and
+sgcocaller are built by other groups, some on hts-nim;
+STRling is from the Quinlan lab, with Brent.
+Heng Li, the author of samtools, put Nim in his biofast
+benchmark: close to C.
 Many users install these tools from bioconda
 without knowing they run Nim.
 """
@@ -181,7 +178,7 @@ template island2StoriesSection* =
   slide:
     mapSlide(2) # 3.1
     storiesIntroSlide
-    brentSlide
+    bioSlide
     vindaarSlide
     qexSlide
     rocksAheadSlide

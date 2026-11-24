@@ -4,33 +4,38 @@ import deepdive # useDeepDive, and the blocks of blocks.nim
 import nimib / highlight
 import tabelline, tabelline / nimib
 
-# A nimib document that explains the bioinformatics work
-# of Brent Pedersen (@brentp), the first success story of
-# Island 2 (slide 3.2, in slides/island2_stories.nim):
-#   nim r deepdive/brentp.nim
-# writes docs/deepdive/brentp.html.
+# A nimib document on Nim in bioinformatics, the first
+# success story of Island 2 (slides/island2_stories.nim):
+# started by Brent Pedersen (@brentp), followed by others.
+#   nim r deepdive/bioinformatics.nim
+# writes docs/deepdive/bioinformatics.html.
 # The toy code below runs when the page is built;
 # the hts-nim and slivar snippets are quoted, not run.
 
-nbInit(thisFileRel = "deepdive/brentp.nim")
-const ownSource = staticRead("brentp.nim")
-nb.useDeepDive("brentp", ownSource)
+nbInit(thisFileRel = "deepdive/bioinformatics.nim")
+const ownSource = staticRead("bioinformatics.nim")
+nb.useDeepDive("bioinformatics", ownSource)
 nbText """
-# Brent Pedersen: genomics tools in Nim
+# Nim in bioinformatics
 
 In the talk [Sailing Seas of Scientific
 Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html),
-Island 2 tells two success stories in forty seconds each.
-The first is Brent Pedersen (@brentp on GitHub),
+Island 2 tells three success stories in about forty
+seconds each. The first is Nim in bioinformatics.
+It was started by Brent Pedersen (@brentp on GitHub),
 who wrote a set of genomics tools in Nim that are
 published in journals, installed from bioconda
-and used in many labs.
+and used in many labs. Others followed: researchers
+in other institutes and a genomics company wrote
+their own Nim tools, several on top of his library,
+and some of them went all the way to a paper.
 
 A slide can only name them. This page takes the time
 to explain what they do, starting from the biology
 you need to follow along (no background assumed),
 then going tool by tool: hts-nim, mosdepth, slivar,
-somalier and a few more. Two of the ideas are small
+somalier and a few more, and then the people who
+followed. Two of the ideas are small
 enough to rebuild here in a few lines of Nim, and that
 code runs when this page is built, so the output you
 see below each block is real.
@@ -532,42 +537,112 @@ by Daniel Cook,
 (transcriptome assembly without a reference) and
 sscocaller (crossovers from single-cell sperm sequencing).
 
-Some went all the way to a paper. Two Nim tools built
-on hts-nim (they list `hts` among their Nimble
-dependencies):
+Some went all the way to a paper. Three Nim tools by
+other people, published in journals, with their GitHub
+stars (November 2026):
 
 """
 
 let followers = tableData:
-  tool: ["[BamToCov](https://github.com/telatin/bamtocov)",
+  tool: ["[SeqFu](https://github.com/telatin/seqfu2)",
+         "[BamToCov](https://github.com/telatin/bamtocov)",
          "[sgcocaller](https://github.com/ruqianl/sgcocaller)"]
-  does: ["coverage from BAM/CRAM with a very small memory footprint",
+  does: ["utilities for FASTA and FASTQ files",
+         "coverage from BAM/CRAM with a very small memory footprint",
          "haplotypes and crossovers from single-gamete sequencing"]
-  authors: ["Giovanni Birolo, Andrea Telatin", "Ruqian Lyu, ..., Davis McCarthy"]
-  paper: ["[Bioinformatics 2022](https://doi.org/10.1093/bioinformatics/btac125)",
+  authors: ["Andrea Telatin, Piero Fariselli, Giovanni Birolo",
+            "Giovanni Birolo, Andrea Telatin",
+            "Ruqian Lyu, ..., Davis McCarthy"]
+  paper: ["[Bioengineering 2021](https://doi.org/10.3390/bioengineering8050059)",
+          "[Bioinformatics 2022](https://doi.org/10.1093/bioinformatics/btac125)",
           "[Nucleic Acids Research 2022](https://doi.org/10.1093/nar/gkac764)"]
+  stars: [133, 68, 0]
 let followersTable = tabella(followers, rownameCol = "tool"):
   tabStubhead "tool"
   colsLabel "does", "what it does"
   fmtMarkdown ["tool", "paper"]
+  fmtInteger "stars"
+  tabSourceNote "Stars from GitHub, November 2026."
 nbTable followersTable
 
 nbText """
-BamToCov's README points readers to the hts-nim paper
-and to Brent's [nim-lapper](https://github.com/brentp/nim-lapper)
+BamToCov and sgcocaller are built on hts-nim (they list
+`hts` among their Nimble dependencies), and BamToCov's
+README points readers to the hts-nim paper and to Brent's
+[nim-lapper](https://github.com/brentp/nim-lapper)
 interval library, which they used at first.
 sgcocaller grew out of sscocaller, the single-sperm
 crossover caller in the wiki list.
-Andrea Telatin also wrote
-[SeqFu](https://github.com/telatin/seqfu2)
-([Bioengineering 2021](https://doi.org/10.3390/bioengineering8050059)),
-a Nim suite of utilities for FASTA and FASTQ files,
-and covtools, in the same wiki list; he also keeps a
+SeqFu is the most starred Nim bioinformatics tool not
+written by Brent, and it is still maintained (last
+pushed October 2026). Andrea Telatin also wrote
+covtools, in the same wiki list, and keeps a
 [Nim for bioinformatics](https://telatin.github.io/nim-for-bioinformatics/)
-site. More Nim libraries for biology are collected in
-[awesome-bionimformatics](https://github.com/andreas-wilm/awesome-bionimformatics).
+site. [STRling](https://github.com/quinlan-lab/STRling),
+in the table of Brent's tools above, is really a Quinlan
+lab tool with Harriet Dashnow as first author
+([Genome Biology 2022](https://doi.org/10.1186/s13059-022-02826-4)).
+
+Not every tool needs a paper to be used. Two that were
+pushed in 2026, from groups that run genomes for a
+living:
+[SCE-VCF](https://github.com/HTGenomeAnalysisUnit/SCE-VCF)
+(21 stars), which estimates sample contamination from
+the variants of a whole cohort, by the HT Genome Analysis
+Unit in Italy, and
+[clinvcf](https://github.com/SeqOne/clinvcf) (18 stars),
+which turns ClinVar's XML releases into an annotated VCF,
+from the genomics company SeqOne.
+
+How big is it? A GitHub search for Nim repositories about
+bioinformatics, genomics, BAM, FASTQ or VCF finds 53
+(November 2026); of the top 40 by stars, 18 are Brent's.
+More Nim libraries for biology (sequences, k-mers,
+phylogenetic trees, alignment) are collected in
+[awesome-bionimformatics](https://github.com/andreas-wilm/awesome-bionimformatics)
+by Andreas Wilm.
 So hts-nim did what a good library does: it made the next
-person's Nim tool a lot cheaper to write.
+person's Nim tool a lot cheaper to write. And the
+community stayed small: a few people, a few dozen tools.
+"""
+
+nbText """
+## An outside look: biofast
+
+Heng Li, the author of samtools, BWA and minimap2 (some of
+the most used tools in genomics), wrote
+[biofast](https://github.com/lh3/biofast) in 2020, a
+benchmark of the same small bioinformatics programs in
+several languages. Nim is one of them, with a port of his
+C library klib. Two of the tasks, in CPU seconds on his
+server (lower is better; Nim 1.2.0 at the time):
+
+"""
+
+# from the README of lh3/biofast (2020): fqcnt reads 5.7 million
+# FASTQ records from a gzipped file, bedcov computes the coverage
+# of intervals of one BED file over another (the g2r run)
+let biofast = tableData:
+  language: ["C", "Nim", "Julia", "Go", "Python"]
+  fastq: [9.7, 10.5, 11.2, 19.1, 42.7]
+  bedcov: [5.2, 16.6, 25.9, 34.0, 33770.4]
+let biofastTable = tabella(biofast, rownameCol = "language"):
+  tabStubhead "language"
+  colsLabel "fastq", "parse FASTQ (s)"
+  colsLabel "bedcov", "interval coverage (s)"
+  fmtNumber ["fastq", "bedcov"], decimals = 1
+  tabStyle style.fill("#D9F2F6"), loc.body(rows = where(it["language"] == "Nim"))
+  tabSourceNote "From the biofast README (2020); Python on bedcov did not finish, more than the time shown."
+nbTable biofastTable
+
+nbText """
+Nim lands next to C on FASTQ parsing and within about 3x
+of C on interval coverage, while pure Python is 4x slower
+on the first and three orders of magnitude slower on the
+second (real Python tools call C for this). It is one
+benchmark, by someone who writes C for a living, but it is
+the same promise as the hts-nim paper: code that reads
+like a script and runs close to C.
 """
 
 nbText """
@@ -636,7 +711,7 @@ nbText """
 
 For the talk the point is simple: a competent scientist
 picked a niche language and used it to build tools for
-real research. They are published in peer reviewed
+real research, and others followed him. They are published in peer reviewed
 journals, cited and installed by people who never need
 to know which language they are written in.
 Nim gave him a scripting-like syntax with the speed
@@ -664,8 +739,14 @@ the shortcomings the talk comes back to at the end.
 [slivar paper](https://www.nature.com/articles/s41525-021-00227-3),
 [somalier paper](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-020-00761-2),
 [duphold paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6479422/),
-the READMEs of each repository, and
-[his Nim repositories](https://github.com/brentp?tab=repositories&language=nim&sort=stargazers).
+[SeqFu paper](https://doi.org/10.3390/bioengineering8050059),
+[BamToCov paper](https://doi.org/10.1093/bioinformatics/btac125),
+[sgcocaller paper](https://doi.org/10.1093/nar/gkac764),
+[STRling paper](https://doi.org/10.1186/s13059-022-02826-4),
+[biofast](https://github.com/lh3/biofast),
+the READMEs of each repository,
+[his Nim repositories](https://github.com/brentp?tab=repositories&language=nim&sort=stargazers)
+and a GitHub search of Nim repositories (November 2026).
 """
 
 nbSave
