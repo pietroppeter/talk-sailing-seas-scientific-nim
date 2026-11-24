@@ -40,6 +40,9 @@ const slideBlocksCss = """
 .reveal .rocks-quotes figure { margin: 0; }
 .reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
 .reveal .rocks-quotes figcaption { font-size: 0.55em; margin-top: 0.5em; }
+/* Island 1: Python and Nim side by side, each column as wide as its code */
+.reveal .perf-cols { display: grid; grid-template-columns: max-content 1fr; gap: 0.6em; margin-bottom: 0.6em; }
+.reveal .perf-cols pre { font-size: 0.45em; width: 100%; margin: 0; }
 /* code in nimiSlides' columns (a grid) fills its column */
 .reveal [style*="grid"] > div > pre { width: 100%; }
 """
@@ -440,6 +443,10 @@ proc barBefore*(t: sink Tabella, column: string, plotHeight = "1em",
 proc highlightCols*(t: sink Tabella, cols: ColSel): Tabella =
   ## the theme's light blue behind `cols`, from the label to the last row
   t.tabStyle(style.fill("#D9F2F6") & style.text(weight = "bold"), loc.body(cols), loc.columnLabels(cols))
+
+proc highlightRows*(t: sink Tabella, rows: RowSel): Tabella =
+  ## the theme's light blue behind `rows`, from the stub to the last column
+  t.tabStyle(style.fill("#D9F2F6") & style.text(weight = "bold"), loc.body(rows = rows), loc.stub(rows = rows))
 
 template testSlide* =
   slide:
