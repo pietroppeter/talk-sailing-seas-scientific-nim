@@ -36,6 +36,12 @@ jobs:
           path: ~/.cache/nim
           key: nimcache-${{ github.run_id }}
           restore-keys: nimcache-
+      # nanuq's prebuilt Polars library (about 64 MB), downloaded the first time nanuq is compiled
+      - uses: actions/cache@v5
+        with:
+          path: ~/.cache/nanuq
+          key: nanuq-${{ hashFiles('atlas.lock') }}
+          restore-keys: nanuq-
       - name: Install dependencies
         run: |
           # cairo: ggplotnim saves its PNG plots with it; BLAS/LAPACK: loaded by Arraymancer at startup

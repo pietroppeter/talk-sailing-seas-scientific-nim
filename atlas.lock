@@ -108,6 +108,12 @@
       "commit": "5a7a7bafd1da23b25332316a7b888e6586f4177a",
       "version": ""
     },
+    "nanuq": {
+      "dir": "$deps/nanuq",
+      "url": "https://github.com/pietroppeter/nanuq",
+      "commit": "dae8ec2dfa4b2a9439877adcd570e6168f532270",
+      "version": ""
+    },
     "nimblas": {
       "dir": "$deps/nimblas",
       "url": "https://github.com/andreaferretti/nimblas",
@@ -298,6 +304,7 @@
     "--path:\"deps/zogyn/src\"",
     "--path:\"deps/latexdsl/src\"",
     "--path:\"deps/markdown/src\"",
+    "--path:\"deps/nanuq/src\"",
     "--path:\"deps/nimblas\"",
     "--path:\"deps/nimcl\"",
     "--path:\"deps/nimcuda/src\"",
