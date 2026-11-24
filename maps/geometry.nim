@@ -25,6 +25,11 @@ type
     outline*: seq[Pt]  ## control points of a custom outline, around `center`; empty: the default
     features*: seq[Feature]
     labelBelow*: bool
+    exact*: bool       ## the outline is a real coast (maps/isole.nim), drawn as it is, not smoothed
+    real*: string      ## the real island the outline is taken from, empty for an invented one
+    elevation*: float  ## its highest point, metres (0: unknown)
+    lore*: string      ## a line on the real island, for its chart
+    note*: string      ## a note on the chart next to it, as charts have (an active volcano)
 
   Voyage* = object
     w*, h*: float
@@ -33,6 +38,8 @@ type
     route*: seq[Pt]      ## from the mainland through the islands and back to land
     compassAt*: Pt
     seaName*: string
+    islets*: seq[seq[Pt]] ## small islands around the islands of the voyage, unnamed, drawn as they are
+    roughCoast*: float   ## how far (map units) the mainland's coast wanders off its smooth line: 0 smooth
 
 func catmullRom(pts: seq[Pt], closed: bool, steps = 8): seq[Pt] =
   ## dense points of a Catmull-Rom spline through `pts`
@@ -64,11 +71,42 @@ func controlPoints*(isl: Island): seq[Pt] =
       let rr = isl.r * (1 + 0.20 * sin(3 * t + s) + 0.10 * sin(5 * t + 2.3 * s) + 0.05 * cos(7 * t + s))
       result.add (isl.center.x + rr * cos(t), isl.center.y + 0.8 * rr * sin(t))
 
-func polygon*(isl: Island): seq[Pt] = catmullRom(isl.controlPoints, closed = true)
+func polygon*(isl: Island): seq[Pt] =
+  if isl.exact: isl.controlPoints else: catmullRom(isl.controlPoints, closed = true)
+
+func valueNoise*(x, y: float): float =
+  ## smooth value noise in [0, 1], the same at every build
+  func h(i, j: int): float =
+    let s = sin(i.float * 127.1 + j.float * 311.7) * 43758.5453
+    s - floor(s)
+  let i = int(floor(x))
+  let j = int(floor(y))
+  var tx = x - i.float
+  var ty = y - j.float
+  tx = tx * tx * (3 - 2 * tx)
+  ty = ty * ty * (3 - 2 * ty)
+  let a = h(i, j) * (1 - tx) + h(i + 1, j) * tx
+  let b = h(i, j + 1) * (1 - tx) + h(i + 1, j + 1) * tx
+  a * (1 - ty) + b * ty
+
+func fbm*(x, y: float, octaves = 4): float =
+  ## fractal noise in about [0, 1]: octaves of value noise, each finer and fainter
+  var amp = 0.5
+  var freq = 1.0
+  var norm = 0.0
+  for o in 0 ..< octaves:
+    result += amp * valueNoise(x * freq + o.float * 17.3, y * freq - o.float * 9.1)
+    norm += amp
+    amp *= 0.5
+    freq *= 2.1
+  result /= norm
 
 func mainlandPolygon*(v: Voyage): seq[Pt] =
   ## the mainland: its coast, closed along the left edge of the map
-  result = catmullRom(v.mainland, closed = false)
+  result = catmullRom(v.mainland, closed = false, steps = if v.roughCoast > 0: 24 else: 8)
+  if v.roughCoast > 0: # a coast that wanders like a real one: capes and bays at every scale
+    for p in result.mitems:
+      p.x += v.roughCoast * (2 * fbm(p.y * 0.025, 3.7, 5) - 1)
   result.add [(-20.0, v.h + 20), (-20.0, -20.0)]
 
 func routePolyline*(v: Voyage, upTo = -1): seq[Pt] =
@@ -112,6 +150,7 @@ type Field* = object
 func lands*(v: Voyage): seq[seq[Pt]] =
   result.add v.mainlandPolygon
   for isl in v.islands: result.add isl.polygon
+  for islet in v.islets: result.add islet
 
 func signedDistance*(lands: seq[seq[Pt]], p: Pt): float =
   var best = Inf

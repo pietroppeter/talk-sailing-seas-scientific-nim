@@ -45,7 +45,7 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `my.nim`: helpers and AgileLab theme; run it directly for a style test deck (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/my.html)
 - `slides/thank_you.nim`: the animated Thank You slide (a p5nim sketch); run it directly to build the slide on its own (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/thank_you.html)
 - `deepdive/`: the deep dives, see below
-- `themes.nim` and `maps/`: three themes explored for the slides (pirate adventure game, old book of sea tales, nautical chart), not adopted yet; `maps/geometry.nim` is the one geometry of the voyage map, drawn by `maps/pixel.nim`, `maps/chart.nim` and `maps/engraved.nim`; `nim r build.nim themes` builds the deck in each theme (`docs/index_<theme>.html`)
+- `themes.nim` and `maps/`: the deck wears the nautical chart theme; two other themes were explored (pirate adventure game, old book of sea tales); `maps/geometry.nim` is the one geometry of the voyage map, drawn by `maps/pixel.nim`, `maps/chart.nim` and `maps/engraved.nim`, with the coasts of real islands from tabelline's islands story (`maps/isole.nim`, © OpenStreetMap contributors, ODbL); `nim r build.nim themes` builds the deck in the other themes (`docs/slides_<theme>.html`); `nim r maps/maplab.nim` draws every chart on one page (`docs/maplab.html`)
 - `devlog/`: the talk log, see below
 - `slides/`: one file per slide (or group of slides), and the helpers they share
 - `shiny/`: the Shiny for Python app of Island 6 (the plant), which `scripts/shinylive.sh` exports to `docs/shiny/` to run in the browser with shinylive (about 50 MB, not committed; `build.nim` exports it when missing, which needs the network once; deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/shiny/plant/)
@@ -95,7 +95,7 @@ nim r build.nim                     # everything, as the pages workflow does
 nim r build.nim slides              # the deck (docs/slides.html), the style test deck (docs/my.html), the Thank You slide, the easter egg
 nim r build.nim deepdives           # every deepdive/*.nim, then the deep dives index (docs/deepdive/)
 nim r build.nim devlog              # every talk log post, then the talk log index (docs/devlog/)
-nim r build.nim themes              # the deck once per explored theme (docs/slides_<theme>.html)
+nim r build.nim themes              # the deck in the other themes (docs/slides_<theme>.html: pirate, book, agile)
 nim r build.nim check               # only the checks: nothing loaded from the network, no broken link between pages, no nbRawHtml
 nim r build.nim island1             # one part of the deck on its own (docs/slides_island1.html): intro, island1 to island7, conclusion, ...
 nim r build.nim slides deepdives    # groups combine; flags after -- go to nim: nim r build.nim deepdives -- -d:release

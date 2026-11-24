@@ -1,18 +1,25 @@
-## Slide themes explored in the talk log (devlog/dressing_the_voyage.nim) (a proof of concept, not the deck's style yet).
+## Slide themes explored in the talk log (devlog/dressing_the_voyage.nim); the deck wears the chart one.
 ##
-## Build the deck with a theme: `nim r -d:slideTheme=pirate deck.nim` (pirate, book or chart);
-## the default `agile` is the AgileLab theme of my.nim and is unchanged.
+## The deck wears the nautical chart theme (chart); the others explored are built on the side:
+## `nim r -d:slideTheme=pirate deck.nim` (pirate, book, or agile, the plain AgileLab theme of my.nim).
 ## Each theme is css on top of the AgileLab theme, openly licensed fonts vendored in
 ## docs/assets/fonts (scripts/vendor-fonts.sh) and a map of the voyage drawn by code
 ## from one shared geometry (maps/), in the style of the theme.
 import std / [strutils, strformat]
-import maps / [base, pixel, chart, engraved]
+import maps / [base, pixel, chart, engraved, isole]
 export base
 
-const slideTheme* {.strdefine.} = "agile"
-  ## agile (default), pirate, book or chart
+const deckTheme* = "chart"
+  ## the theme of the deck (Pietro, 2026-11-24): the nautical chart
+
+const slideTheme* {.strdefine.} = deckTheme
+  ## chart (the deck's), or one of the others explored: pirate, book, agile (the plain AgileLab theme)
 
 const themed* = slideTheme != "agile"
+  ## the theme's css, fonts and map apply (all but the plain AgileLab theme)
+
+const sideTheme* = slideTheme != deckTheme
+  ## a theme built on the side, as docs/slides_<theme>.html
 
 # --- the voyage map -------------------------------------------------------------------
 # One geometry (maps/geometry.nim), one map per theme drawn from it:
@@ -22,7 +29,7 @@ const themed* = slideTheme != "agile"
 proc voyageMap*(islands: openArray[string], current: int, id = ""): string =
   ## the map of the voyage in the theme of the build; `current` (1..7) is the island
   ## of the section, 0 for the whole map, 8 for back on land
-  let v = defaultVoyage()
+  let v = islandsVoyage() # seven real islands of the Mediterranean (maps/isole.nim)
   case slideTheme
   of "pirate": pixelMap(v, islands, current)
   of "chart": chartMap(v, islands, current, id)
@@ -186,7 +193,7 @@ func bookCss(): string =
 """
 
 func chartCss(): string =
-  ## a modern nautical chart: chart paper, a graduated black and white border, a light grid,
+  ## a modern nautical chart: chart paper, a thin neatline around the slide, a light grid,
   ## depth soundings and contours, chart magenta (the color charts use for lights and cautions)
   ## for emphasis and the "rocks ahead", a grotesque sans for titles and Spectral for text
   let navy = "#13334c"
@@ -201,12 +208,8 @@ func chartCss(): string =
   background-size: 80px 80px;
 }}
 .reveal-viewport::after {{
-  content: ""; position: fixed; inset: 10px; pointer-events: none; outline: 1px solid {navy};
-  background:
-    repeating-linear-gradient(90deg, {navy} 0 40px, transparent 40px 80px) top left / 100% 7px no-repeat,
-    repeating-linear-gradient(90deg, {navy} 0 40px, transparent 40px 80px) bottom left / 100% 7px no-repeat,
-    repeating-linear-gradient(180deg, {navy} 0 40px, transparent 40px 80px) top left / 7px 100% no-repeat,
-    repeating-linear-gradient(180deg, {navy} 0 40px, transparent 40px 80px) top right / 7px 100% no-repeat;
+  content: ""; position: fixed; inset: 10px; pointer-events: none;
+  border: 1px solid rgba(19,51,76,0.55); outline: 0.5px solid rgba(19,51,76,0.3); outline-offset: 4px;
 }}
 .reveal {{ font-family: "Spectral", serif; color: {navy}; font-size: 38px; }}
 .reveal h1, .reveal h2, .reveal h3 {{ font-family: "Space Grotesk", sans-serif; color: {navy}; font-weight: 700; letter-spacing: 0.01em; }}
@@ -230,6 +233,7 @@ func chartCss(): string =
 .reveal .title-slide h2::before {{ display: none; }}
 .reveal .title-slide .title-box {{ background: rgba(246,243,234,0.92); border: 2px solid {navy}; outline: 1px solid {navy}; outline-offset: 5px; padding: 0.4em 0.8em; display: inline-block; }}
 .reveal .title-slide .scale {{ font-family: "Space Grotesk", sans-serif; font-size: 0.5em; letter-spacing: 0.2em; color: {magenta}; }}
+.reveal .map-slide .voyage-map {{ height: auto; width: 100%; margin-top: -0.4em; }}
 .reveal .title-art {{ opacity: 0.6; }}
 .reveal .chapter {{ font-family: "Space Grotesk", sans-serif; color: {magenta}; font-size: 0.6em; letter-spacing: 0.2em; margin: 0; }}
 .voyage-map .sea {{ fill: #d7e9f2; }}
@@ -277,10 +281,7 @@ func mapHeading*(islands: openArray[string], n: int): string =
     if n == 0: chapter & "<h2>The Map of the Voyage</h2>"
     elif n == 8: chapter & "<h2>In which we return to Land</h2>"
     else: chapter & "<h2>The Island of " & name & "</h2>"
-  of "chart":
-    if n == 0: "<p class=\"chapter\">CHART 0 · OVERVIEW</p>\n<h2>The map</h2>"
-    elif n == 8: "<p class=\"chapter\">CHART 8 · LANDFALL</p>\n<h2>Back on land</h2>"
-    else: "<p class=\"chapter\">CHART " & $n & " OF 7</p>\n<h2>" & name & "</h2>"
+  of "chart": "" # the chart's own title block says which chart it is (maps/chart.nim)
   else:
     if n == 0: "<h2>The map</h2>"
     elif n == 8: "<h2>Back on land</h2>"

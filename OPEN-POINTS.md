@@ -4,7 +4,7 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 ## Decisions
 
-- [ ] Theme: pick pirate, book or chart (or keep the AgileLab default). Today the default deck is unchanged and a theme only applies with `-d:slideTheme=pirate|book|chart` (`nim r build.nim themes` builds `docs/slides_<theme>.html`). Adopting one updates `decisions/themes.md`.
+- [ ] Voyage map (chart theme adopted 2026-11-24): the seven real islands and their lore, each island at its own scale, the invented mainland, coastal views (drawn profiles of an island seen from the sea, as on real charts) not done yet. See `decisions/themes.md`.
 - [ ] Timing: with QEX, Island 2 is 2.5 minutes; with Island 1 down to one slide (1 minute) the talk is 23 minutes. Keep, or should the QEX slide replace something?
 
 ## Unanswered points from merged PRs

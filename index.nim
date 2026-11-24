@@ -28,8 +28,8 @@ var slides = @[
   PageItem(url: "slides.html", title: "The talk", eyebrow: "Slides",
     summary: "The deck, seven islands of scientific Nim."),
 ]
-# the themes explored in the talk log (themes.nim, built by `nim r build.nim themes`)
-for (name, look) in [("pirate", "a pirate adventure game"), ("book", "an old book of sea tales"), ("chart", "a nautical chart")]:
+# the other themes explored in the talk log (themes.nim, built by `nim r build.nim themes`); the deck wears the chart one
+for (name, look) in [("pirate", "a pirate adventure game"), ("book", "an old book of sea tales"), ("agile", "plain AgileLab, without a theme")]:
   slides.add PageItem(url: "slides_" & name & ".html", title: "The talk, " & name & " theme", eyebrow: "Slides · theme explored",
     summary: "The deck dressed as " & look & " ([how](devlog/2026-11-07-dressing-the-voyage.html)).")
 slides.add PageItem(url: "slides_centered.html", title: "The talk, centered look", eyebrow: "Slides · earlier look",
