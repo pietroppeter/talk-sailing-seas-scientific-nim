@@ -40,6 +40,8 @@ const slideBlocksCss = """
 .reveal .rocks-quotes figure { margin: 0; }
 .reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
 .reveal .rocks-quotes figcaption { font-size: 0.55em; margin-top: 0.5em; }
+/* Island 1: the line saying what the Vandermonde matrix is, as small as nbTextSmall (a div, since KaTeX breaks inside reveal's small) */
+.reveal .perf-intro { font-size: 0.6em; }
 /* Island 1: Python and Nim side by side, each column as wide as its code */
 .reveal .perf-cols { display: grid; grid-template-columns: max-content 1fr; gap: 0.6em; margin-bottom: 0.6em; }
 .reveal .perf-cols pre { font-size: 0.45em; width: 100%; margin: 0; }

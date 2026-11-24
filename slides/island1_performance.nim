@@ -56,11 +56,9 @@ template island1PerformanceSection* =
   slide:
     mapSlide(1) # 2.1
     slide: # 2.2
-      nbText """
-## Reads like Python, runs like C
-
-The Vandermonde matrix: row $i$ is $1, x_i, x_i^2, \\dots$
-"""
+      nbText "## Reads like Python, runs like C"
+      nbDiv("perf-intro", ""):
+        nbText "The Vandermonde matrix: row $i$ is $1, x_i, x_i^2, \\dots, x_i^{n-1}$"
       nbDiv("perf-cols", ""):
         nbShowCode(vanderPyCode, lang = "python")
         nbShowCode vanderNimCode
