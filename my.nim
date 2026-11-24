@@ -1,4 +1,4 @@
-import std / [strutils, strformat, json, math]
+import std / [strutils, strformat, json, math, xmltree]
 export strutils
 import nimib, nimiSlides
 import themes
@@ -45,6 +45,10 @@ const slideBlocksCss = """
 .reveal .app .sidebar { display: flex; flex-direction: column; gap: 0.5em; width: 10em; font-size: 0.6em; text-align: left; }
 .reveal .app label { display: grid; grid-template-columns: 1fr auto; }
 .reveal .app input { grid-column: 1 / 3; width: 100%; margin: 0.2em 0 0; }
+/* imageAside: a picture with something smaller beside it (slide 7.2) */
+.reveal .img-aside { display: grid; grid-template-columns: 2fr 1fr; gap: 1em; align-items: center; margin-top: 0.6em; }
+.reveal .img-aside img { width: 100%; margin: 0; }
+.reveal .img-aside-text { font-size: 0.6em; }
 /* code in nimiSlides' columns (a grid) fills its column */
 .reveal [style*="grid"] > div > pre { width: 100%; }
 """
@@ -417,6 +421,24 @@ template imageLeftSlide*(url: string, width: float, body: untyped) =
 
 template imageLeftSlide*(url: string, body: untyped) =
   imageLeftSlide(url, 0.4, body)
+
+newNbBlock(NbImageAside of NbContainer):
+  url: string
+  alt: string
+  toHtml:
+    &"""<div class="img-aside">
+<img src="{blk.url}" alt="{xmltree.escape(blk.alt)}">
+<div class="img-aside-text">""" & nbContainerToHtml(blk, nb) & """</div>
+</div>"""
+
+template imageAside*(url: string, alt: string, body: untyped) =
+  ## inside a slide: a picture (path relative to docs/) taking about two thirds of the width,
+  ## and beside it, smaller and vertically centered, what `body` adds (slide 7.2: the plant's equations)
+  block:
+    let aside = newNbImageAside(@[], nb.doc.relToRoot(url), alt)
+    nb.withContainer(aside):
+      body
+    nb.add aside
 
 proc slideLook*(t: sink Tabella, fontSize = "0.6em"): Tabella =
   ## the deck's look for a tabelline table: the slide's font, colours and background,

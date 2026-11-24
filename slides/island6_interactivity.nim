@@ -16,17 +16,13 @@ Shiny for Python app (2022), Python in the browser with shinylive (Pyodide):
 16 MB to download, 8 s to the first plot, 0.4 s per slider move
 ([live](shiny/plant/index.html))
 """
-      columns:
-        column:
-          nbImg("images/shiny_plant.png")
-        column:
-          nbText """
-$$ \begin{aligned}
-x &= t \cos^3 t \\\\
-y &= \ell t \sqrt{|\cos t|} \\\\
-  &+ t \sin(p t) \cos(o t) \\\\
-t &\in [0, n \pi / 2]
-\end{aligned} $$
+      imageAside("images/shiny_plant.png", "The Shiny plant app: four sliders and a plant plotted by matplotlib"):
+        nbText """
+$$ \begin{gathered}
+x = t \cos^3 t \\\\
+y = \ell t \sqrt{|\cos t|} + t \sin(p t) \cos(o t) \\\\
+t \in [0, n \pi / 2]
+\end{gathered} $$
 """
       speakerNote """
 Nick Strayer shared this in 2022: a generative plant,
