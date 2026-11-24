@@ -121,18 +121,9 @@ The data flows through a few standard formats:
 
 """
 
-# horizontal bars of one colour, for nanoplots of a single value
+# horizontal bars of one colour, for the run times of mosdepth
 proc bars(color: string): NanoplotOptions =
   nanoplotOptions(dataBarFillColor = color, dataBarStrokeColor = color)
-
-proc barBefore(t: sink Tabella, column: string, plotHeight = "0.9em",
-                options = bars("#02A4BD")): Tabella =
-  ## a bar for each number of `column` (a nanoplot), in an unlabelled column just before it,
-  ## all bars from one zero line, so they compare; the number stays visible beside its bar
-  let bar = column & "Bar"
-  t.colsAdd(bar, proc (r: Row): Value = r[column], before = column)
-    .fmtNanoplot(bar, plotType = "bar", plotHeight = plotHeight, options = options)
-    .colsLabel(bar, "")
 
 # the tables of this page are made with tabelline
 # (great tables for Nim, after R's gt and Python's Great Tables)
@@ -255,8 +246,8 @@ covered at least 10, 20, 30 times (a standard quality
 check: "is 95% of the exome covered at 20X?").
 
 It is the most used of Brent's tools: the paper has
-about 1,450 citations on Google Scholar and the repo
-about 900 stars on GitHub (October 2026).
+about 1,500 citations on Google Scholar and the repo
+about 900 stars on GitHub (November 2026).
 
 **The trick.** Instead of piling up reads base by base,
 mosdepth allocates one array of integers as long as the
@@ -453,10 +444,9 @@ interactive HTML report
 nbText """
 ## And more
 
-His main Nim tools, with GitHub stars and the citations
-of their papers on
-[Google Scholar](https://scholar.google.com/citations?user=tDf0VkUAAAAJ)
-(both as of October 2026):
+His main Nim tools, with the citations of their papers
+on [Google Scholar](https://scholar.google.com/citations?user=tDf0VkUAAAAJ)
+and GitHub stars (November 2026):
 
 """
 
@@ -471,26 +461,24 @@ let tools = tableData:
          "variant filtering with expressions", "htslib for Nim",
          "adds depth evidence to deletion and duplication calls",
          "finds expansions of short tandem repeats (with Harriet Dashnow, Quinlan lab)"]
-  stars: [878, 341, 274, 159, 109, 72]
-  citations: [1452, 172, 141, 18, 93, 68]
+  citations: [1490, 175, 290, 18, 93, 68]
+  stars: [883, 345, 275, 159, 109, 72]
 let toolsTable = tabella(tools, rownameCol = "tool"):
   tabStubhead "tool"
   colsLabel "does", "what it does"
   fmtMarkdown "tool"
-  fmtInteger ["stars", "citations"]
-  # a bar beside the citations, as on the slide (a bar alone shows its number only on hover)
-  barBefore "citations"
+  fmtInteger ["citations", "stars"]
   grandSummaryRows:
     total: agg.sum
-    columns = ["stars", "citations"]
+    columns = ["citations", "stars"]
     missingText = ""
   colsWidth {"does": "40%"}
-  tabSourceNote "Stars from GitHub, citations from Google Scholar, October 2026."
+  tabSourceNote "Citations from Google Scholar, stars from GitHub, November 2026 (duphold and hts-nim citations October 2026)."
 nbTable toolsTable
 
 nbText """
 These are the six Nim tools with a paper (2018 to 2022):
-together 1,944 citations and 1,833 stars.
+together 2,134 citations and 1,843 stars.
 Some of his other Nim tools have no paper, like
 [jigv](https://github.com/brentp/jigv) (132 stars),
 self-contained igv.js pages to look at reads and variants,
@@ -538,8 +526,8 @@ by Daniel Cook,
 sscocaller (crossovers from single-cell sperm sequencing).
 
 Some went all the way to a paper. Three Nim tools by
-other people, published in journals, with their GitHub
-stars (November 2026):
+other people, published in journals, with their
+citations (Google Scholar) and GitHub stars (November 2026):
 
 """
 
@@ -556,13 +544,14 @@ let followers = tableData:
   paper: ["[Bioengineering 2021](https://doi.org/10.3390/bioengineering8050059)",
           "[Bioinformatics 2022](https://doi.org/10.1093/bioinformatics/btac125)",
           "[Nucleic Acids Research 2022](https://doi.org/10.1093/nar/gkac764)"]
+  citations: [77, 34, 8]
   stars: [133, 68, 0]
 let followersTable = tabella(followers, rownameCol = "tool"):
   tabStubhead "tool"
   colsLabel "does", "what it does"
   fmtMarkdown ["tool", "paper"]
-  fmtInteger "stars"
-  tabSourceNote "Stars from GitHub, November 2026."
+  fmtInteger ["citations", "stars"]
+  tabSourceNote "Citations from Google Scholar, stars from GitHub, November 2026."
 nbTable followersTable
 
 nbText """

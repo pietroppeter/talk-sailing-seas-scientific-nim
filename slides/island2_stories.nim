@@ -14,8 +14,11 @@ template storiesIntroSlide = # 3.2
 How do we define success stories in scientific computing?
 By looking at people who used Nim to advance science.
 
-The following are three stories:  
-🧬 Bioinformatics, ☀️ Physics and ⚛️ Lattice QCD
+The following are three stories:
+
+- 🧬 Bioinformatics
+- ☀️ Experimental physics
+- ⚛️ Theoretical physics (lattice QCD)
 """
     reference """
 Beyond science, Nim runs on the web, in blockchains,
@@ -34,31 +37,30 @@ template bioSlide = # 3.3
     nbText "### 🧬 Nim in Bioinformatics"
     nbLede("""Started by Brent Pedersen
 ([@brentp](https://github.com/brentp)) with hts-nim (2018):
-6 papers on Nim tools he wrote or co-wrote, 1,944 citations.  
+6 papers on Nim tools he wrote or co-wrote, 2,134 citations.  
 Others followed, with papers of their own""", "story")
     let bioTools = @[
-      (tool: "[mosdepth](https://github.com/brentp/mosdepth)", by: "Brent Pedersen",
-       paper: "Bioinformatics 2018", stars: 883),
-      (tool: "[somalier](https://github.com/brentp/somalier)", by: "Brent Pedersen",
-       paper: "Genome Medicine 2020", stars: 345),
-      (tool: "[slivar](https://github.com/brentp/slivar)", by: "Brent Pedersen",
-       paper: "npj Genomic Medicine 2021", stars: 275),
-      (tool: "[SeqFu](https://github.com/telatin/seqfu2)", by: "Andrea Telatin",
-       paper: "Bioengineering 2021", stars: 133),
-      (tool: "[STRling](https://github.com/quinlan-lab/STRling)", by: "Harriet Dashnow",
-       paper: "Genome Biology 2022", stars: 72),
-      (tool: "[BamToCov](https://github.com/telatin/bamtocov)", by: "Giovanni Birolo",
-       paper: "Bioinformatics 2022", stars: 68)]
+      (tool: "[mosdepth](https://github.com/brentp/mosdepth)", by: "Brent Pedersen (+1)",
+       paper: "Bioinformatics 2018", citations: 1490, stars: 883),
+      (tool: "[somalier](https://github.com/brentp/somalier)", by: "Brent Pedersen (+8)",
+       paper: "Genome Medicine 2020", citations: 175, stars: 345),
+      (tool: "[slivar](https://github.com/brentp/slivar)", by: "Brent Pedersen (+11)",
+       paper: "npj Genomic Medicine 2021", citations: 290, stars: 275),
+      (tool: "[SeqFu](https://github.com/telatin/seqfu2)", by: "Andrea Telatin (+2)",
+       paper: "Bioengineering 2021", citations: 77, stars: 133),
+      (tool: "[STRling](https://github.com/quinlan-lab/STRling)", by: "Harriet Dashnow (+13)",
+       paper: "Genome Biology 2022", citations: 68, stars: 72),
+      (tool: "[BamToCov](https://github.com/telatin/bamtocov)", by: "Giovanni Birolo (+1)",
+       paper: "Bioinformatics 2022", citations: 34, stars: 68)]
     let bioTable = tabella(bioTools, rownameCol = "tool")
       .tabStubhead("tool")
       .colsLabel("by", "first author")
       .fmtMarkdown("tool")
-      .barBefore("stars")
-      .fmtInteger("stars")
+      .fmtInteger(["citations", "stars"])
       .slideLook(fontSize = "0.5em")
     nbTable bioTable
     reference """
-Stars from GitHub (November 2026), citations from Google Scholar (October 2026);
+Citations from Google Scholar, stars from GitHub (November 2026);
 more tools in [awesome-bionimformatics](https://github.com/andreas-wilm/awesome-bionimformatics);
 [the tools, the people and the genomics, explained](deepdive/bioinformatics.html)
 """
@@ -81,7 +83,7 @@ without knowing they run Nim.
 template vindaarSlide = # 3.4
   slide:
     nbGithubTitle("☀️ Sebastian Schmidt", "Vindaar")
-    nbLede("""A PhD student in Physics searching for solar axions
+    nbLede("""A PhD student in experimental physics searching for solar axions
 at CERN's CAST:
 the entire analysis code base is written in Nim.  
 He ended up building an important part
@@ -116,7 +118,8 @@ template qexSlide = # 3.5
   slide:
     nbGithubTitle("⚛️ Osborn &amp; Jin", "jcosborn/qex", "QEX")
     nbLede("""Two physicists at Argonne National Laboratory
-build a lattice QCD framework in Nim:
+build a lattice QCD framework in Nim
+(theoretical physics, computed on supercomputers):
 since 2016, still very active (298 commits in 2026).  
 Others use it for new physics""", "story")
     nbText: """
