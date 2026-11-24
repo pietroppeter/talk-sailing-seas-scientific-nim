@@ -8,8 +8,7 @@ import ../my
 #> for emoji refs I liked the ones in my domain driven data science talk: https://github.com/pietroppeter/domain-driven-data-science
 
 template meSlide* =
-  placeholderSlide("0.2", "About me", """mathematician, data scientist at AgileLab, nimib maintainer, Python Milan and PyData Milan organizer; the Paris climate-dynamics years as a personal hook [tbd: which details Pietro wants on stage].""")
-  nbText """ # about
+  slide nbText """ # about
 
 me (Pietro Peterlongo)
 
@@ -25,3 +24,8 @@ AgileLab
 - ~350 people, ~2x growth in last 2-3 years
 - public handbook, self management (holacracy), nomads (e.g 2 weeks in Canary Islands... or in Toulouse)
 """
+
+when isMainModule:
+  myInit("me.nim")
+  meSlide
+  nbSave
