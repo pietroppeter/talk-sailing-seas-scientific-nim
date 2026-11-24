@@ -1,10 +1,12 @@
-import std / math
+import std / [math, strutils]
 # only `%` from json: its `{}` would get in the way of `f{...}` formulas
 from std / json import `%`, `[]=`
 import nimib
 import nimib / highlight
 import ggplotnim
 import arraymancer / ml # k-means
+import plotly
+import nbplotly # nbPlotly: an interactive nim-plotly plot in nimib
 
 # A nimib document that explains the penguins exploration of Island 3
 # (slides 4.2 to 4.7, in slides/island3_datastack.nim):
@@ -148,6 +150,37 @@ put a number on it.
 """
 
 nbText """
+The same plot, interactive, with
+[nim-plotly](https://github.com/SciNim/nim-plotly),
+the Nim bindings to plotly.js:
+hover on a penguin to see its island and sex,
+click on a species in the legend to hide it.
+One trace per species, built from the groups of the dataframe:
+"""
+nbCode:
+  var traces: seq[Trace[float]]
+  for (key, sub) in groups(df.group_by("species")):
+    let t = Trace[float](mode: PlotMode.Markers,
+                         `type`: PlotType.Scatter, name: $key[0][1])
+    t.xs = sub["bill_length_mm", float].toSeq1D
+    t.ys = sub["bill_depth_mm", float].toSeq1D
+    let islands = sub["island", string].toSeq1D
+    let sexes = sub["sex", string].toSeq1D
+    for i in 0 ..< sub.len:
+      t.text.add islands[i] & ", " & sexes[i].toLowerAscii
+    traces.add t
+  let bills = Plot[float](traces: traces, layout: Layout(
+    xaxis: Axis(title: "bill length (mm)"),
+    yaxis: Axis(title: "bill depth (mm)")))
+nbPlotly(bills)
+nbText """
+`nbPlotly` is a small helper of this repository
+([slides/nbplotly.nim](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim/blob/main/slides/nbplotly.nim)):
+it turns the plot into JSON and adds a div and a script
+that draw it with plotly.js.
+"""
+
+nbText """
 ## Tensors
 
 Every column of a dataframe is a tensor underneath,
@@ -205,12 +238,53 @@ Gentoo in a cluster of its own.
 Adelie and Chinstrap overlap in size and shape,
 so the other two clusters mix them:
 the measurements alone do not tell those two apart.
-Arraymancer also has PCA, DBSCAN, a least squares solver
-and neural networks.
 What Nim lacks is a library that collects the classic
 algorithms behind one consistent interface,
 like scikit-learn does for Python,
 with models, pipelines, cross validation and metrics.
+"""
+
+nbText """
+## What else is in Arraymancer
+
+Arraymancer's README says it is inspired by NumPy and PyTorch,
+and it targets three uses: n-dimensional arrays,
+classic machine learning as in scikit-learn,
+and deep learning.
+The three are not at the same stage.
+
+**Tensors, the NumPy part, are solid.**
+Tensors of any element type up to rank 7,
+slicing with steps and masks, explicit broadcasting,
+map and reduce with OpenMP, reshaping and stacking,
+complex numbers, einsum, convolution,
+linear algebra through BLAS and LAPACK
+(solve, least squares, SVD, QR, LU, eigenvalues),
+a k-d tree for nearest neighbors,
+and reading and writing CSV, `.npy`, HDF5 and images.
+There is no FFT and no histogram.
+
+**Machine learning, the scikit-learn part, is a seed.**
+k-means (above), DBSCAN, PCA, least squares
+and a few metrics.
+There are no classifiers or regressors,
+no cross validation and no pipelines.
+
+**Deep learning, the PyTorch part, is a compact framework.**
+Autograd, a `network` macro to declare models,
+linear, convolution, GRU, embedding and graph layers,
+SGD and Adam, and CUDA (with cuDNN) and OpenCL backends,
+which have fewer features than the CPU one.
+In October 2026 attention and normalization layers arrived,
+with an example that trains a small GPT-2-like model
+on Shakespeare.
+The README still calls the deep learning interface unstable.
+To use PyTorch itself from Nim, there is
+[flambeau](https://github.com/SciNim/flambeau),
+bindings to libtorch.
+
+The last release, v0.7.33, is from October 2024;
+the main branch has received fixes and new layers since.
 """
 
 nbText """
@@ -237,9 +311,8 @@ Vindaar wrote Datamancer and ggplotnim for his PhD analysis,
 and every plot in his thesis is made with ggplotnim
 (see Island 2).
 Three things hold the stack back.
-There is no scikit-learn: the classic machine learning
-algorithms are scattered across libraries,
-with no consistent interface.
+Classic machine learning is only seeds:
+a few algorithms, no scikit-learn.
 There is more than one tensor library.
 And the ecosystem depends on a few contributors,
 Vindaar, mratsim, Clonkk and HugoGranstrom among them:
