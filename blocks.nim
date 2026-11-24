@@ -15,11 +15,12 @@ func inlineMd(md: string): string =
 # ------------------------------------------------------------------------------- code shown, not run
 
 newNbBlock(NbShowCode):
-  html: string      # the code, highlighted (Nim) or escaped (other languages)
+  html: string      # the code, highlighted (Nim) or escaped (other languages, highlighted in the browser)
   lang: string
   caption: string   # markdown, e.g. the file and the lines it comes from
   toHtml:
-    let cls = "nohighlight " & blk.lang & " hljs"
+    # Nim is highlighted when the page is built; other languages by highlight.js in the browser
+    let cls = if blk.lang == "nim": "nohighlight nim hljs" else: "language-" & blk.lang
     # data-noescape: reveal.js' highlight plugin would escape the html of the highlighted code
     result = &"""<pre><code class="{cls}" data-noescape>{blk.html}</code></pre>"""
     if blk.caption.len > 0:
