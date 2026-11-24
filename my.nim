@@ -43,6 +43,8 @@ const slideBlocksCss = """
 /* Island 1: Python and Nim side by side, each column as wide as its code */
 .reveal .perf-cols { display: grid; grid-template-columns: max-content 1fr; gap: 0.6em; margin-bottom: 0.6em; }
 .reveal .perf-cols pre { font-size: 0.45em; width: 100%; margin: 0; }
+/* a table on its own in a slide (not in a layout's grid) gets room above and below */
+.reveal .slides section > .tabella { margin: 0.8em 0; }
 /* code in nimiSlides' columns (a grid) fills its column */
 .reveal [style*="grid"] > div > pre { width: 100%; }
 """
