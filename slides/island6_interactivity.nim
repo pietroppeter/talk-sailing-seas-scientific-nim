@@ -16,10 +16,23 @@ Shiny for Python app (2022), Python in the browser with shinylive (Pyodide):
 16 MB to download, 8 s to the first plot, 0.4 s per slider move
 ([live](shiny/plant/index.html))
 """
-      nbImg("images/shiny_plant.png", "62%")
+      columns:
+        column:
+          nbImg("images/shiny_plant.png")
+        column:
+          nbText """
+$$ \begin{aligned}
+x &= t \cos^3 t \\\\
+y &= \ell t \sqrt{|\cos t|} \\\\
+  &+ t \sin(p t) \cos(o t) \\\\
+t &\in [0, n \pi / 2]
+\end{aligned} $$
+"""
       speakerNote """
 Nick Strayer shared this in 2022: a generative plant,
-four sliders, matplotlib. Shinylive runs it with no server:
+four sliders, matplotlib. The plant is a parametric curve:
+n is the leafiness, ℓ the order, o the waviness, p the simplicity;
+each time cos t is zero the curve comes back to the stem, a leaf. Shinylive runs it with no server:
 CPython compiled to WebAssembly, numpy and matplotlib included.
 The shared link no longer runs: Shiny removed the layout it used,
 a two-line fix. Numbers measured locally, no network counted.
