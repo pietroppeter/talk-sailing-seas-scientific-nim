@@ -4,6 +4,7 @@
 import std / json
 import nimib
 import maps / [pixel, chart, engraved]
+import blocks # codeLanguageCss
 
 const
   tokens = """
@@ -86,7 +87,7 @@ proc addCss(nb: var Nb, css: string) =
 
 proc useTalkStyle*(nb: var Nb) =
   ## the CSS of every nimib page: tokens, the blocks of blocks.nim, the plain voyage map
-  nb.addCss(tokens & pageCss & bareMapCss)
+  nb.addCss(tokens & pageCss & codeLanguageCss & bareMapCss)
 
 proc useMapStyle*(nb: var Nb) =
   ## for a page that shows the voyage maps in the themes' looks (maps/): their CSS and fonts

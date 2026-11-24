@@ -54,6 +54,7 @@ template useSoftBackground* =
 template agileTheme*() =
   setSlidesTheme(White)
   nb.addStyle slideBlocksCss
+  nb.addStyle codeLanguageCss
   nb.addStyle: """
 :root {
   --r-background-color: $2;
