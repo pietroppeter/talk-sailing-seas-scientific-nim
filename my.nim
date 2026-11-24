@@ -38,6 +38,8 @@ const slideBlocksCss = """
 .reveal .rocks-quotes figure { margin: 0; }
 .reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
 .reveal .rocks-quotes figcaption { font-size: 0.55em; margin-top: 0.5em; }
+/* Island 1: the line saying what the Vandermonde matrix is, as small as nbTextSmall (a div, since KaTeX breaks inside reveal's small) */
+.reveal .perf-intro { font-size: 0.6em; }
 /* an app compiled to JavaScript (nbApp, slide 7.3): sliders in a sidebar, then a canvas */
 .reveal .app > div { display: flex; gap: 1.2em; align-items: center; justify-content: center; margin: 0.4em 0 0.4em 1.8em; }
 .reveal .app .sidebar { display: flex; flex-direction: column; gap: 0.5em; width: 11em; font-size: 0.6em; text-align: left; }

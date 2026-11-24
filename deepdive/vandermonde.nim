@@ -5,7 +5,7 @@ import deepdive # useDeepDive, and the blocks of blocks.nim
 import ../slides/island1_performance # the benchmark code and its results
 
 # A nimib document that explains the benchmark of Island 1
-# (slide 2.2, in slides/island1_performance.nim):
+# (slides 2.2 and 2.3, in slides/island1_performance.nim):
 #   nim r deepdive/vandermonde.nim
 # writes docs/deepdive/vandermonde.html.
 # The timings are read from bench/vandermonde/results.csv, written by
@@ -21,25 +21,62 @@ nbText """
 
 In the talk [Sailing Seas of Scientific
 Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html),
-Island 1 (Accessible Performance) is a single slide:
-the same function in Python and in Nim, side by side,
-both written with plain for loops, and a mini benchmark.
+Island 1 (Accessible Performance) is two slides:
+what the Vandermonde matrix is, then the same function
+in Python and in Nim, side by side, both written with
+plain for loops, and a mini benchmark.
 Nim reads like Python and runs like C:
-this page has the code, the numbers and their caveats,
-and where to go when you need more.
+this page has the matrix, the code, the numbers and their
+caveats, and where to go when you need more.
+"""
+
+nbText """
+## What the Vandermonde matrix is
+
+The Vandermonde matrix of the points $x_0, \dots, x_{m-1}$
+has a row for each point, with its powers up to $n-1$:
+
+$$
+V = \begin{pmatrix}
+1 & x_0 & x_0^2 & \cdots & x_0^{n-1} \\\\
+1 & x_1 & x_1^2 & \cdots & x_1^{n-1} \\\\
+\vdots & \vdots & \vdots & & \vdots \\\\
+1 & x_{m-1} & x_{m-1}^2 & \cdots & x_{m-1}^{n-1}
+\end{pmatrix},
+\qquad V_{ij} = x_i^{\,j}.
+$$
+
+It is how polynomials meet linear algebra.
+A polynomial $p(x) = a_0 + a_1 x + \dots + a_{n-1} x^{n-1}$
+is its vector of coefficients $a$, and $V a$ is the vector
+of its values at the points: $(V a)_i = p(x_i)$.
+So:
+
+- **Interpolation**: with as many points as coefficients
+  ($m = n$, distinct points), the polynomial through the points
+  $(x_i, y_i)$ is the solution of $V a = y$.
+  The matrix can be inverted exactly when the points are
+  distinct: its determinant is
+  $\prod_{i < j} (x_j - x_i)$.
+- **Fitting**: with more points than coefficients,
+  the least squares polynomial minimises $\lVert V a - y \rVert$.
+  This is what `np.polyfit` does, with `np.vander`
+  (in the decreasing order of powers, NumPy's default).
+
+In practice the monomials $1, x, x^2, \dots$
+are a poor basis for high degrees: the Vandermonde matrix
+gets badly conditioned, and numerical libraries prefer
+orthogonal polynomials (Chebyshev, Legendre) for serious work.
+For the benchmark it is just a good small loop.
 """
 
 nbText """
 ## The function
 
-The Vandermonde matrix of the points $x_0, \dots, x_{m-1}$
-has a row for each point, with its powers:
-$V_{ij} = x_i^{j}$, for $j = 0, \dots, n-1$.
-Fitting or interpolating a polynomial starts from it
-(NumPy has it as `np.vander`).
-
 Each power is the previous one times $x_i$,
-so two nested loops fill it. In Python:
+so two nested loops fill the matrix.
+
+In Python:
 """
 nbShowCode(vanderPyCode, lang = "python",
   caption = "from [bench/vandermonde/vander.py](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim/blob/main/bench/vandermonde/vander.py)")
@@ -60,6 +97,20 @@ nbCode:
     echo row
 # the code above is the code that was timed
 static: doAssert ownSource.contains(vanderNimCode.indent(2))
+
+nbText """
+With it, $V a$ evaluates a polynomial at all the points
+at once. The coefficients of $1 + x + x^2$ are $(1, 1, 1)$:
+"""
+nbCode:
+  let
+    xs = @[0.0, 1.0, 2.0, 3.0]
+    a = @[1.0, 1.0, 1.0] # 1 + x + x^2
+  for row in vander(xs, a.len):
+    var p = 0.0
+    for j in 0 ..< a.len:
+      p += row[j] * a[j]
+    echo p
 
 nbText """
 ## The benchmark
@@ -214,6 +265,28 @@ Mamy André-Ratsimbazafy, the author of weave,
 constantine and Arraymancer, gives a talk on
 high-performance computing for AI in Nim in the same
 session as this talk: that is where this island goes deep.
+"""
+
+nbText """
+## To learn more
+
+- [Vandermonde matrix](https://en.wikipedia.org/wiki/Vandermonde_matrix)
+  and [polynomial interpolation](https://en.wikipedia.org/wiki/Polynomial_interpolation)
+  on Wikipedia: the definition, the determinant,
+  and why the matrix can be inverted for distinct points.
+- NumPy's
+  [np.vander](https://numpy.org/doc/stable/reference/generated/numpy.vander.html)
+  and
+  [np.polyfit](https://numpy.org/doc/stable/reference/generated/numpy.polyfit.html),
+  which fits a polynomial by least squares with it.
+- Lloyd N. Trefethen,
+  [Approximation Theory and Approximation Practice](https://people.maths.ox.ac.uk/trefethen/ATAP/)
+  (SIAM, 2013): why monomials and Vandermonde matrices go
+  wrong at high degree, and what to use instead.
+- Jeff Bezanson,
+  [Abstraction in Technical Computing](https://dspace.mit.edu/handle/1721.1/99811)
+  (MIT, 2015), section 2.1.1: the Vandermonde matrix as the
+  case study of the two-language problem.
 """
 
 nbText """

@@ -19,6 +19,8 @@ const
 """
   pageCss = """
 pre { overflow-x: auto; }
+/* a wide formula scrolls in its own box on a phone, as code does */
+.katex-display { overflow-x: auto; overflow-y: hidden; }
 img { max-width: 100%; }
 table { font-size: 0.9em; }
 /* tabelline tables stripe (or not) on their own, not with the page's style */
