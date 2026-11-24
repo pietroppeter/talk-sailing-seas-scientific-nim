@@ -11,9 +11,9 @@ nb.usePage(ownSource)
 nb.title = "Sailing Seas of Scientific Nim"
 
 nbEyebrow "Compute Paris · 26 November 2026"
+nbText "# Sailing Seas of Scientific Nim"
+nbLede "**[⛵ The slides →](slides.html)**"
 nbText """
-# Sailing Seas of Scientific Nim
-
 A talk by Pietro Peterlongo
 ([@pietroppeter](https://github.com/pietroppeter))
 at [Compute Paris 2026](https://pretalx.com/compute-paris-2026/talk/8EM8ZA/),

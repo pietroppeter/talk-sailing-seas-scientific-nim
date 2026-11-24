@@ -685,9 +685,11 @@ JavaScript expressions on top of
 [rust-htslib](https://github.com/rust-bio/rust-htslib),
 the Rust counterpart of hts-nim, maintained by the
 rust-bio community. He wrote about building htsvcf with
-AI coding tools on [his blog](https://brentp.github.io/blog/),
-and about why he likes to add a scripting interface to
-command line tools.
+AI coding tools on
+[his blog](https://brentp.github.io/latest/blog/2025/12/30/ai-coding/),
+and about
+[why he likes to add a scripting interface](https://brentp.github.io/latest/blog/2026/04/28/ai-scripting/)
+to command line tools.
 
 For the talk this is a good illustration of its last
 message: languages are tools with tradeoffs, and a good
