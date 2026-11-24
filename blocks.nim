@@ -36,6 +36,17 @@ template nbShowCode*(code: string, lang = "nim", caption = "") =
   ## highlighted when the page is built; `caption` (markdown) goes under it
   nb.showCode(code, lang, caption)
 
+newNbBlock(NbCodeStage):
+  id: string
+  html: string      # the code, highlighted
+  toHtml:
+    &"""<div id="{blk.id}" class="code-stage hljs"><pre><code class="nohighlight nim hljs" data-noescape>{blk.html}</code></pre></div>"""
+
+template nbCodeStage*(stageId: string, code: string) =
+  ## Nim code you can drag: shown highlighted, then a script compiled to JavaScript
+  ## (nbJsFromCode) turns it into a stage of zogyn, as slides/island6_plant_code.nim does
+  nb.add newNbCodeStage(id = stageId, html = highlightNim(code.strip))
+
 # ------------------------------------------------------------------------------------------ figures
 
 newNbBlock(NbImg):
@@ -135,6 +146,16 @@ newNbBlock(NbSketch):
 template nbSketch*(id: string) =
   ## the element a p5nim sketch draws in (the sketch's `parent`), filled by nbJsFromCode
   nb.add newNbSketch(id)
+
+newNbBlock(NbApp):
+  id: string
+  toHtml:
+    &"""<div class="app"><div id="{blk.id}"></div></div>"""
+
+template nbApp*(id: string) =
+  ## the box of an app compiled to JavaScript (a sidebar and a canvas, see
+  ## slides/island6_plant_app.nim): Karax replaces the inner element `id`, filled by nbJsFromCode
+  nb.add newNbApp(id)
 
 # -------------------------------------------------------------------------------------------- text
 

@@ -7,3 +7,7 @@ docs/devlog/*.html
 docs/deepdive/*.html
 # plots made by ggplotnim when the deck and the island 3 deep dive are built
 docs/images/penguins*.png
+# Shiny apps exported by scripts/shinylive.sh (about 50 MB, exported by the build when missing)
+docs/shiny/
+# the plant plotted by ggplotnim in the Island 6 deep dive
+docs/images/plant*.png
