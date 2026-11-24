@@ -82,9 +82,10 @@ without knowing they run Nim.
 
 template vindaarSlide = # 3.4
   slide:
-    nbGithubTitle("☀️ Sebastian Schmidt", "Vindaar")
-    nbLede("""A PhD student in experimental physics searching for solar axions
-at CERN's CAST:
+    nbText "### ☀️ Nim in Physics 1/2"
+    nbLede("""Sebastian Schmidt ([@Vindaar](https://github.com/Vindaar)),
+PhD in experimental physics (Bonn, 2024),
+searched for solar axions at CERN's CAST:
 the entire analysis code base is written in Nim.  
 He ended up building an important part
 of the data stack in Nim""", "story")
@@ -116,9 +117,9 @@ Why Nim, in his words: "the language gets out of my way".
 
 template qexSlide = # 3.5
   slide:
-    nbGithubTitle("⚛️ Osborn &amp; Jin", "jcosborn/qex", "QEX")
-    nbLede("""Two physicists at Argonne National Laboratory
-build a lattice QCD framework in Nim
+    nbText "### ⚛️ Nim in Physics 2/2"
+    nbLede("""James Osborn and Xiao-Yong Jin (Argonne National Laboratory)
+build [QEX](https://github.com/jcosborn/qex), a lattice QCD framework in Nim
 (theoretical physics, computed on supercomputers):
 since 2016, still very active (298 commits in 2026).  
 Others use it for new physics""", "story")

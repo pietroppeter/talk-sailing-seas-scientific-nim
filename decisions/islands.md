@@ -50,5 +50,5 @@ The submitted description promises an intro, seven islands and a conclusion. Thi
 - 2026-10-27: Island 2 stories, Island 3 stack, Island 4 (now 5) operators and units (PR #19, #20, #17); names and order (PR #23).
 - 2026-10-28: Arraymancer scope, bottom-up Island 3 (PR #24); QEX story (PR #25).
 - 2026-11-24: Island 1 in one slide with the Vandermonde benchmark, 1 minute.
-- 2026-11-24: bioinformatics story retitled "Nim in Bioinformatics", with the tools of the people who followed Brent; deep dive `brentp` renamed `bioinformatics`; citations (Google Scholar) beside the stars, no bars; the two physics stories marked experimental and theoretical.
+- 2026-11-24: bioinformatics story retitled "Nim in Bioinformatics", with the tools of the people who followed Brent; deep dive `brentp` renamed `bioinformatics`; citations (Google Scholar) beside the stars, no bars; the two physics stories marked experimental and theoretical, titled "Nim in Physics 1/2" and "2/2" with the people and refs in the text.
 - 2026-11-24: moved from the OpenSpec abstract spec, the outline's decisions and the un-archived changes arraymancer-scope and island2-qex to this record.
