@@ -34,8 +34,6 @@ const slideBlocksCss = """
 /* blocks of blocks.nim on the slides, and the layouts of Island 2 */
 .reveal .lede.story { font-size: 0.8em; }
 .reveal h3 .gh-mark { height: 0.8em; width: 0.8em; vertical-align: -0.05em; margin-right: 0.15em; }
-.reveal .brent-cols { display: grid; grid-template-columns: max-content 1fr; gap: 1.2em; align-items: center; }
-.reveal .brent-cols pre { font-size: 0.42em; width: 100%; margin: 0; }
 .reveal .rocks-quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; }
 .reveal .rocks-quotes figure { margin: 0; }
 .reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }

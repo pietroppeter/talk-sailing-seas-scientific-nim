@@ -56,7 +56,7 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 A slide has room for little, so a topic the slides only sketch gets a deep dive: a nimib page in `deepdive/`, linked from its slide, whose code runs when the page is built. The list is in `deepdive/deepdive.nim`; `deepdive/index.nim` lists them all (https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/).
 
 - [Nim success stories beyond science](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/beyond_science.html) (`deepdive/beyond_science.nim`, Island 2)
-- [Brent Pedersen: genomics tools in Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/brentp.html) (`deepdive/brentp.nim`, Island 2)
+- [Nim in bioinformatics](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/bioinformatics.html) (`deepdive/bioinformatics.nim`, Island 2)
 - [Vindaar's thesis in plain words](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/vindaar.html) (`deepdive/vindaar.nim`, Island 2)
 - [Lattice QCD and QEX in plain words](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/qex.html) (`deepdive/qex.nim`, Island 2)
 - [Penguins with the Nim data stack](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/penguins_data_stack.html) (`deepdive/penguins_data_stack.nim`, Island 3)
