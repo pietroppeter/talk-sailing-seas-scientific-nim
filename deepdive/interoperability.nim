@@ -181,8 +181,9 @@ Nim and a C compiler, and the packaging tool,
 [nimporter](https://github.com/Pebaz/nimporter),
 has had no release since 2022.
 
-[nimlang](https://github.com/pietroppeter/uv-add-nimlang)
-(on [PyPI](https://pypi.org/project/nimlang/)) is a
+[nimlang-pypi](https://github.com/pietroppeter/uv-add-nimlang)
+(on PyPI as [nimlang](https://pypi.org/project/nimlang/),
+the name you install for now) is a
 Python package that ships the Nim compiler in its
 wheels and compiles the C through `zig cc`, from the
 [ziglang](https://pypi.org/project/ziglang/) package:
@@ -192,7 +193,7 @@ next to the Python ones, and pinned in a lock file.
 
 This is the session from its README, run in a cloud
 container (Linux x86_64, Python 3.13) on 24 November
-2026, with nimlang 0.0.3 and its Nim 2.2.6.
+2026, with nimlang-pypi 0.0.3 and its Nim 2.2.6.
 A project and its Nim dependency:
 """
 nbShowCode """
@@ -242,12 +243,12 @@ how little stood between a Python project and Nim.
 The first build compiles nimpy too and takes about
 twenty seconds; later builds are faster.
 
-To ship Nim code to Python users, nimlang is also a
+To ship Nim code to Python users, nimlang-pypi is also a
 build requirement with a hatch hook: `uv build` makes
 one wheel per platform that works on every CPython 3,
 and cross-compiles the other platforms from Linux.
 Users of the package get prebuilt wheels and need
-neither nimlang nor a compiler:
+neither nimlang-pypi nor a compiler:
 """
 nbShowCode """
 [build-system]
@@ -277,9 +278,9 @@ many users.
 | | Rust | Nim |
 |---|---|---|
 | binding | PyO3 | nimpy, stable for years |
-| build and ship wheels | maturin | nimporter (no release since 2022), now nimlang (alpha, 2026) |
+| build and ship wheels | maturin | nimporter (no release since 2022), now nimlang-pypi (alpha, 2026) |
 | numpy arrays | rust-numpy | nimpy_numpy |
-| compiler on the user's side | none, prebuilt wheels | none, prebuilt wheels (with nimlang) |
+| compiler on the user's side | none, prebuilt wheels | none, prebuilt wheels (with nimlang-pypi) |
 | packages built this way | many, some among the most downloaded | a few, like naffprop |
 | how tested | by a large ecosystem | by a few projects |
 
@@ -288,7 +289,7 @@ a long time and makes the Nim side short.
 The gap is everything around it: a maintained build
 and packaging tool, examples to copy, and enough users
 that the corners are found before you find them.
-nimlang closes the first; the others need users.
+nimlang-pypi closes the first; the others need users.
 
 ## Other ways
 
@@ -375,7 +376,7 @@ for large data), scikit-learn has the API Python users
 know.
 naffprop puts R's features behind scikit-learn's API,
 with the algorithm written in Nim and built with
-nimlang:
+nimlang-pypi:
 """
 nbShowCode """
 from naffprop import AffinityPropagation
@@ -427,10 +428,10 @@ The full tables and the machine details are in
 [naffprop's README](https://github.com/pietroppeter/naffprop#benchmark).
 """
 nbNote """
-nimlang and naffprop are the speaker's own projects,
+nimlang-pypi and naffprop are the speaker's own projects,
 both from 2026 and both mostly written by an AI coding
 agent with the human writing the specs (their READMEs
-say so). nimlang is alpha.
+say so). nimlang-pypi is alpha.
 """
 
 nbText """
@@ -441,7 +442,7 @@ nbText """
   and has few users. Python is the ecosystem Nim reaches
   best.
 - Packaging Nim for Python had no maintained tool
-  for a few years; nimlang is new and alpha, and bundles
+  for a few years; nimlang-pypi is new and alpha, and bundles
   one Nim version for now.
 - Writing a Python extension in Nim is easy, but few
   Python users know Nim: compared with Rust and PyO3,

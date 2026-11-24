@@ -6,7 +6,7 @@ export island4_bessel
 # Section 5: Island 4: Interoperability (see outline.md)
 # Two messages: a small ecosystem that reaches the bigger ones (C, C++, JavaScript natively;
 # Python, R, Julia through bridges), and Nim as the language for the fast algorithm that other
-# languages use (`uv add nimlang`, naffprop). Carries K2 (interop superpower) and K3.
+# languages use (nimlang-pypi, naffprop). Carries K2 (interop superpower) and K3.
 # The details are in the deep dive, deepdive/interoperability.nim.
 
 proc besselCode: string =
@@ -90,7 +90,7 @@ Maturity differs: nimpy is the one to rely on.
     slide: # 5.4
       nbText "## Write it in Nim, use it from Python"
       nbTextSmall """
-`uv add nimlang`: the Nim compiler in a Python wheel,
+`nimlang-pypi` (`uv add nimlang`): the Nim compiler in a Python wheel,
 with `zig cc` as the C compiler. Nothing else to install.
 `fast.nim` is the Nim twin of `fib` in `slow.py`:
 """
@@ -116,11 +116,11 @@ with no Nim compiler on their side, as Rust does with maturin.
 The other direction: Nim as the language where you write the fast part,
 and other languages use it. Python people do it with C, Cython, Rust.
 For Nim the binding was there (nimpy), the toolchain was the hurdle.
-nimlang is a Python package (mine, alpha) that ships the Nim compiler
+nimlang-pypi is a Python package (mine, alpha) that ships the Nim compiler
 and uses zig from PyPI as C compiler: uv add, write the Nim file, build, import.
 Eight times faster on a toy that is all function calls.
 The session is recorded (24 Nov 2026, Linux), not live.
-And the point for library authors: nimlang builds wheels, for five platforms
+And the point for library authors: nimlang-pypi builds wheels, for five platforms
 from one Linux machine, so Python users pip install a Nim-powered library
 without a Nim compiler. That is what Rust has with PyO3 and maturin,
 which made Rust the default for fast Python libraries (polars, pydantic-core).
@@ -139,7 +139,7 @@ ap.fit(X).labels_
           nbTextSmall """
 Affinity propagation clustering:
 R's features, scikit-learn's API.
-The algorithm in plain Nim, built with nimlang:
+The algorithm in plain Nim, built with `nimlang-pypi`:
 `uv add naffprop`, wheels for five platforms,
 1.1 to 2.9 times faster than scikit-learn, with less memory.
 """
@@ -164,13 +164,13 @@ Also mine, from this year, mostly written with an AI agent (its README says so).
       nbText "## Rocks ahead"
       nbText """
 - bridges of different maturity: nimpy is solid, rnim a prototype, nimjl needs Julia installed
-- packaging Nim for Python had no maintained tool for years; `nimlang-pypy` is new and alpha
+- packaging Nim for Python had no maintained tool for years; `nimlang-pypi` is new and alpha
 - few Python users know Nim: fewer examples and fewer people to ask than with Rust
 """
       speakerNote """
 Python is the ecosystem Nim reaches best.
 R and Julia bridges exist, built by the same few SciNim people.
 nimporter, the previous packaging tool, has had no release since 2022.
-nimlang is my answer to that, but its first release was in October.
+nimlang-pypi is my answer to that, but its first release was in October.
 And the honest one: Rust plus PyO3 and maturin has the momentum.
 """

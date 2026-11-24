@@ -59,3 +59,7 @@ Working notes that are not committed (on purpose, or not yet):
 - Island 2 research: `island2/directions.md` (sources for Brent, Vindaar and beyond-science stories) and `island2/brentp-numbers.md` (stars and citations, checked 2026-10-27).
 - Arraymancer assessment "What is in Arraymancer" and the contributions study "Who builds scientific Nim" (commit shares, yearly activity, QEX).
 - Review screenshots and built pages for each piece of work (themes, tabelline, islands, thank-you animation versions).
+
+## Outside this repository
+
+- [ ] Rename `nimlang` to `nimlang-pypi` in the uv-add-nimlang repository and on PyPI (Pietro, 2026-11-24: "nimlang" alone is ambiguous). The talk already calls it nimlang-pypi; its commands (`uv add nimlang`, `uv run nimlang ...`) change with the rename.

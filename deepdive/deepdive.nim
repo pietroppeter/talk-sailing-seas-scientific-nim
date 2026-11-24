@@ -37,7 +37,7 @@ const deepDives* = @[
     summary: "The penguins dataset explored with Arraymancer, Datamancer, ggplotnim and plotly, further than the slides go."),
   DeepDive(slug: "interoperability", section: "Island 4 · Interoperability",
     title: "Interoperability: Nim with other languages",
-    summary: "Calling C, C++ and JavaScript natively, bridges to Python, R and Julia, and Nim inside Python with nimlang and naffprop."),
+    summary: "Calling C, C++ and JavaScript natively, bridges to Python, R and Julia, and Nim inside Python with nimlang-pypi and naffprop."),
   DeepDive(slug: "operators", section: "Island 5 · An Expressive Language",
     title: "Custom operators: points, lines and planes",
     summary: "How operators work in Nim, the geometry behind the example, where it breaks, and one more operator to try."),
