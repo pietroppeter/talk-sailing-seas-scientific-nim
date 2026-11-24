@@ -15,6 +15,7 @@ The deck is code, built with the tools the talk is partly about, and must be rev
 - **Layouts are helpers tried in the style test deck** (Pietro, 2026-10-26): a layout is a helper in `my.nim` with demo slides in the style test deck, built and screenshotted before talk slides use it. First one: `imageLeftSlide(url, width)`, an image on the left at full height and a fraction of the width (40% by default), cropped not stretched, text on the right; slides adopt it section by section.
 - **Light code theme** (Pietro, 2026-10-27): atom-one-light (highlight.js, chosen by `codeTheme` in `my.nim`; github and stackoverflow-light stay vendored), a near-white box on the off-white slides; code output has a light-blue bar on its left.
 - **Little code on a slide**: what fits; an example that deserves more gets a deep dive ([deep-dives.md](deep-dives.md)), linked from the slide.
+- **Room around a table** (Pietro, 2026-11-24): a table on its own in a slide gets 0.8em above and below (CSS in `my.nim`, no helper to call); tables inside a layout's grid keep its spacing.
 - **Tables with tabelline** (Pietro, 2026-11-07): tables in slides and pages are made with [tabelline](https://github.com/pietroppeter/tabelline) and `nbTable`, not Markdown or HTML; slides use `slideLook` (deck font and colours) and `highlightCols` to point at a column; pages keep tabelline's default look.
 - **Animations are p5nim sketches**, compiled to JavaScript by nimib when the deck is built (p5.js vendored); an animation starts from the beginning whenever its slide is shown.
 - **Math with KaTeX.** nimiSlides 0.4.0 breaks LaTeX (and the footer, slide numbers, scroll wheel): `my.nim` works around it. An upstream fix is drafted but on hold.
@@ -42,3 +43,4 @@ The deck is code, built with the tools the talk is partly about, and must be rev
 - 2026-11-24: Quarto's proportions (PR #32).
 - 2026-11-24: blocks, not HTML; the deck moves to `deck.nim` and `docs/slides.html`. Moved from the OpenSpec slides-tooling spec and the un-archived change tabelline-tables to this record.
 - 2026-11-24: two accents for emphasis (orange `*`, teal `**`), room above a second heading.
+- 2026-11-24: room above and below a table on its own.

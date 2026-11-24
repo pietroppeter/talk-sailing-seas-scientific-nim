@@ -47,6 +47,8 @@ const slideBlocksCss = """
 .reveal .perf-cols pre { font-size: 0.45em; width: 100%; margin: 0; }
 /* compactColumns: three narrow columns of code (Island 4 bridges), smaller code */
 .reveal .compact-cols pre { font-size: 0.5em; }
+/* a table on its own in a slide (not in a layout's grid) gets room above and below */
+.reveal .slides section > .tabella { margin: 0.8em 0; }
 /* code in nimiSlides' columns (a grid) fills its column */
 .reveal [style*="grid"] > div > pre { width: 100%; }
 """
