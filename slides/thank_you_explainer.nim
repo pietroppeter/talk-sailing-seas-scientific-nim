@@ -1,6 +1,6 @@
 import std / [strutils, strformat, json]
 import nimib
-import ../offline # nimib's theme and KaTeX from docs/assets
+import ../page # usePage, and the blocks of blocks.nim
 import nimib / highlight
 
 # A nimib document that explains, step by step,
@@ -39,36 +39,16 @@ proc excerpt(startMarker, endMarker: string):
     dec last
   result = (lines[first .. last].join("\n").dedent, first + 1, last + 1)
 
-proc codeHtml(startMarker, endMarker: string): string =
-  let (snippet, first, last) = excerpt(startMarker, endMarker)
-  let code = highlightNim(snippet)
-  result = &"""<pre><code class="nohighlight nim hljs">{code}</code></pre>
-<p class="lines">slides/thank_you.nim, lines {first}–{last}</p>"""
-
 template step(n: int, title, startMarker, endMarker, text: string) =
   nbText "### " & $n & ". " & title & "\n\n" & text
-  nbRawHtml codeHtml(startMarker, endMarker)
+  block:
+    let ex = excerpt(startMarker, endMarker)
+    nbShowCode(ex.code, caption = "slides/thank_you.nim, lines " & $ex.first & "–" & $ex.last)
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "thank_you_explainer.nim")
-nb.useOfflineAssets
-# but with it nimib cannot find this file,
-# so give the "Show Source" button its source here
 const ownSource = staticRead("thank_you_explainer.nim")
-nb.doc.source = ownSource
-nb.doc.context["source"] = %nb.doc.source
-nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
-nbRawHtml("<style>\n" & """
-pre { overflow-x: auto; }
-.lines { font-size: 0.8em; color: #6b7280; margin-top: -0.5em; }
-.sketch {
-  width: 100%; aspect-ratio: 16 / 9;
-  border: 1px solid #ddd; border-radius: 6px;
-}
-.egg, .egg:hover { color: inherit; text-decoration: none; }
-.note { border-left: 4px solid #02A4BD; padding-left: 1em; }
-""" & "</style>")
-
+nb.usePage(ownSource)
 nbText """
 # How the Thank You slide works
 
@@ -94,10 +74,8 @@ top to bottom.
 p5nim keeps p5.js names, so it reads close to the JavaScript
 of a p5.js sketch.
 """
-nbRawHtml """<iframe class="sketch" src="thank_you.html"
-  title="The Thank You slide, live"></iframe>
-<p class="lines">The slide, live
-(<a href="thank_you.html">open it on its own</a>).</p>"""
+nbFrame("thank_you.html", "The Thank You slide, live",
+  "The slide, live ([open it on its own](thank_you.html)).")
 
 nbText """
 ## Creative coding, Processing, p5.js and p5nim
@@ -245,9 +223,9 @@ Since each message has its own shuffle, a point that draws a
 "T" in "Thank You!" can end up anywhere in "Questions?", or
 stay in the grid.
 """
-nbText """
-<p class="note"><strong>Where do the extra grid points
-go?</strong> Nowhere.
+nbNote """
+**Where do the extra grid points
+go?** Nowhere.
 While the others fly to the letters, each extra point
 shrinks in place to nothing, with the same delay and easing
 as a flying point.
@@ -255,7 +233,7 @@ On the way back it grows again, so the grid is full whenever
 it rests.
 On screen, they fade out of the grid as the flight starts.
 Which points are extra changes with the message, since
-"Questions?" needs more points than "Thank You!".</p>
+"Questions?" needs more points than "Thank You!".
 """
 
 step 6, "The timeline",
@@ -304,7 +282,7 @@ and grow back as it returns to 0.
 """
 
 nbText """
-## <a href="emilia.html" class="egg">Try it</a>
+## [Try it](emilia.html)
 
 Clone [the
 repository](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim),

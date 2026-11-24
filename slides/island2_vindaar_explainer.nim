@@ -1,6 +1,6 @@
 import std / [strutils, json, math]
 import nimib
-import ../offline # nimib's theme and KaTeX from docs/assets
+import ../page # usePage, and the blocks of blocks.nim
 import nimib / highlight
 import tabelline, tabelline / nimib
 
@@ -14,20 +14,8 @@ import tabelline, tabelline / nimib
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "island2_vindaar_explainer.nim")
-nb.useOfflineAssets
-# but with it nimib cannot find this file,
-# so give the "Show Source" button its source here
 const ownSource = staticRead("island2_vindaar_explainer.nim")
-nb.doc.source = ownSource
-nb.doc.context["source"] = %nb.doc.source
-nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
-nbRawHtml("<style>\n" & """
-pre { overflow-x: auto; }
-table { font-size: 0.9em; }
-/* tabelline tables stripe (or not) on their own, not with the page's style */
-.tabella tbody tr:nth-child(even) { background-color: transparent; }
-""" & "</style>")
-
+nb.usePage(ownSource)
 nbText """
 # Vindaar's thesis in plain words
 
@@ -85,13 +73,13 @@ the Primakoff part, with physical units checked by the
 compiler (the excerpt on the slide):
 """
 
-nbRawHtml("<pre><code class=\"nohighlight nim hljs\">" & highlightNim("""
+nbShowCode """
 proc axionFluxPrimakoff(E_a: keV,
                         g_aγ: GeV⁻¹): keV⁻¹•cm⁻²•s⁻¹ =
   let g₁₀ = g_aγ / 1e-10.GeV⁻¹
   result = g₁₀^2 * 3.821e10.cm⁻²•s⁻¹•keV⁻¹ *
     (E_a / 1.keV)^3 / (exp(E_a / (1.103.keV)) - 1)
-""".strip) & "</code></pre>")
+"""
 
 nbText """
 That code is quoted, not run here: it needs

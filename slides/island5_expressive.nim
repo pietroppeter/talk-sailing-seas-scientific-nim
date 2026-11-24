@@ -13,16 +13,12 @@ export SolarMass, Msun, EarthMass, Mearth
 # Section 6: Island 5: An Expressive Language (see the latest outline in openspec)
 # Two language features that make Nim good for scientific use. Carries K2 (metaprogramming superpower).
 
-func codeHtml(code: string): string =
-  &"""<pre style="width: 100%"><code class="nim hljs" data-noescape>{highlightNim(code.strip)}</code></pre>"""
-
-proc newUnitsHtml: string =
+proc newUnitsCode: string =
   ## the declaration in island5_units.nim, between the markers, highlighted
   const source = staticRead("island5_units.nim")
-  let code = source.split("# >>> new units\n")[1].split("# <<< new units")[0]
-  codeHtml(code)
+  source.split("# >>> new units\n")[1].split("# <<< new units")[0]
 
-proc siUnitsHtml: string =
+proc siUnitsCode: string =
   ## some SI base units as unchained declares them in its si_units.nim
   ## (read from the dependency at build time, comments dropped)
   const source = staticRead("../deps/unchained/src/unchained/si_units.nim")
@@ -34,7 +30,7 @@ proc siUnitsHtml: string =
       if not line.startsWith("      "): break
       code.add line.split(" #")[0] & "\n"
   code.add "    ..."
-  codeHtml(code)
+  code
 
 template island5ExpressiveSection* =
   slide:
@@ -101,9 +97,9 @@ and provides an API to add your own units:
 """
       columns:
         column:
-          nbRawHtml siUnitsHtml()
+          nbShowCode siUnitsCode()
         column:
-          nbRawHtml newUnitsHtml()
+          nbShowCode newUnitsCode()
       nbTextSmall """
 The macro writes the types, the aliases and the conversions;
 `*`, `/` and `+` are macros that work out the unit of the result.

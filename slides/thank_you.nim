@@ -12,33 +12,11 @@ import ../my
 
 template thankYouSlide* =
   useP5
-  nb.addStyle: """
-.reveal .slides section:has(> #thank-you-sketch) {
-  top: 0 !important;
-  height: var(--slide-height);
-  padding: 0;
-}
-#thank-you-sketch {
-  position: absolute;
-  inset: 0;
-}
-.thank-you-link {
-  position: absolute;
-  z-index: 1;
-  left: 0;
-  right: 0;
-  bottom: 12px;
-  line-height: 1.3;
-}
-.thank-you-credit {
-  font-size: 0.4em;
-  opacity: 0.7;
-}
-"""
   slide:
-    nbRawHtml: """<div id="thank-you-sketch"></div>
-<div class="thank-you-link"><small><a href="https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/">pietroppeter.github.io/talk-sailing-seas-scientific-nim</a></small><br>
-<span class="thank-you-credit">animation built with <a href="https://github.com/pietroppeter/p5nim">p5nim</a> (<a href="thank_you_explainer.html">explained here</a>) and inspired by <a href="https://openprocessing.org/sketch/3044593">a sketch by Okazz</a>, <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0</a></span></div>"""
+    nbSketch("thank-you-sketch")
+    nbDiv("thank-you-link", ""):
+      nbTextSmall "[pietroppeter.github.io/talk-sailing-seas-scientific-nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/)"
+      nbTextSmall "animation built with [p5nim](https://github.com/pietroppeter/p5nim) ([explained here](thank_you_explainer.html)) and inspired by [a sketch by Okazz](https://openprocessing.org/sketch/3044593), [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/)"
     nbJsFromCodeGlobal:
       import p5
       import std / [dom, jsffi]

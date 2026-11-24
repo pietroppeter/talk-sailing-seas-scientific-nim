@@ -1,6 +1,6 @@
 import std / [strutils, json, random, math, algorithm, sequtils]
 import nimib
-import ../offline # nimib's theme and KaTeX from docs/assets
+import ../page # usePage, and the blocks of blocks.nim
 import nimib / highlight
 import tabelline, tabelline / nimib
 
@@ -14,21 +14,8 @@ import tabelline, tabelline / nimib
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "island2_brentp_explainer.nim")
-nb.useOfflineAssets
-# but with it nimib cannot find this file,
-# so give the "Show Source" button its source here
 const ownSource = staticRead("island2_brentp_explainer.nim")
-nb.doc.source = ownSource
-nb.doc.context["source"] = %nb.doc.source
-nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
-nbRawHtml("<style>\n" & """
-pre { overflow-x: auto; }
-.note { border-left: 4px solid #02A4BD; padding-left: 1em; }
-table { font-size: 0.9em; }
-/* tabelline tables stripe (or not) on their own, not with the page's style */
-.tabella tbody tr:nth-child(even) { background-color: transparent; }
-""" & "</style>")
-
+nb.usePage(ownSource)
 nbText """
 # Brent Pedersen: genomics tools in Nim
 
@@ -206,7 +193,7 @@ not run here: it needs htslib and a real BAM file),
 with comments for what each line does:
 """
 
-nbRawHtml("<pre><code class=\"nohighlight nim hljs\">" & highlightNim("""
+nbShowCode """
 import hts
 
 # open a BAM (or CRAM) file, and its index
@@ -232,7 +219,7 @@ for record in b.query("6", 30816675, 32816675):
     # mismatches against the reference
     var mismatches = tag[int](record, "NM")
     if not mismatches.isNone and mismatches.get < 3:
-      var rg = tag[string](record, "RG")""") & "</code></pre>")
+      var rg = tag[string](record, "RG")"""
 
 nbText """
 For a Python user this reads almost like
@@ -345,15 +332,12 @@ nbTable runsTable
 nbText """
 With 3 threads mosdepth goes down to about 14 minutes,
 and window mode to under 9.
-
-<div class="note">
-
+"""
+nbNote """
 One honest note from the README: mosdepth "must be built
 with the `--mm:refc` flag for optimal performance and
 correct operation", that is with Nim's older memory
 manager, not the ORC default of Nim 2.
-
-</div>
 """
 
 nbText """
@@ -369,12 +353,12 @@ pedigree file, an expression that talks about `kid`,
 This is the de novo rule from the README:
 """
 
-nbRawHtml("""<pre><code class="nohighlight javascript hljs">variant.FILTER == 'PASS' &&
+nbShowCode("""variant.FILTER == 'PASS' &&
 variant.call_rate > 0.95 &&   // genotype known for most of the cohort
 INFO.gnomad_af < 0.001 &&     // rare in gnomAD
 kid.het && mom.hom_ref && dad.hom_ref &&
 kid.DP > 7 && mom.DP > 7 && dad.DP > 7 &&  // enough depth in all three
-(mom.AD[1] + dad.AD[1]) == 0  // no read with the variant in the parents</code></pre>""")
+(mom.AD[1] + dad.AD[1]) == 0  // no read with the variant in the parents""", lang = "javascript")
 
 nbText """
 Read it with the glossary above: the variant passed the

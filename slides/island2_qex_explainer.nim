@@ -1,6 +1,6 @@
 import std / [json, math, random, strformat]
 import nimib
-import ../offline # nimib's theme and KaTeX from docs/assets
+import ../page # usePage, and the blocks of blocks.nim
 import nimib / highlight
 
 # A nimib document that explains, in plain words, lattice QCD
@@ -13,18 +13,8 @@ import nimib / highlight
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "island2_qex_explainer.nim")
-nb.useOfflineAssets
-# but with it nimib cannot find this file,
-# so give the "Show Source" button its source here
 const ownSource = staticRead("island2_qex_explainer.nim")
-nb.doc.source = ownSource
-nb.doc.context["source"] = %nb.doc.source
-nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
-nbRawHtml("<style>\n" & """
-pre { overflow-x: auto; }
-table { font-size: 0.9em; }
-""" & "</style>")
-
+nb.usePage(ownSource)
 nbText """
 # Lattice QCD and QEX in plain words
 
@@ -77,7 +67,7 @@ The slide shows how QEX writes it,
 from its example `src/examples/ex1.nim`:
 """
 
-nbRawHtml("<pre><code class=\"nohighlight nim hljs\">" & highlightNim("""
+nbShowCode """
 proc plaq*(g: seq[Field]): float =
   let lo = g[0].l
   let nd = lo.nDim
@@ -90,7 +80,7 @@ proc plaq*(g: seq[Field]): float =
       for nu in 0..<mu:
         m += (t[mu]^*g[nu]) * (t[nu]^*g[mu]).adj
     tr = trace(m)
-  result = tr.re/(0.5*float(nd*(nd-1)*lo.physVol))""") & "</code></pre>")
+  result = tr.re/(0.5*float(nd*(nd-1)*lo.physVol))"""
 
 nbText """
 `g` holds one field of link matrices per direction,

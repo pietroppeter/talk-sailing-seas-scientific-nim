@@ -1,7 +1,6 @@
 import std / [json]
 import nimib
-import ../offline # nimib's theme and KaTeX from docs/assets
-import nimib / highlight
+import ../page # usePage, and the blocks of blocks.nim
 
 # A nimib document with Nim success stories outside
 # scientific computing, for the curious, linked from
@@ -11,13 +10,8 @@ import nimib / highlight
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "island2_beyond_explainer.nim")
-nb.useOfflineAssets
-# but with it nimib cannot find this file,
-# so give the "Show Source" button its source here
 const ownSource = staticRead("island2_beyond_explainer.nim")
-nb.doc.source = ownSource
-nb.doc.context["source"] = %nb.doc.source
-nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
+nb.usePage(ownSource)
 
 nbText """
 # Nim success stories beyond science

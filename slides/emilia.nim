@@ -14,20 +14,9 @@ nbInit(thisFileRel = "emilia.nim", theme = revealTheme, renderer = freshRenderer
 useVendoredAssets
 useP5
 setSlidesTheme(White)
-nb.addStyle: """
-:root { --r-background-color: $1; }
-.reveal .slides section:has(> #emilia-sketch) {
-  top: 0 !important;
-  height: var(--slide-height);
-  padding: 0;
-}
-#emilia-sketch {
-  position: absolute;
-  inset: 0;
-}
-""" % [softWhite]
+useSoftBackground
 slide:
-  nbRawHtml: """<div id="emilia-sketch"></div>"""
+  nbSketch("emilia-sketch")
   nbJsFromCodeGlobal:
     import p5
     import std / [dom, jsffi]

@@ -94,7 +94,17 @@ Outputs go to `docs/` (set by `homeDir` in `nimib.toml`), which is what gets pub
 
 ## Offline
 
-Every page works offline: nothing is loaded from a CDN. Local copies of what the pages need live in `docs/assets/` (committed): reveal.js, KaTeX, p5.js and the code themes for the slides (`my.nim` points the slides to them), water.css and nimib's highlight.js for the explainers and the talk log (`offline.nim`: `nb.useOfflineAssets` after `nbInit`), plotly.js for the interactive plots (`slides/nbplotly.nim`), and the fonts of the explored themes. `scripts/vendor-assets.sh` and `scripts/vendor-fonts.sh` download them again (change versions there). `nim r build.nim check` (run at the end of every build) fails when a page still loads something from the network. Images go in `docs/images/`.
+Every page works offline: nothing is loaded from a CDN. Local copies of what the pages need live in `docs/assets/` (committed): reveal.js, KaTeX, p5.js and the code themes for the slides (`my.nim` points the slides to them), water.css and nimib's highlight.js for the explainers and the talk log (`offline.nim`, through `nb.usePage`), plotly.js for the interactive plots (`slides/nbplotly.nim`), and the fonts of the explored themes. `scripts/vendor-assets.sh` and `scripts/vendor-fonts.sh` download them again (change versions there). `nim r build.nim check` (run at the end of every build) fails when a page still loads something from the network.
+
+## Blocks, not HTML
+
+Pages say what they show with nimib's blocks and the talk's own, never with HTML (see the nimib-blocks skill of [pietroppeter/skills](https://github.com/pietroppeter/skills), enabled for this repository in `.claude/settings.json`):
+
+- `blocks.nim`: the custom blocks (`nbShowCode` for code shown and not run, `nbImg`, `nbGallery`, `nbFrame`, `nbDrawing`, `nbSwatches`, `nbSketch`, `nbLede`, `nbEyebrow`, `nbQuote`, `nbNote`, `nbGithubTitle`, `nbPager`, `nbPageList`), shared by slides, explainers and the talk log
+- `talkstyle.nim`: the CSS and colours of the explainers and the talk log; the slides' style is in `my.nim` (and `themes.nim`)
+- `page.nim`: an explainer or a talk log post starts with `nb.usePage(ownSource)` after `nbInit` (assets, style, "Show Source")
+
+`nim r build.nim check` also fails when a page uses `nbRawHtml`: make a block instead. Images go in `docs/images/`.
 
 `scripts/screenshot.sh docs/index.html shots/` renders each slide to a png with headless Chromium.
 

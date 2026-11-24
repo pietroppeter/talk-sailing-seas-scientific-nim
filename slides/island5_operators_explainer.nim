@@ -1,6 +1,6 @@
 import std / [math, strutils, strformat, json]
 import nimib
-import ../offline # nimib's theme and KaTeX from docs/assets
+import ../page # usePage, and the blocks of blocks.nim
 import nimib / highlight
 import island5_vectors
 
@@ -12,19 +12,9 @@ import island5_vectors
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "island5_operators_explainer.nim")
-nb.useOfflineAssets
-# but with it nimib cannot find this file,
-# so give the "Show Source" button its source here
 const ownSource = staticRead("island5_operators_explainer.nim")
-nb.doc.source = ownSource
-nb.doc.context["source"] = %nb.doc.source
-nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
+nb.usePage(ownSource)
 nb.useLatex
-nbRawHtml("<style>\n" & """
-pre { overflow-x: auto; }
-.lines { font-size: 0.8em; color: #6b7280; margin-top: -0.5em; }
-""" & "</style>")
-
 nbText """
 # Custom operators: points, lines and planes
 
@@ -145,8 +135,7 @@ written for the talk, not part of the standard library
 (`std/math` has no points or vectors):
 """
 const vectorsSource = staticRead("island5_vectors.nim")
-nbRawHtml &"""<pre><code class="nim hljs">{highlightNim(vectorsSource.strip)}</code></pre>
-<p class="lines">slides/island5_vectors.nim</p>"""
+nbShowCode(vectorsSource, caption = "slides/island5_vectors.nim")
 
 nbText """
 On the slides, points are built with a short

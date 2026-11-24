@@ -2,17 +2,12 @@
 ## Build the posts first: the index refuses to build if a listed post was not built.
 import std / [os, algorithm, json]
 import nimib
-import nimib / highlight
 import devlog
 
 nbInit(thisFileRel = "devlog/index.nim")
-nb.useOfflineAssets
 const ownSource = staticRead("index.nim")
-nb.doc.source = ownSource
-nb.doc.context["source"] = %ownSource
-nb.doc.context["source_highlighted"] = %highlightNim(ownSource)
+nb.usePage(ownSource)
 nb.title = "Talk log · Sailing Seas of Scientific Nim"
-nbRawHtml "<style>\n" & devlogCss & "</style>"
 
 # nimib runs from docs/ (see nimib.toml)
 for p in devlogPosts:
@@ -33,11 +28,9 @@ and this log, which tells how the talk evolves.
 Everything is built in public, with nimib.
 """
 
-var items = "<ol class=\"devlog-posts\">\n"
+var items: seq[PageItem]
 for p in devlogPosts.reversed:
-  items.add "<li><time datetime=\"" & p.date & "\">" & longDate(p.date) & " · " & $p.kind & "</time>\n" &
-    "<a href=\"" & p.fileName & "\">" & p.title & "</a>\n<p>" & p.summary & "</p></li>\n"
-items.add "</ol>"
-nbRawHtml items
+  items.add PageItem(url: p.fileName, title: p.title, eyebrow: longDate(p.date) & " · " & $p.kind, summary: p.summary)
+nbPageList items
 
 nbSave

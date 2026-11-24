@@ -55,6 +55,22 @@ proc check(): bool =
   echo "== check: no page loads anything from the network"
   true
 
+proc noRawHtml(): bool =
+  ## true when no page uses nbRawHtml: pages use the blocks of blocks.nim (see the nimib-blocks skill)
+  var found: seq[string]
+  for dir in [".", "slides", "devlog", "maps"]:
+    for f in walkFiles(dir / "*.nim"):
+      let lines = readFile(f).splitLines()
+      for i, line in lines:
+        if "nbRawHtml" in line and not line.strip.startsWith("#") and not line.strip.startsWith("##") and
+            f.extractFilename != "build.nim":
+          found.add f & ":" & $(i + 1) & ": " & line.strip
+  if found.len > 0:
+    echo "== nbRawHtml in a page (make a block in blocks.nim instead):"
+    for f in found: echo f
+    return false
+  true
+
 when isMainModule:
   setCurrentDir(currentSourcePath().parentDir)
   var groups, extra: seq[string]
@@ -74,4 +90,4 @@ when isMainModule:
   if "themes" in groups:
     for t in themes:
       run "nim r " & nimFlags(extra) & " -d:slideTheme=" & t & " all.nim"
-  if not check(): quit 1
+  if not (check() and noRawHtml()): quit 1

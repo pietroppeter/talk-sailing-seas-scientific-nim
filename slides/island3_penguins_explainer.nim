@@ -2,7 +2,7 @@ import std / [math, strutils]
 # only `%` from json: its `{}` would get in the way of `f{...}` formulas
 from std / json import `%`, `[]=`
 import nimib
-import ../offline # nimib's theme and KaTeX from docs/assets
+import ../page # usePage, and the blocks of blocks.nim
 import nimib / highlight
 import ggplotnim
 import arraymancer / ml # k-means
@@ -17,18 +17,8 @@ import nbplotly # nbPlotly: an interactive nim-plotly plot in nimib
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "island3_penguins_explainer.nim")
-nb.useOfflineAssets
-# but with it nimib cannot find this file,
-# so give the "Show Source" button its source here
 const ownSource = staticRead("island3_penguins_explainer.nim")
-nb.doc.source = ownSource
-nb.doc.context["source"] = %nb.doc.source
-nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
-nbRawHtml("<style>\n" & """
-pre { overflow-x: auto; }
-img { max-width: 100%; }
-""" & "</style>")
-
+nb.usePage(ownSource)
 nbText """
 # Penguins with the Nim data stack
 

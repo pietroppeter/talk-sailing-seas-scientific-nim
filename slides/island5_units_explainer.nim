@@ -1,6 +1,6 @@
 import std / [math, strutils, strformat, json]
 import nimib
-import ../offline # nimib's theme and KaTeX from docs/assets
+import ../page # usePage, and the blocks of blocks.nim
 import nimib / highlight
 import unchained
 from island5_units import SolarMass, Msun, EarthMass, Mearth
@@ -13,19 +13,9 @@ from island5_units import SolarMass, Msun, EarthMass, Mearth
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "island5_units_explainer.nim")
-nb.useOfflineAssets
-# but with it nimib cannot find this file,
-# so give the "Show Source" button its source here
 const ownSource = staticRead("island5_units_explainer.nim")
-nb.doc.source = ownSource
-nb.doc.context["source"] = %nb.doc.source
-nb.doc.context["source_highlighted"] = %highlightNim(nb.doc.source)
+nb.usePage(ownSource)
 nb.useLatex
-nbRawHtml("<style>\n" & """
-pre { overflow-x: auto; }
-.lines { font-size: 0.8em; color: #6b7280; margin-top: -0.5em; }
-""" & "</style>")
-
 const
   siUnitsSource = staticRead("../deps/unchained/src/unchained/si_units.nim")
   newUnitsSource = staticRead("island5_units.nim")
@@ -44,9 +34,8 @@ proc between(source, first, last: string): string =
     "explainer: code not found from '" & first & "' to '" & last & "'"
   lines[start .. stop].join("\n").strip(leading = false)
 
-proc showCode(code, caption: string) =
-  nbRawHtml &"""<pre><code class="nim hljs">{highlightNim(code)}</code></pre>
-<p class="lines">{caption}</p>"""
+template showCode(code, what: string) =
+  nbShowCode(code, caption = what)
 
 nbText """
 # Units with unchained
