@@ -41,12 +41,12 @@ Python, R and Julia have their own runtime: bridges embed it
 or load Nim from it (next slide).
 """
     slide: # 5.3
-      nbText "## Bridges: Python, R, Julia"
+      nbText "## Bridges: Nim calls Python, R, Julia"
       nbTextSmall """
 Each bridge embeds the other runtime, and its functions
 are called like Nim procs:
 """
-      columns:
+      compactColumns:
         column:
           nbText "**Python** · [nimpy](https://github.com/yglukhov/nimpy)"
           nbShowCode """
@@ -75,7 +75,6 @@ let r = Julia.sqrt(4.0)
 echo r.to(float)  # 2.0
 """
       nbTextSmall """
-nimpy also works the other way (next slide);
 rnim is a prototype, nimjl needs Julia installed.
 """
       speakerNote """
@@ -88,6 +87,56 @@ Conversions back to Nim are explicit with `to`.
 Maturity differs: nimpy is the one to rely on.
 """
     slide: # 5.4
+      nbText "## Bridges, the other way: Nim inside"
+      nbTextSmall """
+Nim compiled as a library (`nim c --app:lib`),
+called from the other language:
+"""
+      compactColumns:
+        column:
+          nbText "**Python** · nimpy"
+          nbShowCode """
+import nimpy
+proc add(x, y: int): int
+    {.exportpy.} = x + y
+"""
+          nbShowCode("""
+from add import add
+add(1, 2)  # 3
+""", lang = "python")
+        column:
+          nbText "**R** · rnim"
+          nbShowCode """
+import rnim
+proc add(x, y: SEXP): SEXP
+    {.exportR.} =
+  nimToR(x.to(int) +
+         y.to(int))
+"""
+          nbShowCode("""
+source("add.R") # by rnim
+add(1, 2)  # 3
+""", lang = "r")
+        column:
+          nbText "**Julia** · C ABI"
+          nbShowCode """
+proc add(x, y: cint): cint
+    {.exportc, dynlib.} =
+  x + y
+"""
+          nbShowCode("""
+ccall((:add, "./libadd.so"),
+  Cint, (Cint, Cint), 1, 2)
+""", lang = "julia")
+      speakerNote """
+The other direction: the Nim code is the library.
+nimpy's exportpy makes a Python extension module (next slide: how to build
+and ship it without a Nim compiler for users).
+rnim's exportR compiles to a shared library and writes the R wrapper to source.
+Julia needs no bridge: any Nim proc exported with the C ABI
+(exportc, dynlib) is one ccall away; the same works from any language with a C FFI.
+"""
+    slide: # 5.5
       nbText "## Write it in Nim, use it from Python"
       nbTextSmall """
 `nimlang-pypi` (`uv add nimlang`): the Nim compiler in a Python wheel,
@@ -125,7 +174,7 @@ from one Linux machine, so Python users pip install a Nim-powered library
 without a Nim compiler. That is what Rust has with PyO3 and maturin,
 which made Rust the default for fast Python libraries (polars, pydantic-core).
 """
-    slide: # 5.5
+    slide: # 5.6
       nbText "## A real package: naffprop"
       columns:
         column:
@@ -160,7 +209,7 @@ On the right, live: its interactive explanation, the paper's Fig. 1A one iterati
 at a time; the same Nim code compiled to JavaScript (press Play).
 Also mine, from this year, mostly written with an AI agent (its README says so).
 """
-    slide: # 5.6
+    slide: # 5.7
       nbText "## Rocks ahead"
       nbText """
 - bridges of different maturity: nimpy is solid, rnim a prototype, nimjl needs Julia installed

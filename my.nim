@@ -40,11 +40,13 @@ const slideBlocksCss = """
 .reveal .rocks-quotes figure { margin: 0; }
 .reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
 .reveal .rocks-quotes figcaption { font-size: 0.55em; margin-top: 0.5em; }
-/* a page of the site live in a slide (nbFrame), e.g. naffprop's figure on slide 5.5 */
+/* a page of the site live in a slide (nbFrame), e.g. naffprop's figure on slide 5.6 */
 .reveal iframe.frame { width: 100%; height: 500px; border: 1px solid #ddd; border-radius: 6px; background: white; }
 /* Island 1: Python and Nim side by side, each column as wide as its code */
 .reveal .perf-cols { display: grid; grid-template-columns: max-content 1fr; gap: 0.6em; margin-bottom: 0.6em; }
 .reveal .perf-cols pre { font-size: 0.45em; width: 100%; margin: 0; }
+/* compactColumns: three narrow columns of code (Island 4 bridges), smaller code */
+.reveal .compact-cols pre { font-size: 0.5em; }
 /* code in nimiSlides' columns (a grid) fills its column */
 .reveal [style*="grid"] > div > pre { width: 100%; }
 """
@@ -422,6 +424,11 @@ template imageLeftSlide*(url: string, width: float, body: untyped) =
     nb.withContainer(imgLeft):
       body
     nb.add imgLeft
+
+template compactColumns*(body: untyped) =
+  ## nimiSlides' `columns`, with smaller code, for three narrow columns of code
+  nbDiv(classes = "compact-cols", styles = "display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); column-gap: 0.8em;"):
+    body
 
 template imageLeftSlide*(url: string, body: untyped) =
   imageLeftSlide(url, 0.4, body)

@@ -165,7 +165,22 @@ pragma becomes a function of a Python extension
 module, the subject of the next section.
 [nimpy_numpy](https://github.com/pietroppeter/nimpy-numpy)
 passes numpy arrays to Nim without copies.
+
+R and Julia can call Nim too. rnim's `exportR` pragma
+marks procs of a Nim file compiled as a shared library
+(`nim c --app:lib`), and rnim writes the R file that
+loads it and wraps them as R functions.
+Julia needs no bridge for this: a Nim proc exported
+with the C ABI (`exportc, dynlib`) is one `ccall` away,
+as from any language with a C foreign function
+interface:
 """
+nbShowCode """
+proc add(x, y: cint): cint {.exportc, dynlib.} = x + y
+""", caption = "`add.nim`, built with `nim c --app:lib add.nim` into `libadd.so`"
+nbShowCode("""
+ccall((:add, "./libadd.so"), Cint, (Cint, Cint), 1, 2)  # 3
+""", lang = "julia", caption = "Julia calling it")
 
 nbText """
 ## Nim inside Python: `uv add nimlang`
