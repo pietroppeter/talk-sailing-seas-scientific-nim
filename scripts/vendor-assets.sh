@@ -4,7 +4,7 @@
 # of p5.js (for the p5nim sketches) and of the highlight.js code themes, and the files nimib pages load from CDNs
 # (water.css, nimib's highlight.js and code theme, plotly.js for the interactive plots of the explainers)
 # into docs/assets, so the slides, the explainers and the talk log work offline and on GitHub Pages without CDNs
-# (scripts/build.sh check fails when a built page still loads something from the network).
+# (`nim r build.nim check` fails when a built page still loads something from the network).
 # The vendored files are committed: rerun only to change versions.
 #
 # usage: scripts/vendor-assets.sh   (needs git and npm)

@@ -51,7 +51,7 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `slides/island3_penguins_explainer.nim`: a nimib page that explores the penguins dataset with the Nim data stack of Island 3 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island3_penguins_explainer.html)
 - `slides/island5_operators_explainer.nim`: a nimib page that explains the custom operators example of Island 5 (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_operators_explainer.html)
 - `slides/island5_units_explainer.nim`: a nimib page that explains the units example of Island 5, with unchained (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/island5_units_explainer.html)
-- `themes.nim` and `maps/`: three themes explored for the slides (pirate adventure game, old book of sea tales, nautical chart), not adopted yet; `maps/geometry.nim` is the one geometry of the voyage map, drawn by `maps/pixel.nim`, `maps/chart.nim` and `maps/engraved.nim`; `scripts/build-themes.sh` builds the deck in each theme (`docs/index_<theme>.html`)
+- `themes.nim` and `maps/`: three themes explored for the slides (pirate adventure game, old book of sea tales, nautical chart), not adopted yet; `maps/geometry.nim` is the one geometry of the voyage map, drawn by `maps/pixel.nim`, `maps/chart.nim` and `maps/engraved.nim`; `nim r build.nim themes` builds the deck in each theme (`docs/index_<theme>.html`)
 - `devlog/`: the talk log, see below
 - `slides/`: one file per slide (or group of slides)
 - `openspec/`: the talk is prepared with [OpenSpec](https://github.com/Fission-AI/OpenSpec) (see below)
@@ -76,25 +76,25 @@ nim-markdown needs PCRE at runtime (`libpcre.so.3`, e.g. `apt install libpcre3`)
 
 ## Build
 
-`scripts/build.sh` builds the pages into `docs/`:
+`build.nim` builds the pages into `docs/`:
 
 ```
-scripts/build.sh              # everything, as the pages workflow does (about 3 minutes)
-scripts/build.sh slides       # the deck (docs/index.html), the style test deck (docs/my.html), the Thank You slide, the easter egg
-scripts/build.sh themes       # the deck once per explored theme (docs/index_<theme>.html)
-scripts/build.sh explainers   # every slides/*_explainer.nim (docs/<name>_explainer.html)
-scripts/build.sh devlog       # every talk log post, then the talk log index (docs/devlog/)
-scripts/build.sh check        # fails if a built page loads anything from the network
-scripts/build.sh slides check # groups can be combined
+nim r build.nim                     # everything, as the pages workflow does
+nim r build.nim slides              # the deck (docs/index.html), the style test deck (docs/my.html), the Thank You slide, the easter egg
+nim r build.nim explainers          # every slides/*_explainer.nim (docs/<name>_explainer.html)
+nim r build.nim devlog              # every talk log post, then the talk log index (docs/devlog/)
+nim r build.nim themes              # the deck once per explored theme (docs/index_<theme>.html)
+nim r build.nim check               # only check that no built page loads anything from the network
+nim r build.nim slides explainers   # groups combine; flags after -- go to nim: nim r build.nim explainers -- -d:release
 ```
 
-Explainers (`slides/*_explainer.nim`) and talk log posts (`devlog/*.nim`) are found by name, so a new one needs no change to the script or to the workflow. Extra flags for Nim go in `NIMFLAGS` (`NIMFLAGS=-d:release scripts/build.sh explainers`). A single page is still `nim r <file>`, e.g. `nim r index.nim` for the deck or `nim r slides/island5_units_explainer.nim` for one explainer.
+Slides, explainers and the talk log are built by one program, `all.nim`: one compile however many pages (about 30 seconds instead of 100 with a compile per page). Each theme is a compile of its own, since the theme is chosen at compile time. Every build ends with the offline check. Explainers (`slides/*_explainer.nim`) and talk log posts (`devlog/*.nim`) are found by name, so a new one needs no change to `all.nim`, to the workflow or here. A single page still builds on its own with `nim r <file>`, e.g. `nim r index.nim` for the deck or `nim r slides/island5_units_explainer.nim` for one explainer.
 
-Outputs go to `docs/` (set by `homeDir` in `nimib.toml`), which is what gets published on GitHub Pages: the `pages` workflow runs `scripts/build.sh` on every push to `main` and deploys `docs/`. Generated html is not committed.
+Outputs go to `docs/` (set by `homeDir` in `nimib.toml`), which is what gets published on GitHub Pages: the `pages` workflow runs `nim r build.nim` on every push to `main` and deploys `docs/`. Generated html is not committed.
 
 ## Offline
 
-Every page works offline: nothing is loaded from a CDN. Local copies of what the pages need live in `docs/assets/` (committed): reveal.js, KaTeX, p5.js and the code themes for the slides (`my.nim` points the slides to them), water.css and nimib's highlight.js for the explainers and the talk log (`offline.nim`: `nb.useOfflineAssets` after `nbInit`), plotly.js for the interactive plots (`slides/nbplotly.nim`), and the fonts of the explored themes. `scripts/vendor-assets.sh` and `scripts/vendor-fonts.sh` download them again (change versions there). `scripts/build.sh check` (run by `scripts/build.sh` and by the workflow) fails when a page still loads something from the network. Images go in `docs/images/`.
+Every page works offline: nothing is loaded from a CDN. Local copies of what the pages need live in `docs/assets/` (committed): reveal.js, KaTeX, p5.js and the code themes for the slides (`my.nim` points the slides to them), water.css and nimib's highlight.js for the explainers and the talk log (`offline.nim`: `nb.useOfflineAssets` after `nbInit`), plotly.js for the interactive plots (`slides/nbplotly.nim`), and the fonts of the explored themes. `scripts/vendor-assets.sh` and `scripts/vendor-fonts.sh` download them again (change versions there). `nim r build.nim check` (run at the end of every build) fails when a page still loads something from the network. Images go in `docs/images/`.
 
 `scripts/screenshot.sh docs/index.html shots/` renders each slide to a png with headless Chromium.
 

@@ -4,7 +4,7 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 ## Decisions
 
-- [ ] Theme: pick pirate, book or chart (or keep the AgileLab default). Today the default deck is unchanged and a theme only applies with `-d:slideTheme=pirate|book|chart` (`scripts/build-themes.sh` builds `docs/index_<theme>.html`). Adopting one is its own OpenSpec change.
+- [ ] Theme: pick pirate, book or chart (or keep the AgileLab default). Today the default deck is unchanged and a theme only applies with `-d:slideTheme=pirate|book|chart` (`nim r build.nim themes` builds `docs/index_<theme>.html`). Adopting one is its own OpenSpec change.
 - [ ] Timing: with QEX, Island 2 is 2.5 minutes and the talk 23.5 minutes. Keep, or should the QEX slide replace something?
 
 ## Unanswered points from merged PRs

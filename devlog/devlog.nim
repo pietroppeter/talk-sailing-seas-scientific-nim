@@ -6,7 +6,7 @@
 ##   nbInit(thisFileRel = "devlog/my_post.nim")
 ##   const ownSource = staticRead("my_post.nim")
 ##   nb.useDevlogPost("my-slug", ownSource)
-## and add it to the list in README.md (scripts/build.sh devlog finds and builds it).
+## and add it to the list in README.md (`nim r build.nim devlog` finds and builds it).
 ## Each post is written to docs/devlog/<date>-<slug>.html; `devlog/index.nim`
 ## (docs/devlog/index.html) lists them and checks they were all built.
 import std / [json, os, strutils, times]

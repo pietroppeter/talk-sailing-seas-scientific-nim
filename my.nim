@@ -4,6 +4,8 @@ import nimib, nimiSlides
 import themes
 export themes
 import tabelline
+import offline # freshRenderer
+export offline
 import tabelline / nimib as tabellineNimib
 # only nbTable: tabelline's other names (Column, readCsv, ...) clash with Datamancer's,
 # so a slide file that makes a table imports tabelline itself
@@ -253,7 +255,7 @@ template useVendoredAssets* =
   nb.backend.partials["revealJS"] = vendoredRevealJs
 
 template myInit*(sourceFileRel = "my.nim") =
-  nbInit(thisFileRel=sourceFileRel, theme=revealTheme)
+  nbInit(thisFileRel=sourceFileRel, theme=revealTheme, renderer=freshRenderer()) # a renderer of its own: see offline.nim
   useVendoredAssets
   useRevealLatex
   agileTheme()
@@ -350,7 +352,7 @@ proc highlightCols*(t: sink Tabella, cols: ColSel): Tabella =
   ## the theme's light blue behind `cols`, from the label to the last row
   t.tabStyle(style.fill("#D9F2F6") & style.text(weight = "bold"), loc.body(cols), loc.columnLabels(cols))
 
-template testSlide =
+template testSlide* =
   slide:
     nbText """
 ## H2 header
@@ -415,7 +417,11 @@ Text with *italic*, **strong** and [link](recurse.com)
       nbText "half the screen, inside a vertical stack like the talk's sections"
       reference "a small reference"
 
-when isMainModule:
+template buildStyleDeck*() =
+  ## the style test deck, docs/my.html
   myInit("my.nim")
   testSlide
   nbSave
+
+when isMainModule:
+  buildStyleDeck()
