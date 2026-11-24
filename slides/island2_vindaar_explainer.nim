@@ -1,5 +1,6 @@
 import std / [strutils, json, math]
 import nimib
+import ../offline # nimib's theme and KaTeX from docs/assets
 import nimib / highlight
 import tabelline, tabelline / nimib
 
@@ -13,6 +14,7 @@ import tabelline, tabelline / nimib
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "island2_vindaar_explainer.nim")
+nb.useOfflineAssets
 # but with it nimib cannot find this file,
 # so give the "Show Source" button its source here
 const ownSource = staticRead("island2_vindaar_explainer.nim")

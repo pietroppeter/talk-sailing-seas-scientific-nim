@@ -1,5 +1,6 @@
 import std / [math, strutils, strformat, json]
 import nimib
+import ../offline # nimib's theme and KaTeX from docs/assets
 import nimib / highlight
 import island5_vectors
 
@@ -11,6 +12,7 @@ import island5_vectors
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "island5_operators_explainer.nim")
+nb.useOfflineAssets
 # but with it nimib cannot find this file,
 # so give the "Show Source" button its source here
 const ownSource = staticRead("island5_operators_explainer.nim")

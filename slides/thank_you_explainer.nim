@@ -1,5 +1,6 @@
 import std / [strutils, strformat, json]
 import nimib
+import ../offline # nimib's theme and KaTeX from docs/assets
 import nimib / highlight
 
 # A nimib document that explains, step by step,
@@ -50,6 +51,7 @@ template step(n: int, title, startMarker, endMarker, text: string) =
 
 # this path writes the page to docs/, not docs/slides/
 nbInit(thisFileRel = "thank_you_explainer.nim")
+nb.useOfflineAssets
 # but with it nimib cannot find this file,
 # so give the "Show Source" button its source here
 const ownSource = staticRead("thank_you_explainer.nim")

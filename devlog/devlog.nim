@@ -6,11 +6,13 @@
 ##   nbInit(thisFileRel = "devlog/my_post.nim")
 ##   const ownSource = staticRead("my_post.nim")
 ##   nb.useDevlogPost("my-slug", ownSource)
-## add it to the build in .github/workflows/pages.yml and to the list in README.md.
+## and add it to the list in README.md (scripts/build.sh devlog finds and builds it).
 ## Each post is written to docs/devlog/<date>-<slug>.html; `devlog/index.nim`
 ## (docs/devlog/index.html) lists them and checks they were all built.
 import std / [json, os, strutils, times]
 import nimib
+import ../offline # nimib's theme from docs/assets
+export offline
 import nimib / highlight
 
 type
@@ -72,6 +74,7 @@ proc useDevlogPost*(nb: var Nb, slug: string, ownSource: string) =
   let i = findPost(slug)
   doAssert i >= 0, "devlog: add " & slug & " to devlog/devlog.nim"
   let p = devlogPosts[i]
+  nb.useOfflineAssets
   nb.title = p.title & " · talk log"
   nb.doc.filename = nb.doc.filename.parentDir / p.fileName
   # nimib cannot find a source outside the current directory: give "Show Source" its source

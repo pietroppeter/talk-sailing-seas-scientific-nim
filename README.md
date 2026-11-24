@@ -70,23 +70,31 @@ Dependencies are managed with atlas (requires Nim >= 2.0, e.g. installed with gr
 
 ```
 atlas install
-nim r index.nim   # writes docs/index.html
-nim r my.nim      # style test deck, writes docs/my.html
-nim r slides/thank_you.nim  # the Thank You slide on its own, writes docs/thank_you.html
-nim r slides/thank_you_explainer.nim  # explainer of the Thank You slide, writes docs/thank_you_explainer.html
-nim r slides/island2_brentp_explainer.nim  # explainer of Brent Pedersen's tools (Island 2), writes docs/island2_brentp_explainer.html
-nim r slides/island2_vindaar_explainer.nim  # Vindaar's thesis in plain words (Island 2), writes docs/island2_vindaar_explainer.html
-nim r slides/island2_qex_explainer.nim  # lattice QCD and QEX in plain words (Island 2), writes docs/island2_qex_explainer.html
-nim r slides/island2_beyond_explainer.nim  # Nim success stories beyond science (Island 2), writes docs/island2_beyond_explainer.html
-nim r slides/island5_operators_explainer.nim  # explainer of the custom operators slides, writes docs/island5_operators_explainer.html
-nim r slides/island5_units_explainer.nim  # explainer of the units slides, writes docs/island5_units_explainer.html
 ```
 
-Outputs go to `docs/` (set by `homeDir` in `nimib.toml`), which is what gets published on GitHub Pages: the `pages` workflow builds the slides on every push to `main` and deploys `docs/`. Generated html is not committed.
-
-reveal.js and KaTeX are not loaded from CDNs: local copies live in `docs/assets/` (committed) and `my.nim` points the slides to them, so the deck also works offline. `scripts/vendor-assets.sh` downloads them again (change versions there). Images go in `docs/images/`.
-
 nim-markdown needs PCRE at runtime (`libpcre.so.3`, e.g. `apt install libpcre3`). ggplotnim needs Cairo (`apt install libcairo2`, or `brew install cairo` on macOS, where `nim.cfg` links it from `/opt/homebrew/lib`).
+
+## Build
+
+`scripts/build.sh` builds the pages into `docs/`:
+
+```
+scripts/build.sh              # everything, as the pages workflow does (about 3 minutes)
+scripts/build.sh slides       # the deck (docs/index.html), the style test deck (docs/my.html), the Thank You slide, the easter egg
+scripts/build.sh themes       # the deck once per explored theme (docs/index_<theme>.html)
+scripts/build.sh explainers   # every slides/*_explainer.nim (docs/<name>_explainer.html)
+scripts/build.sh devlog       # every talk log post, then the talk log index (docs/devlog/)
+scripts/build.sh check        # fails if a built page loads anything from the network
+scripts/build.sh slides check # groups can be combined
+```
+
+Explainers (`slides/*_explainer.nim`) and talk log posts (`devlog/*.nim`) are found by name, so a new one needs no change to the script or to the workflow. Extra flags for Nim go in `NIMFLAGS` (`NIMFLAGS=-d:release scripts/build.sh explainers`). A single page is still `nim r <file>`, e.g. `nim r index.nim` for the deck or `nim r slides/island5_units_explainer.nim` for one explainer.
+
+Outputs go to `docs/` (set by `homeDir` in `nimib.toml`), which is what gets published on GitHub Pages: the `pages` workflow runs `scripts/build.sh` on every push to `main` and deploys `docs/`. Generated html is not committed.
+
+## Offline
+
+Every page works offline: nothing is loaded from a CDN. Local copies of what the pages need live in `docs/assets/` (committed): reveal.js, KaTeX, p5.js and the code themes for the slides (`my.nim` points the slides to them), water.css and nimib's highlight.js for the explainers and the talk log (`offline.nim`: `nb.useOfflineAssets` after `nbInit`), plotly.js for the interactive plots (`slides/nbplotly.nim`), and the fonts of the explored themes. `scripts/vendor-assets.sh` and `scripts/vendor-fonts.sh` download them again (change versions there). `scripts/build.sh check` (run by `scripts/build.sh` and by the workflow) fails when a page still loads something from the network. Images go in `docs/images/`.
 
 `scripts/screenshot.sh docs/index.html shots/` renders each slide to a png with headless Chromium.
 
