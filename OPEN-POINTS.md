@@ -39,7 +39,6 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 Placeholder slides that still need content:
 
 - [ ] 1.1 to 1.3 Intro: the mainland map, why so many languages, Nim's tradeoffs.
-- [ ] 5.2 to 5.5 Island 4 Interoperability: which C library to wrap, which bridges (Python, R, Julia) and their maturity, the Nim-from-Python example, packaging rocks ahead.
 - [ ] 6.6 Island 5 rocks ahead (macros readability, concepts).
 - [ ] 7.2 to 7.4 Island 6 Interactivity: which Shiny app to port, the Nim JS port, no REPL. Reference: "The end of Shiny" in `notes/refs.md` (D3 with the JS backend).
 - [ ] 8.2 to 8.4 Island 7 Notebook: literate computing, nimib, rocks ahead vs Jupyter.
@@ -63,3 +62,7 @@ Working notes that are not committed (on purpose, or not yet):
 - Island 2 research: `island2/directions.md` (sources for Brent, Vindaar and beyond-science stories) and `island2/brentp-numbers.md` (stars and citations, checked 2026-10-27).
 - Arraymancer assessment "What is in Arraymancer" and the contributions study "Who builds scientific Nim" (commit shares, yearly activity, QEX).
 - Review screenshots and built pages for each piece of work (themes, tabelline, islands, thank-you animation versions).
+
+## Outside this repository
+
+- [ ] Rename `nimlang` to `nimlang-pypi` in the uv-add-nimlang repository and on PyPI (Pietro, 2026-11-24: "nimlang" alone is ambiguous). The talk already calls it nimlang-pypi; its commands (`uv add nimlang`, `uv run nimlang ...`) change with the rename.
