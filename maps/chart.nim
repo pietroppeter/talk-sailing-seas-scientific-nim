@@ -12,6 +12,9 @@ import geometry, base
 export geometry
 
 const
+  islandNames {.booldefine.} = true
+    ## the names of the real islands on the chart; -d:islandNames=false hides them (and the lore lines,
+    ## which name them), so the audience can guess the islands
   ink = "#1f2a33"
   magenta = "#b0167a"
   depthLine = "#6f93b0"
@@ -186,7 +189,7 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
     let top = f.summit(isl)
     let height = if isl.elevation > 0: $int(round(isl.elevation)) else: $int(-f.at(top) * 22)
     result.add &"""<circle cx="{f1(top.x)}" cy="{f1(top.y)}" r="1.2" fill="{ink}"/><text x="{f1(top.x + 3)}" y="{f1(top.y + 2.5)}" class="spot">{height}</text>"""
-    if isl.real.len > 0:
+    if isl.real.len > 0 and islandNames:
       result.add &"""<text x="{f1(top.x)}" y="{f1(top.y + 12)}" text-anchor="middle" class="real-name">{isl.real.toUpperAscii}</text>"""
   # soundings on a jittered grid, away from labels, the title, the rose and the course
   var r = initRng(7)
@@ -236,12 +239,15 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
   if done.len > 0:
     let upTo = if current == 8: v.route.high else: current
     for k in 0 ..< upTo:
-      let a = v.route[k]
-      let b = v.route[k + 1]
-      let m: Pt = ((a.x + b.x) / 2, (a.y + b.y) / 2)
-      var ang = radToDeg(arctan2(b.y - a.y, b.x - a.x))
-      if ang > 90 or ang < -90: ang += 180
-      result.add &"""<text class="bearing" transform="translate({f1(m.x)},{f1(m.y)}) rotate({f1(ang)})" y="-4" text-anchor="middle">{bearing(a, b):03}°</text>"""
+      let l = if v.straightRoute: v.leg(k) else: @[v.route[k], v.route[k + 1]]
+      for j in 0 ..< l.high: # a bearing on each straight stretch long enough to carry it
+        let a = l[j]
+        let b = l[j + 1]
+        if hypot(b.x - a.x, b.y - a.y) < 45: continue
+        let m: Pt = ((a.x + b.x) / 2, (a.y + b.y) / 2)
+        var ang = radToDeg(arctan2(b.y - a.y, b.x - a.x))
+        if ang > 90 or ang < -90: ang += 180
+        result.add &"""<text class="bearing" transform="translate({f1(m.x)},{f1(m.y)}) rotate({f1(ang)})" y="-4" text-anchor="middle">{bearing(a, b):03}°</text>"""
   # names of the islands of the talk, and the light on the island of the section
   for i, isl in v.islands:
     let n = i + 1
@@ -262,7 +268,7 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
   result.add &"""<g class="title-block" text-anchor="middle"><text x="{f1(tb.x)}" y="{f1(tb.y)}" class="tb-title">SEAS OF SCIENTIFIC NIM</text>"""
   result.add &"""<text x="{f1(tb.x)}" y="{f1(tb.y + 14)}" class="{subClass}">{sub}</text>"""
   let tbNote =
-    if current in 1 .. 7 and v.islands[current - 1].lore.len > 0: v.islands[current - 1].lore
+    if current in 1 .. 7 and v.islands[current - 1].lore.len > 0 and islandNames: v.islands[current - 1].lore
     else: "Soundings and heights in metres · each island at its own scale"
   result.add &"""<text x="{f1(tb.x)}" y="{f1(tb.y + 26)}" class="tb-note">{tbNote}</text></g>"""
   for isl in v.islands:
@@ -270,7 +276,7 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
       let c = isl.cape((-1.0, 0.5))
       result.add &"""<text x="{f1(c.x - 5)}" y="{f1(c.y + 10)}" text-anchor="end" class="chart-note">{isl.note}</text>"""
   result.add &"""<text class="land-name" {v.landLabelAttrs} text-anchor="middle">THE MAINLAND</text>"""
-  result.add &"""<text class="note" x="{f1(v.w - 12)}" y="{f1(v.h - 12)}" text-anchor="end">Coasts: islands © OpenStreetMap contributors (ODbL) · mainland, the Gulf of Trieste, Natural Earth</text>"""
+  result.add &"""<text class="note" x="{f1(v.w - 12)}" y="{f1(v.h - 12)}" text-anchor="end">Coasts © OpenStreetMap contributors (ODbL) · the mainland is the Gulf of Trieste</text>"""
   result.add roseSvg(rose, 34)
   result.add "</g>"
   result.add borderSvg(v.w, v.h)

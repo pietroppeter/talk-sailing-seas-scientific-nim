@@ -36,6 +36,8 @@ type
     islands*: seq[Island]
     mainland*: seq[Pt]   ## control points of the mainland's coast, top to bottom
     route*: seq[Pt]      ## from the mainland through the islands and back to land
+    straightRoute*: bool ## straight legs (with `via` turning points) instead of a smooth curve
+    via*: seq[seq[Pt]]   ## the turning points of each leg, between stop k and stop k + 1
     compassAt*: Pt
     seaName*: string
     islets*: seq[seq[Pt]] ## small islands around the islands of the voyage, unnamed, drawn as they are
@@ -114,9 +116,22 @@ func mainlandPolygon*(v: Voyage): seq[Pt] =
       p.x += v.roughCoast * (2 * fbm(p.y * 0.025, 3.7, 5) - 1)
   result.add [(-20.0, v.h + 20), (-20.0, -20.0)]
 
+func leg*(v: Voyage, k: int): seq[Pt] =
+  ## the k-th leg of a straight route: from stop k through its turning points to stop k + 1
+  result.add v.route[k]
+  if k < v.via.len: result.add v.via[k]
+  result.add v.route[k + 1]
+
 func routePolyline*(v: Voyage, upTo = -1): seq[Pt] =
   ## dense points of the route; `upTo` = n stops at the n-th point of the route
-  let pts = if upTo < 0: v.route else: v.route[0 .. min(upTo, v.route.high)]
+  let last = if upTo < 0: v.route.high else: min(upTo, v.route.high)
+  if v.straightRoute: # straight legs with turns, as a course is laid on a chart
+    for k in 0 ..< last:
+      let l = v.leg(k)
+      result.add (if k == 0: l else: l[1 .. ^1])
+    if result.len == 0: result = v.route[0 .. last]
+    return
+  let pts = v.route[0 .. last]
   if pts.len < 2: return pts
   catmullRom(pts, closed = false)
 
