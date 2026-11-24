@@ -47,8 +47,14 @@ Placeholder slides that still need content:
 - [ ] 1.1 to 1.3 Intro: the mainland map, why so many languages, Nim's tradeoffs.
 - [ ] 6.6 Island 5 rocks ahead (macros readability, concepts).
 - [ ] 8.2 to 8.4 Island 7 Notebook: literate computing, nimib, rocks ahead vs Jupyter.
-- [ ] 9.2 to 9.5 Conclusion: for the beginner, for the builder, your language seen from Nim, why still niche (your views on governance, tooling, Nimony and NIF).
 - [ ] Deep dives for the new code-heavy slides (one nimib page in deepdive/ per code slide).
+
+### Conclusion (draft, 9.2 to 9.5)
+
+- [ ] 9.5 Why still niche: the governance and tooling lines are a first draft of your view; rewrite them in your words. Mention the Nimskull fork (2021) or Status funding in the speaker notes?
+- [ ] 9.3 headings "Fair winds" / "Rocks ahead", or plainer ("Why build in Nim" / "What it costs")?
+- [ ] 9.4 rows: keep R (dplyr formulas as metaprogramming) or swap for Fortran? Add Rust?
+- [ ] Timing: four content slides in 2.5 minutes; merge 9.2 and 9.3 into one "Takeaways" slide if rehearsal runs long.
 
 ## Upstream drafts on hold
 
