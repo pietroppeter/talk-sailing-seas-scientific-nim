@@ -43,6 +43,8 @@ a[href$="emilia.html"], a[href$="emilia.html"]:hover { color: inherit; text-deco
 .page-list .eyebrow { display: block; }
 .page-list li > a { font-size: 1.25em; font-weight: 600; }
 .page-list p { margin: 0.2em 0 0; }
+/* the review mode (review.nim): water.css gives every button a margin, which the bar has no room for */
+.rv-bar button, .rv-sheet button, .rv-panel button, .rv-toggle { margin: 0; }
 """
   # the voyage map without a theme (talk log): `layers` draws every layer plainly, in one colour
   # each; `bare` draws only the base map (islands, route, compass)

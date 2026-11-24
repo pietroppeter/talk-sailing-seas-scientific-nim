@@ -113,6 +113,10 @@ Pages say what they show with nimib's blocks and the talk's own, never with HTML
 
 `nim r build.nim check` also fails when a page uses `nbRawHtml`: make a block instead. Images go in `docs/images/`.
 
+## Review mode
+
+Every deep dive, talk log page and index has a review mode (`review.nim` and `docs/assets/review.js`, ported from [tabelline](https://github.com/pietroppeter/tabelline)): under the title, the page's version (the commits that changed its source) and a **✎ Review** button. In review mode, select words and comment on them, or add a note on the whole page; comments stay in the browser. **Export** gives one text, Markdown with a YAML block, to paste in a Claude Code chat: the `nimib-review` skill (`.claude/skills/nimib-review`) applies each comment to the page's source. `nb.usePage(ownSource, withReview = false)` leaves it out. The slides have no review mode.
+
 `scripts/screenshot.sh docs/slides.html shots/` renders each slide to a png with headless Chromium.
 
 ## OpenSpec
