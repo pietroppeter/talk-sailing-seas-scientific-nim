@@ -48,7 +48,7 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `themes.nim` and `maps/`: three themes explored for the slides (pirate adventure game, old book of sea tales, nautical chart), not adopted yet; `maps/geometry.nim` is the one geometry of the voyage map, drawn by `maps/pixel.nim`, `maps/chart.nim` and `maps/engraved.nim`; `nim r build.nim themes` builds the deck in each theme (`docs/index_<theme>.html`)
 - `devlog/`: the talk log, see below
 - `slides/`: one file per slide (or group of slides), and the helpers they share
-- `shiny/`: the Shiny for Python app of Island 6 (the plant), which `scripts/shinylive.sh` exports to `docs/shiny/` to run in the browser with shinylive (about 50 MB, not committed; `build.nim` exports it when missing, which needs the network once)
+- `shiny/`: the Shiny for Python app of Island 6 (the plant), which `scripts/shinylive.sh` exports to `docs/shiny/` to run in the browser with shinylive (about 50 MB, not committed; `build.nim` exports it when missing, which needs the network once; deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/shiny/plant/)
 - `decisions/`, `outline.md`, `notes/`: how the talk is prepared (see below)
 
 ## Deep dives
