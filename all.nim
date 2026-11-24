@@ -11,7 +11,8 @@
 ## and slides/thank_you.nim, called below. Deep dives and talk log posts are found at compile time, so a
 ## new one needs no change here. `-d:only=slides,devlog` builds only those groups (build.nim passes it);
 ## the site index (index.nim) is built with any group.
-## `-d:slideTheme=<theme>` builds only the deck, in that theme, as docs/slides_<theme>.html.
+## `-d:slideTheme=<theme>` builds only the deck, in that theme, as docs/slides_<theme>.html;
+## `-d:deckLook=quarto` only the deck and the style test deck in Quarto's look (slides_quarto.html, my_quarto.html).
 import std / [macros, os, strutils, algorithm]
 import nimib, nimiSlides # the decks expand here: what deck.nim imports
 import themes # themed, slideTheme
@@ -20,7 +21,7 @@ import slides / thank_you
 
 const only {.strdefine.} = "slides,deepdives,devlog"
 
-func wants(group: string): bool = group in only.split(',') and not themed
+func wants(group: string): bool = group in only.split(',') and not themed and not quartoLook
 
 macro importPages(): untyped =
   ## import the pages that render when imported, by group, in the order they must be built
@@ -51,6 +52,9 @@ importPages()
 # each deck in a block of its own: every deck has its own `nb`
 when themed:
   block: buildDeck() # the deck in one of the explored themes (see themes.nim)
+elif quartoLook:
+  block: buildDeck() # the deck in Quarto's proportions (docs/slides_quarto.html, see my.nim)
+  block: buildStyleDeck() # docs/my_quarto.html
 elif wants("slides"):
   block: buildDeck()
   block: buildStyleDeck()

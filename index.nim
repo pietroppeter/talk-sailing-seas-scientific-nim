@@ -32,6 +32,8 @@ var slides = @[
 for (name, look) in [("pirate", "a pirate adventure game"), ("book", "an old book of sea tales"), ("chart", "a nautical chart")]:
   slides.add PageItem(url: "slides_" & name & ".html", title: "The talk, " & name & " theme", eyebrow: "Slides · theme explored",
     summary: "The deck dressed as " & look & " ([how](devlog/2026-11-07-dressing-the-voyage.html)).")
+slides.add PageItem(url: "slides_quarto.html", title: "The talk, Quarto look", eyebrow: "Slides · look explored",
+  summary: "The deck in the proportions of Quarto's reveal.js theme: more room on each slide ([style test deck](my_quarto.html)).")
 slides.add PageItem(url: "thank_you.html", title: "Thank you", eyebrow: "Slide",
   summary: "The last slide on its own: a p5nim animation.")
 slides.add PageItem(url: "my.html", title: "Style test deck", eyebrow: "Slides · tooling",

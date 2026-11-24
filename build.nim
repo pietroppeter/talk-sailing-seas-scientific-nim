@@ -5,6 +5,7 @@
 ##   nim r build.nim deepdives            every deep dive (deepdive/*.nim), then the deep dives index
 ##   nim r build.nim devlog               every talk log post, then the talk log index
 ##   nim r build.nim themes               the deck once per explored theme (docs/slides_<theme>.html)
+##   nim r build.nim looks                the deck and the style test deck in Quarto's look (slides_quarto.html, my_quarto.html)
 ##   nim r build.nim check                only the checks: nothing loaded from the network, no broken link between pages
 ##   nim r build.nim slides deepdives     groups combine
 ##
@@ -105,15 +106,17 @@ when isMainModule:
     elif a == "--": afterDashes = true
     else: groups.add a
   if groups.len == 0 or "all" in groups:
-    groups = @pageGroups & @["themes", "check"]
+    groups = @pageGroups & @["themes", "looks", "check"]
   for g in groups:
-    if g notin pageGroups and g notin ["themes", "check"]:
-      quit "build: unknown group " & g & " (slides, deepdives, devlog, themes, check, all)", 2
+    if g notin pageGroups and g notin ["themes", "looks", "check"]:
+      quit "build: unknown group " & g & " (slides, deepdives, devlog, themes, looks, check, all)", 2
   let pages = groups.filterIt(it in pageGroups)
   if pages.len > 0:
     run "nim r " & nimFlags(extra) & " -d:only=" & pages.join(",") & " all.nim"
   if "themes" in groups:
     for t in themes:
       run "nim r " & nimFlags(extra) & " -d:slideTheme=" & t & " all.nim"
+  if "looks" in groups:
+    run "nim r " & nimFlags(extra) & " -d:deckLook=quarto all.nim"
   let checks = [check(), linksResolve(), noRawHtml()]
   if false in checks: quit 1

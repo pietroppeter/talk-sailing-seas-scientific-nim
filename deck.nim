@@ -26,6 +26,8 @@ template buildDeck*() =
   presentation
   when themed:
     nb.doc.filename = "slides_" & slideTheme & ".html"
+  elif quartoLook: # -d:deckLook=quarto, see my.nim
+    nb.doc.filename = "slides_quarto.html"
   else:
     nb.doc.filename = "slides.html"
   nbSave

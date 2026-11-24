@@ -88,6 +88,42 @@ li {
 }
 """ % [agileDarkBlue, softWhite, agileLightBlue, witboostOrange]
 
+const quartoCss = """
+/* Quarto's reveal.js look (quarto-cli, src/resources/formats/revealjs/quarto.scss, MIT):
+   the sizes and margins only, the AgileLab colours and logo stay */
+:root {
+  --r-main-font-size: 40px;
+  --r-block-margin: 12px;
+  --r-heading-margin: 0 0 12px 0;
+  --r-heading-text-transform: none;
+}
+.reveal .slides { text-align: left; }
+.reveal .slides > section:first-child { text-align: center; }
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; font-weight: 600; }
+.reveal p, .reveal .slides section, .reveal .slides section > section { line-height: 1.3; }
+.reveal ul, .reveal ol { margin-left: 1em; }
+.reveal li { padding-left: 0; }
+.reveal pre {
+  width: 100%;
+  margin: var(--r-block-margin) 0;
+  box-shadow: none;
+  border: 1px solid #D8DCE6;
+  border-radius: 4px;
+  font-size: 0.55em;
+  line-height: 1.3;
+}
+.reveal pre code { max-height: 500px; padding: 6px 9px; }
+.reveal blockquote {
+  width: unset;
+  margin: var(--r-block-margin) 0;
+  padding: 0.6em 1.75em;
+  border-left: 4px solid #D8DCE6;
+  box-shadow: none;
+  background: none;
+  font-style: normal;
+}
+"""
+
 template imageLeftStyle* =
   ## css for `imageLeftSlide`: reveal.js sets --viewport-width/height and --slide-scale,
   ## so dividing by the scale gives the screen size in slide pixels
@@ -164,6 +200,12 @@ const
   highlightAssets = "assets/highlight" # highlight.js styles, vendored by scripts/vendor-assets.sh
   fontAssets = "assets/fonts" # fonts of the explored themes, vendored by scripts/vendor-fonts.sh
 
+const deckLook* {.strdefine.} = "agile"
+  ## the proportions of the deck: `agile` (reveal.js' White theme: 960x700, centered, 42px text)
+  ## or `quarto` (Quarto's reveal.js look: 1050x700, top-left aligned, 40px text, tighter margins),
+  ## built on the side as docs/slides_quarto.html with `nim r build.nim looks`
+const quartoLook* = deckLook == "quarto"
+
 const codeTheme* {.strdefine.} = "atom-one-light"
   ## highlight.js style for code blocks, one of the files in docs/assets/highlight
   ## (try another with `nim r -d:codeTheme=github my.nim`)
@@ -204,6 +246,10 @@ func agileMainToHtml(doc: NbDoc, nb: Nb): string =
   let renderedBlocks = nbContainerToHtml(doc, nb)
   let mathPlugin = if doc.context{"latex"}.getBool: "RevealMath.KaTeX," else: ""
   let katex = nb.assetPath(katexAssets)
+  # Quarto's reveal.js settings (quarto-cli, format-reveal.ts): a wider slide, a larger margin
+  # around it, and slides aligned at the top instead of centered; the title slide stays centered
+  let layout = when quartoLook: "width: 1050, height: 700, margin: 0.1, center: false," else: ""
+  let centerTitle = when quartoLook: "document.querySelector('.reveal .slides > section')?.classList.add('center');" else: ""
   result = withNewlines:
     hlHtmlF"""
 <div class="reveal">
@@ -214,8 +260,10 @@ func agileMainToHtml(doc: NbDoc, nb: Nb): string =
     """
     nb.renderPartial("revealJS", docJson)
     "<script>"
+    centerTitle
     &"""
     Reveal.initialize({{
+      {layout}
       katex: {{ local: '{katex}' }},
       plugins: [
         RevealHighlight,
@@ -287,6 +335,8 @@ template myInit*(sourceFileRel = "my.nim") =
   useRevealLatex
   agileTheme()
   imageLeftStyle
+  when quartoLook: # -d:deckLook=quarto
+    nb.addStyle quartoCss
   when themed: # -d:slideTheme=pirate|book|chart, see themes.nim
     nb.addStyle: themeCss()
   nb.backend.funcs["NbDoc"] = agileNbDocToHtml
@@ -457,6 +507,8 @@ template buildStyleDeck*() =
   ## the style test deck, docs/my.html
   myInit("my.nim")
   testSlide
+  when quartoLook:
+    nb.doc.filename = "my_quarto.html"
   nbSave
 
 when isMainModule:
