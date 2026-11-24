@@ -251,10 +251,22 @@ you list the states the drag can reach (here every place
 of that line among the slider lines), zogyn draws each
 one without showing it, and shows the one that puts the
 line closest to the pointer.
-When the line is dropped, the app gets the new order of
-the sliders.
+While the line moves, the app gets the order of the
+sliders on screen, and its sliders move with the line.
+
+It is a trick: the code is not compiled again, the app
+only puts its sliders in another order.
 The code is the page's own highlighted code block, which
 `plantCode` turns into an svg stage when the page opens.
+The idea it fakes is Bret Victor's, from his talk
+[Inventing on Principle](https://vimeo.com/36579366) (2012),
+where every change to the code shows at once in what the
+code makes:
+
+> Creators need an immediate connection to what they create.
+
+The slide of the talk shows the code and the app
+side by side, without the dragging.
 """
 nbShowCode(excerpt(codeSource, "  proc renderCode", ""),
   caption = "slides/island6_plant_code.nim")
@@ -288,8 +300,8 @@ network is not counted), on 24 November 2026:
 | plot again after a slider moves | about 0.4 s | the next frame |
 
 The 300 KB are the app, Karax and zogyn, as nimib writes
-them (180 KB minified); the plain app, with no framework
-and no dragging, was 96 KB.
+them (180 KB minified); without the dragging, as on the
+slide, 200 KB; with no framework at all, 96 KB.
 Drawing the plant takes under 1 ms: Karax waits for the
 next frame of the browser (16 ms) to render.
 

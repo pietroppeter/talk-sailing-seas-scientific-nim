@@ -48,9 +48,9 @@ when defined(js):
 
   proc plantCode*(id: string, setOrder: proc (order: seq[int]), w = 420.0) =
     ## the code shown in the element with id `id` (nbCodeStage), made a stage
-    ## w units wide: when a slider line is dropped, `setOrder` gets the new
-    ## order of the sliders
+    ## w units wide: while a slider line is dragged, `setOrder` gets the order
+    ## of the sliders on screen, so the sliders move with it
     html = ($document.getElementById(cstring(id)).querySelector("code").innerHTML).splitLines
     let st = mount(id, w, lh * float(lines.len) + 2 * pad, @[0, 1, 2, 3],
                    renderCode, codeSpec, toggle = false)
-    st.onCommit = proc (before, after: seq[int]) = setOrder(after)
+    st.onMove = proc () = setOrder(st.shown) # the sliders follow the line while it is dragged

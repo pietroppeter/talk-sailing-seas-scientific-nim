@@ -44,14 +44,18 @@ proc slider(name: string, value, min, max: float, step: float,
             update: proc (v: float)): VNode =
   ## a labelled slider that shows its value and calls `update` when moved.
   ## The range counts steps (0 to 100 for 0 to 1 by 0.01): Karax sets the
-  ## value of an input before its type, so a range would round 0.2 to 0
+  ## value of an input before its type, so a range would round 0.2 to 0.
+  ## The value is the node's text, not an attribute: an attribute that
+  ## changes makes Karax set all the attributes again, type included,
+  ## which stops a slider that is being dragged
   let steps = proc (v: float): cstring = cstring($int(round(v / step)))
+  let range = buildHtml(input(`type` = "range", min = steps(min), max = steps(max))):
+    proc oninput(ev: Event, n: VNode) = update(parseFloat($n.value) * step)
+  range.text = steps(value)
   buildHtml(label):
     span: text name
     span: text (if step < 1: value.formatFloat(ffDecimal, 2) else: $value.int)
-    input(`type` = "range", min = steps(min), max = steps(max),
-          value = steps(value)):
-      proc oninput(ev: Event, n: VNode) = update(parseFloat($n.value) * step)
+    range
 
 template slider(field: untyped, min, max: float, step = 1.0): VNode =
   ## a slider for a field of the plant (`p.order`), named after it, that sets it

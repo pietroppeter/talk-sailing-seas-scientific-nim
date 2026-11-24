@@ -41,9 +41,9 @@ const slideBlocksCss = """
 .reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
 .reveal .rocks-quotes figcaption { font-size: 0.55em; margin-top: 0.5em; }
 /* an app compiled to JavaScript (nbApp, slide 7.3): sliders in a sidebar, then a canvas */
-.reveal .app > div { display: flex; gap: 1.2em; align-items: center; justify-content: center; margin: 0.4em 0; }
-.reveal .app .sidebar { display: flex; flex-direction: column; gap: 0.5em; width: 10em; font-size: 0.6em; text-align: left; }
-.reveal .app label { display: grid; grid-template-columns: 1fr auto; }
+.reveal .app > div { display: flex; gap: 1.2em; align-items: center; justify-content: center; margin: 0.4em 0 0.4em 1.8em; }
+.reveal .app .sidebar { display: flex; flex-direction: column; gap: 0.5em; width: 11em; font-size: 0.6em; text-align: left; }
+.reveal .app label { display: grid; grid-template-columns: 1fr auto; column-gap: 0.5em; }
 .reveal .app input { grid-column: 1 / 3; width: 100%; margin: 0.2em 0 0; }
 /* code you drag (nbCodeStage, zogyn, slide 7.3): the code as an svg, its slider lines move */
 .reveal .code-stage { width: 100%; }

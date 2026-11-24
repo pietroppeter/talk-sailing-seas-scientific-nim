@@ -11,8 +11,9 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 ### Island 6 Interactivity (the plant app)
 
+- [ ] Slide 7.3 with draggable code lines (`nim r build.nim island6 -- -d:dragVariant`): try it, then keep the plain slide or switch.
 - [ ] Slide 7.2 shows a screenshot of the Shiny app and links the live one (it needs a few seconds and 16 MB to start). Embed it live in the slide instead?
-- [ ] The numbers (16 MB, 8 s, 0.4 s; 300 KB, 30 ms) were measured on a cloud machine with headless Chromium; check them on the presentation laptop.
+- [ ] The numbers (16 MB, 8 s, 0.4 s; 200 KB, 30 ms) were measured on a cloud machine with headless Chromium; check them on the presentation laptop.
 - [ ] "The end of Shiny" (`notes/refs.md`, D3 with the JS backend) is not used: mention it in the deep dive or the speaker notes?
 
 ### #24 Arraymancer scope (Island 3)
