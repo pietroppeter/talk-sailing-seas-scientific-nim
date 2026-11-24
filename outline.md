@@ -34,7 +34,7 @@ Navigation: each section except the opening is a vertical stack in reveal.js. It
 Title and speaker, before the voyage starts. Not part of the intro section.
 
 0.1 **Sailing Seas of Scientific Nim** - title slide (short form, fits on one line) with speaker and conference (existing slide).
-0.2 **About me** - mathematician, data scientist at AgileLab, nimib maintainer, Python Milan and PyData Milan organizer; the Paris climate-dynamics years as a personal hook [tbd: which details Pietro wants on stage].
+0.2 **👋 About me** (`slides/about.nim`) - Pietro Peterlongo; applied math from geosciences to cryptography; ~~Data Scientist~~ Delivery Manager at AgileLab; organizer of Python Milan and PyData Milan; Nim since 2018, nimib since 2020. Then AgileLab: data consulting, ~350 people (2x in 3 years), public handbook, holacracy, nomads. Emojis after Pietro's domain-driven data science talk; the Paris PhD years (LMD, ENS), the clients and the details go in the speaker notes.
 
 ### 1. Intro: leaving the mainland (~2 min)
 
