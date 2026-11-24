@@ -29,7 +29,7 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 ### #27 tabelline tables
 
-- [ ] On a phone the explainer tools table scrolls sideways a little for the citations column: drop the "what it does" column there, or fine as is?
+- [ ] On a phone the brentp deep dive tools table scrolls sideways a little for the citations column: drop the "what it does" column there, or fine as is?
 - [ ] Slide 3.3: with the content-sized table, the code box reaches further right than before. Shrink it?
 - [ ] Archive the OpenSpec change `tabelline-tables`.
 
@@ -45,7 +45,7 @@ Placeholder slides that still need content:
 - [ ] 7.2 to 7.4 Island 6 Interactivity: which Shiny app to port, the Nim JS port, no REPL. Reference: "The end of Shiny" in `openspec/reference/refs.md` (D3 with the JS backend).
 - [ ] 8.2 to 8.4 Island 7 Notebook: literate computing, nimib, rocks ahead vs Jupyter.
 - [ ] 9.2 to 9.5 Conclusion: for the beginner, for the builder, your language seen from Nim, why still niche (your views on governance, tooling, Nimony and NIF).
-- [ ] Code explainers for the new code-heavy slides (one nimib explainer per code slide).
+- [ ] Deep dives for the new code-heavy slides (one nimib page in deepdive/ per code slide).
 - [ ] The outline does not yet include the three un-archived changes above (Arraymancer first in Island 3 and renumbered 4.4 to 4.6, QEX as 3.5 and rocks ahead 3.6, tabelline on 3.3 and 4.2).
 
 ## Upstream drafts on hold

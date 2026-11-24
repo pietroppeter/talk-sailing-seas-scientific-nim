@@ -1,23 +1,22 @@
 import std / [json]
 import nimib
-import ../page # usePage, and the blocks of blocks.nim
+import deepdive # useDeepDive, and the blocks of blocks.nim
 
 # A nimib document with Nim success stories outside
 # scientific computing, for the curious, linked from
 # the Success Stories intro (slides/island2_stories.nim):
-#   nim r slides/island2_beyond_explainer.nim
-# writes docs/island2_beyond_explainer.html.
+#   nim r deepdive/beyond_science.nim
+# writes docs/deepdive/beyond_science.html.
 
-# this path writes the page to docs/, not docs/slides/
-nbInit(thisFileRel = "island2_beyond_explainer.nim")
-const ownSource = staticRead("island2_beyond_explainer.nim")
-nb.usePage(ownSource)
+nbInit(thisFileRel = "deepdive/beyond_science.nim")
+const ownSource = staticRead("beyond_science.nim")
+nb.useDeepDive("beyond_science", ownSource)
 
 nbText """
 # Nim success stories beyond science
 
 In the talk [Sailing Seas of Scientific
-Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/),
+Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html),
 Island 2 tells two success stories of people who used
 Nim to advance science: Brent Pedersen in bioinformatics
 and Vindaar in physics.

@@ -1,4 +1,4 @@
-## The custom blocks of the talk's pages: the slides (through my.nim), the explainers and the talk log.
+## The custom blocks of the talk's pages: the slides (through my.nim), the deep dives and the talk log.
 ## Pages say *what* they show with these blocks and with nimib's own (nbText, nbCode, nbDiv, ...),
 ## never with HTML: `nbRawHtml` is a last resort, for a one-off, with a comment saying why.
 ## The blocks write classes, never styles; the classes are styled in talkstyle.nim (pages) and

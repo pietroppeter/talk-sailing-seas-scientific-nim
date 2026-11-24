@@ -16,7 +16,7 @@ template thankYouSlide* =
     nbSketch("thank-you-sketch")
     nbDiv("thank-you-link", ""):
       nbTextSmall "[pietroppeter.github.io/talk-sailing-seas-scientific-nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/)"
-      nbTextSmall "animation built with [p5nim](https://github.com/pietroppeter/p5nim) ([explained here](thank_you_explainer.html)) and inspired by [a sketch by Okazz](https://openprocessing.org/sketch/3044593), [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/)"
+      nbTextSmall "animation built with [p5nim](https://github.com/pietroppeter/p5nim) ([explained here](deepdive/thank_you_sketch.html)) and inspired by [a sketch by Okazz](https://openprocessing.org/sketch/3044593), [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/)"
     nbJsFromCodeGlobal:
       import p5
       import std / [dom, jsffi]

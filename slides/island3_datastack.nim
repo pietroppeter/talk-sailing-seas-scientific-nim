@@ -52,7 +52,7 @@ Let's try them on a dataset you all know.
       nbImg("images/lter_penguins.png", "42%")
       nbTextSmall """
 344 penguins, three species, three islands near Palmer Station, Antarctica.
-[The explainer](island3_penguins_explainer.html) explores them further:
+[The deep dive](deepdive/penguins_data_stack.html) explores them further:
 missing values, group and summarize, three plots,
 Simpson's paradox with tensors, k-means clustering,
 and what else is in Arraymancer.

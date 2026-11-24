@@ -1,26 +1,25 @@
 import std / [strutils, json, math]
 import nimib
-import ../page # usePage, and the blocks of blocks.nim
+import deepdive # useDeepDive, and the blocks of blocks.nim
 import nimib / highlight
 import tabelline, tabelline / nimib
 
 # A nimib document that explains, in plain words, the PhD
 # thesis of Sebastian Schmidt (@Vindaar), the second success
 # story of Island 2 (slides/island2_stories.nim):
-#   nim r slides/island2_vindaar_explainer.nim
-# writes docs/island2_vindaar_explainer.html.
+#   nim r deepdive/vindaar.nim
+# writes docs/deepdive/vindaar.html.
 # The toy code below runs when the page is built;
 # the thesis snippet is quoted, not run.
 
-# this path writes the page to docs/, not docs/slides/
-nbInit(thisFileRel = "island2_vindaar_explainer.nim")
-const ownSource = staticRead("island2_vindaar_explainer.nim")
-nb.usePage(ownSource)
+nbInit(thisFileRel = "deepdive/vindaar.nim")
+const ownSource = staticRead("vindaar.nim")
+nb.useDeepDive("vindaar", ownSource)
 nbText """
 # Vindaar's thesis in plain words
 
 In the talk [Sailing Seas of Scientific
-Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/),
+Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html),
 Island 2 tells two success stories in forty seconds each.
 The second is Sebastian Schmidt (@Vindaar on GitHub),
 who did a PhD in physics at the University of Bonn

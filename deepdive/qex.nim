@@ -1,25 +1,24 @@
 import std / [json, math, random, strformat]
 import nimib
-import ../page # usePage, and the blocks of blocks.nim
+import deepdive # useDeepDive, and the blocks of blocks.nim
 import nimib / highlight
 
 # A nimib document that explains, in plain words, lattice QCD
 # and QEX, the third success story of Island 2
 # (slides/island2_stories.nim):
-#   nim r slides/island2_qex_explainer.nim
-# writes docs/island2_qex_explainer.html.
+#   nim r deepdive/qex.nim
+# writes docs/deepdive/qex.html.
 # The toy lattice below runs when the page is built;
 # the QEX snippets are quoted, not run.
 
-# this path writes the page to docs/, not docs/slides/
-nbInit(thisFileRel = "island2_qex_explainer.nim")
-const ownSource = staticRead("island2_qex_explainer.nim")
-nb.usePage(ownSource)
+nbInit(thisFileRel = "deepdive/qex.nim")
+const ownSource = staticRead("qex.nim")
+nb.useDeepDive("qex", ownSource)
 nbText """
 # Lattice QCD and QEX in plain words
 
 In the talk [Sailing Seas of Scientific
-Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/),
+Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html),
 Island 2 tells three success stories.
 The third is QEX, Quantum EXpressions,
 a framework for lattice QCD written in Nim

@@ -1,12 +1,12 @@
 import std / [strutils, strformat, json]
 import nimib
-import ../page # usePage, and the blocks of blocks.nim
+import deepdive # useDeepDive, and the blocks of blocks.nim
 import nimib / highlight
 
 # A nimib document that explains, step by step,
 # the code of the Thank You slide (slides/thank_you.nim):
-#   nim r slides/thank_you_explainer.nim
-# writes docs/thank_you_explainer.html.
+#   nim r deepdive/thank_you_sketch.nim
+# writes docs/deepdive/thank_you_sketch.html.
 # The code shown is read from slides/thank_you.nim
 # when the page is built, so it never goes stale:
 # a step whose code markers are not found anymore stops the build.
@@ -16,7 +16,7 @@ import nimib / highlight
 # so this file is licensed under CC BY-NC-SA 3.0 too,
 # unlike the rest of the repository (MIT).
 
-const source = staticRead("thank_you.nim")
+const source = staticRead("../slides/thank_you.nim")
 
 proc excerpt(startMarker, endMarker: string):
     tuple[code: string, first, last: int] =
@@ -33,7 +33,7 @@ proc excerpt(startMarker, endMarker: string):
       last = i - 1
       break
   doAssert first >= 0 and last >= first,
-    "explainer: code not found between '" & startMarker &
+    "deep dive: code not found between '" & startMarker &
     "' and '" & endMarker & "'"
   while last > first and lines[last].strip.len == 0:
     dec last
@@ -45,15 +45,14 @@ template step(n: int, title, startMarker, endMarker, text: string) =
     let ex = excerpt(startMarker, endMarker)
     nbShowCode(ex.code, caption = "slides/thank_you.nim, lines " & $ex.first & "–" & $ex.last)
 
-# this path writes the page to docs/, not docs/slides/
-nbInit(thisFileRel = "thank_you_explainer.nim")
-const ownSource = staticRead("thank_you_explainer.nim")
-nb.usePage(ownSource)
+nbInit(thisFileRel = "deepdive/thank_you_sketch.nim")
+const ownSource = staticRead("thank_you_sketch.nim")
+nb.useDeepDive("thank_you_sketch", ownSource)
 nbText """
 # How the Thank You slide works
 
 The last slide of the talk [Sailing Seas of Scientific
-Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/)
+Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html)
 is an animation: a grid of colored points flies into the
 words "Thank You!", one color per letter, back into the
 grid, then into "Questions?" and back, in a loop.
@@ -74,8 +73,8 @@ top to bottom.
 p5nim keeps p5.js names, so it reads close to the JavaScript
 of a p5.js sketch.
 """
-nbFrame("thank_you.html", "The Thank You slide, live",
-  "The slide, live ([open it on its own](thank_you.html)).")
+nbFrame("../thank_you.html", "The Thank You slide, live",
+  "The slide, live ([open it on its own](../thank_you.html)).")
 
 nbText """
 ## Creative coding, Processing, p5.js and p5nim
@@ -282,7 +281,7 @@ and grow back as it returns to 0.
 """
 
 nbText """
-## [Try it](emilia.html)
+## [Try it](../emilia.html)
 
 Clone [the
 repository](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim),

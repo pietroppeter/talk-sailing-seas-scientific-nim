@@ -1,20 +1,22 @@
 ## Builds the talk's pages into docs/ (needs `atlas install` first):
 ##
 ##   nim r build.nim                      everything, as the pages workflow does
-##   nim r build.nim slides               the deck, the style test deck (my.html), the Thank You slide, the easter egg
-##   nim r build.nim explainers           every slides/*_explainer.nim
+##   nim r build.nim slides               the deck (slides.html), the style test deck (my.html), the Thank You slide, the easter egg
+##   nim r build.nim deepdives            every deep dive (deepdive/*.nim), then the deep dives index
 ##   nim r build.nim devlog               every talk log post, then the talk log index
-##   nim r build.nim themes               the deck once per explored theme (docs/index_<theme>.html)
-##   nim r build.nim check                only check that no built page loads anything from the network
-##   nim r build.nim slides explainers    groups combine
+##   nim r build.nim themes               the deck once per explored theme (docs/slides_<theme>.html)
+##   nim r build.nim check                only the checks: nothing loaded from the network, no broken link between pages
+##   nim r build.nim slides deepdives     groups combine
 ##
-## slides, explainers and devlog are built by one program (all.nim): one compile, however many
+## Any group also builds the site index (index.nim, docs/index.html), which lists everything.
+##
+## slides, deep dives and devlog are built by one program (all.nim): one compile, however many
 ## pages. Each theme is a compile of its own (the theme is chosen at compile time). Every build
-## ends with the check. Flags after `--` go to nim: `nim r build.nim explainers -- -d:release`.
+## ends with the check. Flags after `--` go to nim: `nim r build.nim deepdives -- -d:release`.
 import std / [os, osproc, strutils, re, sets, sequtils]
 
 const
-  pageGroups = ["slides", "explainers", "devlog"]
+  pageGroups = ["slides", "deepdives", "devlog"]
   themes = ["pirate", "book", "chart"]
 
 proc run(cmd: string) =
@@ -55,10 +57,33 @@ proc check(): bool =
   echo "== check: no page loads anything from the network"
   true
 
+proc linksResolve(): bool =
+  ## true when every link of a built page to another page or file of the site points to a file
+  ## that exists (pages move: deepdive/, slides.html)
+  let linkRe = re("<(?:a|link|script|img|iframe|source)[^>]*?(?:href|src)=\"([^\"#?]*)")
+  var broken: seq[string]
+  for page in walkDirRec("docs"):
+    if not page.endsWith(".html"): continue
+    var start = 0
+    var caps: array[1, string]
+    let html = readFile(page)
+    while (let at = html.find(linkRe, caps, start); at >= 0):
+      start = at + 1
+      let url = caps[0]
+      if url.len == 0 or url.contains(':') or url.startsWith("//"): continue
+      if not fileExists(page.parentDir / url) and not dirExists(page.parentDir / url):
+        broken.add page & ": " & url
+  if broken.len > 0:
+    echo "== broken links between pages:"
+    for b in broken: echo b
+    return false
+  echo "== check: every link between pages resolves"
+  true
+
 proc noRawHtml(): bool =
   ## true when no page uses nbRawHtml: pages use the blocks of blocks.nim (see the nimib-blocks skill)
   var found: seq[string]
-  for dir in [".", "slides", "devlog", "maps"]:
+  for dir in [".", "slides", "deepdive", "devlog", "maps"]:
     for f in walkFiles(dir / "*.nim"):
       let lines = readFile(f).splitLines()
       for i, line in lines:
@@ -83,11 +108,12 @@ when isMainModule:
     groups = @pageGroups & @["themes", "check"]
   for g in groups:
     if g notin pageGroups and g notin ["themes", "check"]:
-      quit "build: unknown group " & g & " (slides, explainers, devlog, themes, check, all)", 2
+      quit "build: unknown group " & g & " (slides, deepdives, devlog, themes, check, all)", 2
   let pages = groups.filterIt(it in pageGroups)
   if pages.len > 0:
     run "nim r " & nimFlags(extra) & " -d:only=" & pages.join(",") & " all.nim"
   if "themes" in groups:
     for t in themes:
       run "nim r " & nimFlags(extra) & " -d:slideTheme=" & t & " all.nim"
-  if not (check() and noRawHtml()): quit 1
+  let checks = [check(), linksResolve(), noRawHtml()]
+  if false in checks: quit 1

@@ -1,25 +1,24 @@
 import std / [math, strutils, strformat, json]
 import nimib
-import ../page # usePage, and the blocks of blocks.nim
+import deepdive # useDeepDive, and the blocks of blocks.nim
 import nimib / highlight
-import island5_vectors
+import ../slides/island5_vectors
 
 # A nimib document that explains the custom operators example
 # of Island 5 (slides 6.2 and 6.3, in slides/island5_expressive.nim):
-#   nim r slides/island5_operators_explainer.nim
-# writes docs/island5_operators_explainer.html.
+#   nim r deepdive/operators.nim
+# writes docs/deepdive/operators.html.
 # The code below runs when the page is built, like on the slides.
 
-# this path writes the page to docs/, not docs/slides/
-nbInit(thisFileRel = "island5_operators_explainer.nim")
-const ownSource = staticRead("island5_operators_explainer.nim")
-nb.usePage(ownSource)
+nbInit(thisFileRel = "deepdive/operators.nim")
+const ownSource = staticRead("operators.nim")
+nb.useDeepDive("operators", ownSource)
 nb.useLatex
 nbText """
 # Custom operators: points, lines and planes
 
 In the talk [Sailing Seas of Scientific
-Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/),
+Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html),
 Island 5 shows, on two slides, how Nim lets you define
 your own operators: with a few lines of geometry,
 `Point + Point` makes a line, and a line and a plane
@@ -134,7 +133,7 @@ The slides use a small helper module,
 written for the talk, not part of the standard library
 (`std/math` has no points or vectors):
 """
-const vectorsSource = staticRead("island5_vectors.nim")
+const vectorsSource = staticRead("../slides/island5_vectors.nim")
 nbShowCode(vectorsSource, caption = "slides/island5_vectors.nim")
 
 nbText """
@@ -386,9 +385,9 @@ to the previous section.
 
 To play with the code, clone [the
 repository](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim)
-and run `nim r slides/island5_operators_explainer.nim`:
+and run `nim r deepdive/operators.nim`:
 it builds this page in
-`docs/island5_operators_explainer.html`.
+`docs/deepdive/operators.html`.
 The
 [README](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim#readme)
 explains how to install the dependencies.

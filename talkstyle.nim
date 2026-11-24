@@ -1,4 +1,4 @@
-## The style of the nimib pages (explainers and talk log): colours as tokens, and the CSS of
+## The style of the nimib pages (deep dives and talk log): colours as tokens, and the CSS of
 ## the blocks in blocks.nim. Pages hold no CSS and no colour: what they need goes here.
 ## The slides have their own style, in my.nim (and themes.nim for the explored themes).
 import std / json
@@ -26,8 +26,8 @@ table { font-size: 0.9em; }
 .code-caption { font-size: 0.8em; color: var(--muted); margin-top: -0.5em; }
 figcaption { font-size: 0.85em; color: var(--muted); }
 .frame { width: 100%; aspect-ratio: 16 / 9; border: 1px solid var(--line); border-radius: 6px; }
-/* the easter egg of the Thank You explainer: a heading that does not look like a link */
-a[href="emilia.html"], a[href="emilia.html"]:hover { color: inherit; text-decoration: none; }
+/* the easter egg of the Thank You deep dive: a heading that does not look like a link */
+a[href$="emilia.html"], a[href$="emilia.html"]:hover { color: inherit; text-decoration: none; }
 .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; }
 .gallery img { width: 100%; border: 1px solid var(--line); }
 .swatches { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0.5em 0 1em; }
@@ -41,7 +41,7 @@ a[href="emilia.html"], a[href="emilia.html"]:hover { color: inherit; text-decora
 .page-list { list-style: none; padding: 0; }
 .page-list li { margin-bottom: 1.4em; }
 .page-list .eyebrow { display: block; }
-.page-list a { font-size: 1.25em; font-weight: 600; }
+.page-list li > a { font-size: 1.25em; font-weight: 600; }
 .page-list p { margin: 0.2em 0 0; }
 """
   # the voyage map without a theme (talk log): `layers` draws every layer plainly, in one colour

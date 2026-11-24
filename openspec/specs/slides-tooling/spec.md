@@ -11,7 +11,7 @@ The slides SHALL be written in Nim with nimib 0.4.1 and nimiSlides 0.4.0 (reveal
 
 #### Scenario: Fresh build
 - **WHEN** someone runs `atlas install` and `nim r index.nim` in a fresh checkout
-- **THEN** `docs/index.html` is generated without errors
+- **THEN** `docs/slides.html` is generated without errors
 
 ### Requirement: Repository layout
 The presentation entry point `index.nim`, the helpers `my.nim`, `nimib.toml`, `nim.cfg` and the `.nimble` file SHALL live at the repository root, and individual slide files SHALL live in `slides/`, imported by `index.nim`.
@@ -78,7 +78,7 @@ Animated slides SHALL be written in Nim with p5nim and compiled to JavaScript by
 - **THEN** the animation plays from its start
 
 ### Requirement: Code explainers
-Code on a slide SHALL be limited to what fits the slide. An example that deserves more SHALL have an explainer: a nimib document, `slides/<name>_explainer.nim`, built to `docs/<name>_explainer.html` and deployed with the deck, that explains the example more thoroughly, with code that runs when the page is built. The example's slide SHALL link its explainer.
+Code on a slide SHALL be limited to what fits the slide. An example or topic that deserves more SHALL have a deep dive (an explainer): a nimib document, `deepdive/<name>.nim`, listed in `deepdive/deepdive.nim`, built to `docs/deepdive/<name>.html` and deployed with the deck, that explains the example more thoroughly, with code that runs when the page is built. The example's slide SHALL link its explainer.
 
 #### Scenario: Someone wants to explore an example further
 - **WHEN** a reader of the published deck follows the link on an example's slide

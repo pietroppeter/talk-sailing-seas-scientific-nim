@@ -1,24 +1,23 @@
 import std / [math, strutils, strformat, json]
 import nimib
-import ../page # usePage, and the blocks of blocks.nim
+import deepdive # useDeepDive, and the blocks of blocks.nim
 import nimib / highlight
 import unchained
-from island5_units import SolarMass, Msun, EarthMass, Mearth
+from ../slides/island5_units import SolarMass, Msun, EarthMass, Mearth
 
 # A nimib document that explains the units example of Island 5
 # (slides 6.4 and 6.5, in slides/island5_expressive.nim):
-#   nim r slides/island5_units_explainer.nim
-# writes docs/island5_units_explainer.html.
+#   nim r deepdive/units_macros.nim
+# writes docs/deepdive/units_macros.html.
 # The code below runs when the page is built, like on the slides.
 
-# this path writes the page to docs/, not docs/slides/
-nbInit(thisFileRel = "island5_units_explainer.nim")
-const ownSource = staticRead("island5_units_explainer.nim")
-nb.usePage(ownSource)
+nbInit(thisFileRel = "deepdive/units_macros.nim")
+const ownSource = staticRead("units_macros.nim")
+nb.useDeepDive("units_macros", ownSource)
 nb.useLatex
 const
   siUnitsSource = staticRead("../deps/unchained/src/unchained/si_units.nim")
-  newUnitsSource = staticRead("island5_units.nim")
+  newUnitsSource = staticRead("../slides/island5_units.nim")
 
 proc between(source, first, last: string): string =
   ## the lines of `source` from the one starting with `first`
@@ -31,7 +30,7 @@ proc between(source, first, last: string): string =
       stop = i - 1
       break
   doAssert start >= 0 and stop >= start,
-    "explainer: code not found from '" & first & "' to '" & last & "'"
+    "deep dive: code not found from '" & first & "' to '" & last & "'"
   lines[start .. stop].join("\n").strip(leading = false)
 
 template showCode(code, what: string) =
@@ -41,7 +40,7 @@ nbText """
 # Units with unchained
 
 In the talk [Sailing Seas of Scientific
-Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/),
+Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html),
 Island 5 shows metaprogramming with
 [unchained](https://github.com/SciNim/unchained),
 a library by Vindaar (Sebastian Schmidt) for physical
@@ -257,8 +256,8 @@ in your own unit system, and compute the period of
 Io around Jupiter (421 700 km).
 Clone [the
 repository](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim)
-and run `nim r slides/island5_units_explainer.nim`:
-it builds this page in `docs/island5_units_explainer.html`.
+and run `nim r deepdive/units_macros.nim`:
+it builds this page in `docs/deepdive/units_macros.html`.
 The
 [README](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim#readme)
 explains how to install the dependencies.

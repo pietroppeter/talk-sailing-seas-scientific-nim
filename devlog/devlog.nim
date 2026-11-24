@@ -1,5 +1,5 @@
 ## The talk log: posts on how the talk evolves, oldest first.
-## The deck (index.nim) is the talk, the explainers (slides/*_explainer.nim) go deeper
+## The deck (deck.nim) is the talk, the deep dives (deepdive/) go deeper
 ## into its examples, and the talk log tells how the talk got made.
 ##
 ## Adding a post: append an entry here, start the post with

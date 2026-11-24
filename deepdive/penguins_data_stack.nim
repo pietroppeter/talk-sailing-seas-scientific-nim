@@ -2,28 +2,27 @@ import std / [math, strutils]
 # only `%` from json: its `{}` would get in the way of `f{...}` formulas
 from std / json import `%`, `[]=`
 import nimib
-import ../page # usePage, and the blocks of blocks.nim
+import deepdive # useDeepDive, and the blocks of blocks.nim
 import nimib / highlight
 import ggplotnim
 import arraymancer / ml # k-means
 import plotly
-import nbplotly # nbPlotly: an interactive nim-plotly plot in nimib
+import ../slides/nbplotly # nbPlotly: an interactive nim-plotly plot in nimib
 
 # A nimib document that explains the penguins exploration of Island 3
 # (slides 4.2 to 4.7, in slides/island3_datastack.nim):
-#   nim r slides/island3_penguins_explainer.nim
-# writes docs/island3_penguins_explainer.html.
+#   nim r deepdive/penguins_data_stack.nim
+# writes docs/deepdive/penguins_data_stack.html.
 # The code below runs when the page is built, like on the slides.
 
-# this path writes the page to docs/, not docs/slides/
-nbInit(thisFileRel = "island3_penguins_explainer.nim")
-const ownSource = staticRead("island3_penguins_explainer.nim")
-nb.usePage(ownSource)
+nbInit(thisFileRel = "deepdive/penguins_data_stack.nim")
+const ownSource = staticRead("penguins_data_stack.nim")
+nb.useDeepDive("penguins_data_stack", ownSource)
 nbText """
 # Penguins with the Nim data stack
 
 In the talk [Sailing Seas of Scientific
-Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/),
+Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html),
 Island 3 sails past the Nim data stack:
 tensors with [Arraymancer](https://github.com/mratsim/Arraymancer),
 dataframes with [Datamancer](https://github.com/SciNim/Datamancer)
@@ -49,7 +48,7 @@ collected by Kristen Gorman at Palmer Station LTER.
 It is CC0, and the friendly replacement of the iris dataset.
 We use the CSV that ships with seaborn, where missing values
 are empty fields
-([docs/data/penguins.csv](data/penguins.csv)).
+([docs/data/penguins.csv](../data/penguins.csv)).
 """
 nbCode:
   let raw = readCsv("data/penguins.csv")
@@ -333,8 +332,8 @@ Color the scatter plot by island instead of species,
 or ask k-means for two clusters and see which species merge.
 Clone [the
 repository](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim)
-and run `nim r slides/island3_penguins_explainer.nim`:
-it builds this page in `docs/island3_penguins_explainer.html`.
+and run `nim r deepdive/penguins_data_stack.nim`:
+it builds this page in `docs/deepdive/penguins_data_stack.html`.
 The
 [README](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim#readme)
 explains how to install the dependencies.

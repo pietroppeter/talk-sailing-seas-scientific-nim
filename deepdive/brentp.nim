@@ -1,26 +1,25 @@
 import std / [strutils, json, random, math, algorithm, sequtils]
 import nimib
-import ../page # usePage, and the blocks of blocks.nim
+import deepdive # useDeepDive, and the blocks of blocks.nim
 import nimib / highlight
 import tabelline, tabelline / nimib
 
 # A nimib document that explains the bioinformatics work
 # of Brent Pedersen (@brentp), the first success story of
 # Island 2 (slide 3.2, in slides/island2_stories.nim):
-#   nim r slides/island2_brentp_explainer.nim
-# writes docs/island2_brentp_explainer.html.
+#   nim r deepdive/brentp.nim
+# writes docs/deepdive/brentp.html.
 # The toy code below runs when the page is built;
 # the hts-nim and slivar snippets are quoted, not run.
 
-# this path writes the page to docs/, not docs/slides/
-nbInit(thisFileRel = "island2_brentp_explainer.nim")
-const ownSource = staticRead("island2_brentp_explainer.nim")
-nb.usePage(ownSource)
+nbInit(thisFileRel = "deepdive/brentp.nim")
+const ownSource = staticRead("brentp.nim")
+nb.useDeepDive("brentp", ownSource)
 nbText """
 # Brent Pedersen: genomics tools in Nim
 
 In the talk [Sailing Seas of Scientific
-Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/),
+Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html),
 Island 2 tells two success stories in forty seconds each.
 The first is Brent Pedersen (@brentp on GitHub),
 who wrote a set of genomics tools in Nim that are

@@ -20,12 +20,12 @@ The following are three stories:
     reference """
 Beyond science, Nim runs on the web, in blockchains,
 security tools, games, chips and more:
-[Nim success stories beyond science](island2_beyond_explainer.html)
+[Nim success stories beyond science](deepdive/beyond_science.html)
 """
     speakerNote """
 Success here means people who used Nim to advance science:
 published, cited, used by others.
-For the curious, the explainer collects stories
+For the curious, the deep dive collects stories
 outside science, to show the breadth.
 """
 
@@ -68,7 +68,7 @@ for r in b.query("6", 30816675, 32816675):
     reference """
 [brentp.github.io](https://brentp.github.io/);
 citations from Google Scholar, stars from GitHub (October 2026);
-[the tools and the genomics behind them, explained](island2_brentp_explainer.html)
+[the tools and the genomics behind them, explained](deepdive/brentp.html)
 """
     speakerNote """
 hts-nim wraps htslib, the C library behind samtools.
@@ -105,7 +105,7 @@ proc axionFluxPrimakoff(E_a: keV,
 [source](https://github.com/Vindaar/phd),
 [code](https://github.com/Vindaar/TimepixAnalysis),
 [data](https://zenodo.org/uploads/10521887);
-[the thesis in plain words](island2_vindaar_explainer.html)
+[the thesis in plain words](deepdive/vindaar.html)
 """
     speakerNote """
 A GridPix detector at the CERN Axion Solar Telescope.
@@ -138,7 +138,7 @@ threads:
 [Paper](https://arxiv.org/abs/1612.02750) (2016),
 [code](https://github.com/jcosborn/qex),
 [new physics](https://arxiv.org/abs/2409.02062) (PRL 2025);
-[lattice QCD and QEX in plain words](island2_qex_explainer.html)
+[lattice QCD and QEX in plain words](deepdive/qex.html)
 """
     speakerNote """
 QEX is Quantum EXpressions, by James Osborn and Xiao-Yong Jin.

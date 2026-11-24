@@ -5,7 +5,7 @@ import devlog
 
 # A talk log post, a research post: three themes for the slides,
 # tried on a few real slides before one is picked:
-#   nim r build.nim themes   (docs/index_<theme>.html, screenshots in docs/images/themes)
+#   nim r build.nim themes   (docs/slides_<theme>.html, screenshots in docs/images/themes)
 #   nim r devlog/dressing_the_voyage.nim
 
 nbInit(thisFileRel = "devlog/dressing_the_voyage.nim")
@@ -153,14 +153,14 @@ Each theme is css on top of the AgileLab theme,
 so every slide of the deck gets it for free,
 plus openly licensed fonts and one map.
 Pick a theme when building the deck:
-`nim r -d:slideTheme=pirate index.nim`,
+`nim r -d:slideTheme=pirate deck.nim`,
 with `pirate`, `book` or `chart`
 (`nim r build.nim themes` builds all three).
 Without the define the deck is unchanged.
 The whole deck in each theme:
-[pirate](../index_pirate.html),
-[book](../index_book.html),
-[chart](../index_chart.html).
+[pirate](../slides_pirate.html),
+[book](../slides_book.html),
+[chart](../slides_chart.html).
 
 All fonts are from Google Fonts, under the SIL Open Font License,
 and are vendored in `docs/assets/fonts`

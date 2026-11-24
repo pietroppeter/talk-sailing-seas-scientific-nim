@@ -18,12 +18,12 @@ nbText """
 # Talk log
 
 Notes on how the talk
-[Sailing Seas of Scientific Nim](../index.html)
+[Sailing Seas of Scientific Nim](../slides.html)
 (Compute Paris, 26 November 2026) is made, newest first.
-The repository holds three things:
+The [site](../index.html) holds three things:
 the slides of the talk,
-the [explainers](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim#readme)
-that go deeper into the examples of the slides,
+the [deep dives](../deepdive/index.html)
+that go deeper into what the slides only sketch,
 and this log, which tells how the talk evolves.
 Everything is built in public, with nimib.
 """

@@ -181,7 +181,7 @@ func vendoredRevealCss(blk: JsonNode, nb: Nb): string =
 <link rel="stylesheet" href="{reveal}/dist/theme/{theme}.css" />
 <link rel="stylesheet" href="{nb.assetPath(highlightAssets)}/{codeTheme}.css" />
 """
-  if themed: # fonts of the themes explored in slides/themes_explainer.nim
+  if themed: # fonts of the themes explored in the talk log (devlog/dressing_the_voyage.nim)
     result.add &"""<link rel="stylesheet" href="{nb.assetPath(fontAssets)}/fonts.css" />"""
   if nb.doc.context{"p5"}.getBool:
     result.add &"""<script src="{nb.assetPath(p5Assets)}/p5.min.js"></script>"""
@@ -395,7 +395,7 @@ template testSlide* =
 
 ### H3 header
 
-Text with *italic*, **strong** and [link](recurse.com)
+Text with *italic*, **strong** and [link](https://www.recurse.com)
 
 > a quote
 """

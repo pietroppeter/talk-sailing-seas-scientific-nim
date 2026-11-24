@@ -1,4 +1,4 @@
-## What every nimib page (explainers, talk log) starts with, after nbInit:
+## What every nimib page (deep dives, talk log) starts with, after nbInit:
 ##
 ##   const ownSource = staticRead("my_page.nim")
 ##   nb.usePage(ownSource)

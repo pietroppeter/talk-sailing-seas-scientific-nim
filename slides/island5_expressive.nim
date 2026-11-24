@@ -77,14 +77,14 @@ they generically intersect in one point.
           plane = pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)
         echo line * plane
       nbTextSmall """
-[Explained step by step here](island5_operators_explainer.html).
+[Explained step by step here](deepdive/operators.html).
 """
       speakerNote """
 Two points make a line, three points a plane (here z = 0),
 and the line meets the plane in a point.
 The code reads like geometry, and the types check it:
 `plane * line` and `plane + pt(1, 1, 1)` do not compile.
-The explainer goes through the math, the edge cases
+The deep dive goes through the math, the edge cases
 (parallel lines give infinities) and the meet of two planes.
 """
     slide: # 6.4
@@ -128,7 +128,7 @@ how long is a year, for a planet or a moon?
         echo "Moon: ", period(384_400.km, 1.Mearth).to(day)
         echo compiles(1.AU + 1.Msun) # Length + Mass
       nbTextSmall """
-[Explained step by step here](island5_units_explainer.html).
+[Explained step by step here](deepdive/units_macros.html).
 """
       speakerNote """
 Astronomical units, kilometers, solar and Earth masses
