@@ -1,24 +1,24 @@
 import nimib, nimiSlides
 import ../my
 
-# Opening, slide 0.2: about me (not part of the intro section, like the title slide)
+#> can you make sure that the about agilelab title is spaced vertically a little bit more with respect to the rest?
 
 template aboutSlide* =
   slide:
     nbText """
 ## 👋 About me
 
-**Pietro Peterlongo** 🇮🇹⛰️⛵️
+*Pietro Peterlongo* 🇮🇹⛰️⛵️
 
-- 🧮 **Applied math**: geosciences 🌍 to cryptography 🔐
 - 🧑‍💼 ~~Data Scientist~~ **Delivery Manager** @ **AgileLab**
 - 💙🧡 Organizer: Python Milan, PyData Milan
-- 👑 **Nim** since 2018, 📓 **nimib** since 2020
+- 👑 *Nim* since 2018, 📓 *nimib* "notebook" since 2020
+- 🧮 *Applied math*: geosciences 🌍 to cryptography 🔐
 
-#### 🔵⚪️ AgileLab
+## 🔵⚪️ About AgileLab?
 
 - 🏢 Data consulting, 📈 ~350 people (2x in 3 years)
-- 📖 Public handbook, 🌀 holacracy, 🏄 nomads
+- 📖 [Public handbook](https://handbook.agilelab.it/), 🌀 holacracy, 🏄 nomads
 """
     speakerNote """
 - Delivery Manager at AgileLab since 2024, before that
