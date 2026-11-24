@@ -64,6 +64,10 @@ $ uv run python -m timeit -s "from slow import fib" "fib(30)"
 $ uv run python -m timeit -s "from fast import fib" "fib(30)"
 20 loops, best of 5: 11.5 msec per loop
 """, lang = "sh")
+      nbTextSmall """
+It also builds the wheels: ship Nim-powered libraries to Python users
+with no Nim compiler on their side, as Rust does with maturin.
+"""
       speakerNote """
 The other direction: Nim as the language where you write the fast part,
 and other languages use it. Python people do it with C, Cython, Rust.
@@ -72,22 +76,34 @@ nimlang is a Python package (mine, alpha) that ships the Nim compiler
 and uses zig from PyPI as C compiler: uv add, write the Nim file, build, import.
 Eight times faster on a toy that is all function calls.
 The session is recorded (24 Nov 2026, Linux), not live.
-It also builds wheels for five platforms from one Linux machine.
+And the point for library authors: nimlang builds wheels, for five platforms
+from one Linux machine, so Python users pip install a Nim-powered library
+without a Nim compiler. That is what Rust has with PyO3 and maturin,
+which made Rust the default for fast Python libraries (polars, pydantic-core).
 """
     slide: # 5.4
       nbText "## A real package: naffprop"
-      nbShowCode("""
-from naffprop import AffinityPropagation
+      columns:
+        column:
+          nbShowCode("""
+import naffprop
 
-ap = AffinityPropagation().fit(X)             # drop-in for sklearn's
-AffinityPropagation(n_clusters=5)             # exactly 5: R's apclusterK
-AffinityPropagation(preference_quantile=0.1)  # fewer clusters: R's q
+ap = naffprop.AffinityPropagation(
+  n_clusters=5)  # R's apclusterK
+ap.fit(X).labels_
 """, lang = "python")
-      nbText """
-- affinity propagation: R's features, scikit-learn's API
-- the algorithm in plain Nim, built with nimlang
-- `uv add naffprop`: wheels for five platforms
-- 1.1 to 2.9 times faster than scikit-learn, less memory
+          nbTextSmall """
+Affinity propagation clustering:
+R's features, scikit-learn's API.
+The algorithm in plain Nim, built with nimlang:
+`uv add naffprop`, wheels for five platforms,
+1.1 to 2.9 times faster than scikit-learn, with less memory.
+"""
+        column:
+          nbFrame("assets/naffprop/index.html", "How exemplars emerge, naffprop's interactive figure")
+          nbTextSmall """
+[How exemplars emerge](https://pietroppeter.github.io/naffprop/):
+the same Nim, compiled to JavaScript
 """
       speakerNote """
 An example of a real package built this way.
@@ -96,6 +112,8 @@ no number of clusters fixed beforehand.
 R's apcluster has the richer feature set, scikit-learn the familiar API:
 naffprop gives both, with the core loop in Nim.
 Same exemplars as scikit-learn on the test data, passes check_estimator.
+On the right, live: its interactive explanation, the paper's Fig. 1A one iteration
+at a time; the same Nim code compiled to JavaScript (press Play).
 Also mine, from this year, mostly written with an AI agent (its README says so).
 """
     slide: # 5.5

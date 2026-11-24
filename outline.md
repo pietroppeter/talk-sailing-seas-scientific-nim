@@ -84,8 +84,8 @@ Two messages (Pietro, 2026-11-24): Nim's small ecosystem is not a problem, becau
 
 5.1 **Island 4** - section title on the map.
 5.2 **Small ecosystem, big neighbours** - natively C, C++, JavaScript with `importc`, `importcpp`, `importjs`: C's Bessel function `j0` declared in one line and called when the slide is built; through bridges Python (nimpy), R (rnim), Julia (nimjl); link to the deep dive [example].
-5.3 **Write it in Nim, use it from Python** - `uv add nimlang` (the Nim compiler in a Python wheel, `zig cc` as C compiler): `fib` in Nim with nimpy's `exportpy`, then a recorded terminal session that builds it and times it against `slow.py` (95.8 ms vs 11.5 ms) [example].
-5.4 **A real package: naffprop** - affinity propagation with R's apcluster features behind scikit-learn's API, the algorithm in Nim, built with nimlang, wheels for five platforms, 1.1 to 2.9 times faster than scikit-learn [example].
+5.3 **Write it in Nim, use it from Python** - `uv add nimlang` (the Nim compiler in a Python wheel, `zig cc` as C compiler): `fib` in Nim with nimpy's `exportpy`, then a recorded terminal session that builds it and times it against `slow.py` (95.8 ms vs 11.5 ms); it also builds the wheels, so Python users of a Nim-powered library need no Nim compiler, as Rust does with maturin [example].
+5.4 **A real package: naffprop** - affinity propagation with R's apcluster features behind scikit-learn's API, the algorithm in Nim, built with nimlang, wheels for five platforms, 1.1 to 2.9 times faster than scikit-learn [example]; on the right, live in an iframe, its interactive figure "How exemplars emerge" (the same Nim compiled to JavaScript, vendored in `docs/assets/naffprop/` by `scripts/vendor-assets.sh`).
 5.5 **Rocks ahead** - bridges of different maturity (nimpy solid, rnim a prototype, nimjl needs Julia); no maintained packaging tool for years, nimlang new and alpha; few Python users know Nim, compared with Rust.
 
 ### 6. Island 5: An Expressive Language (~2.5 min)

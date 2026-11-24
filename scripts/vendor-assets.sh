@@ -96,4 +96,30 @@ cp "$tmp/plotly/package/LICENSE" "$plotly/"
 cp "$tmp/plotly/package/plotly.min.js" "$plotly/"
 echo "$PLOTLY_VERSION" > "$plotly/VERSION"
 
-du -sh "$reveal" "$katex" "$p5" "$hljs" "$water" "$nimibAssets" "$plotly"
+# naffprop's interactive figure "How exemplars emerge" (a nimib page with Nim compiled to JS),
+# shown next to the naffprop slide (5.4): the page from GitHub Pages without its Google Fonts
+# (the system fonts stand in) and with only the figure visible, for an iframe
+naffprop="$assets/naffprop"
+rm -rf "$naffprop"
+mkdir -p "$naffprop"
+curl -fsSL https://pietroppeter.github.io/naffprop/ -o "$tmp/naffprop.html"
+python3 - "$tmp/naffprop.html" "$naffprop/index.html" <<'PY'
+import re, sys
+html = open(sys.argv[1]).read()
+html = re.sub(r'<link[^>]*fonts\.(googleapis|gstatic)\.com[^>]*>\n?', '', html)
+only_figure = """<style>/* talk: only the figure, for an iframe on the slides */
+main > *:not(figure) { display: none !important; }
+main { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+main > figure { margin: 0 !important; border: 0 !important; padding: 8px !important; }
+main > figure > figcaption { display: none; }
+.ap-plot { width: auto !important; height: calc(100vh - 175px); margin: 0 auto; }
+html, body { margin: 0 !important; overflow: hidden; background: var(--surface); }
+</style>
+</head>"""
+html = html.replace("</head>", only_figure, 1)
+open(sys.argv[2], "w").write(html)
+PY
+echo "https://pietroppeter.github.io/naffprop/ $(date -u +%Y-%m-%d)" > "$naffprop/VERSION"
+echo "MIT, https://github.com/pietroppeter/naffprop" > "$naffprop/LICENSE"
+
+du -sh "$reveal" "$katex" "$p5" "$hljs" "$water" "$nimibAssets" "$plotly" "$naffprop"

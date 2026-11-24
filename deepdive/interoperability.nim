@@ -240,6 +240,37 @@ extensions = ["src/mypkg/fast.nim"]  # importable as mypkg.fast
 dependencies = ["nimpy"]
 """, lang = "toml", caption = "the `pyproject.toml` of a package with a Nim extension"
 nbText """
+## Compared with Rust
+
+Rust is where the Python ecosystem goes today for a
+fast library, and the comparison is not flattering
+for Nim.
+[PyO3](https://pyo3.rs) binds Rust and Python,
+[maturin](https://www.maturin.rs/) builds and publishes
+the wheels, and widely used packages ship that way,
+like [polars](https://pola.rs/),
+pydantic-core (the core of pydantic) and orjson:
+the path is tested every day by many projects and
+many users.
+
+| | Rust | Nim |
+|---|---|---|
+| binding | PyO3 | nimpy, stable for years |
+| build and ship wheels | maturin | nimporter (no release since 2022), now nimlang (alpha, 2026) |
+| numpy arrays | rust-numpy | nimpy_numpy |
+| compiler on the user's side | none, prebuilt wheels | none, prebuilt wheels (with nimlang) |
+| packages built this way | many, some among the most downloaded | a few, like naffprop |
+| how tested | by a large ecosystem | by a few projects |
+
+The binding is not the gap: nimpy has been stable for
+a long time and makes the Nim side short.
+The gap is everything around it: a maintained build
+and packaging tool, examples to copy, and enough users
+that the corners are found before you find them.
+nimlang closes the first; the others need users.
+
+## Other ways
+
 Other ways to offer Nim code to other languages:
 a shared library with `exportc` and `dynlib`, which
 any language with a C FFI can load, and
