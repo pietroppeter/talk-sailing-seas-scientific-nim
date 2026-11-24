@@ -196,7 +196,8 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
     keepOut.add ((lp.x - 110, lp.y - 14), (lp.x + 110, lp.y + 6))
   let rose = v.compassAt + (-6.0, 16.0)
   keepOut.add ((rose.x - 50, rose.y - 50), (rose.x + 50, rose.y + 50))
-  keepOut.add ((330.0, 22.0), (640.0, 82.0)) # the title block
+  let tb = v.titleAt
+  keepOut.add ((tb.x - 165, tb.y - 18), (tb.x + 165, tb.y + 42)) # the title block
   keepOut.add ((v.w - 260, v.h - 26), (v.w, v.h)) # the source note
   func inside(p: Pt, b: (Pt, Pt)): bool = p.x > b[0].x and p.x < b[1].x and p.y > b[0].y and p.y < b[1].y
   let course = v.routePolyline
@@ -244,7 +245,9 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
   # names of the islands of the talk, and the light on the island of the section
   for i, isl in v.islands:
     let n = i + 1
-    let lp = isl.labelPos
+    var lp = isl.labelPos
+    let half = 4.3 * (names[i].len + 4).float # about half the width of the name, at its size
+    lp.x = clamp(lp.x, half + 10, v.w - half - 10)
     let state = islandState(n, current)
     result.add &"""<text class="cname{state}" x="{f1(lp.x)}" y="{f1(lp.y)}" text-anchor="middle">{n} · {names[i].toUpperAscii}</text>"""
     if n == current:
@@ -256,17 +259,17 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
     elif current == 8: "LANDFALL · BACK ON THE MAINLAND"
     else: "FROM THE MAINLAND TO SEVEN ISLANDS"
   let subClass = if current in 1 .. 8: "tb-sub current" else: "tb-sub"
-  result.add &"""<g class="title-block" text-anchor="middle"><text x="485" y="40" class="tb-title">SEAS OF SCIENTIFIC NIM</text>"""
-  result.add &"""<text x="485" y="54" class="{subClass}">{sub}</text>"""
+  result.add &"""<g class="title-block" text-anchor="middle"><text x="{f1(tb.x)}" y="{f1(tb.y)}" class="tb-title">SEAS OF SCIENTIFIC NIM</text>"""
+  result.add &"""<text x="{f1(tb.x)}" y="{f1(tb.y + 14)}" class="{subClass}">{sub}</text>"""
   let tbNote =
     if current in 1 .. 7 and v.islands[current - 1].lore.len > 0: v.islands[current - 1].lore
     else: "Soundings and heights in metres · each island at its own scale"
-  result.add &"""<text x="485" y="66" class="tb-note">{tbNote}</text></g>"""
+  result.add &"""<text x="{f1(tb.x)}" y="{f1(tb.y + 26)}" class="tb-note">{tbNote}</text></g>"""
   for isl in v.islands:
     if isl.note.len > 0:
       let c = isl.cape((-1.0, 0.5))
       result.add &"""<text x="{f1(c.x - 5)}" y="{f1(c.y + 10)}" text-anchor="end" class="chart-note">{isl.note}</text>"""
-  result.add &"""<text class="land-name" x="40" y="300" transform="rotate(-90 40 300)" text-anchor="middle">THE MAINLAND</text>"""
+  result.add &"""<text class="land-name" {v.landLabelAttrs} text-anchor="middle">THE MAINLAND</text>"""
   result.add &"""<text class="note" x="{f1(v.w - 12)}" y="{f1(v.h - 12)}" text-anchor="end">Coasts of the islands © OpenStreetMap contributors (ODbL)</text>"""
   result.add roseSvg(rose, 34)
   result.add "</g>"

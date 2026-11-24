@@ -39,6 +39,10 @@ type
     compassAt*: Pt
     seaName*: string
     islets*: seq[seq[Pt]] ## small islands around the islands of the voyage, unnamed, drawn as they are
+    coast*: seq[Pt]      ## a real coast for the mainland, a closed polygon drawn as it is (maps/isole.nim); empty: `mainland`
+    titleAt*: Pt         ## where the chart's title block goes (the middle of its first line)
+    landLabel*: Pt       ## where the mainland's name goes
+    landLabelAngle*: float ## and its angle, degrees
     roughCoast*: float   ## how far (map units) the mainland's coast wanders off its smooth line: 0 smooth
 
 func catmullRom(pts: seq[Pt], closed: bool, steps = 8): seq[Pt] =
@@ -102,7 +106,8 @@ func fbm*(x, y: float, octaves = 4): float =
   result /= norm
 
 func mainlandPolygon*(v: Voyage): seq[Pt] =
-  ## the mainland: its coast, closed along the left edge of the map
+  ## the mainland: its coast, closed along the left edge of the map (or the real coast, if any)
+  if v.coast.len > 0: return v.coast
   result = catmullRom(v.mainland, closed = false, steps = if v.roughCoast > 0: 24 else: 8)
   if v.roughCoast > 0: # a coast that wanders like a real one: capes and bays at every scale
     for p in result.mitems:
@@ -116,6 +121,11 @@ func routePolyline*(v: Voyage, upTo = -1): seq[Pt] =
   catmullRom(pts, closed = false)
 
 func f1*(x: float): string = formatFloat(x, ffDecimal, 1)
+
+func landLabelAttrs*(v: Voyage): string =
+  ## the svg attributes that place the mainland's name
+  "x=\"" & f1(v.landLabel.x) & "\" y=\"" & f1(v.landLabel.y) & "\" transform=\"rotate(" & f1(v.landLabelAngle) &
+    " " & f1(v.landLabel.x) & " " & f1(v.landLabel.y) & ")\""
 
 func svgPath*(poly: seq[Pt], closed = true): string =
   for i, p in poly:
@@ -277,7 +287,8 @@ func defaultVoyage*(): Voyage =
                  (705.0, 150.0), (865.0, 235.0), (825.0, 430.0)]
   let radii = [46.0, 40.0, 54.0, 44.0, 40.0, 46.0, 38.0]
   let below = [false, true, false, true, false, false, true]
-  result = Voyage(w: 960, h: 540, compassAt: (900.0, 78.0), seaName: "Seas of Scientific Nim")
+  result = Voyage(w: 960, h: 540, compassAt: (900.0, 78.0), seaName: "Seas of Scientific Nim",
+    landLabel: (40.0, 300.0), landLabelAngle: -90, titleAt: (485.0, 40.0))
   for i in 0 ..< 7:
     result.islands.add Island(center: centers[i], r: radii[i], seed: i.float * 1.7, labelBelow: below[i],
       features: @[Feature(kind: Hills, at: (0.0, 0.0)),

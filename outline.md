@@ -43,7 +43,7 @@ Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim'
 1.1 **The mainland** - a map of scientific computing languages over time: Fortran, C, C++, R, Python, Julia.
 1.2 **Why so many languages?** - each language came to solve a problem the previous ones did not; the two-language problem as the classic example.
 1.3 **Nim's tradeoffs** - the abstract's question "is there space for one more?" reframed: this talk is about Nim's specific tradeoffs, seven islands, and we won't hide where Nim falls short.
-1.4 **The map** - the seven islands on one nautical chart, used again as a progress marker at each section start: each section's map slide is the chart alone, its title block naming the island ("Chart 3 of 7 · Data Stack") and the real island it is drawn as, with a line of lore (`decisions/themes.md`).
+1.4 **The map** - the seven islands on one nautical chart, used again as a progress marker at each section start: each section's map slide is the chart alone, its title block naming the island ("Chart 3 of 7 · Data Stack") and the real island it is drawn as, with a line of lore; the mainland is the Gulf of Trieste, Leros (the Notebook) in the middle (`decisions/themes.md`).
 
 ### 2. Island 1: Accessible Performance (~1 min)
 
