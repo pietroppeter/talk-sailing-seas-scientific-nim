@@ -15,6 +15,33 @@ The original numbers (2015 hardware, Julia 0.3-era), 4·10⁶ points either as m
 
 Bezanson's reading: for small matrices the two-language dispatch overhead swamps the computation, and his closing line is the one worth quoting on a slide — abstraction overhead is important and involves the whole program, not just inner loops.
 
+The Julia version of figure 2-1, as written for the Julia of 2015 (copied in the earlier exploration's benchmark script, not checked against the PDF):
+
+```julia
+function vander(x, N::Int)
+  x = convert(AbstractVector, x)
+  M = length(x)
+  v = Array(promote_type(eltype(x),Int), M, N)
+  if N > 0
+    v[:, 1] = 1
+  end
+  if N > 1
+    for i = 2:N; v[:, i] = x; end
+    accumulate(multiply, v, v)
+  end
+  return v
+end
+
+function accumulate(op, input, output)
+  M, N = size(input)
+  for i = 2:N
+    for j = 1:M
+      output[j,i] = op(input[j,i], input[j,i-1])
+    end
+  end
+end
+```
+
 ## What the earlier exploration found
 
 It ran the thesis' own NumPy `vander` and a Nim port on the thesis' two cases (4×4 ×250 000 and 2000×2000, `-d:danger`, values in [0.9, 1.1] so that x^2000 stays a normal float). Three things to keep in mind before putting a number on a slide:

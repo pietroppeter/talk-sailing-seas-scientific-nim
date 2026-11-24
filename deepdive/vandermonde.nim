@@ -80,14 +80,31 @@ for loops on numbers: `np.vander` is fast because its loop
 is in C, inside NumPy. In Nim the loop *is* the fast code:
 it is compiled to C, and from C to machine code,
 so you are allowed to write for loops.
-Nim and NumPy are in the same range here;
-which one comes first is not the point
-(see the caveats below).
+Nim and NumPy are in the same range here,
+and that is what to expect: compiled loops are
+comparable to NumPy, not faster than it.
 
 All three compute the same matrix:
 `vander.py` checks that the Python loops and `np.vander`
 give the same numbers, and the sum of the matrix
 (the checksum in `results.csv`) is the same for all three.
+"""
+
+nbText """
+### Why NumPy is not faster here
+
+NumPy has no trick that the loops lack in this case.
+`np.vander` (in NumPy's Python code) allocates the matrix,
+fills its first column with 1 and every other column with $x$,
+then calls `np.multiply.accumulate` along each row.
+The C loop of `accumulate` does the same multiplications
+as our loops, one row at a time, each power waiting for the
+previous one, so the CPU cannot do them in parallel (no SIMD).
+On top of that NumPy writes the matrix twice
+(the copies of $x$, then the powers) and starts its C loop
+once per row. That is why the Nim loops can come out level
+with it, or a little ahead: on another machine,
+or with another shape of matrix, NumPy can come out ahead.
 """
 
 nbText """
@@ -109,13 +126,41 @@ It is the two-language problem in a page of code:
 high-level code is easy to write, fast code is in another
 language, and the boundary between the two has a cost.
 
+For comparison, here is the same function with loops
+in today's Julia. Julia stores a matrix column by column,
+so the natural loop goes down each column,
+the opposite order of the Python and Nim versions;
+the multiplications of a column are independent,
+which lets the compiler use SIMD.
+This code is not run when the page is built
+(there is no Julia here), and the thesis' own version,
+written for the Julia of 2015, is in the talk's
+[notes](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim/blob/main/notes/vandermonde-benchmark.md).
+"""
+nbShowCode("""
+function vander(x, n)
+    v = ones(length(x), n)
+    for j in 2:n
+        for i in eachindex(x)
+            v[i, j] = v[i, j-1] * x[i]
+        end
+    end
+    return v
+end
+""", lang = "julia")
+
+nbText """
 We can run the same small case with our three versions:
 """
 nbTable benchTable("small", "250 000 × (4 × 4)")
 nbText """
 With matrices this small, NumPy is slower than
 the Python loops: the call costs more than the work.
-The Nim loops pay no such price.
+The Nim loops are called from Nim, so they pay no such price.
+Called from Python (for example through
+[nimpy](https://github.com/yglukhov/nimpy)), each call would
+cross the same boundary and pay a similar price:
+the boundary costs, whatever the language behind it.
 """
 
 nbText """
