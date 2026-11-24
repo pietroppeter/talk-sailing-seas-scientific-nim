@@ -9,6 +9,9 @@
 ##   nim r build.nim check                only the checks: nothing loaded from the network, no broken link between pages,
 ##                                        no nbRawHtml, no `#>` note for Claude left (fails in CI, a warning locally)
 ##   nim r build.nim slides deepdives     groups combine
+##   nim r build.nim island1              one part of the deck on its own (slides_island1.html), in the
+##                                        deck's look; any of deck.nim's `sections` (intro, island1 to
+##                                        island7, conclusion, ...): to review or publish one island
 ##
 ## Any group also builds the site index (index.nim, docs/index.html), which lists everything.
 ##
@@ -19,6 +22,8 @@ import std / [os, osproc, strutils, re, sets, sequtils]
 
 const
   pageGroups = ["slides", "deepdives", "devlog"]
+  deckSections = ["title", "about", "intro", "island1", "island2", "island3", "island4",
+                  "island5", "island6", "island7", "conclusion", "thank_you"] # as in deck.nim
   themes = ["pirate", "book", "chart"]
 
 proc run(cmd: string) =
@@ -120,14 +125,17 @@ when isMainModule:
   if groups.len == 0 or "all" in groups:
     groups = @pageGroups & @["themes", "looks", "check"]
   for g in groups:
-    if g notin pageGroups and g notin ["themes", "looks", "check"]:
-      quit "build: unknown group " & g & " (slides, deepdives, devlog, themes, looks, check, all)", 2
+    if g notin pageGroups and g notin ["themes", "looks", "check"] and g notin deckSections:
+      quit "build: unknown group " & g & " (slides, deepdives, devlog, themes, looks, check, all, " &
+        "or a section of the deck: " & deckSections.join(", ") & ")", 2
   let pages = groups.filterIt(it in pageGroups)
   if pages.len > 0:
     run "nim r " & nimFlags(extra) & " -d:only=" & pages.join(",") & " all.nim"
   if "themes" in groups:
     for t in themes:
       run "nim r " & nimFlags(extra) & " -d:slideTheme=" & t & " all.nim"
+  for g in groups.filterIt(it in deckSections):
+    run "nim r " & nimFlags(extra) & " -d:deckSection=" & g & " deck.nim"
   if "looks" in groups:
     run "nim r " & nimFlags(extra) & " -d:deckLook=centered all.nim"
   let checks = [check(), linksResolve(), noRawHtml(), noAgentNotes()]
