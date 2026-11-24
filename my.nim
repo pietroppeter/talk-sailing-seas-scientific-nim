@@ -98,7 +98,6 @@ const quartoCss = """
   --r-heading-text-transform: none;
 }
 .reveal .slides { text-align: left; }
-.reveal .slides > section:first-child { text-align: center; }
 .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; font-weight: 600; }
 /* a second heading on a slide (e.g. About AgileLab under About me) starts a new part: more room above it */
 .reveal .slides section > h2:not(:first-child) { margin-top: 1em; }
@@ -211,6 +210,11 @@ const quartoLook* = deckLook == "quarto"
 const sideLook* = not quartoLook
   ## a deck in a look other than the default, built on the side
 
+const deckSection* {.strdefine.} = ""
+  ## build one part of the deck on its own (see deck.nim): `nim r build.nim island1`.
+  ## The first slide is then that part's map slide, not the title, so it is not centered
+const titleFirst* = deckSection in ["", "title"]
+
 const codeTheme* {.strdefine.} = "atom-one-light"
   ## highlight.js style for code blocks, one of the files in docs/assets/highlight
   ## (try another with `nim r -d:codeTheme=github my.nim`)
@@ -254,7 +258,7 @@ func agileMainToHtml(doc: NbDoc, nb: Nb): string =
   # Quarto's reveal.js settings (quarto-cli, format-reveal.ts): a wider slide, a larger margin
   # around it, and slides aligned at the top instead of centered; the title slide stays centered
   let layout = when quartoLook: "width: 1050, height: 700, margin: 0.1, center: false," else: ""
-  let centerTitle = when quartoLook: "document.querySelector('.reveal .slides > section')?.classList.add('center');" else: ""
+  let centerTitle = when quartoLook and titleFirst: "document.querySelector('.reveal .slides > section')?.classList.add('center');" else: ""
   result = withNewlines:
     hlHtmlF"""
 <div class="reveal">
@@ -342,6 +346,8 @@ template myInit*(sourceFileRel = "my.nim") =
   imageLeftStyle
   when quartoLook: # the default; -d:deckLook=centered for the earlier look
     nb.addStyle quartoCss
+    when titleFirst: # the title slide stays centered
+      nb.addStyle ".reveal .slides > section:first-child { text-align: center; }"
   when themed: # -d:slideTheme=pirate|book|chart, see themes.nim
     nb.addStyle: themeCss()
   nb.backend.funcs["NbDoc"] = agileNbDocToHtml

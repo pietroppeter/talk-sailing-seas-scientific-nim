@@ -26,6 +26,7 @@ Everything committed (code, specs, notes, commit messages, PR descriptions) is p
 
 ## Showing the work
 
+- To show one island, build only its part of the deck: `nim r build.nim island1` (any section of `deck.nim`) writes `docs/slides_island1.html` in the deck's look. Publish it, or a deep dive, as a claude.ai artifact: `python3 scripts/bundle-page.py docs/slides_island1.html /mnt/user-data/outputs/island1` copies the page and the files it loads and prints the files list for `publish_files` (which only takes files under `/mnt/user-data/outputs`). Republish to the same artifact when the page changes; attach few screenshots and no raw HTML.
 - Every change to a page or a slide is shown rendered: build it and take screenshots (Playwright and Chromium; `scripts/screenshot.sh docs/slides.html <dir>` for slides). Check pages at 390px wide too.
 - A review export pasted in the chat (`format: nimib-review/...`) comes from a page's review mode: apply it with the `nimib-review` skill (`.claude/skills/nimib-review`).
 
