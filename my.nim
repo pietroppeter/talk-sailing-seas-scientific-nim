@@ -1,9 +1,12 @@
-import std / [strutils, strformat, json, math]
+import std / [strutils, strformat, json, math, xmltree]
 export strutils
 import nimib, nimiSlides
 import themes
 export themes
 import tabelline
+import offline # freshRenderer
+import blocks # nbImg, nbShowCode, nbSketch, ... (pages and slides share them)
+export offline, blocks
 import tabelline / nimib as tabellineNimib
 # only nbTable: tabelline's other names (Column, readCsv, ...) clash with Datamancer's,
 # so a slide file that makes a table imports tabelline itself
@@ -24,30 +27,71 @@ newNbBlock(NbTextSmall of NbText):
 template nbTextSmall*(ttext: string) =
   nb.add newNbTextSmall(text = ttext)
 
-newNbBlock(NbImg):
-  url: string
-  width: string
-  caption: string
-  alt: string
-  toHtml:
-    &"""<figure>
-<img src="{blk.url}" alt="{blk.alt}" width="{blk.width}">
-<figcaption>{blk.caption}</figcaption>
-</figure>"""
-
-func img*(nb: var Nb, url: string, width: string, caption = "", alt = "") =
-  let blk = newNbImg(url = nb.doc.relToRoot(url), width = width, caption = caption,
-    alt = if alt.len == 0: caption else: alt)
-  nb.add blk
-
-template nbImg*(url: string, width: string, caption = "", alt = "") =
-  nb.img(url, width, caption, alt)
-
 template reference*(text: string) =
   nbTextSmall: text
 
+const slideBlocksCss = """
+/* blocks of blocks.nim on the slides, and the layouts of Island 2 */
+.reveal .lede.story { font-size: 0.8em; }
+.reveal h3 .gh-mark { height: 0.8em; width: 0.8em; vertical-align: -0.05em; margin-right: 0.15em; }
+.reveal .rocks-quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; }
+.reveal .rocks-quotes figure { margin: 0; }
+.reveal .rocks-quotes blockquote { width: auto; margin: 0; font-size: 0.75em; }
+.reveal .rocks-quotes figcaption { font-size: 0.55em; margin-top: 0.5em; }
+/* Island 1: the line saying what the Vandermonde matrix is, as small as nbTextSmall (a div, since KaTeX breaks inside reveal's small) */
+.reveal .perf-intro { font-size: 0.6em; }
+/* an app compiled to JavaScript (nbApp, slide 7.3): sliders in a sidebar, then a canvas */
+.reveal .app > div { display: flex; gap: 1.2em; align-items: center; justify-content: center; margin: 0.4em 0 0.4em 1.8em; }
+.reveal .app .sidebar { display: flex; flex-direction: column; gap: 0.5em; width: 11em; font-size: 0.6em; text-align: left; }
+.reveal .app label { display: grid; grid-template-columns: 1fr auto; column-gap: 0.5em; }
+.reveal .app input { grid-column: 1 / 3; width: 100%; margin: 0.2em 0 0; }
+/* code you drag (nbCodeStage, zogyn, slide 7.3): the code as an svg, its slider lines move */
+.reveal .code-stage { width: 100%; }
+.reveal .code-stage svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: none; user-select: none; font-family: var(--r-code-font); font-size: 14px; }
+.reveal .code-stage text, .reveal .code-stage tspan { fill: currentColor; }
+.reveal .code-stage .item { transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1); }
+.reveal .code-stage .item.grab { cursor: grab; }
+.reveal .code-stage .item.lifted { transition: none; cursor: grabbing; }
+.reveal .code-stage .handle { fill: var(--r-link-color); fill-opacity: 0; } /* a secret: no hint that the lines move */
+.reveal .code-stage .lifted .handle { fill-opacity: 0; }
+/* imageAside: a picture with something smaller beside it (slide 7.2) */
+.reveal .img-aside { display: grid; grid-template-columns: 2fr 1fr; gap: 1em; align-items: center; margin-top: 0.6em; }
+.reveal .img-aside img { width: 100%; margin: 0; }
+.reveal .img-aside-text { font-size: 0.6em; }
+/* a page of the site live in a slide (nbFrame), e.g. naffprop's figure on slide 5.6 */
+.reveal iframe.frame { width: 100%; height: 500px; border: 1px solid #ddd; border-radius: 6px; background: white; }
+/* Island 1: Python and Nim side by side, each column as wide as its code */
+.reveal .perf-cols { display: grid; grid-template-columns: max-content 1fr; gap: 0.6em; margin-bottom: 0.6em; }
+.reveal .perf-cols pre { font-size: 0.45em; width: 100%; margin: 0; }
+/* Island 7 (slide 8.3): a nimib document (nimibCode) on the left, what it renders on the right, as a page */
+.reveal .nimib-twin { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: 1.2em; row-gap: 0; align-items: start; margin-top: 0.4em; }
+.reveal .nimib-twin > :first-child { grid-column: 1; grid-row: 1 / span 8; font-size: 0.48em; margin: 0; width: 100%; }
+.reveal .nimib-twin > :not(:first-child) { grid-column: 2; margin: 0; padding: 0.2em 0.8em; background: white; border: 1px solid #ddd; border-top: none; border-bottom: none; text-align: left; }
+.reveal .nimib-twin > :nth-child(2) { border-top: 1px solid #ddd; border-radius: 6px 6px 0 0; padding-top: 0.6em; }
+.reveal .nimib-twin > :last-child { border-bottom: 1px solid #ddd; border-radius: 0 0 6px 6px; padding-bottom: 0.6em; }
+.reveal .nimib-twin > pre { font-size: 0.4em; width: 100%; box-sizing: border-box; }
+.reveal .nimib-twin > p { font-size: 0.6em; }
+.reveal .nimib-twin > h3 { font-size: 0.8em; }
+/* nbQuote on a slide (8.2) */
+.reveal .slides section > figure.quote { margin: 0.4em 0 0.6em; }
+.reveal .slides section > figure.quote blockquote { width: auto; margin: 0; font-size: 0.85em; }
+.reveal .slides section > figure.quote figcaption { font-size: 0.55em; margin-top: 0.4em; }
+/* compactColumns: three narrow columns of code (Island 4 bridges), smaller code */
+.reveal .compact-cols pre { font-size: 0.5em; }
+/* a table on its own in a slide (not in a layout's grid) gets room above and below */
+.reveal .slides section > .tabella { margin: 0.8em 0; }
+/* code in nimiSlides' columns (a grid) fills its column */
+.reveal [style*="grid"] > div > pre { width: 100%; }
+"""
+
+template useSoftBackground* =
+  ## the deck's off-white background, for a deck without the AgileLab theme (slides/emilia.nim)
+  nb.addStyle ":root { --r-background-color: " & softWhite & "; }"
+
 template agileTheme*() =
   setSlidesTheme(White)
+  nb.addStyle slideBlocksCss
+  nb.addStyle codeLanguageCss
   nb.addStyle: """
 :root {
   --r-background-color: $2;
@@ -84,6 +128,43 @@ li {
   border-left: 4px solid $3;
 }
 """ % [agileDarkBlue, softWhite, agileLightBlue, witboostOrange]
+
+const quartoCss = """
+/* Quarto's reveal.js look (quarto-cli, src/resources/formats/revealjs/quarto.scss, MIT):
+   the sizes and margins only, the AgileLab colours and logo stay */
+:root {
+  --r-main-font-size: 40px;
+  --r-block-margin: 12px;
+  --r-heading-margin: 0 0 12px 0;
+  --r-heading-text-transform: none;
+}
+.reveal .slides { text-align: left; }
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; font-weight: 600; }
+/* a second heading on a slide (e.g. About AgileLab under About me) starts a new part: more room above it */
+.reveal .slides section > h2:not(:first-child) { margin-top: 1em; }
+.reveal p, .reveal .slides section, .reveal .slides section > section { line-height: 1.3; }
+.reveal ul, .reveal ol { margin-left: 1em; }
+.reveal li { padding-left: 0; }
+.reveal pre {
+  width: 100%;
+  margin: var(--r-block-margin) 0;
+  box-shadow: none;
+  border: 1px solid #D8DCE6;
+  border-radius: 4px;
+  font-size: 0.55em;
+  line-height: 1.3;
+}
+.reveal pre code { max-height: 500px; padding: 6px 9px; }
+.reveal blockquote {
+  width: unset;
+  margin: var(--r-block-margin) 0;
+  padding: 0.6em 1.75em;
+  border-left: 4px solid #D8DCE6;
+  box-shadow: none;
+  background: none;
+  font-style: normal;
+}
+"""
 
 template imageLeftStyle* =
   ## css for `imageLeftSlide`: reveal.js sets --viewport-width/height and --slide-scale,
@@ -161,6 +242,20 @@ const
   highlightAssets = "assets/highlight" # highlight.js styles, vendored by scripts/vendor-assets.sh
   fontAssets = "assets/fonts" # fonts of the explored themes, vendored by scripts/vendor-fonts.sh
 
+const deckLook* {.strdefine.} = "quarto"
+  ## the proportions of the deck: `quarto` (default, Quarto's reveal.js look: 1050x700, top-left aligned,
+  ## 40px text, tighter margins) or `centered` (the earlier look, reveal.js' White theme: 960x700,
+  ## centered, 42px text, upper-case headings), built on the side as docs/slides_centered.html
+  ## with `nim r build.nim looks`
+const quartoLook* = deckLook == "quarto"
+const sideLook* = not quartoLook
+  ## a deck in a look other than the default, built on the side
+
+const deckSection* {.strdefine.} = ""
+  ## build one part of the deck on its own (see deck.nim): `nim r build.nim island1`.
+  ## The first slide is then that part's map slide, not the title, so it is not centered
+const titleFirst* = deckSection in ["", "title"]
+
 const codeTheme* {.strdefine.} = "atom-one-light"
   ## highlight.js style for code blocks, one of the files in docs/assets/highlight
   ## (try another with `nim r -d:codeTheme=github my.nim`)
@@ -178,7 +273,7 @@ func vendoredRevealCss(blk: JsonNode, nb: Nb): string =
 <link rel="stylesheet" href="{reveal}/dist/theme/{theme}.css" />
 <link rel="stylesheet" href="{nb.assetPath(highlightAssets)}/{codeTheme}.css" />
 """
-  if themed: # fonts of the themes explored in slides/themes_explainer.nim
+  if themed: # fonts of the themes explored in the talk log (devlog/dressing_the_voyage.nim)
     result.add &"""<link rel="stylesheet" href="{nb.assetPath(fontAssets)}/fonts.css" />"""
   if nb.doc.context{"p5"}.getBool:
     result.add &"""<script src="{nb.assetPath(p5Assets)}/p5.min.js"></script>"""
@@ -201,6 +296,10 @@ func agileMainToHtml(doc: NbDoc, nb: Nb): string =
   let renderedBlocks = nbContainerToHtml(doc, nb)
   let mathPlugin = if doc.context{"latex"}.getBool: "RevealMath.KaTeX," else: ""
   let katex = nb.assetPath(katexAssets)
+  # Quarto's reveal.js settings (quarto-cli, format-reveal.ts): a wider slide, a larger margin
+  # around it, and slides aligned at the top instead of centered; the title slide stays centered
+  let layout = when quartoLook: "width: 1050, height: 700, margin: 0.1, center: false," else: ""
+  let centerTitle = when quartoLook and titleFirst: "document.querySelector('.reveal .slides > section')?.classList.add('center');" else: ""
   result = withNewlines:
     hlHtmlF"""
 <div class="reveal">
@@ -211,8 +310,10 @@ func agileMainToHtml(doc: NbDoc, nb: Nb): string =
     """
     nb.renderPartial("revealJS", docJson)
     "<script>"
+    centerTitle
     &"""
     Reveal.initialize({{
+      {layout}
       katex: {{ local: '{katex}' }},
       plugins: [
         RevealHighlight,
@@ -235,6 +336,7 @@ func agileNbDocToHtml(blk: NbBlock, nb: Nb): string =
     "<body>"
     agileMainToHtml(doc, nb)
     agileLogoHtml
+    voyageDeckJs # the agenda bar and the course drawing itself, on the chart deck (themes.nim)
     "</body>"
     "</html>"
 
@@ -243,9 +345,35 @@ template useRevealLatex* =
   ## nimib's `useLatex` stores the KaTeX html there, so the math plugin is never loaded
   nb.doc.context["latex"] = %true
 
+const sketchCss = """
+.reveal .slides section:has(> .sketch) {
+  top: 0 !important;
+  height: var(--slide-height);
+  padding: 0;
+}
+.reveal .sketch {
+  position: absolute;
+  inset: 0;
+}
+.thank-you-link {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  line-height: 1.3;
+}
+.thank-you-link p { margin: 0; }
+/* the credit line, smaller than the link above it */
+.thank-you-link small + small { opacity: 0.7; }
+.thank-you-link small + small p { font-size: 0.67em; }
+"""
+
 template useP5* =
-  ## load the vendored p5.js in the head, for slides with a p5nim sketch (see slides/thank_you.nim)
+  ## load the vendored p5.js in the head, for slides with a p5nim sketch (see slides/thank_you.nim):
+  ## a slide with an nbSketch is the sketch, full screen
   nb.doc.context["p5"] = %true
+  nb.addStyle sketchCss
 
 template useVendoredAssets* =
   ## load reveal.js and KaTeX from docs/assets instead of CDNs
@@ -253,11 +381,15 @@ template useVendoredAssets* =
   nb.backend.partials["revealJS"] = vendoredRevealJs
 
 template myInit*(sourceFileRel = "my.nim") =
-  nbInit(thisFileRel=sourceFileRel, theme=revealTheme)
+  nbInit(thisFileRel=sourceFileRel, theme=revealTheme, renderer=freshRenderer()) # a renderer of its own: see offline.nim
   useVendoredAssets
   useRevealLatex
   agileTheme()
   imageLeftStyle
+  when quartoLook: # the default; -d:deckLook=centered for the earlier look
+    nb.addStyle quartoCss
+    when titleFirst: # the title slide stays centered
+      nb.addStyle ".reveal .slides > section:first-child { text-align: center; }"
   when themed: # -d:slideTheme=pirate|book|chart, see themes.nim
     nb.addStyle: themeCss()
   nb.backend.funcs["NbDoc"] = agileNbDocToHtml
@@ -278,7 +410,7 @@ template mapSlide*(n: int) =
   ## 0 for the whole map, 8 for back on land (all islands visited)
   when themed: # the voyage map drawn by themes.nim
     slide:
-      nbRawHtml: "<div class=\"map-slide\">" & mapHeading(islands, n) & "\n" & voyageMap(islands, n) & "</div>"
+      nbDrawing(mapHeading(islands, n) & "\n" & voyageMap(islands, n), "map-slide")
   else:
     slide:
       var md = (if n == 0: "## The map\n\n" elif n == 8: "## Back on land\n\n" else: "## Island " & $n & "\n\n")
@@ -290,11 +422,12 @@ template mapSlide*(n: int) =
 template themedTitle*(body: untyped) =
   ## the title slide's content; a theme adds a class for its css and, behind it, the map of the voyage
   when themed:
-    nbRawHtml: "<div class=\"title-art\">" & voyageMap(islands, 0, "title") & "</div><div class=\"title-slide\"><div class=\"title-box\">"
-    body
-    when slideTheme == "chart":
-      nbRawHtml: "<p class=\"scale\">SCALE 1 : 30 MINUTES</p>"
-    nbRawHtml: "</div></div>"
+    nbDrawing(voyageMap(islands, 0, "title"), "title-art")
+    nbDiv("title-slide", ""):
+      nbDiv("title-box", ""):
+        body
+        when slideTheme == "chart":
+          nbLede("SCALE 1 : 30 MINUTES", "scale")
   else:
     body
 
@@ -304,23 +437,54 @@ template placeholderSlide*(id, title, description: string) =
   slide:
     nbText "## " & title
     nbText "*draft*"
-    nbText "<small>slide " & id & "</small>"
+    nbTextSmall "slide " & id
     speakerNote description
+
+newNbBlock(NbImageLeft of NbContainer):
+  url: string
+  width: float
+  toHtml:
+    # the width is a parameter of the layout, so it goes in a css variable on the element
+    &"""<div class="img-left" style="--img-left-width: {blk.width}">
+<img class="img-left-image" src="{blk.url}" alt="">
+<div class="img-left-text">""" & nbContainerToHtml(blk, nb) & """</div>
+<div class="img-left-logo"></div>
+</div>"""
 
 template imageLeftSlide*(url: string, width: float, body: untyped) =
   ## slide with an image on the left, full screen height and `width` (0..1) of the screen width,
   ## cropped to fill; the slide content is vertically centered on the right
   slide:
-    nbRawHtml: "<div class=\"img-left\" style=\"--img-left-width: " & $width & "\">\n" &
-      "<img class=\"img-left-image\" src=\"" & nb.doc.relToRoot(url) & "\" alt=\"\">\n" &
-      "<div class=\"img-left-text\">"
+    let imgLeft = newNbImageLeft(@[], nb.doc.relToRoot(url), width) # positional: the parameters share the fields' names
+    nb.withContainer(imgLeft):
+      body
+    nb.add imgLeft
+
+template compactColumns*(body: untyped) =
+  ## nimiSlides' `columns`, with smaller code, for three narrow columns of code
+  nbDiv(classes = "compact-cols", styles = "display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); column-gap: 0.8em;"):
     body
-    nbRawHtml: """</div>
-<div class="img-left-logo"></div>
-</div>"""
 
 template imageLeftSlide*(url: string, body: untyped) =
   imageLeftSlide(url, 0.4, body)
+
+newNbBlock(NbImageAside of NbContainer):
+  url: string
+  alt: string
+  toHtml:
+    &"""<div class="img-aside">
+<img src="{blk.url}" alt="{xmltree.escape(blk.alt)}">
+<div class="img-aside-text">""" & nbContainerToHtml(blk, nb) & """</div>
+</div>"""
+
+template imageAside*(url: string, alt: string, body: untyped) =
+  ## inside a slide: a picture (path relative to docs/) taking about two thirds of the width,
+  ## and beside it, smaller and vertically centered, what `body` adds (slide 7.2: the plant's equations)
+  block:
+    let aside = newNbImageAside(@[], nb.doc.relToRoot(url), alt)
+    nb.withContainer(aside):
+      body
+    nb.add aside
 
 proc slideLook*(t: sink Tabella, fontSize = "0.6em"): Tabella =
   ## the deck's look for a tabelline table: the slide's font, colours and background,
@@ -350,14 +514,18 @@ proc highlightCols*(t: sink Tabella, cols: ColSel): Tabella =
   ## the theme's light blue behind `cols`, from the label to the last row
   t.tabStyle(style.fill("#D9F2F6") & style.text(weight = "bold"), loc.body(cols), loc.columnLabels(cols))
 
-template testSlide =
+proc highlightRows*(t: sink Tabella, rows: RowSel): Tabella =
+  ## the theme's light blue behind `rows`, from the stub to the last column
+  t.tabStyle(style.fill("#D9F2F6") & style.text(weight = "bold"), loc.body(rows = rows), loc.stub(rows = rows))
+
+template testSlide* =
   slide:
     nbText """
 ## H2 header
 
 ### H3 header
 
-Text with *italic*, **strong** and [link](recurse.com)
+Text with *italic*, **strong** and [link](https://www.recurse.com)
 
 > a quote
 """
@@ -415,7 +583,13 @@ Text with *italic*, **strong** and [link](recurse.com)
       nbText "half the screen, inside a vertical stack like the talk's sections"
       reference "a small reference"
 
-when isMainModule:
+template buildStyleDeck*() =
+  ## the style test deck, docs/my.html
   myInit("my.nim")
   testSlide
+  when sideLook:
+    nb.doc.filename = "my_" & deckLook & ".html"
   nbSave
+
+when isMainModule:
+  buildStyleDeck()

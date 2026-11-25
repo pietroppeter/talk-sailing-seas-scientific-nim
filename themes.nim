@@ -1,31 +1,38 @@
-## Slide themes explored in slides/themes_explainer.nim (a proof of concept, not the deck's style yet).
+## Slide themes explored in the talk log (devlog/dressing_the_voyage.nim); the deck wears the chart one.
 ##
-## Build the deck with a theme: `nim r -d:slideTheme=pirate index.nim` (pirate, book or chart);
-## the default `agile` is the AgileLab theme of my.nim and is unchanged.
+## The deck wears the nautical chart theme (chart); the others explored are built on the side:
+## `nim r -d:slideTheme=pirate deck.nim` (pirate, book, or agile, the plain AgileLab theme of my.nim).
 ## Each theme is css on top of the AgileLab theme, openly licensed fonts vendored in
 ## docs/assets/fonts (scripts/vendor-fonts.sh) and a map of the voyage drawn by code
 ## from one shared geometry (maps/), in the style of the theme.
 import std / [strutils, strformat]
-import maps / [base, pixel, chart, engraved]
+import maps / [base, pixel, chart, engraved, isole]
 export base
 
-const slideTheme* {.strdefine.} = "agile"
-  ## agile (default), pirate, book or chart
+const deckTheme* = "chart"
+  ## the theme of the deck (Pietro, 2026-11-24): the nautical chart
+
+const slideTheme* {.strdefine.} = deckTheme
+  ## chart (the deck's), or one of the others explored: pirate, book, agile (the plain AgileLab theme)
 
 const themed* = slideTheme != "agile"
+  ## the theme's css, fonts and map apply (all but the plain AgileLab theme)
+
+const sideTheme* = slideTheme != deckTheme
+  ## a theme built on the side, as docs/slides_<theme>.html
 
 # --- the voyage map -------------------------------------------------------------------
 # One geometry (maps/geometry.nim), one map per theme drawn from it:
-# the base svg styled by css (agile and the explainer), pixel art (pirate),
+# the base svg styled by css (agile and the talk log), pixel art (pirate),
 # a nautical chart (chart) and a hand-drawn 19th century chart (book).
 
 proc voyageMap*(islands: openArray[string], current: int, id = ""): string =
   ## the map of the voyage in the theme of the build; `current` (1..7) is the island
   ## of the section, 0 for the whole map, 8 for back on land
-  let v = defaultVoyage()
+  let v = islandsVoyage() # seven real islands of the Mediterranean (maps/isole.nim)
   case slideTheme
   of "pirate": pixelMap(v, islands, current)
-  of "chart": chartMap(v, islands, current, id)
+  of "chart": chartMap(v, islands, current, id, html = true) # the words in html over the drawing
   of "book": engravedMap(v, islands, current, id)
   else: baseMap(v, islands, current, id)
 
@@ -186,52 +193,57 @@ func bookCss(): string =
 """
 
 func chartCss(): string =
-  ## a modern nautical chart: chart paper, a graduated black and white border, a light grid,
-  ## depth soundings and contours, chart magenta (the color charts use for lights and cautions)
-  ## for emphasis and the "rocks ahead", a grotesque sans for titles and Spectral for text
-  let navy = "#13334c"
+  ## a modern nautical chart: chart paper, a thin neatline around the slide, a light grid,
+  ## a grotesque sans for titles and Spectral for text. The slides keep the deck's colors (my.nim:
+  ## AgileLab dark and light blue, orange for emphasis); chart magenta (the color charts use for
+  ## lights and cautions) is only on the maps and the scale of the title slide (Pietro, 2026-11-25)
+  let navy = "#13334c"   # the maps' ink
   let magenta = "#b0167a"
-  let blue = "#1f6fa3"
+  let blue = "#1f6fa3"   # the maps' water lines
+  let ink = "#0e1f53"    # agileDarkBlue
+  let light = "#02A4BD"  # agileLightBlue
+  let orange = "#ee961a" # witboostOrange
   result = &"""
 .reveal-viewport {{
   background-color: #f6f3ea;
   background-image:
-    linear-gradient(rgba(31,111,163,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(31,111,163,0.06) 1px, transparent 1px);
+    linear-gradient(rgba(2,164,189,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(2,164,189,0.07) 1px, transparent 1px);
   background-size: 80px 80px;
 }}
 .reveal-viewport::after {{
-  content: ""; position: fixed; inset: 10px; pointer-events: none; outline: 1px solid {navy};
-  background:
-    repeating-linear-gradient(90deg, {navy} 0 40px, transparent 40px 80px) top left / 100% 7px no-repeat,
-    repeating-linear-gradient(90deg, {navy} 0 40px, transparent 40px 80px) bottom left / 100% 7px no-repeat,
-    repeating-linear-gradient(180deg, {navy} 0 40px, transparent 40px 80px) top left / 7px 100% no-repeat,
-    repeating-linear-gradient(180deg, {navy} 0 40px, transparent 40px 80px) top right / 7px 100% no-repeat;
+  content: ""; position: fixed; inset: 10px; pointer-events: none;
+  border: 1px solid rgba(14,31,83,0.55); outline: 0.5px solid rgba(14,31,83,0.3); outline-offset: 4px;
 }}
-.reveal {{ font-family: "Spectral", serif; color: {navy}; font-size: 38px; }}
-.reveal h1, .reveal h2, .reveal h3 {{ font-family: "Space Grotesk", sans-serif; color: {navy}; font-weight: 700; letter-spacing: 0.01em; }}
-.reveal h2::before {{ content: ""; display: inline-block; width: 0.45em; height: 0.45em; background: {magenta}; transform: rotate(45deg); margin-right: 0.4em; vertical-align: 0.1em; }}
-.reveal strong {{ color: {blue}; }}
-.reveal em {{ color: {magenta}; }}
-.reveal a {{ color: {blue}; }}
-.reveal ul li::marker {{ color: {magenta}; }}
-.reveal pre {{ box-shadow: none; border: 1.5px solid {navy}; background: #ffffff; position: relative; }}
+.reveal {{ font-family: "Spectral", serif; color: {ink}; font-size: 38px; }}
+.reveal h1, .reveal h2, .reveal h3 {{ font-family: "Space Grotesk", sans-serif; color: {ink}; font-weight: 700; letter-spacing: 0.01em; }}
+.reveal strong {{ color: {light}; }}
+.reveal em {{ color: {orange}; font-style: normal; font-weight: 700; }}
+.reveal a {{ color: {light}; }}
+.reveal ul li::marker {{ color: {orange}; }}
+.reveal pre {{ box-shadow: none; border: 1.5px solid {ink}; background: #ffffff; position: relative; }}
 .reveal pre code, .reveal code {{ font-family: "JetBrains Mono", monospace; }}
 .reveal pre code.hljs {{ background: #ffffff; }}
-.reveal pre samp.hljs {{ background: #eef5f9; border-left-color: {blue}; }}
+.reveal pre samp.hljs {{ background: #eef5f9; border-left-color: {light}; }}
 .reveal table:not(.hljs-ln) {{ border-collapse: collapse; font-family: "Space Grotesk", sans-serif; font-size: 0.85em; }}
-.reveal table:not(.hljs-ln) th {{ background: {navy}; color: #f6f3ea; border: none !important; }}
-.reveal table:not(.hljs-ln) td {{ border-bottom: 1px solid rgba(19,51,76,0.3) !important; }}
+.reveal table:not(.hljs-ln) th {{ background: {ink}; color: #f6f3ea; border: none !important; }}
+.reveal table:not(.hljs-ln) td {{ border-bottom: 1px solid rgba(14,31,83,0.3) !important; }}
 .reveal .rocks-quotes figure {{ position: relative; }}
-.reveal .rocks-quotes blockquote {{ background: #fff; border: 2px solid {magenta}; box-shadow: none; padding-top: 1.1em; }}
-.reveal .rocks-quotes blockquote::before {{ content: "CAUTION"; position: absolute; top: -0.65em; left: 0.8em; background: {magenta}; color: #fff; font-family: "Space Grotesk", sans-serif; font-style: normal; font-weight: 700; font-size: 0.55em; letter-spacing: 0.15em; padding: 0.1em 0.5em; }}
+.reveal .rocks-quotes blockquote {{ background: #fff; border: 2px solid {orange}; box-shadow: none; padding-top: 1.1em; }}
+.reveal .rocks-quotes blockquote::before {{ content: "CAUTION"; position: absolute; top: -0.65em; left: 0.8em; background: {orange}; color: #fff; font-family: "Space Grotesk", sans-serif; font-style: normal; font-weight: 700; font-size: 0.55em; letter-spacing: 0.15em; padding: 0.1em 0.5em; }}
 .reveal .rocks-quotes figcaption {{ font-family: "Space Grotesk", sans-serif; font-size: 0.8em; }}
-.reveal .title-slide h2 {{ font-size: 2.2em; }}
-.reveal .title-slide h2::before {{ display: none; }}
-.reveal .title-slide .title-box {{ background: rgba(246,243,234,0.92); border: 2px solid {navy}; outline: 1px solid {navy}; outline-offset: 5px; padding: 0.4em 0.8em; display: inline-block; }}
+.reveal .title-slide h2 {{ font-size: 1.75em; margin-bottom: 0.15em; }}
+.reveal .title-slide {{ position: relative; z-index: 1; }}
+.reveal .title-slide .title-box {{ background: rgba(253,252,247,0.78); backdrop-filter: blur(3px); border: 1.5px solid {ink}; outline: 0.5px solid {ink}; outline-offset: 5px; padding: 0.35em 0.9em; font-size: 0.78em; display: inline-block; box-shadow: 0 6px 24px rgba(14,31,83,0.18); }}
 .reveal .title-slide .scale {{ font-family: "Space Grotesk", sans-serif; font-size: 0.5em; letter-spacing: 0.2em; color: {magenta}; }}
-.reveal .title-art {{ opacity: 0.6; }}
-.reveal .chapter {{ font-family: "Space Grotesk", sans-serif; color: {magenta}; font-size: 0.6em; letter-spacing: 0.2em; margin: 0; }}
+/* the chart fills the screen (1369 x 770 is 16:9 around the 1050 x 700 slide and its margin) */
+.reveal .chart-stage > svg.voyage-map {{ width: 100%; height: auto; margin: 0; max-width: none; }}
+.reveal .map-slide .chart-stage {{ position: absolute; width: 1369px; left: 525px; top: 350px; transform: translate(-50%, -50%); }}
+#agileLabLogo {{ z-index: 40; }}
+.reveal .slides > section:has(.title-art) {{ top: 0 !important; height: 700px; display: flex !important; flex-direction: column; justify-content: center; }}
+.reveal .title-art {{ opacity: 1; inset: auto; left: 525px; top: 350px; width: 1369px; height: auto; transform: translate(-50%, -50%); z-index: 0; }}
+.reveal .title-art .title-block {{ display: none; }}
+.reveal .chapter {{ font-family: "Space Grotesk", sans-serif; color: {orange}; font-size: 0.6em; letter-spacing: 0.2em; margin: 0; }}
 .voyage-map .sea {{ fill: #d7e9f2; }}
 .voyage-map .grid {{ display: inline; }}
 .voyage-map .grid-line {{ fill: none; stroke: {blue}; stroke-width: 0.6; opacity: 0.35; }}
@@ -257,11 +269,114 @@ func chartCss(): string =
 .voyage-map .compass-n {{ fill: {magenta}; }}
 """
 
-func themeCss*(): string =
+# --- the voyage on the chart deck: the title card, the agenda bar, the course drawing itself --------
+
+proc titleCardCss(): string =
+  ## the title slide's card sits where the portolano box is on the charts (maps/voyage.json), with
+  ## the portolano's look and bigger text (Pietro, 2026-11-25). The chart behind the title is
+  ## 1369 x 770 around the middle of the 1050 x 700 slide (see .title-art)
+  let v = islandsVoyage()
+  let pb = v.portolanoBox
+  if pb[2] <= 0: return ""
+  let k = 1369.0 / v.w
+  let left = 525.0 - 1369.0 / 2 + pb[0] * k
+  let top = 350.0 - 770.0 / 2 + pb[1] * k
+  result = &"""
+.reveal .title-slide {{ position: static; }}
+.reveal .title-slide .title-box {{ position: absolute; left: {left:.1f}px; top: {top:.1f}px; width: {pb[2] * k:.1f}px; min-height: {pb[3] * k:.1f}px; box-sizing: border-box; text-align: left; display: block; font-size: 0.82em; padding: 0.5em 0.8em; background: rgba(253,252,247,0.93); border: 1px solid #1f2a33; outline: 0.5px solid #1f2a33; outline-offset: 4px; backdrop-filter: none; }}
+.reveal .title-slide .title-box h2 {{ font-size: 1.75em; line-height: 1.05; margin: 0 0 0.35em; padding-bottom: 0.3em; border-bottom: 0.5px solid #1f2a33; }}
+.reveal .title-slide .title-box p {{ margin: 0.25em 0; }}
+.reveal .title-art .portolano {{ display: none; }}
+"""
+
+const agendaCss = """
+/* the agenda bar: the seven islands along the bottom of every slide, the current one in magenta;
+   on a map slide the names sail to their places on the chart, and back (Pietro, 2026-11-25) */
+#voyage-agenda { position: fixed; left: 280px; right: 120px; bottom: 16px; display: flex; justify-content: space-evenly; z-index: 30; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
+#voyage-agenda::before { content: ""; position: absolute; inset: -7px -12px; background: rgba(246,243,234,0.92); border-top: 1px solid rgba(14,31,83,0.55); z-index: -1; transition: opacity 0.6s ease; }
+#voyage-agenda.shown { opacity: 1; }
+#voyage-agenda.on-map::before { opacity: 0; }
+#voyage-agenda span { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: clamp(9px, 0.7vw, 16px); letter-spacing: 0.06em; color: #13334c; white-space: nowrap; transform-origin: 50% 50%; transition: transform 1.1s cubic-bezier(.5,0,.2,1), color 0.4s ease; text-shadow: 0 0 1px #fdfcf7, 0 0 2px #fdfcf7, 0 0 3px #fdfcf7, 0 0 4px #fdfcf7; }
+#voyage-agenda span.visited { color: #4d6475; }
+#voyage-agenda span.current { color: #b0167a; }
+html.print-pdf #voyage-agenda, .reveal.overview ~ #voyage-agenda { display: none; }
+body.voyage-agenda .reveal .slides section.present .map-slide .ct.cname { visibility: hidden; }
+.reveal section.present .map-slide .anchor { animation: voyage-anchor 0.6s ease 3s both; }
+@keyframes voyage-anchor { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #voyage-agenda span { transition: none; } .reveal section.present .map-slide .anchor { animation: none; } }
+"""
+
+const voyageDeckJs* = when slideTheme == "chart": """
+<div id="voyage-agenda" aria-hidden="true"></div>
+<script>
+// The voyage on the chart deck (themes.nim): the agenda bar and the course drawing itself.
+// Functions are consts in a closure: a global `draw` would be called by p5 (the thank-you sketch)
+(() => {
+  const bar = document.getElementById("voyage-agenda");
+  const printing = /print-pdf/.test(location.search);
+  const slides = Reveal.getSlides();
+  const mapOf = s => s.querySelector(".map-slide .chart-stage[data-current]");
+  // the island of every slide: the one of the last map slide before it (-1 before the first map)
+  let at = -1;
+  const islandOf = slides.map(s => { const m = mapOf(s); if (m) at = +m.dataset.current; return at; });
+  const any = document.querySelector(".chart-stage[data-current]");
+  const names = any ? [...any.querySelectorAll(".ct.cname[data-n]")].map(e => e.textContent) : [];
+  bar.innerHTML = names.map(n => "<span></span>").join("");
+  [...bar.children].forEach((e, k) => { e.textContent = names[k]; });
+  if (!printing && names.length) document.body.classList.add("voyage-agenda");
+  const sail = (section, onMap) => {
+    const b = bar.getBoundingClientRect();
+    [...bar.children].forEach((e, k) => {
+      const label = onMap && section.querySelector(`.ct.cname[data-n="${k + 1}"]`);
+      if (!label) { e.style.transform = ""; return; }
+      const r = label.getBoundingClientRect();
+      const x = b.left + e.offsetLeft + e.offsetWidth / 2, y = b.top + e.offsetTop + e.offsetHeight / 2;
+      const s = r.height / e.offsetHeight;
+      e.style.transform = `translate(${r.left + r.width / 2 - x}px, ${r.top + r.height / 2 - y}px) scale(${s})`;
+    });
+  }
+  const drawCourse = section => { // the leg just sailed (or the whole course on the first map) draws itself
+    for (const p of section.querySelectorAll(".map-slide .leg-new, .map-slide .course-mask")) {
+      const L = p.getTotalLength(), slow = p.classList.contains("course-mask");
+      p.style.transition = "none"; p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
+      p.getBoundingClientRect();
+      p.style.transition = `stroke-dashoffset ${slow ? 3.2 : 1.8}s cubic-bezier(.4,0,.2,1) 1.4s`;
+      p.style.strokeDashoffset = 0;
+    }
+  }
+  const update = () => {
+    if (printing || !names.length) return;
+    const section = Reveal.getCurrentSlide();
+    if (!section) return;
+    const i = slides.indexOf(section), n = islandOf[i];
+    const hide = i === 0 || section.querySelector(".sketch, .title-art");
+    bar.classList.toggle("shown", !hide);
+    [...bar.children].forEach((e, k) => {
+      e.classList.toggle("current", k + 1 === n);
+      e.classList.toggle("visited", n === 8 || (n > 0 && k + 1 < n));
+    });
+    const onMap = !!mapOf(section);
+    bar.classList.toggle("on-map", onMap);
+    // the names sail once the slide is in place (while reveal.js slides it in, it is off screen)
+    if (!onMap || Reveal.getConfig().transition === "none") sail(section, onMap);
+    else sail(section, false);
+    if (onMap) drawCourse(section);
+  }
+  const arrived = () => { const s = Reveal.getCurrentSlide(); if (s && mapOf(s)) sail(s, true); };
+  Reveal.on("ready", () => { update(); arrived(); });
+  Reveal.on("slidechanged", update);
+  Reveal.on("slidetransitionend", arrived);
+  Reveal.on("resize", () => { const s = Reveal.getCurrentSlide(); if (s) sail(s, !!mapOf(s)); });
+  if (Reveal.isReady()) { update(); arrived(); }
+})();
+</script>
+""" else: ""
+
+proc themeCss*(): string =
   case slideTheme
   of "pirate": commonCss & pirateCss() & pixelMapCss
   of "book": commonCss & bookCss() & engravedMapCss
-  of "chart": commonCss & chartCss() & chartMapCss
+  of "chart": commonCss & chartCss() & chartMapCss & titleCardCss() & agendaCss
   else: ""
 
 # --- theme specific slide parts ---------------------------------------------------------
@@ -277,10 +392,7 @@ func mapHeading*(islands: openArray[string], n: int): string =
     if n == 0: chapter & "<h2>The Map of the Voyage</h2>"
     elif n == 8: chapter & "<h2>In which we return to Land</h2>"
     else: chapter & "<h2>The Island of " & name & "</h2>"
-  of "chart":
-    if n == 0: "<p class=\"chapter\">CHART 0 · OVERVIEW</p>\n<h2>The map</h2>"
-    elif n == 8: "<p class=\"chapter\">CHART 8 · LANDFALL</p>\n<h2>Back on land</h2>"
-    else: "<p class=\"chapter\">CHART " & $n & " OF 7</p>\n<h2>" & name & "</h2>"
+  of "chart": "" # the chart's own title block says which chart it is (maps/chart.nim)
   else:
     if n == 0: "<h2>The map</h2>"
     elif n == 8: "<h2>Back on land</h2>"

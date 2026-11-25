@@ -5,57 +5,25 @@ import devlog
 
 # A talk log post, a research post: three themes for the slides,
 # tried on a few real slides before one is picked:
-#   scripts/build-themes.sh   (docs/index_<theme>.html, screenshots in docs/images/themes)
+#   nim r build.nim themes   (docs/slides_<theme>.html, screenshots in docs/images/themes)
 #   nim r devlog/dressing_the_voyage.nim
 
 nbInit(thisFileRel = "devlog/dressing_the_voyage.nim")
 const ownSource = staticRead("dressing_the_voyage.nim")
 nb.useDevlogPost("dressing-the-voyage", ownSource)
-nbRawHtml("<style>\n" & """
-pre { overflow-x: auto; }
-figure { margin: 1em 0; }
-figure img { width: 100%; border: 1px solid #ddd; }
-figcaption { font-size: 0.85em; color: #6b7280; }
-.shots { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; }
-.shots img { width: 100%; border: 1px solid #ddd; }
-.swatches { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0.5em 0 1em; }
-.swatch { font-size: 0.75em; padding: 0.4em 0.6em; border-radius: 4px; border: 1px solid #ccc; }
-.bare-map .voyage-map { width: 100%; height: auto; background: #fff; }
-.bare-map .voyage-map * { display: inline !important; }
-.bare-map .sea { fill: #f0f6fa; }
-.bare-map .grid { fill: none; }
-.bare-map .island, .bare-map .land { fill: #eee; stroke: #333; }
-.bare-map .island-hatch, .bare-map .land-hatch { opacity: 0.3; }
-.bare-map .hatch-line, .bare-map .grid-line { stroke: #999; }
-.bare-map .contour { fill: none; stroke: #9ab; }
-.bare-map .route, .bare-map .route-done { fill: none; stroke: #c33; stroke-dasharray: 6 4; }
-.bare-map .route-done { stroke-dasharray: none; stroke-width: 3; }
-.bare-map .waves path { fill: none; stroke: #69c; }
-.bare-map .x-mark { stroke: #c33; stroke-width: 4; }
-.bare-map .light { fill: #c0c; }
-.bare-map .compass-point { fill: #fff; stroke: #333; }
-.bare-map .compass-point.long { fill: #333; }
-.bare-map .compass-ring { fill: none; stroke: #333; }
-.bare-map text { font-family: sans-serif; font-size: 15px; }
-.bare-map .soundings text { font-size: 11px; fill: #69c; }
-""" & "</style>")
-
 proc shots(theme: string) =
-  ## the five slides of the experiment, in one theme, as a grid of screenshots
-  var html = "<div class=\"shots\">\n"
+  ## the five slides of the experiment, in one theme, as a gallery of screenshots
+  var list: seq[Shot]
   for s in ["0", "5.0", "5.1", "5.3", "4.4"]:
-    html.add "<a href=\"../images/themes/" & theme & "-" & s & ".jpg\"><img src=\"../images/themes/" &
-      theme & "-" & s & ".jpg\" alt=\"" & theme & " theme, slide " & s & "\"></a>\n"
-  html.add "</div>"
-  nbRawHtml html
+    list.add Shot(url: "images/themes/" & theme & "-" & s & ".jpg", alt: theme & " theme, slide " & s)
+  nbGallery list
 
 proc swatches(colors: openArray[(string, string, string)]) =
   ## color swatches: (background, text color, label)
-  var html = "<div class=\"swatches\">"
+  var list: seq[Swatch]
   for (bg, fg, label) in colors:
-    html.add "<span class=\"swatch\" style=\"background:" & bg & ";color:" & fg & "\">" & label & " " & bg & "</span>"
-  html.add "</div>"
-  nbRawHtml html
+    list.add Swatch(color: bg, text: fg, label: label)
+  nbSwatches list
 
 nbText """
 The talk [Sailing Seas of Scientific
@@ -185,14 +153,15 @@ Each theme is css on top of the AgileLab theme,
 so every slide of the deck gets it for free,
 plus openly licensed fonts and one map.
 Pick a theme when building the deck:
-`nim r -d:slideTheme=pirate index.nim`,
+`nim r -d:slideTheme=pirate deck.nim`,
 with `pirate`, `book` or `chart`
-(`scripts/build-themes.sh` builds all three).
+(`nim r build.nim themes` builds all three).
 Without the define the deck is unchanged.
 The whole deck in each theme:
-[pirate](../index_pirate.html),
-[book](../index_book.html),
-[chart](../index_chart.html).
+[pirate](../slides_pirate.html),
+[book](../slides_book.html),
+[chart](../slides.html)
+(the deck's theme since 24 November).
 
 All fonts are from Google Fonts, under the SIL Open Font License,
 and are vendored in `docs/assets/fonts`
@@ -216,7 +185,7 @@ goes further: one geometry, a richer map per theme):
 nbCode:
   let svg = voyageMap(islands, 3, id = "bare")
   echo svg.len, " characters of svg, ", svg.count("<path"), " paths"
-nbRawHtml "<div class=\"bare-map\">" & svg & "</div>"
+nbDrawing(svg, "layers")
 
 nbText """
 ## Theme 1: a pirate adventure game
@@ -246,8 +215,9 @@ but its D reads like a V ("Vata Stack"):
 a heading font must be readable from the back of the room.
 These are the candidates I compared (all OFL):
 """
-nbRawHtml """<figure><img src="../images/themes/pirate-heading-fonts.jpg" alt="heading font candidates">
-<figcaption>Heading font candidates on parchment: Germania One won for readability, New Rocker was the runner up.</figcaption></figure>"""
+nbImg("images/themes/pirate-heading-fonts.jpg",
+  caption = "Heading font candidates on parchment: Germania One won for readability, New Rocker was the runner up.",
+  alt = "heading font candidates")
 swatches([("#ecd9a8", "#3b2412", "parchment"), ("#5a1a0c", "#fff", "headings"),
   ("#b3261e", "#fff", "strong, X, route"), ("#11747a", "#fff", "emphasis"),
   ("#8fc9c0", "#3b2412", "sea"), ("#1c1228", "#8fe3e8", "dialogue")])

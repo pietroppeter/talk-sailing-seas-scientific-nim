@@ -25,14 +25,30 @@ type
     outline*: seq[Pt]  ## control points of a custom outline, around `center`; empty: the default
     features*: seq[Feature]
     labelBelow*: bool
+    label*: Pt         ## where its name goes (the middle of the name's baseline); (0, 0): above or below it
+    exact*: bool       ## the outline is a real coast (maps/isole.nim), drawn as it is, not smoothed
+    real*: string      ## the real island the outline is taken from, empty for an invented one
+    elevation*: float  ## its highest point, metres (0: unknown)
+    lore*: string      ## a line on the real island, for its chart
+    note*: string      ## a note on the chart next to it, as charts have (an active volcano)
 
   Voyage* = object
     w*, h*: float
     islands*: seq[Island]
     mainland*: seq[Pt]   ## control points of the mainland's coast, top to bottom
     route*: seq[Pt]      ## from the mainland through the islands and back to land
+    straightRoute*: bool ## straight legs (with `via` turning points) instead of a smooth curve
+    via*: seq[seq[Pt]]   ## the turning points of each leg, between stop k and stop k + 1
     compassAt*: Pt
     seaName*: string
+    islets*: seq[seq[Pt]] ## small islands around the islands of the voyage, unnamed, drawn as they are
+    coast*: seq[Pt]      ## a real coast for the mainland, a closed polygon drawn as it is (maps/isole.nim); empty: `mainland`
+    titleAt*: Pt         ## where the chart's title block goes (the middle of its first line)
+    landLabel*: Pt       ## where the mainland's name goes
+    landLabelAngle*: float ## and its angle, degrees
+    roughCoast*: float   ## how far (map units) the mainland's coast wanders off its smooth line: 0 smooth
+    portolanoBox*: array[4, float] ## x, y, width, height of the portolano box, which takes the title block's place; width 0: none
+    portolano*: seq[string] ## the portolano's text for each chart: 0 the whole map, 1..7 the islands, 8 back on land
 
 func catmullRom(pts: seq[Pt], closed: bool, steps = 8): seq[Pt] =
   ## dense points of a Catmull-Rom spline through `pts`
@@ -64,20 +80,70 @@ func controlPoints*(isl: Island): seq[Pt] =
       let rr = isl.r * (1 + 0.20 * sin(3 * t + s) + 0.10 * sin(5 * t + 2.3 * s) + 0.05 * cos(7 * t + s))
       result.add (isl.center.x + rr * cos(t), isl.center.y + 0.8 * rr * sin(t))
 
-func polygon*(isl: Island): seq[Pt] = catmullRom(isl.controlPoints, closed = true)
+func polygon*(isl: Island): seq[Pt] =
+  if isl.exact: isl.controlPoints else: catmullRom(isl.controlPoints, closed = true)
+
+func valueNoise*(x, y: float): float =
+  ## smooth value noise in [0, 1], the same at every build
+  func h(i, j: int): float =
+    let s = sin(i.float * 127.1 + j.float * 311.7) * 43758.5453
+    s - floor(s)
+  let i = int(floor(x))
+  let j = int(floor(y))
+  var tx = x - i.float
+  var ty = y - j.float
+  tx = tx * tx * (3 - 2 * tx)
+  ty = ty * ty * (3 - 2 * ty)
+  let a = h(i, j) * (1 - tx) + h(i + 1, j) * tx
+  let b = h(i, j + 1) * (1 - tx) + h(i + 1, j + 1) * tx
+  a * (1 - ty) + b * ty
+
+func fbm*(x, y: float, octaves = 4): float =
+  ## fractal noise in about [0, 1]: octaves of value noise, each finer and fainter
+  var amp = 0.5
+  var freq = 1.0
+  var norm = 0.0
+  for o in 0 ..< octaves:
+    result += amp * valueNoise(x * freq + o.float * 17.3, y * freq - o.float * 9.1)
+    norm += amp
+    amp *= 0.5
+    freq *= 2.1
+  result /= norm
 
 func mainlandPolygon*(v: Voyage): seq[Pt] =
-  ## the mainland: its coast, closed along the left edge of the map
-  result = catmullRom(v.mainland, closed = false)
+  ## the mainland: its coast, closed along the left edge of the map (or the real coast, if any)
+  if v.coast.len > 0: return v.coast
+  result = catmullRom(v.mainland, closed = false, steps = if v.roughCoast > 0: 24 else: 8)
+  if v.roughCoast > 0: # a coast that wanders like a real one: capes and bays at every scale
+    for p in result.mitems:
+      p.x += v.roughCoast * (2 * fbm(p.y * 0.025, 3.7, 5) - 1)
   result.add [(-20.0, v.h + 20), (-20.0, -20.0)]
+
+func leg*(v: Voyage, k: int): seq[Pt] =
+  ## the k-th leg of a straight route: from stop k through its turning points to stop k + 1
+  result.add v.route[k]
+  if k < v.via.len: result.add v.via[k]
+  result.add v.route[k + 1]
 
 func routePolyline*(v: Voyage, upTo = -1): seq[Pt] =
   ## dense points of the route; `upTo` = n stops at the n-th point of the route
-  let pts = if upTo < 0: v.route else: v.route[0 .. min(upTo, v.route.high)]
+  let last = if upTo < 0: v.route.high else: min(upTo, v.route.high)
+  if v.straightRoute: # straight legs with turns, as a course is laid on a chart
+    for k in 0 ..< last:
+      let l = v.leg(k)
+      result.add (if k == 0: l else: l[1 .. ^1])
+    if result.len == 0: result = v.route[0 .. last]
+    return
+  let pts = v.route[0 .. last]
   if pts.len < 2: return pts
   catmullRom(pts, closed = false)
 
 func f1*(x: float): string = formatFloat(x, ffDecimal, 1)
+
+func landLabelAttrs*(v: Voyage): string =
+  ## the svg attributes that place the mainland's name
+  "x=\"" & f1(v.landLabel.x) & "\" y=\"" & f1(v.landLabel.y) & "\" transform=\"rotate(" & f1(v.landLabelAngle) &
+    " " & f1(v.landLabel.x) & " " & f1(v.landLabel.y) & ")\""
 
 func svgPath*(poly: seq[Pt], closed = true): string =
   for i, p in poly:
@@ -112,6 +178,7 @@ type Field* = object
 func lands*(v: Voyage): seq[seq[Pt]] =
   result.add v.mainlandPolygon
   for isl in v.islands: result.add isl.polygon
+  for islet in v.islets: result.add islet
 
 func signedDistance*(lands: seq[seq[Pt]], p: Pt): float =
   var best = Inf
@@ -123,6 +190,41 @@ func signedDistance*(lands: seq[seq[Pt]], p: Pt): float =
       best = min(best, distToSegment(p, poly[j], poly[i]))
       j = i
   if inside: -best else: best
+
+func harbour*(lands: seq[seq[Pt]], p: Pt, search = 16.0, reach = 22.0): Pt =
+  ## the most sheltered water near `p`: a point close to the shore (3.5 to 7 units off, room for the anchor) from which
+  ## the most directions meet land within `reach`, the closer to `p` the better. An outline drawn
+  ## at a few units per kilometre puts a real harbour on the shore or out on a point; this finds
+  ## the bay it is in.
+  result = p
+  var best = -Inf
+  const rays = 24
+  var y = -search
+  while y <= search:
+    var x = -search
+    while x <= search:
+      let q: Pt = (p.x + x, p.y + y)
+      let off = hypot(x, y)
+      if off <= search:
+        let d = signedDistance(lands, q)
+        if d >= 3.5 and d <= 7:
+          var hits = 0
+          for k in 0 ..< rays:
+            let a = 2 * PI * k.float / rays
+            var t = 2.0
+            while t <= reach:
+              let r: Pt = (q.x + t * cos(a), q.y + t * sin(a))
+              var land = false
+              for poly in lands:
+                if pointInPolygon(r, poly): land = true; break
+              if land: inc hits; break
+              t += 1.5
+          let score = hits.float - 0.1 * off
+          if score > best:
+            best = score
+            result = q
+      x += 1
+    y += 1
 
 proc field*(v: Voyage, cell = 4.0): Field =
   ## the distance field of the map, cached: the same geometry is drawn by many slides
@@ -238,7 +340,8 @@ func defaultVoyage*(): Voyage =
                  (705.0, 150.0), (865.0, 235.0), (825.0, 430.0)]
   let radii = [46.0, 40.0, 54.0, 44.0, 40.0, 46.0, 38.0]
   let below = [false, true, false, true, false, false, true]
-  result = Voyage(w: 960, h: 540, compassAt: (900.0, 78.0), seaName: "Seas of Scientific Nim")
+  result = Voyage(w: 960, h: 540, compassAt: (900.0, 78.0), seaName: "Seas of Scientific Nim",
+    landLabel: (40.0, 300.0), landLabelAngle: -90, titleAt: (485.0, 40.0))
   for i in 0 ..< 7:
     result.islands.add Island(center: centers[i], r: radii[i], seed: i.float * 1.7, labelBelow: below[i],
       features: @[Feature(kind: Hills, at: (0.0, 0.0)),

@@ -223,7 +223,7 @@ proc pixelMap*(v: Voyage, names: openArray[string], current: int): string =
     let lp = isl.labelPos(20)
     let state = islandState(n, current)
     result.add &"""<text class="plabel{state}" x="{f1(lp.x)}" y="{f1(lp.y)}" text-anchor="middle">{n}. {names[i]}</text>"""
-  result.add """<text class="plabel land" x="40" y="300" transform="rotate(-90 40 300)" text-anchor="middle">THE MAINLAND</text>"""
+  result.add &"""<text class="plabel land" {v.landLabelAttrs} text-anchor="middle">THE MAINLAND</text>"""
   result.add "\n</svg>"
 
 const pixelMapCss* = """

@@ -1,0 +1,368 @@
+{
+  "items": {
+    "arraymancer": {
+      "dir": "$deps/arraymancer",
+      "url": "https://github.com/mratsim/Arraymancer",
+      "commit": "873ac940bd5df50e1f7d587a91eeb7cf4ebf4a7e",
+      "version": ""
+    },
+    "bumpy": {
+      "dir": "$deps/bumpy",
+      "url": "https://github.com/treeform/bumpy",
+      "commit": "edc6e19ddbe6b9e46c3384e9a4131d7063a3f610",
+      "version": ""
+    },
+    "cairo": {
+      "dir": "$deps/cairo",
+      "url": "https://github.com/nim-lang/cairo",
+      "commit": "50ca8ed54554eae686024c0dc88490502af31cb8",
+      "version": ""
+    },
+    "chroma": {
+      "dir": "$deps/chroma",
+      "url": "https://github.com/treeform/chroma",
+      "commit": "08b0d65590221bb964544fd9badf29a146b9091a",
+      "version": ""
+    },
+    "clblast": {
+      "dir": "$deps/clblast",
+      "url": "https://github.com/numforge/nim-clblast",
+      "commit": "cdadb10dd85b95c9e7248f0b9661ad1e7616efe6",
+      "version": ""
+    },
+    "crunchy": {
+      "dir": "$deps/crunchy",
+      "url": "https://github.com/guzba/crunchy",
+      "commit": "98eb6526982bb8aae8eec6e8781f4539fa19e049",
+      "version": ""
+    },
+    "datamancer": {
+      "dir": "$deps/datamancer",
+      "url": "https://github.com/SciNim/datamancer",
+      "commit": "ea8fa6cacd158b7e2ff9116521e0a5ee3aadc7d2",
+      "version": ""
+    },
+    "flatty": {
+      "dir": "$deps/flatty",
+      "url": "https://github.com/treeform/flatty",
+      "commit": "c7091b096bcf275f47b666ef74bce73eda187ee3",
+      "version": ""
+    },
+    "fontim": {
+      "dir": "$deps/fontim",
+      "url": "https://github.com/zetashift/fontim",
+      "commit": "eae55734dbf316bd428524a1e29974ac17fda711",
+      "version": ""
+    },
+    "fusion": {
+      "dir": "$deps/fusion",
+      "url": "https://github.com/nim-lang/fusion",
+      "commit": "0b0a0273b8df860cd54e3fcca7bb4c617244ac77",
+      "version": ""
+    },
+    "ggplotnim": {
+      "dir": "$deps/ggplotnim",
+      "url": "https://github.com/Vindaar/ggplotnim",
+      "commit": "36ea228a139fd26a41b1587133cbbfb045f1028b",
+      "version": ""
+    },
+    "ginger": {
+      "dir": "$deps/ginger",
+      "url": "https://github.com/Vindaar/ginger",
+      "commit": "55abbfb73c57dab0be5428ce0b0803d755803e96",
+      "version": ""
+    },
+    "jsbind": {
+      "dir": "$deps/jsbind",
+      "url": "https://github.com/yglukhov/jsbind",
+      "commit": "d967f4b195f78f4c9775e4f9c9c9aacd440c99a5",
+      "version": ""
+    },
+    "jsony": {
+      "dir": "$deps/jsony",
+      "url": "https://github.com/treeform/jsony",
+      "commit": "bb647e1ca21af25ffdc423bcb96feeeeae963ca2",
+      "version": ""
+    },
+    "karax": {
+      "dir": "$deps/karax",
+      "url": "https://github.com/karaxnim/karax",
+      "commit": "a1eaaa87af756c21db4524c38cad4a004218f740",
+      "version": ""
+    },
+    "zogyn": {
+      "dir": "$deps/zogyn",
+      "url": "https://github.com/pietroppeter/zogyn",
+      "commit": "055520bfcac80dbb1f85479ba28ac05f1064719a",
+      "version": ""
+    },
+    "latexdsl": {
+      "dir": "$deps/latexdsl",
+      "url": "https://github.com/Vindaar/LatexDSL",
+      "commit": "5586b8f0181264b61fed86957e7af082dfcd3870",
+      "version": ""
+    },
+    "markdown": {
+      "dir": "$deps/markdown",
+      "url": "https://github.com/soasme/nim-markdown",
+      "commit": "5a7a7bafd1da23b25332316a7b888e6586f4177a",
+      "version": ""
+    },
+    "nanuq": {
+      "dir": "$deps/nanuq",
+      "url": "https://github.com/pietroppeter/nanuq",
+      "commit": "dae8ec2dfa4b2a9439877adcd570e6168f532270",
+      "version": ""
+    },
+    "nimblas": {
+      "dir": "$deps/nimblas",
+      "url": "https://github.com/andreaferretti/nimblas",
+      "commit": "93ffdd705496990983eefa0507d52f6a6c533ca7",
+      "version": ""
+    },
+    "nimcl": {
+      "dir": "$deps/nimcl",
+      "url": "https://github.com/andreaferretti/nimcl",
+      "commit": "f2f963ff043a364386888f8a6cf91646cd583e99",
+      "version": ""
+    },
+    "nimcuda": {
+      "dir": "$deps/nimcuda",
+      "url": "https://github.com/andreaferretti/nimcuda",
+      "commit": "319b8deb31812fd9277c6232f0ae3fca31c6d55d",
+      "version": ""
+    },
+    "nimiSlides": {
+      "dir": "$deps/nimiSlides",
+      "url": "https://github.com/HugoGranstrom/nimib-reveal",
+      "commit": "7046ffe881a32cb59504b91828f668c6ac8f70aa",
+      "version": ""
+    },
+    "nimib": {
+      "dir": "$deps/nimib",
+      "url": "https://github.com/pietroppeter/nimib",
+      "commit": "7cfe29cefd76b5110a0c7798f540b8c693b065cf",
+      "version": ""
+    },
+    "nimlapack": {
+      "dir": "$deps/nimlapack",
+      "url": "https://github.com/andreaferretti/nimlapack",
+      "commit": "231430b3d2156f5cbe8fe16bb8967cd9a93964c5",
+      "version": ""
+    },
+    "nimpy": {
+      "dir": "$deps/nimpy",
+      "url": "https://github.com/yglukhov/nimpy",
+      "commit": "114e1b9c4f1e73d6d3999ba4df7194e7547c1be1",
+      "version": ""
+    },
+    "nimsimd": {
+      "dir": "$deps/nimsimd",
+      "url": "https://github.com/guzba/nimsimd",
+      "commit": "3f6b2668ffb0867d0bf786a658b817763e611350",
+      "version": ""
+    },
+    "opencl": {
+      "dir": "$deps/opencl",
+      "url": "https://github.com/nim-lang/opencl",
+      "commit": "7b138ac19d7f5452a74742392ffadac3d26ee397",
+      "version": ""
+    },
+    "p5nim": {
+      "dir": "$deps/p5nim",
+      "url": "https://github.com/pietroppeter/p5nim",
+      "commit": "a02d481ccc111925ff4799468b64aa93c4fa0f68",
+      "version": ""
+    },
+    "parsetoml": {
+      "dir": "$deps/parsetoml",
+      "url": "https://github.com/NimParsers/parsetoml",
+      "commit": "d297f5a81be2472905d367aa675dcbbca6e7a5d2",
+      "version": ""
+    },
+    "pixie": {
+      "dir": "$deps/pixie",
+      "url": "https://github.com/treeform/pixie",
+      "commit": "de230f6d061d0b6d6288fc7988de753f22cdd366",
+      "version": ""
+    },
+    "plotly": {
+      "dir": "$deps/plotly",
+      "url": "https://github.com/SciNim/nim-plotly",
+      "commit": "b9705980965f65e4174ef68c4f93cd082375b623",
+      "version": ""
+    },
+    "polynumeric": {
+      "dir": "$deps/polynumeric",
+      "url": "https://github.com/SciNim/polynumeric",
+      "commit": "c45ae36b3c40c3c332bcf159a6ed21ae53aab66e",
+      "version": ""
+    },
+    "scinim": {
+      "dir": "$deps/scinim",
+      "url": "https://github.com/SciNim/scinim",
+      "commit": "67207e89a11a62ceb671da45e8032039f20eef12",
+      "version": ""
+    },
+    "seqmath": {
+      "dir": "$deps/seqmath",
+      "url": "https://github.com/Vindaar/seqmath",
+      "commit": "74767bc93d5ef460a607c5224df82237cdb39ac5",
+      "version": ""
+    },
+    "shell": {
+      "dir": "$deps/shell",
+      "url": "https://github.com/Vindaar/shell",
+      "commit": "cdd98b9d6e0715fc13a62b1de3f82450cc463679",
+      "version": ""
+    },
+    "stb_image": {
+      "dir": "$deps/stb_image",
+      "url": "https://gitlab.com/define-private-public/stb_image-Nim",
+      "commit": "ba5f45286bfa9bed93d8d6b941949cd6218ec888",
+      "version": ""
+    },
+    "tabelline": {
+      "dir": "$deps/tabelline",
+      "url": "https://github.com/pietroppeter/tabelline",
+      "commit": "1a92954d2ef713fb68c36028b0f1abd10c2225eb",
+      "version": ""
+    },
+    "threading": {
+      "dir": "$deps/threading",
+      "url": "https://github.com/nim-lang/threading",
+      "commit": "c5a39a039f24d48ba9503dcb9a0aee68a0fbb36d",
+      "version": ""
+    },
+    "unchained": {
+      "dir": "$deps/unchained",
+      "url": "https://github.com/SciNim/unchained",
+      "commit": "426d72a5cd0c48d63fe4747bee8dfb964a9629c0",
+      "version": ""
+    },
+    "untar": {
+      "dir": "$deps/untar",
+      "url": "https://github.com/dom96/untar",
+      "commit": "955b98a54bb087d6b0c90d26377f261303425487",
+      "version": ""
+    },
+    "vmath": {
+      "dir": "$deps/vmath",
+      "url": "https://github.com/treeform/vmath",
+      "commit": "7bd9f6e6b23ca3b751be42f20c8025d320881a00",
+      "version": ""
+    },
+    "webview": {
+      "dir": "$deps/webview",
+      "url": "https://github.com/oskca/webview",
+      "commit": "ca3e25ee93a63c3a819a1bfa17386dad6ad41b1a",
+      "version": ""
+    },
+    "webview.Vindaar.github.com": {
+      "dir": "$deps/webview.Vindaar.github.com",
+      "url": "https://github.com/Vindaar/webview",
+      "commit": "edf415bce8fe1b2dcc8d858a522d7dabea5836d6",
+      "version": ""
+    },
+    "ws": {
+      "dir": "$deps/ws",
+      "url": "https://github.com/treeform/ws",
+      "commit": "c9c0c7b51e2e83cc9305a895a0b144a297b4bea8",
+      "version": ""
+    },
+    "zip": {
+      "dir": "$deps/zip",
+      "url": "https://github.com/nim-lang/zip",
+      "commit": "bdc5783fefc1afb8eb622ff13d464a832ce1d507",
+      "version": ""
+    },
+    "zippy": {
+      "dir": "$deps/zippy",
+      "url": "https://github.com/guzba/zippy",
+      "commit": "cd562ba43ae8904a4d1ba55611b8a521ef4a179e",
+      "version": ""
+    }
+  },
+  "nimcfg": [
+    "############# begin Atlas config section ##########",
+    "--noNimblePath",
+    "--path:\"deps/arraymancer/src\"",
+    "--path:\"deps/bumpy/src\"",
+    "--path:\"deps/cairo/src\"",
+    "--path:\"deps/chroma/src\"",
+    "--path:\"deps/clblast/src\"",
+    "--path:\"deps/crunchy/src\"",
+    "--path:\"deps/datamancer/src\"",
+    "--path:\"deps/flatty/src\"",
+    "--path:\"deps/fontim/src\"",
+    "--path:\"deps/fusion/src\"",
+    "--path:\"deps/ggplotnim/src\"",
+    "--path:\"deps/ginger/src\"",
+    "--path:\"deps/jsbind\"",
+    "--path:\"deps/jsony/src\"",
+    "--path:\"deps/karax\"",
+    "--path:\"deps/zogyn/src\"",
+    "--path:\"deps/latexdsl/src\"",
+    "--path:\"deps/markdown/src\"",
+    "--path:\"deps/nanuq/src\"",
+    "--path:\"deps/nimblas\"",
+    "--path:\"deps/nimcl\"",
+    "--path:\"deps/nimcuda/src\"",
+    "--path:\"deps/nimiSlides/src\"",
+    "--path:\"deps/nimib/src\"",
+    "--path:\"deps/nimlapack\"",
+    "--path:\"deps/nimpy\"",
+    "--path:\"deps/nimsimd/src\"",
+    "--path:\"deps/opencl/src\"",
+    "--path:\"deps/p5nim/src\"",
+    "--path:\"deps/parsetoml/src\"",
+    "--path:\"deps/pixie/src\"",
+    "--path:\"deps/plotly/src\"",
+    "--path:\"deps/polynumeric\"",
+    "--path:\"deps/scinim\"",
+    "--path:\"deps/seqmath/src\"",
+    "--path:\"deps/shell\"",
+    "--path:\"deps/stb_image\"",
+    "--path:\"deps/tabelline/src\"",
+    "--path:\"deps/threading\"",
+    "--path:\"deps/unchained/src\"",
+    "--path:\"deps/untar/src\"",
+    "--path:\"deps/vmath/src\"",
+    "--path:\"deps/webview.Vindaar.github.com\"",
+    "--path:\"deps/ws/src\"",
+    "--path:\"deps/zip\"",
+    "--path:\"deps/zippy/src\"",
+    "############# end Atlas config section   ##########",
+    "",
+    "# ggplotnim needs cairo (brew install cairo). On macOS link it at build time:",
+    "# dlopen at runtime does not search /opt/homebrew/lib, and DYLD_LIBRARY_PATH",
+    "# is stripped by SIP when nim r runs the program through /bin/sh.",
+    "@if macosx:",
+    "  --dynlibOverride:libcairo",
+    "  --passL:\"-L/opt/homebrew/lib -lcairo\"",
+    "@end",
+    ""
+  ],
+  "nimbleFile": {
+    "filename": "talk-sailing-seas-scientific-nim.nimble",
+    "content": [
+      "requires \"nimiSlides >= 0.4.0\"",
+      "requires \"https://github.com/pietroppeter/p5nim\"",
+      "requires \"https://github.com/SciNim/unchained\"",
+      "requires \"arraymancer >= 0.7.33\"",
+      "requires \"datamancer >= 0.5.1\"",
+      "requires \"ggplotnim >= 0.7.6\"",
+      "requires \"plotly >= 0.3.3\"",
+      "requires \"https://github.com/pietroppeter/tabelline >= 0.2.0\"",
+      "requires \"nimib >= 0.4.3\" # tabelline's nbTable block",
+      "requires \"karax >= 1.5.0\" # the plant app of Island 6 (slides/island6_plant_app.nim)",
+      "requires \"https://github.com/pietroppeter/zogyn >= 0.1.0\" # its code you drag (slides/island6_plant_code.nim)",
+      ""
+    ]
+  },
+  "hostOS": "linux",
+  "hostCPU": "amd64",
+  "nimVersion": "2.2.4 f7145dd26efeeeb6eeae6fff649db244d81b212d",
+  "gccVersion": "13.3.0",
+  "clangVersion": ""
+}

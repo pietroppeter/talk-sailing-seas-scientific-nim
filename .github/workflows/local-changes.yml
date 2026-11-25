@@ -1,0 +1,32 @@
+# Keeps Pietro's local-changes branch on top of main (AGENTS.md, "The local-changes branch").
+# After every push to main, local-changes is fast-forwarded to main when it has no commit of its
+# own, which is the case once its batch PR is merged. Otherwise it is left alone and the job says so.
+name: local-changes
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: local-changes
+
+jobs:
+  fast-forward:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Fast-forward local-changes to main
+        run: |
+          git fetch origin main local-changes || { echo "no local-changes branch"; exit 0; }
+          if git merge-base --is-ancestor origin/local-changes origin/main; then
+            git push origin origin/main:refs/heads/local-changes
+          else
+            echo "local-changes has commits not in main yet (a batch PR is open): left alone"
+            git log --oneline origin/main..origin/local-changes
+          fi

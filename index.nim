@@ -1,22 +1,67 @@
-import nimib, nimiSlides
-import my
-import slides / [title, me, intro, island1_performance, island2_stories, island3_datastack, island4_interop, island5_expressive, island6_interactivity, island7_notebook, conclusion, thank_you]
+## The site index (docs/index.html): everything the talk publishes,
+## the slides, the deep dives (deepdive/deepdive.nim) and the talk log (devlog/devlog.nim).
+## The deck itself is deck.nim (docs/slides.html).
+import std / [json, algorithm]
+import nimib
+import deepdive / deepdive, devlog / devlog
 
-template presentation* =
-  titleSlide
-  meSlide
-  introSection
-  island1PerformanceSection
-  island2StoriesSection
-  island3DataStackSection
-  island4InteropSection
-  island5ExpressiveSection
-  island6InteractivitySection
-  island7NotebookSection
-  conclusionSection
-  thankYouSlide # 9.6, on the top row after the conclusion
+nbInit(thisFileRel = "index.nim")
+const ownSource = staticRead("index.nim")
+nb.usePage(ownSource)
+nb.title = "Sailing Seas of Scientific Nim"
 
-when isMainModule:
-  myInit("index.nim")
-  presentation
-  nbSave
+nbEyebrow "Compute Paris · 26 November 2026"
+nbText "# Sailing Seas of Scientific Nim"
+nbLede "**[⛵ The slides →](slides.html)**"
+nbText """
+A talk by Pietro Peterlongo
+([@pietroppeter](https://github.com/pietroppeter))
+at [Compute Paris 2026](https://pretalx.com/compute-paris-2026/talk/8EM8ZA/),
+on what Nim offers to scientific computing.
+Everything here is built in public with
+[nimib](https://github.com/pietroppeter/nimib),
+from [the repository](""" & repoUrl & """).
+"""
+
+nbText "## Slides"
+var slides = @[
+  PageItem(url: "slides.html", title: "The talk", eyebrow: "Slides",
+    summary: "The deck, seven islands of scientific Nim."),
+]
+# the other themes explored in the talk log (themes.nim, built by `nim r build.nim themes`); the deck wears the chart one
+for (name, look) in [("pirate", "a pirate adventure game"), ("book", "an old book of sea tales"), ("agile", "plain AgileLab, without a theme")]:
+  slides.add PageItem(url: "slides_" & name & ".html", title: "The talk, " & name & " theme", eyebrow: "Slides · theme explored",
+    summary: "The deck dressed as " & look & " ([how](devlog/2026-11-07-dressing-the-voyage.html)).")
+slides.add PageItem(url: "slides_centered.html", title: "The talk, centered look", eyebrow: "Slides · earlier look",
+  summary: "The deck before it took Quarto's proportions: centered, larger text ([style test deck](my_centered.html)).")
+slides.add PageItem(url: "thank_you.html", title: "Thank you", eyebrow: "Slide",
+  summary: "The last slide on its own: a p5nim animation.")
+slides.add PageItem(url: "my.html", title: "Style test deck", eyebrow: "Slides · tooling",
+  summary: "The layouts and blocks of the slides, one per slide.")
+slides.add PageItem(url: "mapeditor.html", title: "Voyage map editor", eyebrow: "Slides · tooling",
+  summary: "The chart of the slides, to arrange by hand: coast, islands, course, anchors and the portolano.")
+nbPageList slides
+
+nbText """
+## Deep dives
+
+For the topics the slides only sketch
+([all of them](deepdive/index.html)).
+"""
+var dives: seq[PageItem]
+for d in deepDives:
+  dives.add PageItem(url: "deepdive/" & d.fileName, title: d.title, eyebrow: d.section, summary: d.summary)
+nbPageList dives
+
+nbText """
+## Talk log
+
+How the talk is made, newest first
+([the log](devlog/index.html)).
+"""
+var posts: seq[PageItem]
+for p in devlogPosts.reversed:
+  posts.add PageItem(url: "devlog/" & p.fileName, title: p.title, eyebrow: longDate(p.date) & " · " & $p.kind, summary: p.summary)
+nbPageList posts
+
+nbSave

@@ -1,4 +1,4 @@
-## The nimib pages (explainers, talk log) without CDNs: `nb.useOfflineAssets` after `nbInit`
+## The nimib pages (deep dives, talk log) without CDNs: `nb.useOfflineAssets` after `nbInit`
 ## loads nimib's default theme (water.css, highlight.js and its code theme) and KaTeX (`nb.useLatex`)
 ## from docs/assets, vendored by scripts/vendor-assets.sh, so the pages also work offline.
 ## The slides do the same in my.nim (useVendoredAssets).
@@ -36,5 +36,12 @@ func offlineHead(blk: JsonNode, nb: Nb): string =
     result = result.replace(cdn, assets & "/" & local)
   doAssert "katex@" & katexVersion notin result, "offline.nim: nimib's KaTeX html changed, update localKatex"
 
+proc freshRenderer*(): NbRender =
+  ## a copy of nimib's html renderer, for one page: a theme changes the renderer it is given,
+  ## and nbInit gives every page the same one (nbToHtml), so when all.nim builds every page in one
+  ## program, a deck's reveal.js theme would leak into the deep dives that come after it
+  NbRender(funcs: nbToHtml.funcs, partials: nbToHtml.partials)
+
 proc useOfflineAssets*(nb: var Nb) =
+  nb.backend = freshRenderer()
   nb.backend.partials["head"] = offlineHead

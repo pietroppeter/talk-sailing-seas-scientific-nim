@@ -8,7 +8,7 @@ nb.useDevlogPost("setting-sail", ownSource)
 nbText """
 This is the first post of the talk log,
 a log of how the talk
-[Sailing Seas of Scientific Nim](../index.html)
+[Sailing Seas of Scientific Nim](../slides.html)
 is made, for Compute Paris on 26 November 2026.
 It starts late, a month into the work,
 so this first post looks back at how we got here.

@@ -24,28 +24,35 @@ jobs:
       - uses: actions/checkout@v5
       - name: Install Nim and atlas
         run: sudo bash scripts/install-nim.sh
-      # deps/ is reused until the .nimble file, nim.cfg or atlas.config change; atlas install then only fetches what is missing
+      # deps/ is reused until the pinned commits (atlas.lock) or atlas.config change; atlas rep then only fetches what is missing
       - uses: actions/cache@v5
         with:
           path: deps
-          key: deps-v2-${{ hashFiles('*.nimble', 'nim.cfg', 'deps/atlas.config') }}
-          restore-keys: deps-v2-
+          key: deps-v3-${{ hashFiles('atlas.lock', 'deps/atlas.config') }}
+          restore-keys: deps-v3-
       # Nim's build folder: Nim recompiles only the C files whose content changed
       - uses: actions/cache@v5
         with:
           path: ~/.cache/nim
           key: nimcache-${{ github.run_id }}
           restore-keys: nimcache-
+      # nanuq's prebuilt Polars library (about 64 MB), downloaded the first time nanuq is compiled
+      - uses: actions/cache@v5
+        with:
+          path: ~/.cache/nanuq
+          key: nanuq-${{ hashFiles('atlas.lock') }}
+          restore-keys: nanuq-
       - name: Install dependencies
         run: |
           # cairo: ggplotnim saves its PNG plots with it; BLAS/LAPACK: loaded by Arraymancer at startup
           sudo apt-get install -y libcairo2 libblas3 liblapack3
           # the committed atlas.config wins over a restored cache (pkgOverrides: nim-plotly and ggplotnim both need a webview)
           git checkout -- deps/atlas.config
-          atlas install
-      - name: Build slides, explainers and talk log
+          # every dependency at the commit pinned in atlas.lock
+          atlas rep atlas.lock
+      - name: Build slides, deep dives and talk log
         # every page, then checks that no page loads anything from the network (see the script)
-        run: scripts/build.sh
+        run: nim r --hints:off build.nim
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs

@@ -4,10 +4,13 @@ import ggplotnim
 import arraymancer / linear_algebra # solve
 import tabelline except Column, readCsv
 import ../my
+import island3_network, island3_nanuq
 export math, sequtils, ggplotnim, linear_algebra
+export networkSlide, nanuqSlides
 
-# Section 4: Island 3: Data Stack (see the latest outline in openspec)
+# Section 4: Island 3: Data Stack (see outline.md)
 # The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2 and K3.
+# Slides 4.5 (the network) and 4.8, 4.9 (nanuq, tabelline) are templates of their own modules.
 # Paths are relative to docs/ (nimib's homeDir): the data is docs/data/penguins.csv,
 # the plot is written to docs/images/penguins.png when the deck is built.
 
@@ -15,12 +18,14 @@ export math, sequtils, ggplotnim, linear_algebra
 # so that tabelline's names do not meet Datamancer's where the template is used
 proc stackTable*(): Tabella =
   let stack = @[
-    (part: "Tensors", python: "NumPy", r: "arrays, matrices",
+    (part: "Tensors", python: "NumPy, PyTorch", r: "arrays, torch",
      nim: "[Arraymancer](https://github.com/mratsim/Arraymancer)"),
-    (part: "Dataframes", python: "pandas", r: "dplyr",
-     nim: "[Datamancer](https://github.com/SciNim/Datamancer)"),
+    (part: "Dataframes", python: "pandas, Polars", r: "dplyr",
+     nim: "[Datamancer](https://github.com/SciNim/Datamancer), [nanuq](https://github.com/pietroppeter/nanuq)"),
     (part: "Plots", python: "matplotlib", r: "ggplot2",
-     nim: "[ggplotnim](https://github.com/Vindaar/ggplotnim)")]
+     nim: "[ggplotnim](https://github.com/Vindaar/ggplotnim)"),
+    (part: "Tables", python: "Great Tables", r: "gt",
+     nim: "[tabelline](https://github.com/pietroppeter/tabelline)")]
   tabella(stack, rownameCol = "part")
     .colsLabel({"python": "Python", "r": "R", "nim": "Nim"})
     .fmtMarkdown("nim")
@@ -41,10 +46,12 @@ by Jake VanderPlas:
 """
       nbTable stackTable()
       speakerNote """
-Nim has the same three building blocks.
+Nim has the same building blocks.
 Arraymancer is by Mamy (mratsim).
 Datamancer and ggplotnim are by Vindaar,
 built for his PhD (island 2), now under SciNim.
+nanuq and tabelline are new, this autumn, and mine:
+the modern side, Polars and Great Tables.
 Let's try them on a dataset you all know.
 """
     slide: # 4.3
@@ -52,10 +59,10 @@ Let's try them on a dataset you all know.
       nbImg("images/lter_penguins.png", "42%")
       nbTextSmall """
 344 penguins, three species, three islands near Palmer Station, Antarctica.
-[The explainer](island3_penguins_explainer.html) explores them further:
+[The deep dive](deepdive/penguins_data_stack.html) explores them further:
 missing values, group and summarize, three plots,
 Simpson's paradox with tensors, k-means clustering,
-and what else is in Arraymancer.
+what else is in Arraymancer, nanuq and tabelline.
 """
       reference """
 Data: Gorman, Williams and Fraser (2014),
@@ -76,8 +83,8 @@ We use seaborn's CSV, missing values are empty fields.
         let A = [[2.0, 1.0], [1.0, 3.0]].toTensor
         echo solve(A, [3.0, 5.0].toTensor) # linear system, with LAPACK
       nbTextSmall """
-Inspired by NumPy and PyTorch: a solid ndarray with linear algebra,<br>
-a compact deep learning framework, and the seeds of scikit-learn.
+Inspired by NumPy and PyTorch: a solid ndarray with linear algebra,
+a compact deep learning framework (next slide), and the seeds of scikit-learn.
 """
       speakerNote """
 Bottom of the stack: tensors, as in NumPy.
@@ -92,7 +99,8 @@ Deep learning is a compact framework that works
 classic machine learning is a handful of algorithms.
 Last release October 2024, a few commits a year since.
 """
-    slide: # 4.5
+    networkSlide # 4.5
+    slide: # 4.6
       nbText "## Dataframes: Datamancer"
       nbCode:
         let df = readCsv("data/penguins.csv")
@@ -112,7 +120,7 @@ Missing numbers are NaN, so `> 0.0` drops them.
 Mean body mass and flipper length per species:
 Gentoo are the heavy ones, with the longest flippers.
 """
-    slide: # 4.6
+    slide: # 4.7
       nbText "## Plots: ggplotnim"
       nbTextSmall """
 A port of ggplot2, using Datamancer dataframes.
@@ -130,7 +138,8 @@ Flipper length and body mass go together,
 and the species form clusters.
 Backends: PNG/PDF via cairo, SVG, TikZ, Vega-Lite.
 """
-    slide: # 4.7
+    nanuqSlides # 4.8 and 4.9
+    slide: # 4.10
       nbText "## SciNim"
       nbTextSmall """
 [SciNim](https://github.com/SciNim) gathers the scientific Nim libraries.
@@ -151,18 +160,23 @@ and a list of libraries by topic.
 nim-plotly was started by Brent Pedersen (brentp, island 2)
 and donated to SciNim.
 """
-    slide: # 4.8
+    slide: # 4.11
       nbText "## Rocks ahead"
       nbText """
 - classic ML is only seeds: a few algorithms, no scikit-learn
-- multiple tensor libraries
+- multiple tensor libraries, and now two dataframe libraries
 - the ecosystem depends on a few contributors (Vindaar, mratsim, Clonkk, HugoGranstrom): when life happens, development stops
+- nanuq and tabelline are weeks old, one person's, mostly AI-written: they need users
 """
       speakerNote """
 The pieces are good and you can do real work with them.
 Classic machine learning is only seeds:
 a few algorithms in Arraymancer, no scikit-learn.
-There is more than one tensor library.
-And a handful of people carry the stack:
+There is more than one tensor library,
+and now two dataframe libraries.
+A handful of people carry the stack:
 when life happens to them, development stops.
+nanuq and tabelline are mine, from this autumn,
+written mostly with Claude: an experiment in how fast
+one person can fill a gap. What they need now is users.
 """

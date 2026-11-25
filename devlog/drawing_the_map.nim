@@ -5,26 +5,15 @@ import ../maps / [base, pixel, chart, engraved]
 import devlog
 
 # A talk log post: the map of the voyage, one geometry and one map per theme.
-#   nim r devlog/drawing_the_map.nim   (screenshots in docs/images/maps come from scripts/build-themes.sh builds)
+#   nim r devlog/drawing_the_map.nim   (screenshots in docs/images/maps come from `nim r build.nim themes` builds)
 
 nbInit(thisFileRel = "devlog/drawing_the_map.nim")
 const ownSource = staticRead("drawing_the_map.nim")
 nb.useDevlogPost("drawing-the-map", ownSource)
-nbRawHtml "<link rel=\"stylesheet\" href=\"../assets/fonts/fonts.css\">"
-nbRawHtml "<style>\n" & pixelMapCss & chartMapCss & engravedMapCss & """
-.map-box svg { width: 100%; height: auto; display: block; }
-.map-box.engraved { background: #efe5cf; }
-.bare .sea { fill: #f0f6fa; } .bare .grid, .bare .waves, .bare .x-mark, .bare .light, .bare .island-hatch, .bare .land-hatch { display: none; }
-.bare .island, .bare .land { fill: #eee; stroke: #333; } .bare .contour { fill: none; stroke: #9ab; }
-.bare .route, .bare .route-done { fill: none; stroke: #c33; stroke-dasharray: 6 4; } .bare .route-done { stroke-dasharray: none; stroke-width: 3; }
-.bare .compass-point { fill: #fff; stroke: #333; } .bare .compass-point.long { fill: #333; } .bare .compass-ring { fill: none; stroke: #333; }
-.bare text { font-family: sans-serif; font-size: 15px; } .bare .soundings text { font-size: 11px; fill: #69c; }
-.shots { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; }
-.shots img { width: 100%; border: 1px solid #ddd; }
-""" & "</style>"
+nb.useMapStyle
 
-proc show(svg: string, cls = "") =
-  nbRawHtml "<div class=\"map-box " & cls & "\">" & svg & "</div>"
+proc show(svg: string, look = "") =
+  nbDrawing(svg, look)
 
 nbText """
 In the [previous post](2026-11-07-dressing-the-voyage.html)
@@ -150,15 +139,14 @@ nbText """
 ## In the slides
 
 The map slide of Island 3 in each theme
-(build the whole deck in a theme with `scripts/build-themes.sh`:
-[pirate](../index_pirate.html), [book](../index_book.html), [chart](../index_chart.html)):
+(build the whole deck in a theme with `nim r build.nim themes`:
+[pirate](../slides_pirate.html), [book](../slides_book.html), [chart](../slides.html), the deck's theme since 24 November):
 """
-var shots = "<div class=\"shots\">"
+var shots: seq[Shot]
 for t in ["pirate", "book", "chart"]:
   for s in ["5.0", "0"]:
-    shots.add "<a href=\"../images/maps/" & t & "-" & s & ".jpg\"><img src=\"../images/maps/" & t & "-" & s & ".jpg\" alt=\"" & t & " theme\"></a>"
-shots.add "</div>"
-nbRawHtml shots
+    shots.add Shot(url: "images/maps/" & t & "-" & s & ".jpg", alt: t & " theme")
+nbGallery shots
 
 nbText """
 ## Next
