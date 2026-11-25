@@ -12,9 +12,9 @@ import geometry, base
 export geometry
 
 const
-  islandNames {.booldefine.} = true
-    ## the names of the real islands on the chart; -d:islandNames=false hides them (and the lore lines,
-    ## which name them), so the audience can guess the islands
+  islandNames {.booldefine.} = false
+    ## the names of the real islands on the chart, hidden (with the lore lines, which name them) so
+    ## the audience can guess the islands (Pietro, 2026-11-25); -d:islandNames=true shows them
   ink = "#1f2a33"
   magenta = "#b0167a"
   depthLine = "#6f93b0"

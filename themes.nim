@@ -194,48 +194,53 @@ func bookCss(): string =
 
 func chartCss(): string =
   ## a modern nautical chart: chart paper, a thin neatline around the slide, a light grid,
-  ## depth soundings and contours, chart magenta (the color charts use for lights and cautions)
-  ## for emphasis and the "rocks ahead", a grotesque sans for titles and Spectral for text
-  let navy = "#13334c"
+  ## a grotesque sans for titles and Spectral for text. The slides keep the deck's colors (my.nim:
+  ## AgileLab dark and light blue, orange for emphasis); chart magenta (the color charts use for
+  ## lights and cautions) is only on the maps and the scale of the title slide (Pietro, 2026-11-25)
+  let navy = "#13334c"   # the maps' ink
   let magenta = "#b0167a"
-  let blue = "#1f6fa3"
+  let blue = "#1f6fa3"   # the maps' water lines
+  let ink = "#0e1f53"    # agileDarkBlue
+  let light = "#02A4BD"  # agileLightBlue
+  let orange = "#ee961a" # witboostOrange
   result = &"""
 .reveal-viewport {{
   background-color: #f6f3ea;
   background-image:
-    linear-gradient(rgba(31,111,163,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(31,111,163,0.06) 1px, transparent 1px);
+    linear-gradient(rgba(2,164,189,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(2,164,189,0.07) 1px, transparent 1px);
   background-size: 80px 80px;
 }}
 .reveal-viewport::after {{
   content: ""; position: fixed; inset: 10px; pointer-events: none;
-  border: 1px solid rgba(19,51,76,0.55); outline: 0.5px solid rgba(19,51,76,0.3); outline-offset: 4px;
+  border: 1px solid rgba(14,31,83,0.55); outline: 0.5px solid rgba(14,31,83,0.3); outline-offset: 4px;
 }}
-.reveal {{ font-family: "Spectral", serif; color: {navy}; font-size: 38px; }}
-.reveal h1, .reveal h2, .reveal h3 {{ font-family: "Space Grotesk", sans-serif; color: {navy}; font-weight: 700; letter-spacing: 0.01em; }}
-.reveal h2::before {{ content: ""; display: inline-block; width: 0.45em; height: 0.45em; background: {magenta}; transform: rotate(45deg); margin-right: 0.4em; vertical-align: 0.1em; }}
-.reveal strong {{ color: {blue}; }}
-.reveal em {{ color: {magenta}; }}
-.reveal a {{ color: {blue}; }}
-.reveal ul li::marker {{ color: {magenta}; }}
-.reveal pre {{ box-shadow: none; border: 1.5px solid {navy}; background: #ffffff; position: relative; }}
+.reveal {{ font-family: "Spectral", serif; color: {ink}; font-size: 38px; }}
+.reveal h1, .reveal h2, .reveal h3 {{ font-family: "Space Grotesk", sans-serif; color: {ink}; font-weight: 700; letter-spacing: 0.01em; }}
+.reveal strong {{ color: {light}; }}
+.reveal em {{ color: {orange}; font-style: normal; font-weight: 700; }}
+.reveal a {{ color: {light}; }}
+.reveal ul li::marker {{ color: {orange}; }}
+.reveal pre {{ box-shadow: none; border: 1.5px solid {ink}; background: #ffffff; position: relative; }}
 .reveal pre code, .reveal code {{ font-family: "JetBrains Mono", monospace; }}
 .reveal pre code.hljs {{ background: #ffffff; }}
-.reveal pre samp.hljs {{ background: #eef5f9; border-left-color: {blue}; }}
+.reveal pre samp.hljs {{ background: #eef5f9; border-left-color: {light}; }}
 .reveal table:not(.hljs-ln) {{ border-collapse: collapse; font-family: "Space Grotesk", sans-serif; font-size: 0.85em; }}
-.reveal table:not(.hljs-ln) th {{ background: {navy}; color: #f6f3ea; border: none !important; }}
-.reveal table:not(.hljs-ln) td {{ border-bottom: 1px solid rgba(19,51,76,0.3) !important; }}
+.reveal table:not(.hljs-ln) th {{ background: {ink}; color: #f6f3ea; border: none !important; }}
+.reveal table:not(.hljs-ln) td {{ border-bottom: 1px solid rgba(14,31,83,0.3) !important; }}
 .reveal .rocks-quotes figure {{ position: relative; }}
-.reveal .rocks-quotes blockquote {{ background: #fff; border: 2px solid {magenta}; box-shadow: none; padding-top: 1.1em; }}
-.reveal .rocks-quotes blockquote::before {{ content: "CAUTION"; position: absolute; top: -0.65em; left: 0.8em; background: {magenta}; color: #fff; font-family: "Space Grotesk", sans-serif; font-style: normal; font-weight: 700; font-size: 0.55em; letter-spacing: 0.15em; padding: 0.1em 0.5em; }}
+.reveal .rocks-quotes blockquote {{ background: #fff; border: 2px solid {orange}; box-shadow: none; padding-top: 1.1em; }}
+.reveal .rocks-quotes blockquote::before {{ content: "CAUTION"; position: absolute; top: -0.65em; left: 0.8em; background: {orange}; color: #fff; font-family: "Space Grotesk", sans-serif; font-style: normal; font-weight: 700; font-size: 0.55em; letter-spacing: 0.15em; padding: 0.1em 0.5em; }}
 .reveal .rocks-quotes figcaption {{ font-family: "Space Grotesk", sans-serif; font-size: 0.8em; }}
-.reveal .title-slide h2 {{ font-size: 2.2em; }}
-.reveal .title-slide h2::before {{ display: none; }}
-.reveal .title-slide .title-box {{ background: rgba(246,243,234,0.92); border: 2px solid {navy}; outline: 1px solid {navy}; outline-offset: 5px; padding: 0.4em 0.8em; display: inline-block; }}
+.reveal .title-slide h2 {{ font-size: 1.75em; margin-bottom: 0.15em; }}
+.reveal .title-slide {{ position: relative; z-index: 1; }}
+.reveal .title-slide .title-box {{ background: rgba(253,252,247,0.78); backdrop-filter: blur(3px); border: 1.5px solid {ink}; outline: 0.5px solid {ink}; outline-offset: 5px; padding: 0.35em 0.9em; font-size: 0.78em; display: inline-block; box-shadow: 0 6px 24px rgba(14,31,83,0.18); }}
 .reveal .title-slide .scale {{ font-family: "Space Grotesk", sans-serif; font-size: 0.5em; letter-spacing: 0.2em; color: {magenta}; }}
 .reveal .map-slide .voyage-map {{ height: auto; width: 1150px; max-width: none; margin: -0.4em 0 0 -50px; }}
-.reveal .title-art {{ opacity: 0.6; }}
-.reveal .chapter {{ font-family: "Space Grotesk", sans-serif; color: {magenta}; font-size: 0.6em; letter-spacing: 0.2em; margin: 0; }}
+.reveal .title-art {{ opacity: 1; inset: auto; left: 50%; top: 50%; width: 1150px; height: auto; transform: translate(-50%, -50%); z-index: 0; }}
+.reveal .title-art .voyage-map {{ width: 100%; height: auto; }}
+.reveal .title-art .title-block {{ display: none; }}
+.reveal .chapter {{ font-family: "Space Grotesk", sans-serif; color: {orange}; font-size: 0.6em; letter-spacing: 0.2em; margin: 0; }}
 .voyage-map .sea {{ fill: #d7e9f2; }}
 .voyage-map .grid {{ display: inline; }}
 .voyage-map .grid-line {{ fill: none; stroke: {blue}; stroke-width: 0.6; opacity: 0.35; }}
