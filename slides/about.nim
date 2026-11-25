@@ -19,6 +19,7 @@ template aboutSlide* =
 
 - 🏢 Data consulting, 📈 ~350 people (2x in 3 years)
 - 📖 [Public handbook](https://handbook.agilelab.it/), 🌀 holacracy, 🏄 nomads
+- 💚 Friendly to open source, 🎤 conferences (budget!)
 """
     speakerNote """
 - Delivery Manager at AgileLab since 2024, before that
@@ -33,6 +34,7 @@ template aboutSlide* =
   in the last 2-3 years; public handbook, self-management
   (holacracy).
 - Nomads: e.g. 2 weeks in the Canary Islands... or in Toulouse.
+- Budget to attend conferences, and extra budget for speakers.
 """
 
 when isMainModule: # this part of the deck on its own: docs/slides_about.html
