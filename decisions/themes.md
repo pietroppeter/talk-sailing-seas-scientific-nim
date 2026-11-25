@@ -42,3 +42,4 @@ The deck wears the AgileLab theme of `my.nim`. Following Ines Montani's advice o
 - 2026-11-24: the names of the sections larger on the chart, the current one in magenta, a sailing boat in its port.
 - 2026-11-24: the course from Pietro's sketch, Piran to Koper, on the gulf arrangement (now the deck's); no bearings; a magenta anchor in the current port.
 - 2026-11-24: ring arrangement picked (more sea), with the sketched course; no lighthouses; anchors in sheltered water; the voyage sets out from Portorož.
+- 2026-11-25: the map slides of the deck draw the chart larger, into the slide margins.

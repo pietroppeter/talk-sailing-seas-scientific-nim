@@ -233,7 +233,7 @@ func chartCss(): string =
 .reveal .title-slide h2::before {{ display: none; }}
 .reveal .title-slide .title-box {{ background: rgba(246,243,234,0.92); border: 2px solid {navy}; outline: 1px solid {navy}; outline-offset: 5px; padding: 0.4em 0.8em; display: inline-block; }}
 .reveal .title-slide .scale {{ font-family: "Space Grotesk", sans-serif; font-size: 0.5em; letter-spacing: 0.2em; color: {magenta}; }}
-.reveal .map-slide .voyage-map {{ height: auto; width: 100%; margin-top: -0.4em; }}
+.reveal .map-slide .voyage-map {{ height: auto; width: 1150px; max-width: none; margin: -0.4em 0 0 -50px; }}
 .reveal .title-art {{ opacity: 0.6; }}
 .reveal .chapter {{ font-family: "Space Grotesk", sans-serif; color: {magenta}; font-size: 0.6em; letter-spacing: 0.2em; margin: 0; }}
 .voyage-map .sea {{ fill: #d7e9f2; }}
