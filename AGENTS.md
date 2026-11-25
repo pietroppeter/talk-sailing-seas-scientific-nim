@@ -17,6 +17,7 @@ Everything committed (code, specs, notes, commit messages, PR descriptions) is p
 ## Pages
 
 - The site: `index.nim` (docs/index.html) lists everything; the deck is `deck.nim` (docs/slides.html), its slides are in `slides/`; deep dives in `deepdive/`; the talk log in `devlog/`.
+- **One template per slide.** Every slide of the deck is a template of its own (`mainlandSlide`, `island3RocksSlide`: exported, with names unique across the deck). Each module of `slides/` has one template listing its slides in order (`introSection`, ...), and `deck.nim` lists the parts: reorder there, nowhere else. Each module ends with `when isMainModule: buildDeckPart(...)` (`my.nim`), which builds its part on its own; a new module adds itself to `deckParts` in `build.nim`.
 - Every nimib page that is not a deck starts, after `nbInit`, with `nb.usePage(ownSource)` (`page.nim`: local assets, the talk's style, the review mode, Show Source), or `nb.useDeepDive(slug, ownSource)` for a deep dive, `nb.useDevlogPost(slug, ownSource)` for a talk log post.
 - **Blocks, not HTML.** A page is Markdown in `nbText`, nimib's blocks and the blocks of `blocks.nim`. No HTML, CSS or colours in a page: what is needed a second time becomes a block in `blocks.nim`, its CSS goes in `talkstyle.nim` (pages) or `my.nim` (slides), using the tokens. The nimib-blocks skill (enabled in `.claude/settings.json`) has the details.
 - A new deep dive: add it to `deepdive/deepdive.nim`, create `deepdive/<slug>.nim`, link it from its slide as `deepdive/<slug>.html`. A new talk log post: add it to `devlog/devlog.nim`. `all.nim` finds both; the indexes check that every listed page was built.
@@ -26,7 +27,7 @@ Everything committed (code, specs, notes, commit messages, PR descriptions) is p
 
 ## Showing the work
 
-- To show one island, build only its part of the deck: `nim r build.nim island1` (any section of `deck.nim`) writes `docs/slides_island1.html` in the deck's look. Publish it, or a deep dive, as a claude.ai artifact: `python3 scripts/bundle-page.py docs/slides_island1.html /mnt/user-data/outputs/island1` copies the page and the files it loads and prints the files list for `publish_files` (which only takes files under `/mnt/user-data/outputs`). Republish to the same artifact when the page changes; attach few screenshots and no raw HTML.
+- To show one island, build only its part of the deck: `nim r build.nim island1` (or `nim r slides/island1_performance.nim`: every module of `slides/` builds its part with `when isMainModule`) writes `docs/slides_island1.html` in the deck's look. Publish it, or a deep dive, as a claude.ai artifact: `python3 scripts/bundle-page.py docs/slides_island1.html /mnt/user-data/outputs/island1` copies the page and the files it loads and prints the files list for `publish_files` (which only takes files under `/mnt/user-data/outputs`). Republish to the same artifact when the page changes; attach few screenshots and no raw HTML.
 - Every change to a page or a slide is shown rendered: build it and take screenshots (Playwright and Chromium; `scripts/screenshot.sh docs/slides.html <dir>` for slides). Check pages at 390px wide too.
 - A review export pasted in the chat (`format: nimib-review/...`) comes from a page's review mode: apply it with the `nimib-review` skill (`.claude/skills/nimib-review`).
 

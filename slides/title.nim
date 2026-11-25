@@ -13,3 +13,7 @@ template titleSlide* =
 
 """
       reference "[github.com/pietroppeter/talk-sailing-seas-scientific-nim](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim)"
+
+when isMainModule: # this part of the deck on its own: docs/slides_title.html
+  buildDeckPart("title", "slides/title.nim"):
+    titleSlide

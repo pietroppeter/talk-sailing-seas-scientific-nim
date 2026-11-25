@@ -6,7 +6,7 @@ import ../my
 # Competent people did real science with Nim: in bioinformatics, in physics and in lattice QCD.
 # Carries K3 (ready for more).
 
-template storiesIntroSlide = # 3.2
+template storiesIntroSlide* = # 3.2
   slide:
     nbText: """
 ## Success stories
@@ -32,7 +32,7 @@ For the curious, the deep dive collects stories
 outside science, to show the breadth.
 """
 
-template bioSlide = # 3.3
+template bioSlide* = # 3.3
   slide:
     nbText "### 🧬 Nim in Bioinformatics"
     nbLede("""Started by Brent Pedersen
@@ -80,7 +80,7 @@ Many users install these tools from bioconda
 without knowing they run Nim.
 """
 
-template vindaarSlide = # 3.4
+template vindaarSlide* = # 3.4
   slide:
     nbText "### ☀️ Nim in Physics 1/2"
     nbLede("""Sebastian Schmidt ([@Vindaar](https://github.com/Vindaar)),
@@ -115,7 +115,7 @@ with physical units in the types, checked at compile time.
 Why Nim, in his words: "the language gets out of my way".
 """
 
-template qexSlide = # 3.5
+template qexSlide* = # 3.5
   slide:
     nbText "### ⚛️ Nim in Physics 2/2"
     nbLede("""James Osborn and Xiao-Yong Jin (Argonne National Laboratory)
@@ -154,7 +154,7 @@ like symmetric mass generation (Phys. Rev. Lett. 2025).
 Its docs are a book written with nimibook.
 """
 
-template rocksAheadSlide = # 3.6
+template island2RocksSlide* = # 3.6
   slide:
     nbText: """
 ## Rocks ahead
@@ -185,4 +185,8 @@ template island2StoriesSection* =
     bioSlide
     vindaarSlide
     qexSlide
-    rocksAheadSlide
+    island2RocksSlide
+
+when isMainModule: # this part of the deck on its own: docs/slides_island2.html
+  buildDeckPart("island2", "slides/island2_stories.nim"):
+    island2StoriesSection

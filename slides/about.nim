@@ -35,7 +35,6 @@ template aboutSlide* =
 - Nomads: e.g. 2 weeks in the Canary Islands... or in Toulouse.
 """
 
-when isMainModule:
-  myInit("about.nim")
-  aboutSlide
-  nbSave
+when isMainModule: # this part of the deck on its own: docs/slides_about.html
+  buildDeckPart("about", "slides/about.nim"):
+    aboutSlide

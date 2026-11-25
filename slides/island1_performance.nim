@@ -52,26 +52,24 @@ proc benchMachineInfo*(): string =
     info[kv[0]] = kv[1]
   &"{info[\"python\"]}, {info[\"nim\"]}, {info[\"cpu\"]}, {info[\"date\"]}"
 
-template island1PerformanceSection* =
-  slide:
-    mapSlide(1) # 2.1
-    slide: # 2.2
-      nbText "## Reads like Python, runs like C"
-      nbDiv("perf-intro", ""):
-        nbText "The Vandermonde matrix: row $i$ is $1, x_i, x_i^2, \\dots, x_i^{n-1}$"
-      nbDiv("perf-cols", ""):
-        nbShowCode(vanderPyCode, lang = "python")
-        nbShowCode vanderNimCode
-      nbTable benchTable().slideLook(fontSize = "0.5em").highlightRows(where(it["impl"] == "Nim loops"))
-      nbTextSmall """
+template vandermondeSlide* =
+  slide: # 2.2
+    nbText "## Reads like Python, runs like C"
+    nbDiv("perf-intro", ""):
+      nbText "The Vandermonde matrix: row $i$ is $1, x_i, x_i^2, \\dots, x_i^{n-1}$"
+    nbDiv("perf-cols", ""):
+      nbShowCode(vanderPyCode, lang = "python")
+      nbShowCode vanderNimCode
+    nbTable benchTable().slideLook(fontSize = "0.5em").highlightRows(where(it["impl"] == "Nim loops"))
+    nbTextSmall """
 *No ceiling*: when you need it, go down to SIMD, threads,
 GPUs and assembly.
 """
-      reference &"""
+    reference &"""
 Best of 100 runs: {benchMachineInfo()}.
 [Benchmark code and details](deepdive/vandermonde.html)
 """
-      speakerNote """
+    speakerNote """
 The Vandermonde matrix: row i holds the powers of x[i].
 A classic example for the two-language problem.
 Both sides are plain for loops, and look almost the same.
@@ -83,3 +81,12 @@ No ceiling: Nim compiles to C, so you can go as low as you want,
 SIMD intrinsics, threads, GPU kernels, inline assembly.
 Mamy's talk, in this same session, shows how far that goes.
 """
+
+template island1PerformanceSection* =
+  slide:
+    mapSlide(1) # 2.1
+    vandermondeSlide # 2.2
+
+when isMainModule: # this part of the deck on its own: docs/slides_island1.html
+  buildDeckPart("island1", "slides/island1_performance.nim"):
+    island1PerformanceSection

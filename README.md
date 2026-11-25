@@ -41,14 +41,14 @@ The abstract and description above are kept verbatim as submitted. While prepari
 
 Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSlides](https://github.com/HugoGranstrom/nimiSlides):
 
-- `deck.nim`: the presentation (`docs/slides.html`), it imports the slides from `slides/`
+- `deck.nim`: the presentation (`docs/slides.html`): the order of its parts, one module of `slides/` each
 - `index.nim`: the site index (`docs/index.html`), which lists the slides, the deep dives and the talk log
 - `my.nim`: helpers and AgileLab theme; run it directly for a style test deck (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/my.html)
 - `slides/thank_you.nim`: the animated Thank You slide (a p5nim sketch); run it directly to build the slide on its own (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/thank_you.html)
 - `deepdive/`: the deep dives, see below
 - `themes.nim` and `maps/`: the deck wears the nautical chart theme; two other themes were explored (pirate adventure game, old book of sea tales); `maps/geometry.nim` is the one geometry of the voyage map, drawn by `maps/pixel.nim`, `maps/chart.nim` and `maps/engraved.nim`, with the coasts of real islands from tabelline's islands story (`maps/isole.nim`, © OpenStreetMap contributors, ODbL) and the Gulf of Trieste as the mainland (OpenStreetMap); `nim r build.nim themes` builds the deck in the other themes (`docs/slides_<theme>.html`); `nim r maps/maplab.nim` draws the arrangements of the map and every chart on one page (`docs/maplab.html`); the map editor (`mapeditor.nim`, a page of the site, `docs/mapeditor.html`; the editor itself is Nim compiled to JavaScript, `maps/editor/app.nim`) writes `maps/voyage.json`, the positions of the deck's map
 - `devlog/`: the talk log, see below
-- `slides/`: one file per slide (or group of slides), and the helpers they share
+- `slides/`: one module per part of the deck (title, about, intro, island1 to island7, conclusion, thank you), and the helpers they share. Every slide is a template; each module has a template that lists its slides in order (`introSection`, `island1PerformanceSection`, ...), so reordering slides happens there and reordering parts in `deck.nim`. Each module builds its part on its own with `when isMainModule`: `nim r slides/intro.nim` writes `docs/slides_intro.html`
 - `shiny/`: the Shiny for Python app of Island 6 (the plant), which `scripts/shinylive.sh` exports to `docs/shiny/` to run in the browser with shinylive (about 50 MB, not committed; `build.nim` exports it when missing, which needs the network once; deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/shiny/plant/)
 - `decisions/`, `outline.md`, `notes/`: how the talk is prepared (see below)
 
@@ -101,7 +101,7 @@ nim r build.nim deepdives           # every deepdive/*.nim, then the deep dives 
 nim r build.nim devlog              # every talk log post, then the talk log index (docs/devlog/)
 nim r build.nim themes              # the deck in the other themes (docs/slides_<theme>.html: pirate, book, agile)
 nim r build.nim check               # only the checks: nothing loaded from the network, no broken link between pages, no nbRawHtml
-nim r build.nim island1             # one part of the deck on its own (docs/slides_island1.html): intro, island1 to island7, conclusion, ...
+nim r build.nim island1             # one part of the deck on its own (docs/slides_island1.html), with its module's isMainModule: intro, island1 to island7, conclusion, ...
 nim r build.nim slides deepdives    # groups combine; flags after -- go to nim: nim r build.nim deepdives -- -d:release
 ```
 

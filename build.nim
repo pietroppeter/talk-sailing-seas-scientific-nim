@@ -10,8 +10,9 @@
 ##                                        no nbRawHtml, no `#>` note for Claude left (fails in CI, a warning locally)
 ##   nim r build.nim slides deepdives     groups combine
 ##   nim r build.nim island1              one part of the deck on its own (slides_island1.html), in the
-##                                        deck's look; any of deck.nim's `sections` (intro, island1 to
-##                                        island7, conclusion, ...): to review or publish one island
+##                                        deck's look: runs the `when isMainModule` of its module of slides/
+##                                        (any of `deckParts`: intro, island1 to island7, conclusion, ...),
+##                                        to review or publish one island
 ##
 ## Every build also exports the Shiny apps of shiny/ with shinylive into docs/shiny/
 ## (scripts/shinylive.sh), once: about 50 MB, not committed, and the first export needs
@@ -26,9 +27,16 @@ import std / [os, osproc, strutils, re, sets, sequtils]
 
 const
   pageGroups = ["slides", "deepdives", "devlog"]
-  deckSections = ["title", "about", "intro", "island1", "island2", "island3", "island4",
-                  "island5", "island6", "island7", "conclusion", "thank_you"] # as in deck.nim
+  deckParts = {"title": "title", "about": "about", "intro": "intro",
+               "island1": "island1_performance", "island2": "island2_stories",
+               "island3": "island3_datastack", "island4": "island4_interop",
+               "island5": "island5_expressive", "island6": "island6_interactivity",
+               "island7": "island7_notebook", "conclusion": "conclusion",
+               "thank_you": "thank_you"} # the modules of slides/ that deck.nim imports;
+    # each one builds its part with `when isMainModule` (thank_you: docs/thank_you.html)
   themes = ["pirate", "book", "agile"] # the deck wears chart (themes.nim)
+
+const partNames = deckParts.mapIt(it[0])
 
 proc run(cmd: string) =
   echo "== ", cmd
@@ -139,17 +147,17 @@ when isMainModule:
   if groups.len == 0 or "all" in groups:
     groups = @pageGroups & @["themes", "looks", "check"]
   for g in groups:
-    if g notin pageGroups and g notin ["themes", "looks", "check"] and g notin deckSections:
+    if g notin pageGroups and g notin ["themes", "looks", "check"] and g notin partNames:
       quit "build: unknown group " & g & " (slides, deepdives, devlog, themes, looks, check, all, " &
-        "or a section of the deck: " & deckSections.join(", ") & ")", 2
+        "or a part of the deck: " & partNames.join(", ") & ")", 2
   let pages = groups.filterIt(it in pageGroups)
   if pages.len > 0:
     run "nim r " & nimFlags(extra) & " -d:only=" & pages.join(",") & " all.nim"
   if "themes" in groups:
     for t in themes:
       run "nim r " & nimFlags(extra) & " -d:slideTheme=" & t & " all.nim"
-  for g in groups.filterIt(it in deckSections):
-    run "nim r " & nimFlags(extra) & " -d:deckSection=" & g & " deck.nim"
+  for (name, module) in deckParts:
+    if name in groups: run "nim r " & nimFlags(extra) & " slides/" & module & ".nim"
   if "looks" in groups:
     run "nim r " & nimFlags(extra) & " -d:deckLook=centered all.nim"
   shinyApps()
