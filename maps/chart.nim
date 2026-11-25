@@ -302,8 +302,8 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
     if isl.note.len > 0:
       let c = isl.cape((-1.0, 0.5))
       word("chart-note", isl.note, (c.x - 5, c.y + 10), "end")
-  if html and v.landLabelAngle == 0: word("land-name", "THE MAINLAND", v.landLabel)
-  else: result.add &"""<text class="land-name" {v.landLabelAttrs} text-anchor="middle">THE MAINLAND</text>"""
+  if html and v.landLabelAngle == 0: word("land-name", "MAINLAND", v.landLabel)
+  else: result.add &"""<text class="land-name" {v.landLabelAttrs} text-anchor="middle">MAINLAND</text>"""
   word("note", "Coasts © OpenStreetMap contributors (ODbL)", (v.w / 2, v.h - 10))
   result.add roseSvg(rose, 34)
   result.add "</g>"
