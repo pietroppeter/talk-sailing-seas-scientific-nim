@@ -20,6 +20,7 @@ template aboutSlide* =
 - 🏢 Data consulting, 📈 ~350 people (2x in 3 years)
 - 📖 [Public handbook](https://handbook.agilelab.it/), 🌀 holacracy, 🏄 nomads
 - 💚 Friendly to open source, 🎤 conferences (budget!)
+- 🎂 Founded 12 years ago, 📮 now part of Poste Italiane
 """
     speakerNote """
 - Delivery Manager at AgileLab since 2024, before that
