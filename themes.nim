@@ -291,8 +291,10 @@ proc titleCardCss(): string =
 """
 
 const agendaCss = """
-/* the agenda bar: the seven islands along the bottom of every slide, the current one in magenta;
-   on a map slide the names sail to their places on the chart, and back (Pietro, 2026-11-25) */
+/* the agenda bar: the mainland and the seven islands along the bottom of every slide, the current
+   one in magenta; the mainland comes first until the first island, then moves to the end, where the
+   trip ends. On a map slide the names sail to their places on the chart, and back (Pietro,
+   2026-11-25), the mainland to the chart's own "MAINLAND" */
 #voyage-agenda { position: fixed; left: 280px; right: 120px; bottom: 16px; display: flex; justify-content: space-evenly; z-index: 30; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
 #voyage-agenda::before { content: ""; position: absolute; inset: -7px -12px; background: rgba(246,243,234,0.92); border-top: 1px solid rgba(14,31,83,0.55); z-index: -1; transition: opacity 0.6s ease; }
 #voyage-agenda.shown { opacity: 1; }
@@ -301,7 +303,7 @@ const agendaCss = """
 #voyage-agenda span.visited { color: #4d6475; }
 #voyage-agenda span.current { color: #b0167a; }
 html.print-pdf #voyage-agenda, .reveal.overview ~ #voyage-agenda { display: none; }
-body.voyage-agenda .reveal .slides section.present .map-slide .ct.cname { visibility: hidden; }
+body.voyage-agenda .reveal .slides section.present .map-slide :is(.ct.cname, .ct.land-name) { visibility: hidden; }
 .reveal section.present .map-slide .anchor { animation: voyage-anchor 0.6s ease 3s both; }
 @keyframes voyage-anchor { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { #voyage-agenda span { transition: none; } .reveal section.present .map-slide .anchor { animation: none; } }
@@ -321,19 +323,38 @@ const voyageDeckJs* = when slideTheme == "chart": """
   let at = -1;
   const islandOf = slides.map(s => { const m = mapOf(s); if (m) at = +m.dataset.current; return at; });
   const any = document.querySelector(".chart-stage[data-current]");
-  const names = any ? [...any.querySelectorAll(".ct.cname[data-n]")].map(e => e.textContent) : [];
+  const islands = any ? [...any.querySelectorAll(".ct.cname[data-n]")].map(e => e.textContent) : [];
+  // the trip: one mainland, at the start of the bar until the first island, then at its end
+  const names = islands.length ? [...islands, "MAINLAND"] : [];
+  const mainland = islands.length; // the index of its span
   bar.innerHTML = names.map(n => "<span></span>").join("");
   [...bar.children].forEach((e, k) => { e.textContent = names[k]; });
+  if (names.length) bar.children[mainland].style.order = "-1"; // at the start: the trip starts there
   if (!printing && names.length) document.body.classList.add("voyage-agenda");
+  const spans = () => [...bar.children];
   const sail = (section, onMap) => {
     const b = bar.getBoundingClientRect();
-    [...bar.children].forEach((e, k) => {
-      const label = onMap && section.querySelector(`.ct.cname[data-n="${k + 1}"]`);
+    spans().forEach((e, k) => {
+      // the mainland sails to the chart's own name, as the islands do
+      const label = onMap && section.querySelector(k === mainland ? ".ct.land-name" : `.ct.cname[data-n="${k + 1}"]`);
       if (!label) { e.style.transform = ""; return; }
       const r = label.getBoundingClientRect();
       const x = b.left + e.offsetLeft + e.offsetWidth / 2, y = b.top + e.offsetTop + e.offsetHeight / 2;
       const s = r.height / e.offsetHeight;
       e.style.transform = `translate(${r.left + r.width / 2 - x}px, ${r.top + r.height / 2 - y}px) scale(${s})`;
+    });
+  }
+  const moveMainland = atEnd => { // first or last in the bar; the names slide to their new places
+    const m = spans()[mainland];
+    if ((m.style.order === "1") === atEnd) return;
+    const before = spans().map(e => e.offsetLeft);
+    m.style.order = atEnd ? "1" : "-1";
+    spans().forEach((e, k) => {
+      const dx = before[k] - e.offsetLeft;
+      if (!dx || e.style.transform) return; // a name on the chart sails from where it is
+      e.style.transition = "none"; e.style.transform = `translateX(${dx}px)`;
+      e.getBoundingClientRect();
+      e.style.transition = ""; e.style.transform = "";
     });
   }
   const drawCourse = section => { // the leg just sailed (or the whole course on the first map) draws itself
@@ -352,10 +373,12 @@ const voyageDeckJs* = when slideTheme == "chart": """
     const i = slides.indexOf(section), n = islandOf[i];
     const hide = i === 0 || section.querySelector(".sketch, .title-art");
     bar.classList.toggle("shown", !hide);
-    [...bar.children].forEach((e, k) => {
-      e.classList.toggle("current", k + 1 === n);
-      e.classList.toggle("visited", n === 8 || (n > 0 && k + 1 < n));
+    spans().forEach((e, k) => {
+      const atMainland = k === mainland && (n <= 0 || n === 8);
+      e.classList.toggle("current", atMainland || k + 1 === n);
+      e.classList.toggle("visited", !atMainland && (n === 8 || (n > 0 && (k + 1 < n || k === mainland))));
     });
+    moveMainland(n >= 1);
     const onMap = !!mapOf(section);
     bar.classList.toggle("on-map", onMap);
     // the names sail once the slide is in place (while reveal.js slides it in, it is off screen)

@@ -174,6 +174,7 @@ a[href$="emilia.html"], a[href$="emilia.html"]:hover { color: inherit; text-deco
 .map-editor .ct.cname.bar.current { font-size: 0.98cqw; }
 .map-editor .previewing .ct.cname { transition: left 1s cubic-bezier(.5, 0, .2, 1), top 1s cubic-bezier(.5, 0, .2, 1), font-size 1s ease, color 0.4s ease; }
 .map-editor .previewing .ct.cname.instant { transition: none; }
+.map-editor .previewing .ct.land-name { visibility: hidden; } /* in the preview the agenda's mainland sails there */
 .map-editor .previewing.on-slide > svg > g:first-of-type, .map-editor .previewing.on-slide > svg #layer-border { opacity: 0; }
 .map-editor .previewing.on-slide #words > :not(.cname):not(.agenda-strip) { opacity: 0; }
 .map-editor .previewing.on-slide .portolano { opacity: 0; transform: translateY(0.6cqw); transition: opacity 0.3s ease, transform 0.3s ease; }

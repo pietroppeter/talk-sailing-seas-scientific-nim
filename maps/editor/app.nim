@@ -358,9 +358,16 @@ proc drawPortolano() =
 
 proc drawWords() =
   var s = &"""<div class="agenda-strip" style="top:{pc(100 * S["agenda"]["y"].getFloat / H)}%"></div>"""
+  # in the preview the agenda also has the mainland: first until the first island, then last
+  let mainland = proc (atEnd: bool): string =
+    if mode != "preview" or atEnd != (current >= 1): return ""
+    let cls = if current <= 0 or current == 8: " current" else: " visited"
+    &"""<div class="ct cname mainland{cls}">MAINLAND</div>"""
+  s.add mainland(false)
   for i, isl in S["islands"].getElems:
     let n = i + 1
     s.add &"""<div class="ct cname{state(n, current)}" data-kind="label" data-i="{i}" style="{at(pt(isl["label"]))}">{n} · {esc(names[i].toUpperAscii)}</div>"""
+  s.add mainland(true)
   let tb = pt(S["titleBlock"])
   let hidden = if checked("show-portolano"): " hidden" else: ""
   let cur = if current > 0: " current" else: ""
@@ -369,7 +376,7 @@ proc drawWords() =
     if isl.note.len > 0:
       let c = isl.cape((-1.0, 0.5))
       s.add &"""<div class="ct chart-note ct-end" style="{at((c.x - 5, c.y + 10))}">{esc(isl.note)}</div>"""
-  s.add &"""<div class="ct land-name" data-kind="landLabel" style="{at(pt(S["landLabel"]))}">THE MAINLAND</div>"""
+  s.add &"""<div class="ct land-name" data-kind="landLabel" style="{at(pt(S["landLabel"]))}">MAINLAND</div>"""
   s.add &"""<div class="ct note" style="{at((W / 2, H - 10))}">Coasts © OpenStreetMap contributors (ODbL)</div>"""
   setHtml("words", s)
   if checked("show-agenda") or mode == "preview": el("words").classList.add "agenda-on" else: el("words").classList.remove "agenda-on"
@@ -881,7 +888,9 @@ proc barPositions(): seq[Pt] =
     stage.appendChild(m)
   m.style.top = cstring(pc(100 * S["agenda"]["y"].getFloat / H) & "%")
   var html = ""
+  if current <= 0: html.add """<span class="ct cname bar">MAINLAND</span>"""
   for i, n in names: html.add &"""<span class="ct cname bar">{i + 1} · {esc(n.toUpperAscii)}</span>"""
+  if current >= 1: html.add """<span class="ct cname bar">MAINLAND</span>"""
   m.innerHTML = cstring html
   let r = stage.getBoundingClientRect()
   for c in m.children:
@@ -900,11 +909,12 @@ proc show(i: int) =
   for b in el("pv-steps").children:
     if parseInt($b.Element.attr("data-s")) == stepAt: b.Element.classList.add "on" else: b.Element.classList.remove "on"
   let stage = el("stage")
+  stage.setAttribute("data-current", cstring $current) # the mainland in magenta on charts 0 and 8
   if s.map: stage.classList.add "on-map"; stage.classList.remove "on-slide"
   else: stage.classList.add "on-slide"; stage.classList.remove "on-map"
   drawWords(); drawCourse(s.map)
   let bar = barPositions()
-  let labels = el("words").querySelectorAll(".cname")
+  let labels = el("words").querySelectorAll(".cname") # in the order of the bar
   if not s.map:
     for k, e in labels:
       e.classList.add "bar"; e.place(bar[k])
@@ -914,8 +924,13 @@ proc show(i: int) =
     el("words").reflow
     for k, e in labels:
       e.classList.remove "instant"
-      capture e, k: # each name its own e and k (a closure in a loop shares the loop's)
-        later(proc () = e.classList.remove "bar"; e.place(pt(S["islands"][k]["label"])), 120 + 60 * k)
+      let mainland = e.classList.contains("mainland")
+      let i = if mainland: -1 else: parseInt($e.attr("data-i"))
+      capture e, k, i, mainland: # each name its own e and k (a closure in a loop shares the loop's)
+        later(proc () =
+          e.classList.remove "bar"
+          if mainland: e.place(pt(S["landLabel"])) # where the chart's own name is
+          else: e.place(pt(S["islands"][i]["label"])), 120 + 60 * k)
   var sh = el("slide-heading")
   if sh.isNil:
     sh = document.createElement("div")
@@ -939,6 +954,7 @@ proc setMode(m: string) =
   let stage = el("stage")
   if m == "preview": stage.classList.add "previewing" else: stage.classList.remove "previewing"
   stage.classList.remove "on-map"; stage.classList.remove "on-slide"
+  stage.removeAttribute("data-current")
   let sh = el("slide-heading")
   if not sh.isNil: sh.parentNode.removeChild(sh)
   el("hint").textContent = cstring(if m == "edit":
