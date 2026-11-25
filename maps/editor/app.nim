@@ -370,7 +370,7 @@ proc drawWords() =
       let c = isl.cape((-1.0, 0.5))
       s.add &"""<div class="ct chart-note ct-end" style="{at((c.x - 5, c.y + 10))}">{esc(isl.note)}</div>"""
   s.add &"""<div class="ct land-name" data-kind="landLabel" style="{at(pt(S["landLabel"]))}">THE MAINLAND</div>"""
-  s.add &"""<div class="ct note" style="{at((W / 2, H - 10))}">Coasts © OpenStreetMap contributors (ODbL) · the mainland is Istria</div>"""
+  s.add &"""<div class="ct note" style="{at((W / 2, H - 10))}">Coasts © OpenStreetMap contributors (ODbL)</div>"""
   setHtml("words", s)
   if checked("show-agenda") or mode == "preview": el("words").classList.add "agenda-on" else: el("words").classList.remove "agenda-on"
   drawPortolano()

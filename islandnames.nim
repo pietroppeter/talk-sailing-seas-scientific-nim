@@ -4,15 +4,15 @@
 ## A rename also updates decisions/islands.md and outline.md.
 
 const islands* = [
-  "Accessible Performance",
-  "Success Stories",
-  "Data Stack",
+  "Performance",
+  "Science",
+  "Ecosystem",
   "Interoperability",
-  "An Expressive Language",
+  "Expressivity",
   "Interactivity",
   "Notebook",
 ]
 
 func islandLabel*(n: int): string =
-  ## "Island 3 · Data Stack", for island `n` (1..7)
+  ## "Island 3 · Ecosystem", for island `n` (1..7)
   "Island " & $n & " · " & islands[n - 1]

@@ -21,7 +21,7 @@ nbText """
 
 In the talk [Sailing Seas of Scientific
 Nim](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html),
-Island 1 (Accessible Performance) is two slides:
+Island 1 (Performance) is two slides:
 what the Vandermonde matrix is, then the same function
 in Python and in Nim, side by side, both written with
 plain for loops, and a mini benchmark.

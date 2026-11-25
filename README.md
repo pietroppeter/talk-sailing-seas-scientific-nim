@@ -33,9 +33,9 @@ The talk will use examples from the ecosystem to showcase the power of Nim but i
 The abstract and description above are kept verbatim as submitted. While preparing the talk, a few things changed:
 
 - The title slide says **Sailing Seas of Scientific Nim**, without "the", so the title fits on one line.
-- The first island is just **Accessible Performance** ("without Ceiling" dropped from the title).
-- **Interoperability** comes before **An Expressive Language**: Interoperability is the fourth island and An Expressive Language the fifth.
-- The **Data Stack** island adds a fourth block, display tables (tabelline), a second dataframe library (nanuq, Polars for Nim) and a deep learning example, besides the tensor, dataframe and plotting libraries.
+- The islands have short names: **Performance** (for Accessible Performance without Ceiling), **Science** (Success stories), **Ecosystem** (Data Stack) and **Expressivity** (An Expressive Language); Interoperability, Interactivity and Notebook stay.
+- **Interoperability** comes before **Expressivity**: Interoperability is the fourth island and Expressivity the fifth.
+- The **Ecosystem** island adds a fourth block, display tables (tabelline), a second dataframe library (nanuq, Polars for Nim) and a deep learning example, besides the tensor, dataframe and plotting libraries.
 
 ## Slides
 

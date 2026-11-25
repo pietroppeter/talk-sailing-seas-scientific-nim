@@ -14,11 +14,11 @@ K1-K4 are the key messages in [decisions/tone.md](decisions/tone.md). Why the ou
 |---|---------|---------|---------|
 | 0 | Opening: title and about me | 1 | 01:00 |
 | 1 | Intro: leaving the mainland | 2 | 03:00 |
-| 2 | Island 1: Accessible Performance | 1 | 04:00 |
-| 3 | Island 2: Success Stories | 2.5 | 06:30 |
-| 4 | Island 3: Data Stack | 3.5 | 10:00 |
+| 2 | Island 1: Performance | 1 | 04:00 |
+| 3 | Island 2: Science | 2.5 | 06:30 |
+| 4 | Island 3: Ecosystem | 3.5 | 10:00 |
 | 5 | Island 4: Interoperability | 3 | 13:00 |
-| 6 | Island 5: An Expressive Language | 2.5 | 15:30 |
+| 6 | Island 5: Expressivity | 2.5 | 15:30 |
 | 7 | Island 6: Interactivity | 2.5 | 18:00 |
 | 8 | Island 7: Notebook | 2.5 | 20:30 |
 | 9 | Conclusion: back on land | 2.5 | 23:00 |
@@ -43,16 +43,16 @@ Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim'
 1.1 **The mainland** - "Each language came to solve a problem the previous ones did not, and each one has a price": a table of Fortran (1957), C (1972), C++ (1985), Python (1991), R (1993), Julia (2012) with what each came to do and its price, and a last highlighted row, Nim (2008), with "?" and "this talk". The speaker names the two-language problem (Python's slow loops, the reason for Julia) and asks the abstract's question: is there space for one more?
 1.2 **Nim's tradeoffs** - one line on what Nim is (general purpose, statically typed, compiled to C, C++ and JavaScript, reads like Python), then two columns: *You get* (reads like Python, runs like C; macros, JavaScript, interop; one language, script to library) and *You pay* (a compile step, no REPL; a tiny ecosystem; few people know it). Reference: Andreas Rumpf, 2008 as Nimrod, 1.0 in 2019, 2.0 in 2023. The speaker says each island shows something on the left and most end with something on the right.
 1.3 **The voyage** - how to read the talk: a niche language is an exotic land and from a boat you only see the coast; 🏝️ seven islands (themes where Nim shows its powers), 🪨 rocks ahead (where Nim falls short), 🐋 deep dives (a page for what a slide only sketches), with a link to the talk's site.
-1.4 **The map** - the seven islands on one nautical chart, used again as a progress marker at each section start: each section's map slide is the chart alone, its title block naming the island ("Chart 3 of 7 · Data Stack") and the real island it is drawn as, with a line of lore; the mainland is the Gulf of Trieste, Leros (the Notebook) in the middle (`decisions/themes.md`).
+1.4 **The map** - the seven islands on one nautical chart, used again as a progress marker at each section start: each section's map slide is the chart alone, its title block naming the island ("Chart 3 of 7 · Ecosystem") and the real island it is drawn as, with a line of lore; the mainland is the Gulf of Trieste, Leros (the Notebook) in the middle (`decisions/themes.md`).
 
-### 2. Island 1: Accessible Performance (~1 min)
+### 2. Island 1: Performance (~1 min)
 
 Nim is as easy to write as Python and as fast as C, passed through quickly in one slide (Pietro, 2026-11-24: performance is a given): Mamy's talk in the same session goes deeper. Carries K2.
 
 2.1 **Island 1** - section title on the map.
 2.2 **Reads like Python, runs like C** - one sentence on what the Vandermonde matrix is (row $i$ is $1, x_i, \dots, x_i^{n-1}$, as small as the text below the table; more in the deep dive), then the Vandermonde matrix with for loops, Python and Nim side by side (the code of `bench/vandermonde`), and a mini benchmark table: Python loops, NumPy's `np.vander`, Nim loops (one 1000 x 100 matrix, Nim row highlighted, times read from `bench/vandermonde/results.csv`). One line in orange: *No ceiling*, down to SIMD, threads, GPUs and assembly (Mamy's talk in this session only in the speaker notes, Pietro). A reference line with the machine and a link to the deep dive (`deepdive/vandermonde.html`). The speaker says that in Nim you are allowed to write for loops (in Python you call NumPy, whose loop is in C), and that "no ceiling" means you can go down to assembly and optimise all you want.
 
-### 3. Island 2: Success Stories (~2.5 min)
+### 3. Island 2: Science (~2.5 min)
 
 Competent people did real science with Nim, in bioinformatics, in physics and in lattice QCD: pioneers, not a big ecosystem. Carries K3 (ready for more). Speaks to both users and authors.
 
@@ -63,7 +63,7 @@ Competent people did real science with Nim, in bioinformatics, in physics and in
 3.5 **⚛️ Nim in Physics 2/2** - title with an atom emoji; the lede names the people and links QEX: "James Osborn and Xiao-Yong Jin (Argonne National Laboratory) build QEX, a lattice QCD framework in Nim (theoretical physics, computed on supercomputers): since 2016, still very active (298 commits in 2026). Others use it for new physics." Below, the plaquette loop from QEX's example `ex1.nim` (go around the smallest squares of the space-time lattice inside `threads:`), with a plain-words comment on top. Links to the 2016 framework paper (arXiv:1612.02750), the code, the symmetric mass generation paper that uses it (arXiv:2409.02062, PRL 2025) and the explainer (`deepdive/qex.html`). The speaker says what lattice QCD is in one line, that QEX is the most active scientific Nim project since 2024, that Curtis Peterson (Colorado) added the Pauli-Villars simulations used in Anna Hasenfratz's group papers, and that its docs are a nimibook.
 3.6 **Rocks ahead** - a tiny ecosystem: pioneers build what they need, or move where the libraries are. Two quotes side by side: Brent, "I mostly switched to rust since that's where the bioinformatics libs are, but I still really like nim" (personal communication, 2026), and Vindaar in his thesis, "by choosing Nim [...] I underestimated the amount of code I would / had to write [...] I learned way more than I would have otherwise". "I still really like nim" is bold in the theme blue, and "I learned way more than I would have otherwise" is in orange emphasis.
 
-### 4. Island 3: Data Stack (~3.5 min)
+### 4. Island 3: Ecosystem (~3.5 min)
 
 The basic building blocks of the data ecosystem, through an exploration of the penguins dataset: Arraymancer, Datamancer and ggplotnim, the Nim mirror of NumPy, pandas/dplyr and matplotlib/ggplot2, presented bottom-up, then the new blocks nanuq (Polars) and tabelline (Great Tables). Carries K2 and K3.
 
@@ -91,7 +91,7 @@ Two messages (Pietro, 2026-11-24): Nim's small ecosystem is not a problem, becau
 5.6 **A real package: naffprop** - affinity propagation with R's apcluster features behind scikit-learn's API, the algorithm in Nim, built with nimlang-pypi, wheels for five platforms, 1.1 to 2.9 times faster than scikit-learn [example]; on the right, live in an iframe, its interactive figure "How exemplars emerge" (the same Nim compiled to JavaScript, vendored in `docs/assets/naffprop/` by `scripts/vendor-assets.sh`).
 5.7 **Rocks ahead** - bridges of different maturity (nimpy solid, rnim a prototype, nimjl needs Julia); no maintained packaging tool for years, `nimlang-pypi` new and alpha; few Python users know Nim, compared with Rust.
 
-### 6. Island 5: An Expressive Language (~2.5 min)
+### 6. Island 5: Expressivity (~2.5 min)
 
 Two language features that make Nim good for scientific use: custom operators written by hand, then units and their operators generated by macros, inspired by Vindaar's unchained library. Carries K2 (metaprogramming superpower).
 
