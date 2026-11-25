@@ -18,7 +18,15 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 ### #24 Arraymancer scope (Island 3)
 
 - [ ] Rocks ahead (4.8) contributor list: add Angel Ezquerra ("Vindaar, mratsim, Clonkk, HugoGranstrom, Angel Ezquerra"), or replace names with numbers ("one person wrote 60% of the commits")?
-- [ ] Add a short lucidrains line on 4.4, e.g. "October 2026: GPT-2-like transformers, by lucidrains" (promise in Arraymancer #582, shipped in #695)?
+
+### Island 3 redo (nanuq, tabelline, deep learning)
+
+Chosen by Claude on 2026-11-25 (Pietro: go with your guts, no slides removed); revisit when polishing:
+
+- [ ] Island 3 has ten content slides for 3.5 minutes: all kept for now. Candidates when trimming: SciNim (4.10) into the stack slide's speaker notes, Datamancer and ggplotnim (4.6, 4.7) on one slide, or the deep learning slide (4.5) into the deep dive only.
+- [ ] Slide 4.5 trains the network on every build, so its accuracy moves a little (96 to 97%): kept live, no fixed seed.
+- [ ] "Mostly AI-written" stays on the rocks ahead slide itself, as an honest line next to "they need users".
+- [ ] nanuq code uses `col("body_mass_g")`, as `pl.col` in Python (nanuq's `col.body_mass_g` does not compile inside the deck's templates): kept.
 
 ### #25 QEX success story (Island 2)
 
