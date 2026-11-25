@@ -1,5 +1,6 @@
 import nimib
 import page # usePage, the style and the blocks
+import islandnames
 
 # The voyage map editor: the chart of the deck in the browser, to move
 # the coast and the islands (the depths follow), set the anchors, the
@@ -13,8 +14,7 @@ import page # usePage, the style and the blocks
 
 const
   ownSource = staticRead("mapeditor.nim")
-  sections = ["Accessible Performance", "Success Stories", "Data Stack",
-    "Interoperability", "An Expressive Language", "Interactivity", "Notebook"]
+  sections = islands
 
 nbInit(thisFileRel = "mapeditor.nim")
 nb.usePage(ownSource, withReview = false)

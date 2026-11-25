@@ -10,6 +10,7 @@
 ## (`nim r build.nim deepdives` finds and builds it).
 import nimib
 import ../page # usePage, and the blocks of blocks.nim
+import ../islandnames # islandLabel
 export page
 
 type
@@ -20,40 +21,40 @@ type
     summary*: string ## one line, for the lists
 
 const deepDives* = @[
-  DeepDive(slug: "vandermonde", section: "Island 1 · Accessible Performance",
+  DeepDive(slug: "vandermonde", section: islandLabel(1),
     title: "The Vandermonde matrix, with for loops",
     summary: "The benchmark of the performance slide: the same loops in Python and Nim, NumPy, Bezanson's case study, the caveats, and how far down Nim goes."),
-  DeepDive(slug: "beyond_science", section: "Island 2 · Success Stories",
+  DeepDive(slug: "beyond_science", section: islandLabel(2),
     title: "Nim success stories beyond science",
     summary: "What people who are not scientists built with Nim: a web front-end, an Ethereum client, games, chip SDKs, business software."),
-  DeepDive(slug: "bioinformatics", section: "Island 2 · Success Stories",
+  DeepDive(slug: "bioinformatics", section: islandLabel(2),
     title: "Nim in bioinformatics",
     summary: "The genomics tools of Brent Pedersen, who started it, the people who followed, and the bioinformatics behind them, with toy code that runs."),
-  DeepDive(slug: "vindaar", section: "Island 2 · Success Stories",
+  DeepDive(slug: "vindaar", section: islandLabel(2),
     title: "Vindaar's thesis in plain words",
     summary: "A physics PhD whose whole analysis is written in Nim: solar axions, the detector, and the code."),
-  DeepDive(slug: "qex", section: "Island 2 · Success Stories",
+  DeepDive(slug: "qex", section: islandLabel(2),
     title: "Lattice QCD and QEX in plain words",
     summary: "What lattice QCD is, what QEX does and where Nim comes in, with a toy lattice that runs when the page is built."),
-  DeepDive(slug: "penguins_data_stack", section: "Island 3 · Data Stack",
+  DeepDive(slug: "penguins_data_stack", section: islandLabel(3),
     title: "Penguins with the Nim data stack",
     summary: "The penguins dataset explored with Arraymancer, Datamancer, ggplotnim and plotly, further than the slides go, with a small neural network."),
-  DeepDive(slug: "penguins_polars", section: "Island 3 · Data Stack",
+  DeepDive(slug: "penguins_polars", section: islandLabel(3),
     title: "Penguins with nanuq and tabelline",
     summary: "Polars from Nim with nanuq, display tables with tabelline: how they work, the penguins again, and how they compare with Datamancer."),
-  DeepDive(slug: "interoperability", section: "Island 4 · Interoperability",
+  DeepDive(slug: "interoperability", section: islandLabel(4),
     title: "Interoperability: Nim with other languages",
     summary: "Calling C, C++ and JavaScript natively, bridges to Python, R and Julia, and Nim inside Python with nimlang-pypi and naffprop."),
-  DeepDive(slug: "operators", section: "Island 5 · An Expressive Language",
+  DeepDive(slug: "operators", section: islandLabel(5),
     title: "Custom operators: points, lines and planes",
     summary: "How operators work in Nim, the geometry behind the example, where it breaks, and one more operator to try."),
-  DeepDive(slug: "units_macros", section: "Island 5 · An Expressive Language",
+  DeepDive(slug: "units_macros", section: islandLabel(5),
     title: "Units with unchained",
     summary: "How unchained checks units at compile time, how declareUnits adds new ones, and Kepler's third law."),
-  DeepDive(slug: "plant_app", section: "Island 6 · Interactivity",
+  DeepDive(slug: "plant_app", section: islandLabel(6),
     title: "A plant in the browser",
     summary: "A Shiny for Python app ported to Nim and compiled to JavaScript, what the JavaScript backend can do, and why Nim has no REPL yet."),
-  DeepDive(slug: "notebook", section: "Island 7 · Notebook",
+  DeepDive(slug: "notebook", section: islandLabel(7),
     title: "nimib: a notebook that is a Nim program",
     summary: "From literate programming to Jupyter, the blocks of nimib, what people make with it, how it compares with other notebooks, and its limits."),
   DeepDive(slug: "thank_you_sketch", section: "Thank you",

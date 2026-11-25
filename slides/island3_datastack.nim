@@ -8,7 +8,7 @@ import island3_network, island3_nanuq
 export math, sequtils, ggplotnim, linear_algebra
 export networkSlide, nanuqSlide, tabellineSlide, nanuqSlides
 
-# Section 4: Island 3: Data Stack (see outline.md)
+# Section 4: Island 3: Ecosystem (see outline.md)
 # The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2 and K3.
 # Slides 4.5 (the network) and 4.8, 4.9 (nanuq, tabelline) are templates of their own modules.
 # Paths are relative to docs/ (nimib's homeDir): the data is docs/data/penguins.csv,

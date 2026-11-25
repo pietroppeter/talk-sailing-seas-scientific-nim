@@ -6,7 +6,9 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 - [ ] Voyage map (chart theme adopted 2026-11-24): the lore lines (hidden with the names; shown by `-d:islandNames=true`), coastal views (drawn profiles of an island seen from the sea, as on real charts) not done yet. See `decisions/themes.md`.
 - [ ] Portolano texts on the charts are Claude's drafts (`maps/voyage.json`): rewrite them in the map editor.
-- [ ] Timing: with QEX, Island 2 is 2.5 minutes; with Island 1 down to one slide (1 minute) the talk is 23 minutes. Keep, or should the QEX slide replace something?
+- [ ] Timing: the target is 25 minutes of content and 5 of Q&A (2026-11-25); the sections add up to 23 minutes (with QEX, Island 2 is 2.5; Island 1 is one slide, 1 minute). Use the 2 minutes of slack, or leave them for the day? Check in the dry run.
+
+- [ ] Slide 0.3 AI (`slides/ai.nim`, after about me): a placeholder; what it says, and the minutes it takes from the opening (still 1 minute in the outline).
 
 ## Unanswered points from merged PRs
 
@@ -55,6 +57,12 @@ Chosen by Claude on 2026-11-25 (Pietro: go with your guts, no slides removed); r
 ### Island 1 in one slide (Vandermonde benchmark)
 
 - [ ] Run `bash bench/vandermonde/run.sh` on the presentation laptop and commit `results.csv` and `machine.txt`, so the slide shows the machine of the talk (today: a cloud machine, where Nim and NumPy are close and Nim's time moves between runs).
+
+### Island renames (2026-11-25: Performance, Science, Ecosystem, Expressivity)
+
+- [ ] Slide 3.2 is still titled "Success stories", under the island now called Science: keep it, or retitle it?
+- [ ] "Data stack" is still in the deep dive "Penguins with the Nim data stack" (title and slug `penguins_data_stack`), in prose of the deep dives (`plant_app`, `penguins_polars`, `notebook`, `vindaar`) and in slide 3.4's story text: keep it as a description, or say "ecosystem"?
+- [ ] Module names still follow the old names (`slides/island2_stories.nim`, `slides/island3_datastack.nim`, `slides/island5_expressive.nim`, and their section templates): rename them too?
 
 ## Outline still to fill (`outline.md`)
 

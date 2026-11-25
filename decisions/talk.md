@@ -1,6 +1,6 @@
 # The talk
 
-Status: accepted · Updated 2026-11-24
+Status: accepted · Updated 2026-11-25
 
 ## Context
 
@@ -14,7 +14,7 @@ Speaker bio as submitted: Data Scientist Delivery Lead at AgileLab (Consulting i
 
 - **Title.** "Sailing the Seas of Scientific Nim" in the programme; the title slide uses the short form "Sailing Seas of Scientific Nim", so it fits one line. The talk answers the abstract's question: why Nim, a general purpose statically typed and compiled language, is a good fit for scientific computing.
 - **Promise kept.** The talk delivers what the title, summary and description promise: every agenda item of the description has a section in the deck. Deviations from the submitted agenda are listed in the README, "Changes from the submitted abstract" (Pietro, 2026-10-27).
-- **Time.** 30 minutes including Q&A: content takes at most 25 minutes, aiming at 22-25. The outline gives minutes per section, as the CfP asks; today 23.5 minutes ([outline.md](../outline.md)).
+- **Time** (Pietro, 2026-11-25): 30 minutes, 25 of content and 5 of Q&A (the title slide says so: scale 1 : 25 minutes, + 5' Q&A). The outline gives minutes per section, as the CfP asks; today 23 minutes, 2 of slack ([outline.md](../outline.md)).
 - **Audience.** Two primary audiences: the scientific computing beginner, who leaves with a first introduction to a language that is accessible, fun and possibly useful (at least as a learning tool), and the ecosystem builder, who can weigh the pros and cons of building scientific tools in Nim. Language enthusiasts and community builders are a secondary audience.
 - **Background of the room.** Mostly Python and Jupyter people, so Python-like examples and comparisons are the bridge to Nim; but examples must also make sense to R, C++ and HPC people. No prior Nim knowledge is needed: a Python user can tell what a code example does from the code and the explanation.
 - **Roles.** Both library authors (who judge Nim as a language to build in) and library users (who judge it as a daily tool); each island speaks mainly to one or both.
@@ -35,3 +35,4 @@ Speaker bio as submitted: Data Scientist Delivery Lead at AgileLab (Consulting i
 - 2026-10-27: island names and order changed from the submitted agenda (PR #23).
 - 2026-10-28: 23.5 minutes with the QEX story (PR #25).
 - 2026-11-24: moved from OpenSpec specs (abstract, audience, format) to this record.
+- 2026-11-25: the target is 25 minutes of content and 5 of Q&A.

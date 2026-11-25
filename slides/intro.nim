@@ -4,8 +4,8 @@ import ../my
 
 # Section 1: Intro: leaving the mainland (see outline.md)
 # Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim's. Carries K1 and K4.
-# 1.1 the mainland (the languages and their price), 1.2 Nim's tradeoffs, 1.3 how the voyage
-# works (islands, rocks ahead, deep dives), 1.4 the map.
+# 1.1 the sailing metaphor (islands, rocks ahead, deep dives), then a vertical stack:
+# 1.2 the map, 1.3 the mainland (the languages and their price), 1.4 Nim's tradeoffs.
 
 type Language* = tuple[lang: string, since: int, cameTo: string, price: string]
 
@@ -31,7 +31,7 @@ proc mainlandTable*(): Tabella =
     .colsLabel({"since": "since", "cameTo": "came to", "price": "the price"})
 
 template mainlandSlide* =
-  slide: # 1.1
+  slide: # 1.3
     nbText "## The mainland"
     nbText """
 Each language came to solve a problem the previous ones
@@ -52,7 +52,7 @@ Is there space for one more? This talk shows Nim's price.
 """
 
 template tradeoffsSlide* =
-  slide: # 1.2
+  slide: # 1.4
     nbText "## Nim's tradeoffs"
     nbText """
 *Nim*: general purpose, statically typed, compiled
@@ -86,15 +86,18 @@ and most of them end with something on the right.
 """
 
 template voyageSlide* =
-  slide: # 1.3
-    nbText "## The voyage"
+  slide: # 1.1
+    nbText "## The sailing metaphor"
     nbText """
-A niche language is an exotic land, and from a boat
-you only see the coast: the feeling of each place, not a tour.
+A "niche" language is an exotic land.
+From a sailing boat you do not actually "live" a place but
+it is a quick and fun way to get a feeling for a place.
+The place we want to feel is:
+*how does Nim feel as a language for scientific computing*.
 
-- 🏝️ **Seven islands**: themes where *Nim* shows its powers
-- 🪨 **Rocks ahead**: where *Nim* falls short
-- 🐋 **Deep dives**: a page for what a slide only sketches
+- 🏝️ **Seven islands**: topics for scientific computing
+- 🪨 **Rocks ahead**: weak points and limitations
+- 🐋 **Deep dives**: longer explainers (unpolished)
 """
     reference "The slides, the deep dives and their code: [the talk's site](index.html)"
     speakerNote """
@@ -107,11 +110,11 @@ Everything is on the site, linked from the first slide.
 """
 
 template introSection* =
+  voyageSlide # 1.1
   slide:
-    mainlandSlide # 1.1
-    tradeoffsSlide # 1.2
-    voyageSlide # 1.3
-    mapSlide(0) # 1.4
+    mapSlide(0) # 1.2
+    mainlandSlide # 1.3
+    tradeoffsSlide # 1.4
 
 when isMainModule: # this part of the deck on its own: docs/slides_intro.html
   buildDeckPart("intro", "slides/intro.nim"):

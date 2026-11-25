@@ -1,4 +1,6 @@
 import std / [strutils, strformat, json, math, xmltree]
+import islandnames # the names of the islands, for the map slides
+export islandnames
 export strutils
 import nimib, nimiSlides
 import themes
@@ -403,15 +405,6 @@ template buildDeckPart*(name, sourceFileRel: string, slides: untyped) =
   nbSave
 
 
-const islands* = [
-  "Accessible Performance",
-  "Success Stories",
-  "Data Stack",
-  "Interoperability",
-  "An Expressive Language",
-  "Interactivity",
-  "Notebook",
-]
 
 template mapSlide*(n: int) =
   ## placeholder for the map of the voyage: island `n` (1..7) highlighted,
@@ -435,7 +428,7 @@ template themedTitle*(body: untyped) =
       nbDiv("title-box", ""):
         body
         when slideTheme == "chart":
-          nbLede("SCALE 1 : 30 MINUTES", "scale")
+          nbLede("SCALE 1 : 25 (minutes + 5' Q&A)", "scale")
   else:
     body
 

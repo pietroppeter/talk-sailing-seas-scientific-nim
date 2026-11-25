@@ -6,13 +6,14 @@
 ## (`nim r slides/intro.nim`, or `nim r build.nim intro`: docs/slides_intro.html).
 import nimib, nimiSlides
 import my
-import slides / [title, about, intro, island1_performance, island2_stories, island3_datastack, island4_interop, island5_expressive, island6_interactivity, island7_notebook, conclusion, thank_you]
+import slides / [title, about, ai, intro, island1_performance, island2_stories, island3_datastack, island4_interop, island5_expressive, island6_interactivity, island7_notebook, conclusion, thank_you]
 # exported, so the templates of the slides expand in all.nim too
-export title, about, intro, island1_performance, island2_stories, island3_datastack, island4_interop, island5_expressive, island6_interactivity, island7_notebook, conclusion, thank_you
+export title, about, ai, intro, island1_performance, island2_stories, island3_datastack, island4_interop, island5_expressive, island6_interactivity, island7_notebook, conclusion, thank_you
 
 template presentation* =
   titleSlide
   aboutSlide
+  aiSlide
   introSection
   island1PerformanceSection
   island2StoriesSection

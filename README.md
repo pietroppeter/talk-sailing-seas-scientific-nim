@@ -33,9 +33,9 @@ The talk will use examples from the ecosystem to showcase the power of Nim but i
 The abstract and description above are kept verbatim as submitted. While preparing the talk, a few things changed:
 
 - The title slide says **Sailing Seas of Scientific Nim**, without "the", so the title fits on one line.
-- The first island is just **Accessible Performance** ("without Ceiling" dropped from the title).
-- **Interoperability** comes before **An Expressive Language**: Interoperability is the fourth island and An Expressive Language the fifth.
-- The **Data Stack** island adds a fourth block, display tables (tabelline), a second dataframe library (nanuq, Polars for Nim) and a deep learning example, besides the tensor, dataframe and plotting libraries.
+- The islands have short names: **Performance** (for Accessible Performance without Ceiling), **Science** (Success stories), **Ecosystem** (Data Stack) and **Expressivity** (An Expressive Language); Interoperability, Interactivity and Notebook stay.
+- **Interoperability** comes before **Expressivity**: Interoperability is the fourth island and Expressivity the fifth.
+- The **Ecosystem** island adds a fourth block, display tables (tabelline), a second dataframe library (nanuq, Polars for Nim) and a deep learning example, besides the tensor, dataframe and plotting libraries.
 
 ## Slides
 
@@ -48,7 +48,7 @@ Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSli
 - `deepdive/`: the deep dives, see below
 - `themes.nim` and `maps/`: the deck wears the nautical chart theme; two other themes were explored (pirate adventure game, old book of sea tales); `maps/geometry.nim` is the one geometry of the voyage map, drawn by `maps/pixel.nim`, `maps/chart.nim` and `maps/engraved.nim`, with the coasts of real islands from tabelline's islands story (`maps/isole.nim`, © OpenStreetMap contributors, ODbL) and the Gulf of Trieste as the mainland (OpenStreetMap); `nim r build.nim themes` builds the deck in the other themes (`docs/slides_<theme>.html`); `nim r maps/maplab.nim` draws the arrangements of the map and every chart on one page (`docs/maplab.html`); the map editor (`mapeditor.nim`, a page of the site, `docs/mapeditor.html`; the editor itself is Nim compiled to JavaScript, `maps/editor/app.nim`) writes `maps/voyage.json`, the positions of the deck's map
 - `devlog/`: the talk log, see below
-- `slides/`: one module per part of the deck (title, about, intro, island1 to island7, conclusion, thank you), and the helpers they share. Every slide is a template; each module has a template that lists its slides in order (`introSection`, `island1PerformanceSection`, ...), so reordering slides happens there and reordering parts in `deck.nim`. Each module builds its part on its own with `when isMainModule`: `nim r slides/intro.nim` writes `docs/slides_intro.html`
+- `slides/`: one module per part of the deck (title, about, ai, intro, island1 to island7, conclusion, thank you), and the helpers they share. Every slide is a template; each module has a template that lists its slides in order (`introSection`, `island1PerformanceSection`, ...), so reordering slides happens there and reordering parts in `deck.nim`. Each module builds its part on its own with `when isMainModule`: `nim r slides/intro.nim` writes `docs/slides_intro.html`
 - `shiny/`: the Shiny for Python app of Island 6 (the plant), which `scripts/shinylive.sh` exports to `docs/shiny/` to run in the browser with shinylive (about 50 MB, not committed; `build.nim` exports it when missing, which needs the network once; deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/shiny/plant/)
 - `decisions/`, `outline.md`, `notes/`: how the talk is prepared (see below)
 

@@ -3,7 +3,7 @@ import nimib, nimiSlides
 import tabelline
 import ../my
 
-# Section 2: Island 1: Accessible Performance (see outline.md)
+# Section 2: Island 1: Performance (see outline.md)
 # Nim is as easy to write as Python and as fast as C, passed through quickly in one slide:
 # performance is a given here and Mamy's talk in the same session goes deeper. Carries K2.
 # The mini benchmark is bench/vandermonde (run.sh writes results.csv and machine.txt);
