@@ -17,6 +17,7 @@ Everything committed (code, specs, notes, commit messages, PR descriptions) is p
 ## Pages
 
 - The site: `index.nim` (docs/index.html) lists everything; the deck is `deck.nim` (docs/slides.html), its slides are in `slides/`; deep dives in `deepdive/`; the talk log in `devlog/`.
+- The names of the islands are in `islandnames.nim`, the one place to rename one (the map slides, the agenda bar, the deep dives' labels and the map tools read them from there).
 - **One template per slide.** Every slide of the deck is a template of its own (`mainlandSlide`, `island3RocksSlide`: exported, with names unique across the deck). Each module of `slides/` has one template listing its slides in order (`introSection`, ...), and `deck.nim` lists the parts: reorder there, nowhere else. Each module ends with `when isMainModule: buildDeckPart(...)` (`my.nim`), which builds its part on its own; a new module adds itself to `deckParts` in `build.nim`.
 - Every nimib page that is not a deck starts, after `nbInit`, with `nb.usePage(ownSource)` (`page.nim`: local assets, the talk's style, the review mode, Show Source), or `nb.useDeepDive(slug, ownSource)` for a deep dive, `nb.useDevlogPost(slug, ownSource)` for a talk log post.
 - **Blocks, not HTML.** A page is Markdown in `nbText`, nimib's blocks and the blocks of `blocks.nim`. No HTML, CSS or colours in a page: what is needed a second time becomes a block in `blocks.nim`, its CSS goes in `talkstyle.nim` (pages) or `my.nim` (slides), using the tokens. The nimib-blocks skill (enabled in `.claude/settings.json`) has the details.

@@ -1,4 +1,6 @@
 import std / [strutils, strformat, json, math, xmltree]
+import islandnames # the names of the islands, for the map slides
+export islandnames
 export strutils
 import nimib, nimiSlides
 import themes
@@ -403,15 +405,6 @@ template buildDeckPart*(name, sourceFileRel: string, slides: untyped) =
   nbSave
 
 
-const islands* = [
-  "Accessible Performance",
-  "Success Stories",
-  "Data Stack",
-  "Interoperability",
-  "An Expressive Language",
-  "Interactivity",
-  "Notebook",
-]
 
 template mapSlide*(n: int) =
   ## placeholder for the map of the voyage: island `n` (1..7) highlighted,

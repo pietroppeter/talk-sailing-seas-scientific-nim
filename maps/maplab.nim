@@ -3,9 +3,9 @@
 ## writes docs/maplab.html (not linked from the site; publish it to review a change of the map).
 import std / [os, strutils]
 import chart, isole
+import ../islandnames
 
-const names = ["Accessible Performance", "Success Stories", "Data Stack", "Interoperability",
-  "An Expressive Language", "Interactivity", "Notebook"]
+const names = islands
 
 when isMainModule:
   let docs = currentSourcePath().parentDir.parentDir / "docs"
