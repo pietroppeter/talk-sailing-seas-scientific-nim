@@ -60,9 +60,22 @@ Chosen by Claude on 2026-11-25 (Pietro: go with your guts, no slides removed); r
 Placeholder slides that still need content:
 
 - [ ] 6.6 Island 5 rocks ahead (macros readability, concepts).
-- [ ] 8.2 to 8.4 Island 7 Notebook: literate computing, nimib, rocks ahead vs Jupyter.
 - [ ] 9.2 to 9.5 Conclusion: for the beginner, for the builder, your language seen from Nim, why still niche (your views on governance, tooling, Nimony and NIF).
 - [ ] Deep dives for the new code-heavy slides (one nimib page in deepdive/ per code slide).
+
+### Island 7 Notebook
+
+Choices made without you (2026-11-25, to revisit):
+- [ ] Facts kept as written, unconfirmed: Hugo Granström as co-maintainer of nimib ("two maintainers" on 8.5), SciNim's getting started built with nimibook, nimibex and nimib.py under nimib-land.
+- [ ] Slide 8.4 stays a list; screenshots (a deep dive, a nimibook, the review mode) would make it more visual.
+- [ ] Slide 8.2 now has the 2019 notebook study (Pimentel et al.: 1 in 4 ran, 4% same results) as a small line under the bullets.
+
+### Conclusion (draft, 9.2 to 9.5; choices made by Claude on 2026-11-25, to revisit)
+
+- [ ] 9.5 Why still niche: the governance and tooling lines are Claude's draft of your view, kept as is; rewrite them in your words. Nimskull fork and Status funding left out of the speaker notes.
+- [ ] 9.3 headings kept as "Fair winds" / "Rocks ahead" (plainer option: "Why build in Nim" / "What it costs").
+- [ ] 9.4 rows kept as Python, R, Julia, C/C++ (no Fortran, no Rust).
+- [ ] Timing: four content slides kept for 2.5 minutes; merge 9.2 and 9.3 into one "Takeaways" slide if rehearsal runs long.
 
 ## Upstream drafts on hold
 

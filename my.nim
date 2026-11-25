@@ -63,6 +63,19 @@ const slideBlocksCss = """
 /* Island 1: Python and Nim side by side, each column as wide as its code */
 .reveal .perf-cols { display: grid; grid-template-columns: max-content 1fr; gap: 0.6em; margin-bottom: 0.6em; }
 .reveal .perf-cols pre { font-size: 0.45em; width: 100%; margin: 0; }
+/* Island 7 (slide 8.3): a nimib document (nimibCode) on the left, what it renders on the right, as a page */
+.reveal .nimib-twin { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: 1.2em; row-gap: 0; align-items: start; margin-top: 0.4em; }
+.reveal .nimib-twin > :first-child { grid-column: 1; grid-row: 1 / span 8; font-size: 0.48em; margin: 0; width: 100%; }
+.reveal .nimib-twin > :not(:first-child) { grid-column: 2; margin: 0; padding: 0.2em 0.8em; background: white; border: 1px solid #ddd; border-top: none; border-bottom: none; text-align: left; }
+.reveal .nimib-twin > :nth-child(2) { border-top: 1px solid #ddd; border-radius: 6px 6px 0 0; padding-top: 0.6em; }
+.reveal .nimib-twin > :last-child { border-bottom: 1px solid #ddd; border-radius: 0 0 6px 6px; padding-bottom: 0.6em; }
+.reveal .nimib-twin > pre { font-size: 0.4em; width: 100%; box-sizing: border-box; }
+.reveal .nimib-twin > p { font-size: 0.6em; }
+.reveal .nimib-twin > h3 { font-size: 0.8em; }
+/* nbQuote on a slide (8.2) */
+.reveal .slides section > figure.quote { margin: 0.4em 0 0.6em; }
+.reveal .slides section > figure.quote blockquote { width: auto; margin: 0; font-size: 0.85em; }
+.reveal .slides section > figure.quote figcaption { font-size: 0.55em; margin-top: 0.4em; }
 /* compactColumns: three narrow columns of code (Island 4 bridges), smaller code */
 .reveal .compact-cols pre { font-size: 0.5em; }
 /* a table on its own in a slide (not in a layout's grid) gets room above and below */
