@@ -929,7 +929,7 @@ proc show(i: int) =
       capture e, k, i, mainland: # each name its own e and k (a closure in a loop shares the loop's)
         later(proc () =
           e.classList.remove "bar"
-          if mainland: e.classList.add "ashore"; e.place(pt(S["landLabel"])) # into the chart's own name
+          if mainland: e.place(pt(S["landLabel"])) # where the chart's own name is
           else: e.place(pt(S["islands"][i]["label"])), 120 + 60 * k)
   var sh = el("slide-heading")
   if sh.isNil:

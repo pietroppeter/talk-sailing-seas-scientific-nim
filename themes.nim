@@ -294,7 +294,7 @@ const agendaCss = """
 /* the agenda bar: the mainland and the seven islands along the bottom of every slide, the current
    one in magenta; the mainland comes first until the first island, then moves to the end, where the
    trip ends. On a map slide the names sail to their places on the chart, and back (Pietro,
-   2026-11-25); the mainland sails to the chart's own "MAINLAND" and fades into it */
+   2026-11-25), the mainland to the chart's own "MAINLAND" */
 #voyage-agenda { position: fixed; left: 280px; right: 120px; bottom: 16px; display: flex; justify-content: space-evenly; z-index: 30; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
 #voyage-agenda::before { content: ""; position: absolute; inset: -7px -12px; background: rgba(246,243,234,0.92); border-top: 1px solid rgba(14,31,83,0.55); z-index: -1; transition: opacity 0.6s ease; }
 #voyage-agenda.shown { opacity: 1; }
@@ -302,10 +302,8 @@ const agendaCss = """
 #voyage-agenda span { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: clamp(9px, 0.7vw, 16px); letter-spacing: 0.06em; color: #13334c; white-space: nowrap; transform-origin: 50% 50%; transition: transform 1.1s cubic-bezier(.5,0,.2,1), color 0.4s ease; text-shadow: 0 0 1px #fdfcf7, 0 0 2px #fdfcf7, 0 0 3px #fdfcf7, 0 0 4px #fdfcf7; }
 #voyage-agenda span.visited { color: #4d6475; }
 #voyage-agenda span.current { color: #b0167a; }
-#voyage-agenda span.ashore { opacity: 0; transition: transform 1.1s cubic-bezier(.5,0,.2,1), color 0.4s ease, opacity 0.4s ease 0.9s; }
-.reveal .map-slide .chart-stage[data-current="0"] .ct.land-name, .reveal .map-slide .chart-stage[data-current="8"] .ct.land-name { color: #b0167a; }
 html.print-pdf #voyage-agenda, .reveal.overview ~ #voyage-agenda { display: none; }
-body.voyage-agenda .reveal .slides section.present .map-slide .ct.cname { visibility: hidden; }
+body.voyage-agenda .reveal .slides section.present .map-slide :is(.ct.cname, .ct.land-name) { visibility: hidden; }
 .reveal section.present .map-slide .anchor { animation: voyage-anchor 0.6s ease 3s both; }
 @keyframes voyage-anchor { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { #voyage-agenda span { transition: none; } .reveal section.present .map-slide .anchor { animation: none; } }
@@ -337,9 +335,8 @@ const voyageDeckJs* = when slideTheme == "chart": """
   const sail = (section, onMap) => {
     const b = bar.getBoundingClientRect();
     spans().forEach((e, k) => {
-      // the mainland sails to the chart's own name and fades into it
+      // the mainland sails to the chart's own name, as the islands do
       const label = onMap && section.querySelector(k === mainland ? ".ct.land-name" : `.ct.cname[data-n="${k + 1}"]`);
-      e.classList.toggle("ashore", !!label && k === mainland);
       if (!label) { e.style.transform = ""; return; }
       const r = label.getBoundingClientRect();
       const x = b.left + e.offsetLeft + e.offsetWidth / 2, y = b.top + e.offsetTop + e.offsetHeight / 2;
