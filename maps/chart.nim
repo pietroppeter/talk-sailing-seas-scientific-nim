@@ -146,7 +146,19 @@ func anchorSvg(at: Pt): string =
     &"""<circle cx="0" cy="1.5" r="12.5" class="anchor-halo"/>""" &
     &"""<circle cx="0" cy="-9.6" r="2.2" fill="none"/><path d="{d}" fill="none"/></g>"""
 
-proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): string =
+proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html = false): string =
+  ## With `html` the words of the chart (the names of the islands, the title block, the notes) are
+  ## html elements over the svg, placed in percent of the map, so css can move and restyle them;
+  ## the svg keeps only the drawing and its small print (soundings, heights, graduations)
+  var words: seq[string]
+  template word(cls, text: string, at: Pt, anchor = "middle") =
+    let p: Pt = at
+    if html:
+      words.add "<div class=\"ct " & cls & " ct-" & anchor & "\" style=\"left: " & f1(100 * p.x / v.w) & "%; top: " &
+        f1(100 * p.y / v.h) & "%\">" & text & "</div>"
+    else:
+      result.add "<text class=\"" & cls & "\" x=\"" & f1(p.x) & "\" y=\"" & f1(p.y) & "\" text-anchor=\"" & anchor & "\">" &
+        text & "</text>"
   let id = if id.len > 0: id else: $current
   let f = v.field
   let bed = v.seaFloor
@@ -236,7 +248,7 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
     if not isl.labelBelow: lp.y -= 2
     let half = 0.37 * size * (names[i].len + 4).float # about half the width of the name, at its size
     lp.x = clamp(lp.x, half + 10, v.w - half - 10)
-    result.add &"""<text class="cname{state}" x="{f1(lp.x)}" y="{f1(lp.y)}" text-anchor="middle">{n} · {names[i].toUpperAscii}</text>"""
+    word("cname" & state, &"{n} · {names[i].toUpperAscii}", lp)
   # an anchor, in the port of the island of the section; in the first port before the voyage,
   # in the last one after it
   if v.route.len > 0:
@@ -250,22 +262,29 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = ""): stri
     elif current == 8: "LANDFALL · BACK ON THE MAINLAND"
     else: "FROM THE MAINLAND TO SEVEN ISLANDS"
   let subClass = if current in 1 .. 8: "tb-sub current" else: "tb-sub"
-  result.add &"""<g class="title-block" text-anchor="middle"><text x="{f1(tb.x)}" y="{f1(tb.y)}" class="tb-title">SEAS OF SCIENTIFIC NIM</text>"""
-  result.add &"""<text x="{f1(tb.x)}" y="{f1(tb.y + 14)}" class="{subClass}">{sub}</text>"""
   let tbNote =
     if current in 1 .. 7 and v.islands[current - 1].lore.len > 0 and islandNames: v.islands[current - 1].lore
     else: "Soundings and heights in metres · each island at its own scale"
-  result.add &"""<text x="{f1(tb.x)}" y="{f1(tb.y + 26)}" class="tb-note">{tbNote}</text></g>"""
+  if html:
+    words.add &"""<div class="ct title-block" style="left: {f1(100 * tb.x / v.w)}%; top: {f1(100 * (tb.y - 12) / v.h)}%">""" &
+      &"""<div class="tb-title">SEAS OF SCIENTIFIC NIM</div><div class="{subClass}">{sub}</div><div class="tb-note">{tbNote}</div></div>"""
+  else:
+    result.add &"""<g class="title-block" text-anchor="middle"><text x="{f1(tb.x)}" y="{f1(tb.y)}" class="tb-title">SEAS OF SCIENTIFIC NIM</text>"""
+    result.add &"""<text x="{f1(tb.x)}" y="{f1(tb.y + 14)}" class="{subClass}">{sub}</text>"""
+    result.add &"""<text x="{f1(tb.x)}" y="{f1(tb.y + 26)}" class="tb-note">{tbNote}</text></g>"""
   for isl in v.islands:
     if isl.note.len > 0:
       let c = isl.cape((-1.0, 0.5))
-      result.add &"""<text x="{f1(c.x - 5)}" y="{f1(c.y + 10)}" text-anchor="end" class="chart-note">{isl.note}</text>"""
-  result.add &"""<text class="land-name" {v.landLabelAttrs} text-anchor="middle">THE MAINLAND</text>"""
-  result.add &"""<text class="note" x="{f1(v.w - 12)}" y="{f1(v.h - 12)}" text-anchor="end">Coasts © OpenStreetMap contributors (ODbL) · the mainland is the Gulf of Trieste</text>"""
+      word("chart-note", isl.note, (c.x - 5, c.y + 10), "end")
+  if html and v.landLabelAngle == 0: word("land-name", "THE MAINLAND", v.landLabel)
+  else: result.add &"""<text class="land-name" {v.landLabelAttrs} text-anchor="middle">THE MAINLAND</text>"""
+  word("note", "Coasts © OpenStreetMap contributors (ODbL) · the mainland is Istria", (v.w / 2, v.h - 10))
   result.add roseSvg(rose, 34)
   result.add "</g>"
   result.add borderSvg(v.w, v.h)
   result.add "\n</svg>"
+  if html:
+    result = "<div class=\"chart-stage\">" & result & words.join("\n") & "</div>"
 
 const chartMapCss* = """
 .chart-map .soundings text { font-family: "Spectral", serif; font-style: italic; font-size: 8.5px; fill: #2c3a45; }
@@ -285,6 +304,22 @@ const chartMapCss* = """
 .chart-map .tb-note { font-family: "Spectral", serif; font-style: italic; font-size: 8px; fill: #3d6e93; }
 .chart-map .land-name { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.5em; fill: #1f2a33; }
 .chart-map .rose text { font-family: "Space Grotesk", sans-serif; }
-.reveal .title-art .chart-map { opacity: 0.7; }
+/* the words of a chart in html (chartMap(html = true)): sizes in cqw, so they scale with the map */
+.chart-stage { position: relative; container-type: inline-size; line-height: 1.15; }
+.chart-stage > svg { display: block; width: 100%; max-width: none; height: auto; margin: 0; }
+.chart-stage .ct { position: absolute; white-space: nowrap; transform: translate(-50%, -88%); color: #1f2a33; font-family: "Space Grotesk", sans-serif; }
+.chart-stage .ct-end { transform: translate(-100%, -88%); }
+.chart-stage .ct.cname { font-weight: 700; font-size: 1.510cqw; letter-spacing: 0.06em; color: #13334c; text-shadow: 0 0 1px #fdfcf7, 0 0 2px #fdfcf7, 0 0 3px #fdfcf7, 0 0 4px #fdfcf7; }
+.chart-stage .ct.cname.visited { color: #4d6475; }
+.chart-stage .ct.cname.current { color: #b0167a; font-size: 1.771cqw; }
+.chart-stage .ct.title-block { transform: translate(-50%, 0); text-align: center; }
+.chart-stage .tb-title { font-weight: 700; font-size: 1.562cqw; letter-spacing: 0.22em; }
+.chart-stage .tb-sub { font-size: 0.781cqw; letter-spacing: 0.3em; margin-top: 0.4em; }
+.chart-stage .tb-sub.current { color: #b0167a; font-weight: 700; font-size: 0.885cqw; }
+.chart-stage .tb-note { font-family: "Spectral", serif; font-style: italic; font-size: 0.833cqw; color: #3d6e93; margin-top: 0.3em; }
+.chart-stage .ct.chart-note { font-family: "Spectral", serif; font-style: italic; font-size: 0.833cqw; text-shadow: 0 0 1px #fdfcf7, 0 0 2px #fdfcf7, 0 0 3px #fdfcf7, 0 0 4px #fdfcf7; }
+.chart-stage .ct.land-name { font-weight: 700; font-size: 1.250cqw; letter-spacing: 0.5em; }
+.chart-stage .ct.note { font-size: 0.625cqw; color: #4a5763; }
+
 """
   ## css for the labels of this map (the fonts are in docs/assets/fonts/fonts.css)

@@ -502,7 +502,9 @@ const triesteGulf*: seq[Pt] = @[
   (13.25074, 45.71649), (13.25039, 45.71778), (13.25100, 45.71811), (13.25036, 45.71815),
   (13.25111, 45.71848), (13.25034, 45.71853)]
 
-const triesteAt* = 1078 ## the point of `triesteGulf` on the coast of Trieste
+const
+  triesteAt* = 1078 ## the point of `triesteGulf` on the coast of Trieste
+  muggia* = 941     ## the point of `triesteGulf` in the bay of Muggia, where Istria ends
 
 func coastPoint*(o: Pt, angle, unitsPerKm: float, at: Pt, p: Pt): Pt =
   ## where the place `p` (longitude, latitude) goes on the map, when the coast is turned `angle`
@@ -514,13 +516,15 @@ func coastPoint*(o: Pt, angle, unitsPerKm: float, at: Pt, p: Pt): Pt =
   # turned clockwise, y down
   (at.x + unitsPerKm * (e * cos(a) - n * sin(a)), at.y - unitsPerKm * (e * sin(a) + n * cos(a)))
 
-func coastPolygon*(lonLat: seq[Pt], anchor: int, angle, unitsPerKm: float, at: Pt, w, h: float,
-                   rough = 4.0, reach = 60.0): seq[Pt] =
+func coastPolygon*(lonLat: seq[Pt], origin: Pt, angle, unitsPerKm: float, at: Pt, w, h: float,
+                   rough = 4.0, reach = 60.0, endDown = false): seq[Pt] =
   ## a stretch of real coast as the mainland of a w × h map: turned `angle` degrees clockwise
   ## (90 puts the land of the Gulf of Trieste south), `unitsPerKm` map units to a kilometre, its point
-  ## `anchor` at `at`, then closed to the edges of the map: the land is on the right of the coast's way
+  ## `origin` (longitude, latitude) at `at`, then closed to the edges of the map: the land is on the
+  ## right of the coast's way. With `endDown` the land ends where the stretch ends, running down to
+  ## the bottom of the map, and the sea is open beyond it
   var line: seq[Pt]
-  for p in lonLat: line.add coastPoint(lonLat[anchor], angle, unitsPerKm, at, p)
+  for p in lonLat: line.add coastPoint(origin, angle, unitsPerKm, at, p)
   # the coast runs on past its ends down to the edges of the map, in lines that wander by fractal
   # noise (capes and bays every few units) so they do not look drawn with a ruler
   proc wander(p, q: Pt): seq[Pt] =
@@ -532,11 +536,12 @@ func coastPolygon*(lonLat: seq[Pt], anchor: int, angle, unitsPerKm: float, at: P
       let off = rough * min(1.0, 4 * t * (1 - t) + 0.3) * (2 * fbm(m.x / 30, m.y / 30, 4) - 1)
       result.add (m.x - off * (q.y - p.y) / l, m.y + off * (q.x - p.x) / l)
   let start: Pt = (-30.0, line[0].y + reach)
-  let stop: Pt = (w + 30, line[^1].y + reach)
+  let stop: Pt = if endDown: (line[^1].x + reach * 0.3, h + 30) else: (w + 30, line[^1].y + reach)
   result = wander(start, line[0])
   result.add line
   result.add wander(line[^1], stop)
-  result.add [stop, (w + 30, h + 30), (-30.0, h + 30)]
+  if not endDown: result.add (w + 30, h + 30)
+  result.add [stop, (-30.0, h + 30)]
 
 # --- the voyage of the talk, on real islands ------------------------------------------------
 
@@ -557,6 +562,7 @@ type
     ## an arrangement of the voyage: the coast, the islands, the course
     name*: string
     coastFrom*, coastTo*: int ## the stretch of `triesteGulf` drawn
+    openEast*: bool           ## the land ends with the stretch (Istria only), open sea east of it
     coastAngle*, coastScale*: float ## degrees clockwise; map units to a kilometre
     trieste*: Pt               ## where the port of Trieste goes (point `triesteAt` of the coast)
     slots*: seq[Slot]
@@ -585,7 +591,8 @@ func slot(i: int, center: Pt, size: float, labelBelow = false, rotate = 0.0, not
     size: size, labelBelow: labelBelow, rotate: rotate, note: note)
 
 let layouts* = @[
-  Layout(name: "ring", coastFrom: 0, coastTo: 1239, coastAngle: 95, coastScale: 8.2, trieste: (500.0, 545.0),
+  # Istria only, the sea open where Trieste and the coast to Monfalcone were (Pietro, 2026-11-25)
+  Layout(name: "ring", coastFrom: 0, coastTo: muggia, openEast: true, coastAngle: 95, coastScale: 8.2, trieste: (500.0, 545.0),
     slots: @[slot(0, (180.0, 300.0), 80, note = "Volcano (active)"), slot(1, (215.0, 165.0), 100),
              slot(2, (380.0, 100.0), 100, labelBelow = true), slot(3, (585.0, 100.0), 95, labelBelow = true),
              slot(4, (765.0, 192.0), 110), slot(5, (790.0, 325.0), 75, labelBelow = true, near = @["La Maddalena"]),
@@ -597,7 +604,7 @@ let layouts* = @[
            @[(380.0, 42.0), (594.0, 42.0)], @[(600.0, 42.0), (781.0, 42.0)],
            @[(770.0, 160.0), (700.0, 160.0), (700.0, 318.0)],
            @[(720.0, 372.0), (500.0, 372.0), (455.0, 330.0)], @[(455.0, 330.0), (440.0, 420.0)]],
-    compassAt: (905.0, 60.0), landLabel: (180.0, 525.0), titleAt: (790.0, 480.0)),
+    compassAt: (905.0, 60.0), landLabel: (215.0, 468.0), titleAt: (790.0, 480.0)),
   Layout(name: "gulf", coastFrom: 0, coastTo: 1239, coastAngle: 95, coastScale: 10.3, trieste: (505.0, 540.0),
     slots: @[slot(0, (175.0, 245.0), 80, note = "Volcano (active)"), slot(1, (240.0, 110.0), 100),
              slot(2, (395.0, 75.0), 100, labelBelow = true), slot(3, (575.0, 75.0), 95, labelBelow = true),
@@ -616,8 +623,8 @@ proc layoutVoyage*(l: Layout): Voyage =
   ## the voyage on real islands in an arrangement: the Gulf of Trieste south, the islands around,
   ## a course of straight legs from the port of Trieste to the port of each island and back
   result = defaultVoyage()
-  result.coast = coastPolygon(triesteGulf[l.coastFrom .. l.coastTo], triesteAt - l.coastFrom, l.coastAngle,
-    l.coastScale, l.trieste, result.w, result.h)
+  result.coast = coastPolygon(triesteGulf[l.coastFrom .. l.coastTo], triesteGulf[triesteAt], l.coastAngle,
+    l.coastScale, l.trieste, result.w, result.h, endDown = l.openEast)
   result.compassAt = l.compassAt
   result.landLabel = l.landLabel
   result.titleAt = l.titleAt

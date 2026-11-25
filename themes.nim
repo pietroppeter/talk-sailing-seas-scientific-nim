@@ -32,7 +32,7 @@ proc voyageMap*(islands: openArray[string], current: int, id = ""): string =
   let v = islandsVoyage() # seven real islands of the Mediterranean (maps/isole.nim)
   case slideTheme
   of "pirate": pixelMap(v, islands, current)
-  of "chart": chartMap(v, islands, current, id)
+  of "chart": chartMap(v, islands, current, id, html = true) # the words in html over the drawing
   of "book": engravedMap(v, islands, current, id)
   else: baseMap(v, islands, current, id)
 
@@ -236,9 +236,12 @@ func chartCss(): string =
 .reveal .title-slide {{ position: relative; z-index: 1; }}
 .reveal .title-slide .title-box {{ background: rgba(253,252,247,0.78); backdrop-filter: blur(3px); border: 1.5px solid {ink}; outline: 0.5px solid {ink}; outline-offset: 5px; padding: 0.35em 0.9em; font-size: 0.78em; display: inline-block; box-shadow: 0 6px 24px rgba(14,31,83,0.18); }}
 .reveal .title-slide .scale {{ font-family: "Space Grotesk", sans-serif; font-size: 0.5em; letter-spacing: 0.2em; color: {magenta}; }}
-.reveal .map-slide .voyage-map {{ height: auto; width: 1150px; max-width: none; margin: -0.4em 0 0 -50px; }}
-.reveal .title-art {{ opacity: 1; inset: auto; left: 50%; top: 50%; width: 1150px; height: auto; transform: translate(-50%, -50%); z-index: 0; }}
-.reveal .title-art .voyage-map {{ width: 100%; height: auto; }}
+/* the chart fills the screen (1369 x 770 is 16:9 around the 1050 x 700 slide and its margin) */
+.reveal .chart-stage > svg.voyage-map {{ width: 100%; height: auto; margin: 0; max-width: none; }}
+.reveal .map-slide .chart-stage {{ position: absolute; width: 1369px; left: 525px; top: 350px; transform: translate(-50%, -50%); }}
+#agileLabLogo {{ z-index: 40; }}
+.reveal .slides > section:has(.title-art) {{ top: 0 !important; height: 700px; display: flex !important; flex-direction: column; justify-content: center; }}
+.reveal .title-art {{ opacity: 1; inset: auto; left: 525px; top: 350px; width: 1369px; height: auto; transform: translate(-50%, -50%); z-index: 0; }}
 .reveal .title-art .title-block {{ display: none; }}
 .reveal .chapter {{ font-family: "Space Grotesk", sans-serif; color: {orange}; font-size: 0.6em; letter-spacing: 0.2em; margin: 0; }}
 .voyage-map .sea {{ fill: #d7e9f2; }}
