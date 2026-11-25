@@ -5,7 +5,7 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 ## Decisions
 
 - [ ] Voyage map (chart theme adopted 2026-11-24): the lore lines (hidden with the names; shown by `-d:islandNames=true`), coastal views (drawn profiles of an island seen from the sea, as on real charts) not done yet. See `decisions/themes.md`.
-- [ ] Portolano texts on the charts are Claude's drafts (`maps/voyage.json`): rewrite them in the map editor. The agenda bar uses magenta for the current island on every slide (an exception to magenta only on maps): keep?
+- [ ] Portolano texts on the charts are Claude's drafts (`maps/voyage.json`): rewrite them in the map editor.
 - [ ] Timing: with QEX, Island 2 is 2.5 minutes; with Island 1 down to one slide (1 minute) the talk is 23 minutes. Keep, or should the QEX slide replace something?
 
 ## Unanswered points from merged PRs
