@@ -37,7 +37,7 @@ of those it ran, about one in four ran without errors, 4% gave the same results.
 Quarto, Pluto.jl and marimo answer with plain files and, for the last two, reactivity.
 """
     slide: # 8.3
-      nbText "## nimib: a notebook is a Nim program"
+      nbText "## nimib: a notebook is a program"
       nbDiv("nimib-twin", ""):
         nimibCode:
           nbText "### From the deck of a boat"
