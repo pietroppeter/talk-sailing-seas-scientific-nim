@@ -33,7 +33,7 @@ template buildDeck*() =
   presentation
   when deckSection != "":
     nb.doc.filename = "slides_" & deckSection & ".html"
-  elif themed:
+  elif sideTheme:
     nb.doc.filename = "slides_" & slideTheme & ".html"
   elif sideLook: # -d:deckLook=centered, see my.nim
     nb.doc.filename = "slides_" & deckLook & ".html"
