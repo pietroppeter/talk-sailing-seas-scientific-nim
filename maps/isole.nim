@@ -574,6 +574,8 @@ type
     via*: seq[seq[Pt]]         ## turning points of each leg: the first port to island 1, ..., island 7 to the last port
     setOut*, landfall*: Pt     ## the ports on the coast where the voyage starts and ends (longitude, latitude)
     setOutAnchor*, landfallAnchor*: Pt ## where they are on the map; (0, 0): the sheltered water nearest them
+    portolanoBox*: array[4, float] ## the portolano box (x, y, width, height); width 0: the title block
+    portolano*: seq[string]        ## its text for each chart, 0 to 8
     compassAt*, landLabel*, titleAt*: Pt
 
 const islandPicks* = [
@@ -625,6 +627,10 @@ proc layoutFromJson*(name, text: string): Layout =
       label: pt(isl{"label"}), anchor: pt(isl{"anchor"}))
     for n in isl{"near"}.getElems: s.near.add n.getStr
     result.slots.add s
+  let pb = j{"portolano", "box"}
+  if not pb.isNil and pb.len == 4:
+    for k in 0 .. 3: result.portolanoBox[k] = pb[k].getFloat
+  for t in j{"portolano", "texts"}.getElems: result.portolano.add t.getStr
   for leg in j["legs"]:
     var turns: seq[Pt]
     for p in leg: turns.add pt(p)
@@ -688,6 +694,8 @@ proc layoutVoyage*(l: Layout): Voyage =
   result.route[^1] = if l.landfallAnchor != (0.0, 0.0): l.landfallAnchor else: harbour(coast, result.route[^1])
   result.straightRoute = true
   result.via = l.via
+  result.portolanoBox = l.portolanoBox
+  result.portolano = l.portolano
 
 proc islandsVoyage*(): Voyage =
   ## the map of the talk: the first arrangement (the others are drawn by maps/maplab.nim)

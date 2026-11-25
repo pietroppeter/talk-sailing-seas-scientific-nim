@@ -160,10 +160,10 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
   ## html elements over the svg, placed in percent of the map, so css can move and restyle them;
   ## the svg keeps only the drawing and its small print (soundings, heights, graduations)
   var words: seq[string]
-  template word(cls, text: string, at: Pt, anchor = "middle") =
+  template word(cls, text: string, at: Pt, anchor = "middle", attrs = "") =
     let p: Pt = at
     if html:
-      words.add "<div class=\"ct " & cls & " ct-" & anchor & "\" style=\"left: " & f1(100 * p.x / v.w) & "%; top: " &
+      words.add "<div class=\"ct " & cls & " ct-" & anchor & "\"" & attrs & " style=\"left: " & f1(100 * p.x / v.w) & "%; top: " &
         f1(100 * p.y / v.h) & "%\">" & text & "</div>"
     else:
       result.add "<text class=\"" & cls & "\" x=\"" & f1(p.x) & "\" y=\"" & f1(p.y) & "\" text-anchor=\"" & anchor & "\">" &
@@ -212,7 +212,10 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
   let rose = v.compassAt + (-6.0, 16.0)
   keepOut.add ((rose.x - 50, rose.y - 50), (rose.x + 50, rose.y + 50))
   let tb = v.titleAt
-  keepOut.add ((tb.x - 165, tb.y - 18), (tb.x + 165, tb.y + 42)) # the title block
+  let pb = v.portolanoBox
+  let hasPortolano = html and pb[2] > 0 and v.portolano.len > 0 # the portolano box takes the title block's place
+  if hasPortolano: keepOut.add ((pb[0] - 4, pb[1] - 4), (pb[0] + pb[2] + 4, pb[1] + pb[3] + 4))
+  else: keepOut.add ((tb.x - 165, tb.y - 18), (tb.x + 165, tb.y + 42)) # the title block
   keepOut.add ((v.w - 260, v.h - 26), (v.w, v.h)) # the source note
   func inside(p: Pt, b: (Pt, Pt)): bool = p.x > b[0].x and p.x < b[1].x and p.y > b[0].y and p.y < b[1].y
   let course = v.routePolyline
@@ -243,10 +246,21 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
       inc placed
   # the course: dashed ahead, solid where sailed
   result.add &"""<g mask="url(#chart-sea-{id})">"""
-  result.add &"""<path d="{svgPath(course, closed = false)}" fill="none" stroke="{magenta}" stroke-width="1" stroke-dasharray="6 4" opacity="0.6"/>"""
-  let done = v.routeDone(current)
-  if done.len > 0:
-    result.add &"""<path d="{svgPath(done, closed = false)}" fill="none" stroke="{magenta}" stroke-width="1.8"/>"""
+  # on the whole map the course is drawn through a mask, so the deck can draw it from the first port
+  # on (the mask's path is drawn in full without javascript); on a chart of an island the leg just
+  # sailed is a path of its own (class leg-new), for the deck to draw it
+  let reveal = if html and current == 0: &" mask=\"url(#chart-course-{id})\"" else: ""
+  if reveal.len > 0:
+    result.add &"""<mask id="chart-course-{id}"><path class="course-mask" d="{svgPath(course, closed = false)}" fill="none" stroke="white" stroke-width="5"/></mask>"""
+  result.add &"""<path d="{svgPath(course, closed = false)}" fill="none" stroke="{magenta}" stroke-width="1" stroke-dasharray="6 4" opacity="0.6"{reveal}/>"""
+  let upTo = if current == 8: v.route.high elif current >= 1: current else: 0
+  if upTo > 0:
+    if html:
+      if upTo > 1:
+        result.add &"""<path d="{svgPath(v.routePolyline(upTo - 1), closed = false)}" fill="none" stroke="{magenta}" stroke-width="1.8"/>"""
+      result.add &"""<path class="leg-new" d="{svgPath(v.leg(upTo - 1), closed = false)}" fill="none" stroke="{magenta}" stroke-width="1.8"/>"""
+    else:
+      result.add &"""<path d="{svgPath(v.routeDone(current), closed = false)}" fill="none" stroke="{magenta}" stroke-width="1.8"/>"""
   result.add "</g>"
   # names of the islands of the talk
   for i, isl in v.islands:
@@ -254,7 +268,7 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
     let state = islandState(n, current)
     let lp = if isl.label != (0.0, 0.0): isl.label # set by hand (maps/voyage.json)
              else: chartLabel(isl, names[i], n == current, v.w)
-    word("cname" & state, &"{n} · {names[i].toUpperAscii}", lp)
+    word("cname" & state, &"{n} · {names[i].toUpperAscii}", lp, attrs = &" data-n=\"{n}\"")
   # an anchor, in the port of the island of the section; in the first port before the voyage,
   # in the last one after it
   if v.route.len > 0:
@@ -271,7 +285,11 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
   let tbNote =
     if current in 1 .. 7 and v.islands[current - 1].lore.len > 0 and islandNames: v.islands[current - 1].lore
     else: "Soundings and heights in metres · each island at its own scale"
-  if html:
+  if hasPortolano:
+    let text = if current < v.portolano.len: v.portolano[current] else: ""
+    words.add &"""<div class="ct portolano" style="left: {f1(100 * pb[0] / v.w)}%; top: {f1(100 * pb[1] / v.h)}%; width: {f1(100 * pb[2] / v.w)}%; min-height: {f1(100 * pb[3] / v.h)}%">""" &
+      &"""<div class="pt-title">SEAS OF SCIENTIFIC NIM</div><div class="pt-head">{sub}</div><div class="pt-body">{text}</div></div>"""
+  elif html:
     words.add &"""<div class="ct title-block" style="left: {f1(100 * tb.x / v.w)}%; top: {f1(100 * (tb.y - 12) / v.h)}%">""" &
       &"""<div class="tb-title">SEAS OF SCIENTIFIC NIM</div><div class="{subClass}">{sub}</div><div class="tb-note">{tbNote}</div></div>"""
   else:
@@ -290,7 +308,7 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
   result.add borderSvg(v.w, v.h)
   result.add "\n</svg>"
   if html:
-    result = "<div class=\"chart-stage\">" & result & words.join("\n") & "</div>"
+    result = "<div class=\"chart-stage\" data-current=\"" & $current & "\">" & result & words.join("\n") & "</div>"
 
 const chartMapCss* = """
 .chart-map .soundings text { font-family: "Spectral", serif; font-style: italic; font-size: 8.5px; fill: #2c3a45; }
@@ -326,6 +344,11 @@ const chartMapCss* = """
 .chart-stage .ct.chart-note { font-family: "Spectral", serif; font-style: italic; font-size: 0.833cqw; text-shadow: 0 0 1px #fdfcf7, 0 0 2px #fdfcf7, 0 0 3px #fdfcf7, 0 0 4px #fdfcf7; }
 .chart-stage .ct.land-name { font-weight: 700; font-size: 1.250cqw; letter-spacing: 0.5em; }
 .chart-stage .ct.note { font-size: 0.625cqw; color: #4a5763; }
+/* the portolano: the sailing directions of each chart, in a box where the title block was */
+.chart-stage .ct.portolano { transform: none; white-space: normal; box-sizing: border-box; background: rgba(253, 252, 247, 0.93); border: 1px solid #1f2a33; outline: 0.5px solid #1f2a33; outline-offset: 0.25cqw; padding: 0.8cqw 1cqw; box-shadow: 0 0.4cqw 1.4cqw rgba(31, 42, 51, 0.12); line-height: 1.3; }
+.chart-stage .portolano .pt-title { font-weight: 700; font-size: 1.25cqw; letter-spacing: 0.2em; }
+.chart-stage .portolano .pt-head { font-weight: 700; font-size: 0.78cqw; letter-spacing: 0.3em; color: #b0167a; margin: 0.3cqw 0 0.6cqw; padding-bottom: 0.5cqw; border-bottom: 0.5px solid #1f2a33; }
+.chart-stage .portolano .pt-body { font-family: "Spectral", serif; font-style: italic; font-size: 1.4cqw; line-height: 1.4; }
 
 """
   ## css for the labels of this map (the fonts are in docs/assets/fonts/fonts.css)

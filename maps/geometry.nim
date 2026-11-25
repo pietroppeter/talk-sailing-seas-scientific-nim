@@ -47,6 +47,8 @@ type
     landLabel*: Pt       ## where the mainland's name goes
     landLabelAngle*: float ## and its angle, degrees
     roughCoast*: float   ## how far (map units) the mainland's coast wanders off its smooth line: 0 smooth
+    portolanoBox*: array[4, float] ## x, y, width, height of the portolano box, which takes the title block's place; width 0: none
+    portolano*: seq[string] ## the portolano's text for each chart: 0 the whole map, 1..7 the islands, 8 back on land
 
 func catmullRom(pts: seq[Pt], closed: bool, steps = 8): seq[Pt] =
   ## dense points of a Catmull-Rom spline through `pts`
