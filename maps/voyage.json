@@ -1,0 +1,30 @@
+{
+  "format": "voyage-map/1",
+  "w": 960,
+  "h": 540,
+  "coast": {"from": 0, "to": 941, "openEast": true, "angle": 95, "scale": 8.2, "trieste": [500, 545]},
+  "setOut": {"port": [13.596, 45.5145], "anchor": [380.79, 419.03]},
+  "landfall": {"port": [13.7297, 45.548], "anchor": [418.61, 511.66]},
+  "islands": [
+    {"real": "Vulcano", "name": "Accessible Performance", "center": [180, 300], "size": 80, "rotate": 0, "labelBelow": false, "label": [180, 240], "anchor": [173.34, 277.58], "note": "Volcano (active)", "near": []},
+    {"real": "Lošinj", "name": "Success Stories", "center": [215, 165], "size": 100, "rotate": 0, "labelBelow": false, "label": [215, 95], "anchor": [232.4, 213.98], "note": "", "near": []},
+    {"real": "Porquerolles", "name": "Data Stack", "center": [380, 100], "size": 100, "rotate": 0, "labelBelow": true, "label": [380, 163.47], "anchor": [383.27, 99.24], "note": "", "near": []},
+    {"real": "Milos", "name": "Interoperability", "center": [585, 100], "size": 95, "rotate": 0, "labelBelow": true, "label": [585, 163.74], "anchor": [590.06, 96.45], "note": "", "near": []},
+    {"real": "Elba", "name": "An Expressive Language", "center": [765, 192], "size": 110, "rotate": 0, "labelBelow": false, "label": [765, 136.25], "anchor": [787.39, 185], "note": "", "near": []},
+    {"real": "Caprera", "name": "Interactivity", "center": [790, 325], "size": 75, "rotate": 0, "labelBelow": true, "label": [790, 393.5], "anchor": [761.39, 322.9], "note": "", "near": ["La Maddalena"]},
+    {"real": "Leros", "name": "Notebook", "center": [480, 265], "size": 90, "rotate": 0, "labelBelow": true, "label": [480, 341], "anchor": [495.14, 287.26], "note": "", "near": []}
+  ],
+  "legs": [
+    [[400, 340], [250, 262]],
+    [],
+    [[300, 214], [300, 58], [372, 58]],
+    [[380, 42], [594, 42]],
+    [[600, 42], [781, 42]],
+    [[770, 160], [700, 160], [700, 318]],
+    [[720, 372], [500, 372], [455, 330]],
+    [[455, 330], [440, 420]]
+  ],
+  "compass": [905, 60],
+  "landLabel": [215, 468],
+  "titleBlock": [790, 480]
+}

@@ -25,6 +25,7 @@ type
     outline*: seq[Pt]  ## control points of a custom outline, around `center`; empty: the default
     features*: seq[Feature]
     labelBelow*: bool
+    label*: Pt         ## where its name goes (the middle of the name's baseline); (0, 0): above or below it
     exact*: bool       ## the outline is a real coast (maps/isole.nim), drawn as it is, not smoothed
     real*: string      ## the real island the outline is taken from, empty for an invented one
     elevation*: float  ## its highest point, metres (0: unknown)

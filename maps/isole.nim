@@ -3,8 +3,8 @@
 ## outline is an OpenStreetMap land polygon (© OpenStreetMap contributors, ODbL) simplified to
 ## at most 120 points, in kilometres from its middle (x east, y north).
 ## The file is read when the map is compiled, so nothing is copied here.
-import std / [os, strutils, tables, math]
-import geometry
+import std / [os, strutils, tables, math, json]
+import geometry, base
 
 const isoleCsv = currentSourcePath().parentDir.parentDir / "deps" / "tabelline" / "docs" / "stories" /
   "data" / "isole" / "islands.csv"
@@ -557,6 +557,8 @@ type
     near*: seq[string] ## smaller islands around it, drawn at the same scale where they really are
     lore*: string      ## why this island: a line in the title block of its chart
     note*: string      ## a note on the chart beside it
+    label*: Pt         ## where its name goes; (0, 0): above or below it (`labelBelow`)
+    anchor*: Pt        ## where the course calls and the anchor is drawn; (0, 0): the sheltered water nearest the port
 
   Layout* = object
     ## an arrangement of the voyage: the coast, the islands, the course
@@ -568,6 +570,7 @@ type
     slots*: seq[Slot]
     via*: seq[seq[Pt]]         ## turning points of each leg: the first port to island 1, ..., island 7 to the last port
     setOut*, landfall*: Pt     ## the ports on the coast where the voyage starts and ends (longitude, latitude)
+    setOutAnchor*, landfallAnchor*: Pt ## where they are on the map; (0, 0): the sheltered water nearest them
     compassAt*, landLabel*, titleAt*: Pt
 
 const islandPicks* = [
@@ -590,21 +593,48 @@ func slot(i: int, center: Pt, size: float, labelBelow = false, rotate = 0.0, not
   Slot(near: near, real: islandPicks[i][0], port: islandPicks[i][1], lore: islandPicks[i][2], center: center,
     size: size, labelBelow: labelBelow, rotate: rotate, note: note)
 
+# --- the arrangement as json: what the map editor reads and writes -----------------------------
+
+func pt(n: JsonNode): Pt =
+  if n.isNil or n.kind != JArray or n.len < 2: (0.0, 0.0) else: (n[0].getFloat, n[1].getFloat)
+
+func js(p: Pt): JsonNode = %*[round(p.x * 100) / 100, round(p.y * 100) / 100]
+
+proc layoutFromJson*(name, text: string): Layout =
+  ## an arrangement read from the json of the map editor (maps/editor.nim, format voyage-map/1):
+  ## the coast, each island (center, size, rotation, name, anchor), the turning points of the
+  ## course, the rose, the title block and the mainland's name. What is not there keeps its default
+  let j = parseJson(text)
+  let c = j["coast"]
+  result = Layout(name: name, coastFrom: c{"from"}.getInt(0), coastTo: c{"to"}.getInt(muggia),
+    openEast: c{"openEast"}.getBool(true), coastAngle: c["angle"].getFloat, coastScale: c["scale"].getFloat,
+    trieste: pt(c["trieste"]), setOut: portoroz, landfall: koper,
+    setOutAnchor: pt(j{"setOut", "anchor"}), landfallAnchor: pt(j{"landfall", "anchor"}),
+    compassAt: pt(j["compass"]), landLabel: pt(j["landLabel"]), titleAt: pt(j["titleBlock"]))
+  for isl in j["islands"]:
+    var k = -1
+    for i, pick in islandPicks:
+      if pick[0] == isl["real"].getStr: k = i
+    doAssert k >= 0, "not an island of the voyage: " & isl["real"].getStr
+    var s = Slot(real: islandPicks[k][0], port: islandPicks[k][1], lore: islandPicks[k][2],
+      center: pt(isl["center"]), size: isl["size"].getFloat, rotate: isl{"rotate"}.getFloat(0),
+      labelBelow: isl{"labelBelow"}.getBool(false), note: isl{"note"}.getStr(""),
+      label: pt(isl{"label"}), anchor: pt(isl{"anchor"}))
+    for n in isl{"near"}.getElems: s.near.add n.getStr
+    result.slots.add s
+  for leg in j["legs"]:
+    var turns: seq[Pt]
+    for p in leg: turns.add pt(p)
+    result.via.add turns
+
+const voyageJson* = staticRead("voyage.json")
+  ## the deck's arrangement, as the map editor wrote it
+
 let layouts* = @[
-  # Istria only, the sea open where Trieste and the coast to Monfalcone were (Pietro, 2026-11-25)
-  Layout(name: "ring", coastFrom: 0, coastTo: muggia, openEast: true, coastAngle: 95, coastScale: 8.2, trieste: (500.0, 545.0),
-    slots: @[slot(0, (180.0, 300.0), 80, note = "Volcano (active)"), slot(1, (215.0, 165.0), 100),
-             slot(2, (380.0, 100.0), 100, labelBelow = true), slot(3, (585.0, 100.0), 95, labelBelow = true),
-             slot(4, (765.0, 192.0), 110), slot(5, (790.0, 325.0), 75, labelBelow = true, near = @["La Maddalena"]),
-             slot(6, (480.0, 265.0), 90, labelBelow = true)],
-    # the course as Pietro sketched it (2026-11-24): out of Portorož, around the islands clockwise,
-    # into Koper
-    setOut: portoroz, landfall: koper,
-    via: @[@[(400.0, 340.0), (250.0, 262.0)], @[], @[(300.0, 214.0), (300.0, 58.0), (372.0, 58.0)],
-           @[(380.0, 42.0), (594.0, 42.0)], @[(600.0, 42.0), (781.0, 42.0)],
-           @[(770.0, 160.0), (700.0, 160.0), (700.0, 318.0)],
-           @[(720.0, 372.0), (500.0, 372.0), (455.0, 330.0)], @[(455.0, 330.0), (440.0, 420.0)]],
-    compassAt: (905.0, 60.0), landLabel: (215.0, 468.0), titleAt: (790.0, 480.0)),
+  # the ring (Pietro's pick, 2026-11-24): Istria only, the sea open where Trieste and the coast to
+  # Monfalcone were (2026-11-25); the course as Pietro sketched it, out of Portorož, around the
+  # islands clockwise, into Koper. Read from maps/voyage.json, which the map editor writes
+  layoutFromJson("ring", voyageJson),
   Layout(name: "gulf", coastFrom: 0, coastTo: 1239, coastAngle: 95, coastScale: 10.3, trieste: (505.0, 540.0),
     slots: @[slot(0, (175.0, 245.0), 80, note = "Volcano (active)"), slot(1, (240.0, 110.0), 100),
              slot(2, (395.0, 75.0), 100, labelBelow = true), slot(3, (575.0, 75.0), 95, labelBelow = true),
@@ -638,6 +668,7 @@ proc layoutVoyage*(l: Layout): Voyage =
     result.islands.add realIsland(s.real, s.center, s.size, s.labelBelow, s.rotate)
     result.islands[^1].lore = s.lore
     result.islands[^1].note = s.note
+    result.islands[^1].label = s.label
     let main = isole[s.real]
     let pl = main.placement(s.center, s.size, s.rotate)
     for name in s.near:
@@ -647,14 +678,39 @@ proc layoutVoyage*(l: Layout): Voyage =
       result.islets.add islet
     var near = @[result.islands[^1].polygon]
     for islet in result.islets: near.add islet
-    result.route.add harbour(near, pl.toMap(main.kmOf(s.port)))
+    result.route.add (if s.anchor != (0.0, 0.0): s.anchor else: harbour(near, pl.toMap(main.kmOf(s.port))))
   result.route.add port(l.landfall)
   let coast = @[result.coast]
-  result.route[0] = harbour(coast, result.route[0])
-  result.route[^1] = harbour(coast, result.route[^1])
+  result.route[0] = if l.setOutAnchor != (0.0, 0.0): l.setOutAnchor else: harbour(coast, result.route[0])
+  result.route[^1] = if l.landfallAnchor != (0.0, 0.0): l.landfallAnchor else: harbour(coast, result.route[^1])
   result.straightRoute = true
   result.via = l.via
 
 proc islandsVoyage*(): Voyage =
   ## the map of the talk: the first arrangement (the others are drawn by maps/maplab.nim)
   layoutVoyage(layouts[0])
+
+proc layoutJson*(l: Layout, names: openArray[string]): JsonNode =
+  ## the arrangement as the json of the map editor, every position written out: the anchors where
+  ## the course calls and the names of the islands where the chart puts them
+  let v = layoutVoyage(l)
+  result = %*{"format": "voyage-map/1", "w": v.w, "h": v.h,
+    "coast": {"from": l.coastFrom, "to": l.coastTo, "openEast": l.openEast, "angle": l.coastAngle,
+              "scale": l.coastScale, "trieste": js(l.trieste)},
+    "setOut": {"port": %*[l.setOut.x, l.setOut.y], "anchor": js(v.route[0])},
+    "landfall": {"port": %*[l.landfall.x, l.landfall.y], "anchor": js(v.route[^1])},
+    "islands": [], "legs": [],
+    "compass": js(l.compassAt), "landLabel": js(l.landLabel), "titleBlock": js(l.titleAt)}
+  for i, s in l.slots:
+    let isl = v.islands[i]
+    var label = isl.labelPos
+    if s.label == (0.0, 0.0): # where the chart puts it (chartLabel in maps/chart.nim)
+      let half = 0.37 * 14.5 * (names[i].len + 4).float
+      label = (clamp(label.x, half + 10, v.w - half - 10), (if isl.labelBelow: label.y else: label.y - 2))
+    result["islands"].add %*{"real": s.real, "name": names[i], "center": js(s.center), "size": s.size,
+      "rotate": s.rotate, "labelBelow": s.labelBelow, "label": js(label), "anchor": js(v.route[i + 1]),
+      "note": s.note, "near": s.near}
+  for leg in l.via:
+    var a = newJArray()
+    for p in leg: a.add js(p)
+    result["legs"].add a

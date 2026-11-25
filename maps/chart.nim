@@ -146,6 +146,15 @@ func anchorSvg(at: Pt): string =
     &"""<circle cx="0" cy="1.5" r="12.5" class="anchor-halo"/>""" &
     &"""<circle cx="0" cy="-9.6" r="2.2" fill="none"/><path d="{d}" fill="none"/></g>"""
 
+func chartLabel*(isl: Island, name: string, current: bool, w: float): Pt =
+  ## where the name of an island goes on the chart, when it is not set by hand: above or below it,
+  ## kept inside the chart
+  result = isl.labelPos
+  let size = if current: 17.0 else: 14.5
+  if not isl.labelBelow: result.y -= 2
+  let half = 0.37 * size * (name.len + 4).float # about half the width of the name, at its size
+  result.x = clamp(result.x, half + 10, w - half - 10)
+
 proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html = false): string =
   ## With `html` the words of the chart (the names of the islands, the title block, the notes) are
   ## html elements over the svg, placed in percent of the map, so css can move and restyle them;
@@ -242,12 +251,9 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
   # names of the islands of the talk
   for i, isl in v.islands:
     let n = i + 1
-    var lp = isl.labelPos
     let state = islandState(n, current)
-    let size = if n == current: 17.0 else: 14.5
-    if not isl.labelBelow: lp.y -= 2
-    let half = 0.37 * size * (names[i].len + 4).float # about half the width of the name, at its size
-    lp.x = clamp(lp.x, half + 10, v.w - half - 10)
+    let lp = if isl.label != (0.0, 0.0): isl.label # set by hand (maps/voyage.json)
+             else: chartLabel(isl, names[i], n == current, v.w)
     word("cname" & state, &"{n} · {names[i].toUpperAscii}", lp)
   # an anchor, in the port of the island of the section; in the first port before the voyage,
   # in the last one after it

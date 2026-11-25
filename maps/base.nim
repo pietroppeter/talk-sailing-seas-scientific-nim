@@ -30,6 +30,7 @@ func routeDone*(v: Voyage, current: int): seq[Pt] =
   if upTo > 0: v.routePolyline(upTo) else: @[]
 
 func labelPos*(isl: Island, fontSize = 17.0): Pt =
+  if isl.label != (0.0, 0.0): return isl.label # set by hand (maps/voyage.json)
   let off = isl.r * 0.8
   if isl.labelBelow: (isl.center.x, isl.center.y + off + fontSize + 10)
   else: (isl.center.x, isl.center.y - off - 14)

@@ -5,6 +5,7 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 ## Decisions
 
 - [ ] Voyage map (chart theme adopted 2026-11-24): the lore lines (hidden with the names; shown by `-d:islandNames=true`), coastal views (drawn profiles of an island seen from the sea, as on real charts) not done yet. See `decisions/themes.md`.
+- [ ] Map editor (2026-11-25): move things in `docs/mapeditor.html` and paste its JSON in a thread to become `maps/voyage.json`. Then decide: the agenda bar and its names sailing to the map, the portolano box (texts in the editor are Claude's drafts), the route drawing itself; and whether the chart's words stay html.
 - [ ] Timing: with QEX, Island 2 is 2.5 minutes; with Island 1 down to one slide (1 minute) the talk is 23 minutes. Keep, or should the QEX slide replace something?
 
 ## Unanswered points from merged PRs
