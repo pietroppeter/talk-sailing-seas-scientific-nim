@@ -51,9 +51,10 @@ Placeholder slides that still need content:
 
 ### Island 7 Notebook
 
-- [ ] Facts to confirm: Hugo Granström as co-maintainer of nimib ("two maintainers"), SciNim's getting started built with nimibook, nimibex and nimib.py under nimib-land.
-- [ ] Slide 8.4 is a list: show screenshots instead (a deep dive, a nimibook, the review mode)?
-- [ ] Slide 8.2 quotes the 2019 notebook study only in the speaker notes; say it on the slide?
+Choices made without you (2026-11-25, to revisit):
+- [ ] Facts kept as written, unconfirmed: Hugo Granström as co-maintainer of nimib ("two maintainers" on 8.5), SciNim's getting started built with nimibook, nimibex and nimib.py under nimib-land.
+- [ ] Slide 8.4 stays a list; screenshots (a deep dive, a nimibook, the review mode) would make it more visual.
+- [ ] Slide 8.2 now has the 2019 notebook study (Pimentel et al.: 1 in 4 ran, 4% same results) as a small line under the bullets.
 
 ## Upstream drafts on hold
 

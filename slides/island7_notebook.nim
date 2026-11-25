@@ -24,6 +24,10 @@ what we want a computer to do.""",
   JSON files hard to review
 - plain files again: Quarto, Pluto.jl, marimo
 """
+      reference """
+Of the GitHub notebooks a 2019 study could run, 1 in 4 ran
+without errors and 4% gave the same results (Pimentel et al.)
+"""
       speakerNote """
 Knuth wanted programs written for people to read, with the code
 in the order of the explanation (WEB, then TeX).
