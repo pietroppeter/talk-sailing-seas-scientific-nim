@@ -35,6 +35,7 @@ The abstract and description above are kept verbatim as submitted. While prepari
 - The title slide says **Sailing Seas of Scientific Nim**, without "the", so the title fits on one line.
 - The first island is just **Accessible Performance** ("without Ceiling" dropped from the title).
 - **Interoperability** comes before **An Expressive Language**: Interoperability is the fourth island and An Expressive Language the fifth.
+- The **Data Stack** island adds a fourth block, display tables (tabelline), a second dataframe library (nanuq, Polars for Nim) and a deep learning example, besides the tensor, dataframe and plotting libraries.
 
 ## Slides
 
@@ -60,6 +61,7 @@ A slide has room for little, so a topic the slides only sketch gets a deep dive:
 - [Vindaar's thesis in plain words](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/vindaar.html) (`deepdive/vindaar.nim`, Island 2)
 - [Lattice QCD and QEX in plain words](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/qex.html) (`deepdive/qex.nim`, Island 2)
 - [Penguins with the Nim data stack](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/penguins_data_stack.html) (`deepdive/penguins_data_stack.nim`, Island 3)
+- [Penguins with nanuq and tabelline](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/penguins_polars.html) (`deepdive/penguins_polars.nim`, Island 3)
 - [Interoperability: Nim with other languages](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/interoperability.html) (`deepdive/interoperability.nim`, Island 4)
 - [Custom operators: points, lines and planes](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/operators.html) (`deepdive/operators.nim`, Island 5)
 - [Units with unchained](https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/deepdive/units_macros.html) (`deepdive/units_macros.nim`, Island 5)
@@ -83,6 +85,8 @@ atlas rep atlas.lock
 ```
 
 To change a dependency: edit the `.nimble` file (or `atlas update <name>`), `atlas install`, build, then `atlas pin` to write the new commits to `atlas.lock`. Check that its `dir` entries and `nim.cfg` keep plain names (`deps/tabelline`, not `deps/tabelline.pietroppeter.github.com`): some atlas setups add the host to a folder name.
+
+[nanuq](https://github.com/pietroppeter/nanuq) (Polars for Nim, Island 3) links a prebuilt static library: the first compile that imports it downloads it from nanuq's GitHub releases (about 64 MB, needs `curl` and `tar`) into `~/.cache/nanuq`.
 
 nim-markdown needs PCRE at runtime (`libpcre.so.3`, e.g. `apt install libpcre3`). ggplotnim needs Cairo (`apt install libcairo2`, or `brew install cairo` on macOS, where `nim.cfg` links it from `/opt/homebrew/lib`).
 

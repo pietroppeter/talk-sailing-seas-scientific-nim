@@ -1,16 +1,17 @@
-import std / [math, strutils]
+import std / [math, strutils, sequtils]
 # only `%` from json: its `{}` would get in the way of `f{...}` formulas
 from std / json import `%`, `[]=`
 import nimib
 import deepdive # useDeepDive, and the blocks of blocks.nim
 import nimib / highlight
 import ggplotnim
-import arraymancer / ml # k-means
+import arraymancer / [ml, nn, autograd] # k-means, the network
 import plotly
 import ../slides/nbplotly # nbPlotly: an interactive nim-plotly plot in nimib
 
 # A nimib document that explains the penguins exploration of Island 3
-# (slides 4.2 to 4.7, in slides/island3_datastack.nim):
+# (slides 4.2 to 4.7 and 4.10, in slides/island3_datastack.nim and island3_network.nim;
+# nanuq and tabelline have their own deep dive, penguins_polars.nim):
 #   nim r deepdive/penguins_data_stack.nim
 # writes docs/deepdive/penguins_data_stack.html.
 # The code below runs when the page is built, like on the slides.
@@ -34,6 +35,8 @@ by Jake VanderPlas, or of arrays, dplyr and ggplot2 in R.
 The slides only have room for one example each.
 This page explores the penguins a bit further,
 with the same three libraries.
+The two newest blocks of the slides, nanuq and tabelline,
+have [a deep dive of their own](penguins_polars.html).
 All the code on this page runs when the page is built,
 and the output below each block is its real output.
 """
@@ -236,6 +239,93 @@ with models, pipelines, cross validation and metrics.
 """
 
 nbText """
+## A small neural network
+
+The deep learning slide trains a network
+on the same four measurements.
+Here it is again, step by step, on the matrix `X`
+of the k-means section.
+A network is declared with the `network` macro:
+the layers, then the forward pass.
+Four measurements go in, sixteen hidden units,
+three species come out, one score each.
+The macro must run at the top level of a module,
+since it declares a type:
+"""
+nbCode:
+  network PenguinNet:
+    layers:
+      hidden: Linear(4, 16)
+      output: Linear(16, 3)
+    forward x:
+      x.hidden.relu.output
+
+nbText """
+The species become the numbers 0, 1 and 2,
+and the rows are split in two:
+the even rows train the network, the odd rows test it.
+`index_select` picks rows of a tensor,
+as fancy indexing does in NumPy;
+the layers compute in 32-bit floats.
+"""
+nbCode:
+  let speciesNames = ["Adelie", "Chinstrap", "Gentoo"]
+  var y = newTensor[int](df.len)
+  for i, s in df["species", string]:
+    y[i] = speciesNames.find(s)
+  let even = toSeq(countup(0, df.len - 1, 2))
+  let odd = toSeq(countup(1, df.len - 1, 2))
+
+  let ctx = newContext Tensor[float32] # the layers are float32
+  let X32 = X.astype(float32)
+  let xTrain = ctx.variable X32.index_select(0, even)
+  let xTest = ctx.variable X32.index_select(0, odd)
+  let (yTrain, yTest) = (y.index_select(0, even), y.index_select(0, odd))
+
+nbText """
+Training is the loop of PyTorch:
+forward, loss, backward, step.
+`ctx` records the operations,
+so that `backprop` can compute the gradients.
+"""
+nbCode:
+  let model = ctx.init(PenguinNet)
+  var optim = model.optimizer(SGD, learning_rate = 0.1'f32)
+  for epoch in 1 .. 300:
+    let loss = model.forward(xTrain)
+      .sparse_softmax_cross_entropy(yTrain)
+    loss.backprop()
+    optim.update()
+    if epoch mod 100 == 0:
+      echo "epoch ", epoch, ", loss ", loss.value[0].round(3)
+
+nbText """
+And on the penguins it has never seen,
+species by species:
+"""
+nbCode:
+  # the species with the highest score, row by row
+  # (argmax(axis = 1) does this, but its C code fails with Nim 2.2.12)
+  let scores = model.forward(xTest).value
+  var guess = newTensor[int](scores.shape[0])
+  for i in 0 ..< scores.shape[0]:
+    for k in 1 ..< 3:
+      if scores[i, k] > scores[i, guess[i]]: guess[i] = k
+  for k, name in speciesNames:
+    let these = yTest ==. k
+    let right = (guess ==. yTest) and these
+    echo name, ": ", right.astype(int).sum, " right of ",
+      these.astype(int).sum
+
+nbText """
+Where k-means mixed Adelie and Chinstrap,
+the network mostly tells them apart,
+since it learns from the labels.
+The few mistakes are Chinstraps, the smallest group.
+Two dozen lines, and no library outside Arraymancer.
+"""
+
+nbText """
 ## What else is in Arraymancer
 
 Arraymancer's README says it is inspired by NumPy and PyTorch,
@@ -268,7 +358,9 @@ SGD and Adam, and CUDA (with cuDNN) and OpenCL backends,
 which have fewer features than the CPU one.
 In October 2026 attention and normalization layers arrived,
 with an example that trains a small GPT-2-like model
-on Shakespeare.
+on Shakespeare
+([PR #695](https://github.com/mratsim/Arraymancer/pull/695)
+by Phil Wang, lucidrains, who had promised it in 2023).
 The README still calls the deep learning interface unstable.
 To use PyTorch itself from Nim, there is
 [flambeau](https://github.com/SciNim/flambeau),
@@ -309,6 +401,15 @@ And the ecosystem depends on a few contributors,
 Vindaar, mratsim, Clonkk and HugoGranstrom among them:
 when life happens, development stops.
 If you would like to help, there is room.
+
+Two new libraries fill gaps of this stack:
+[nanuq](https://github.com/pietroppeter/nanuq) brings Polars
+to Nim, and [tabelline](https://github.com/pietroppeter/tabelline)
+makes display tables after Great Tables and gt.
+They are young, written by one person (the speaker),
+mostly with an AI coding agent:
+[their own deep dive](penguins_polars.html) shows them
+on the same penguins.
 """
 
 nbText """
