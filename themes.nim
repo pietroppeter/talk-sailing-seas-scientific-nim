@@ -269,11 +269,114 @@ func chartCss(): string =
 .voyage-map .compass-n {{ fill: {magenta}; }}
 """
 
-func themeCss*(): string =
+# --- the voyage on the chart deck: the title card, the agenda bar, the course drawing itself --------
+
+proc titleCardCss(): string =
+  ## the title slide's card sits where the portolano box is on the charts (maps/voyage.json), with
+  ## the portolano's look and bigger text (Pietro, 2026-11-25). The chart behind the title is
+  ## 1369 x 770 around the middle of the 1050 x 700 slide (see .title-art)
+  let v = islandsVoyage()
+  let pb = v.portolanoBox
+  if pb[2] <= 0: return ""
+  let k = 1369.0 / v.w
+  let left = 525.0 - 1369.0 / 2 + pb[0] * k
+  let top = 350.0 - 770.0 / 2 + pb[1] * k
+  result = &"""
+.reveal .title-slide {{ position: static; }}
+.reveal .title-slide .title-box {{ position: absolute; left: {left:.1f}px; top: {top:.1f}px; width: {pb[2] * k:.1f}px; min-height: {pb[3] * k:.1f}px; box-sizing: border-box; text-align: left; display: block; font-size: 0.82em; padding: 0.5em 0.8em; background: rgba(253,252,247,0.93); border: 1px solid #1f2a33; outline: 0.5px solid #1f2a33; outline-offset: 4px; backdrop-filter: none; }}
+.reveal .title-slide .title-box h2 {{ font-size: 1.75em; line-height: 1.05; margin: 0 0 0.35em; padding-bottom: 0.3em; border-bottom: 0.5px solid #1f2a33; }}
+.reveal .title-slide .title-box p {{ margin: 0.25em 0; }}
+.reveal .title-art .portolano {{ display: none; }}
+"""
+
+const agendaCss = """
+/* the agenda bar: the seven islands along the bottom of every slide, the current one in magenta;
+   on a map slide the names sail to their places on the chart, and back (Pietro, 2026-11-25) */
+#voyage-agenda { position: fixed; left: 280px; right: 120px; bottom: 16px; display: flex; justify-content: space-evenly; z-index: 30; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
+#voyage-agenda::before { content: ""; position: absolute; inset: -7px -12px; background: rgba(246,243,234,0.92); border-top: 1px solid rgba(14,31,83,0.55); z-index: -1; transition: opacity 0.6s ease; }
+#voyage-agenda.shown { opacity: 1; }
+#voyage-agenda.on-map::before { opacity: 0; }
+#voyage-agenda span { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: clamp(9px, 0.7vw, 16px); letter-spacing: 0.06em; color: #13334c; white-space: nowrap; transform-origin: 50% 50%; transition: transform 1.1s cubic-bezier(.5,0,.2,1), color 0.4s ease; text-shadow: 0 0 1px #fdfcf7, 0 0 2px #fdfcf7, 0 0 3px #fdfcf7, 0 0 4px #fdfcf7; }
+#voyage-agenda span.visited { color: #4d6475; }
+#voyage-agenda span.current { color: #b0167a; }
+html.print-pdf #voyage-agenda, .reveal.overview ~ #voyage-agenda { display: none; }
+body.voyage-agenda .reveal .slides section.present .map-slide .ct.cname { visibility: hidden; }
+.reveal section.present .map-slide .anchor { animation: voyage-anchor 0.6s ease 3s both; }
+@keyframes voyage-anchor { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #voyage-agenda span { transition: none; } .reveal section.present .map-slide .anchor { animation: none; } }
+"""
+
+const voyageDeckJs* = when slideTheme == "chart": """
+<div id="voyage-agenda" aria-hidden="true"></div>
+<script>
+// The voyage on the chart deck (themes.nim): the agenda bar and the course drawing itself.
+// Functions are consts in a closure: a global `draw` would be called by p5 (the thank-you sketch)
+(() => {
+  const bar = document.getElementById("voyage-agenda");
+  const printing = /print-pdf/.test(location.search);
+  const slides = Reveal.getSlides();
+  const mapOf = s => s.querySelector(".map-slide .chart-stage[data-current]");
+  // the island of every slide: the one of the last map slide before it (-1 before the first map)
+  let at = -1;
+  const islandOf = slides.map(s => { const m = mapOf(s); if (m) at = +m.dataset.current; return at; });
+  const any = document.querySelector(".chart-stage[data-current]");
+  const names = any ? [...any.querySelectorAll(".ct.cname[data-n]")].map(e => e.textContent) : [];
+  bar.innerHTML = names.map(n => "<span></span>").join("");
+  [...bar.children].forEach((e, k) => { e.textContent = names[k]; });
+  if (!printing && names.length) document.body.classList.add("voyage-agenda");
+  const sail = (section, onMap) => {
+    const b = bar.getBoundingClientRect();
+    [...bar.children].forEach((e, k) => {
+      const label = onMap && section.querySelector(`.ct.cname[data-n="${k + 1}"]`);
+      if (!label) { e.style.transform = ""; return; }
+      const r = label.getBoundingClientRect();
+      const x = b.left + e.offsetLeft + e.offsetWidth / 2, y = b.top + e.offsetTop + e.offsetHeight / 2;
+      const s = r.height / e.offsetHeight;
+      e.style.transform = `translate(${r.left + r.width / 2 - x}px, ${r.top + r.height / 2 - y}px) scale(${s})`;
+    });
+  }
+  const drawCourse = section => { // the leg just sailed (or the whole course on the first map) draws itself
+    for (const p of section.querySelectorAll(".map-slide .leg-new, .map-slide .course-mask")) {
+      const L = p.getTotalLength(), slow = p.classList.contains("course-mask");
+      p.style.transition = "none"; p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
+      p.getBoundingClientRect();
+      p.style.transition = `stroke-dashoffset ${slow ? 3.2 : 1.8}s cubic-bezier(.4,0,.2,1) 1.4s`;
+      p.style.strokeDashoffset = 0;
+    }
+  }
+  const update = () => {
+    if (printing || !names.length) return;
+    const section = Reveal.getCurrentSlide();
+    if (!section) return;
+    const i = slides.indexOf(section), n = islandOf[i];
+    const hide = i === 0 || section.querySelector(".sketch, .title-art");
+    bar.classList.toggle("shown", !hide);
+    [...bar.children].forEach((e, k) => {
+      e.classList.toggle("current", k + 1 === n);
+      e.classList.toggle("visited", n === 8 || (n > 0 && k + 1 < n));
+    });
+    const onMap = !!mapOf(section);
+    bar.classList.toggle("on-map", onMap);
+    // the names sail once the slide is in place (while reveal.js slides it in, it is off screen)
+    if (!onMap || Reveal.getConfig().transition === "none") sail(section, onMap);
+    else sail(section, false);
+    if (onMap) drawCourse(section);
+  }
+  const arrived = () => { const s = Reveal.getCurrentSlide(); if (s && mapOf(s)) sail(s, true); };
+  Reveal.on("ready", () => { update(); arrived(); });
+  Reveal.on("slidechanged", update);
+  Reveal.on("slidetransitionend", arrived);
+  Reveal.on("resize", () => { const s = Reveal.getCurrentSlide(); if (s) sail(s, !!mapOf(s)); });
+  if (Reveal.isReady()) { update(); arrived(); }
+})();
+</script>
+""" else: ""
+
+proc themeCss*(): string =
   case slideTheme
   of "pirate": commonCss & pirateCss() & pixelMapCss
   of "book": commonCss & bookCss() & engravedMapCss
-  of "chart": commonCss & chartCss() & chartMapCss
+  of "chart": commonCss & chartCss() & chartMapCss & titleCardCss() & agendaCss
   else: ""
 
 # --- theme specific slide parts ---------------------------------------------------------

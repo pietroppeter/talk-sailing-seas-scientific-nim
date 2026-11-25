@@ -29,12 +29,12 @@ func seaMask*(v: Voyage, grow = 3.0): string =
 
 # --- the sea floor ------------------------------------------------------------------------
 
-func metres(b: float): float =
+func metres*(b: float): float =
   ## the depth in metres at a point whose stretched distance to the coast is `b`
   ## shallow shelves near the coast, then a slope down to the deep sea between the islands
   if b <= 0: 0.0 else: 2.0 * sqrt(b) + 0.12 * b + 0.006 * b * b
 
-func level(m: float): float =
+func level*(m: float): float =
   ## the stretched distance where the depth is `m` metres (the inverse of `metres`, by bisection)
   var lo = 0.0
   var hi = 2000.0
@@ -43,9 +43,9 @@ func level(m: float): float =
     if metres(mid) < m: lo = mid else: hi = mid
   lo
 
-proc seaFloor(v: Voyage): Field =
+func stretched*(f: Field): Field =
   ## the distance field stretched by noise: a shelf is wide where the noise is low, steep where high
-  result = v.field
+  result = f
   for j in 0 ..< result.ny:
     for i in 0 ..< result.nx:
       let k = j * result.nx + i
@@ -54,11 +54,13 @@ proc seaFloor(v: Voyage): Field =
         let p: Pt = ((i - 1).float * result.cell, (j - 1).float * result.cell)
         result.d[k] = d * (0.45 + 1.1 * fbm(p.x / 110, p.y / 110, 3))
 
-func fillBelow(f: Field, level: float): string =
+proc seaFloor(v: Voyage): Field = v.field.stretched
+
+func fillBelow*(f: Field, level: float): string =
   ## one path for the area closer to the coast than `level` (even-odd fill of its contours)
   for line in f.contours(level): result.add svgPath(line.smooth(2)) & " "
 
-func soundingText(d: float, p: Pt): string =
+func soundingText*(d: float, p: Pt): string =
   ## a sounding: whole metres, and the decimal as a subscript below 21 m
   let m = int(floor(d))
   let dec = int(floor((d - m.float) * 10))
@@ -69,7 +71,7 @@ func soundingText(d: float, p: Pt): string =
 
 # --- the furniture of a chart ---------------------------------------------------------------
 
-func roseSvg(c: Pt, r: float): string =
+func roseSvg*(c: Pt, r: float): string =
   ## a compass rose as on charts: a true ring with degrees and a magnetic ring inside
   result = &"""<g class="rose" transform="translate({f1(c.x)},{f1(c.y)})" stroke="{magenta}" fill="none">"""
   result.add &"""<circle r="{f1(r)}" stroke-width="0.8"/><circle r="{f1(r - 6)}" stroke-width="0.5"/>"""
@@ -91,7 +93,7 @@ func roseSvg(c: Pt, r: float): string =
   result.add &"""<path d="M0,{f1(-r - 1.5)} l-2.5,5 h5 Z" fill="{magenta}" stroke="none"/>"""
   result.add &"""<text y="{f1(r * 0.3)}" text-anchor="middle" font-size="4.5" fill="{magenta}" stroke="none">VAR 3°W</text></g>"""
 
-func borderSvg(w, h: float): string =
+func borderSvg*(w, h: float): string =
   ## a fine graduated border: a neatline, minute bars in a thin band, a label every ten minutes
   let band = 5.0
   result = &"""<g class="chart-border"><rect x="0.5" y="0.5" width="{f1(w - 1)}" height="{f1(h - 1)}" fill="none" stroke="{ink}" stroke-width="0.6"/>"""
@@ -118,14 +120,14 @@ func borderSvg(w, h: float): string =
     inc k
   result.add "</g>"
 
-func cape(isl: Island, dir: Pt): Pt =
+func cape*(isl: Island, dir: Pt): Pt =
   ## the point of the coast farthest out in direction `dir`
   var best = -Inf
   for p in isl.polygon:
     let s = (p.x - isl.center.x) * dir.x + (p.y - isl.center.y) * dir.y
     if s > best: best = s; result = p
 
-func summit(f: Field, isl: Island): Pt =
+func summit*(f: Field, isl: Island): Pt =
   ## the point of the island farthest from its coast, where its height is written
   var best = 0.0
   result = isl.center
@@ -139,22 +141,31 @@ func summit(f: Field, isl: Island): Pt =
       dx += 3
     dy += 3
 
-func anchorSvg(at: Pt): string =
+func anchorSvg*(at: Pt): string =
   ## the anchor of the charts, drawn over a pale halo so it reads on land, shoal and deep water
   let d = "M0,-7.5 V9 M-5,-3.5 H5 M-8,3.5 Q-7,9.5 0,10 Q7,9.5 8,3.5 M-9.5,5.5 L-8,3.5 L-6,5.2 M9.5,5.5 L8,3.5 L6,5.2"
   &"""<g class="anchor" transform="translate({f1(at.x)},{f1(at.y)}) scale(0.62) translate(0,-1.5)">""" &
     &"""<circle cx="0" cy="1.5" r="12.5" class="anchor-halo"/>""" &
     &"""<circle cx="0" cy="-9.6" r="2.2" fill="none"/><path d="{d}" fill="none"/></g>"""
 
+func chartLabel*(isl: Island, name: string, current: bool, w: float): Pt =
+  ## where the name of an island goes on the chart, when it is not set by hand: above or below it,
+  ## kept inside the chart
+  result = isl.labelPos
+  let size = if current: 17.0 else: 14.5
+  if not isl.labelBelow: result.y -= 2
+  let half = 0.37 * size * (name.len + 4).float # about half the width of the name, at its size
+  result.x = clamp(result.x, half + 10, w - half - 10)
+
 proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html = false): string =
   ## With `html` the words of the chart (the names of the islands, the title block, the notes) are
   ## html elements over the svg, placed in percent of the map, so css can move and restyle them;
   ## the svg keeps only the drawing and its small print (soundings, heights, graduations)
   var words: seq[string]
-  template word(cls, text: string, at: Pt, anchor = "middle") =
+  template word(cls, text: string, at: Pt, anchor = "middle", attrs = "") =
     let p: Pt = at
     if html:
-      words.add "<div class=\"ct " & cls & " ct-" & anchor & "\" style=\"left: " & f1(100 * p.x / v.w) & "%; top: " &
+      words.add "<div class=\"ct " & cls & " ct-" & anchor & "\"" & attrs & " style=\"left: " & f1(100 * p.x / v.w) & "%; top: " &
         f1(100 * p.y / v.h) & "%\">" & text & "</div>"
     else:
       result.add "<text class=\"" & cls & "\" x=\"" & f1(p.x) & "\" y=\"" & f1(p.y) & "\" text-anchor=\"" & anchor & "\">" &
@@ -203,7 +214,10 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
   let rose = v.compassAt + (-6.0, 16.0)
   keepOut.add ((rose.x - 50, rose.y - 50), (rose.x + 50, rose.y + 50))
   let tb = v.titleAt
-  keepOut.add ((tb.x - 165, tb.y - 18), (tb.x + 165, tb.y + 42)) # the title block
+  let pb = v.portolanoBox
+  let hasPortolano = html and pb[2] > 0 and v.portolano.len > 0 # the portolano box takes the title block's place
+  if hasPortolano: keepOut.add ((pb[0] - 4, pb[1] - 4), (pb[0] + pb[2] + 4, pb[1] + pb[3] + 4))
+  else: keepOut.add ((tb.x - 165, tb.y - 18), (tb.x + 165, tb.y + 42)) # the title block
   keepOut.add ((v.w - 260, v.h - 26), (v.w, v.h)) # the source note
   func inside(p: Pt, b: (Pt, Pt)): bool = p.x > b[0].x and p.x < b[1].x and p.y > b[0].y and p.y < b[1].y
   let course = v.routePolyline
@@ -234,21 +248,29 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
       inc placed
   # the course: dashed ahead, solid where sailed
   result.add &"""<g mask="url(#chart-sea-{id})">"""
-  result.add &"""<path d="{svgPath(course, closed = false)}" fill="none" stroke="{magenta}" stroke-width="1" stroke-dasharray="6 4" opacity="0.6"/>"""
-  let done = v.routeDone(current)
-  if done.len > 0:
-    result.add &"""<path d="{svgPath(done, closed = false)}" fill="none" stroke="{magenta}" stroke-width="1.8"/>"""
+  # on the whole map the course is drawn through a mask, so the deck can draw it from the first port
+  # on (the mask's path is drawn in full without javascript); on a chart of an island the leg just
+  # sailed is a path of its own (class leg-new), for the deck to draw it
+  let reveal = if html and current == 0: &" mask=\"url(#chart-course-{id})\"" else: ""
+  if reveal.len > 0:
+    result.add &"""<mask id="chart-course-{id}"><path class="course-mask" d="{svgPath(course, closed = false)}" fill="none" stroke="white" stroke-width="5"/></mask>"""
+  result.add &"""<path d="{svgPath(course, closed = false)}" fill="none" stroke="{magenta}" stroke-width="1" stroke-dasharray="6 4" opacity="0.6"{reveal}/>"""
+  let upTo = if current == 8: v.route.high elif current >= 1: current else: 0
+  if upTo > 0:
+    if html:
+      if upTo > 1:
+        result.add &"""<path d="{svgPath(v.routePolyline(upTo - 1), closed = false)}" fill="none" stroke="{magenta}" stroke-width="1.8"/>"""
+      result.add &"""<path class="leg-new" d="{svgPath(v.leg(upTo - 1), closed = false)}" fill="none" stroke="{magenta}" stroke-width="1.8"/>"""
+    else:
+      result.add &"""<path d="{svgPath(v.routeDone(current), closed = false)}" fill="none" stroke="{magenta}" stroke-width="1.8"/>"""
   result.add "</g>"
   # names of the islands of the talk
   for i, isl in v.islands:
     let n = i + 1
-    var lp = isl.labelPos
     let state = islandState(n, current)
-    let size = if n == current: 17.0 else: 14.5
-    if not isl.labelBelow: lp.y -= 2
-    let half = 0.37 * size * (names[i].len + 4).float # about half the width of the name, at its size
-    lp.x = clamp(lp.x, half + 10, v.w - half - 10)
-    word("cname" & state, &"{n} · {names[i].toUpperAscii}", lp)
+    let lp = if isl.label != (0.0, 0.0): isl.label # set by hand (maps/voyage.json)
+             else: chartLabel(isl, names[i], n == current, v.w)
+    word("cname" & state, &"{n} · {names[i].toUpperAscii}", lp, attrs = &" data-n=\"{n}\"")
   # an anchor, in the port of the island of the section; in the first port before the voyage,
   # in the last one after it
   if v.route.len > 0:
@@ -265,7 +287,11 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
   let tbNote =
     if current in 1 .. 7 and v.islands[current - 1].lore.len > 0 and islandNames: v.islands[current - 1].lore
     else: "Soundings and heights in metres · each island at its own scale"
-  if html:
+  if hasPortolano:
+    let text = if current < v.portolano.len: v.portolano[current] else: ""
+    words.add &"""<div class="ct portolano" style="left: {f1(100 * pb[0] / v.w)}%; top: {f1(100 * pb[1] / v.h)}%; width: {f1(100 * pb[2] / v.w)}%; min-height: {f1(100 * pb[3] / v.h)}%">""" &
+      &"""<div class="pt-title">SEAS OF SCIENTIFIC NIM</div><div class="pt-head">{sub}</div><div class="pt-body">{text}</div></div>"""
+  elif html:
     words.add &"""<div class="ct title-block" style="left: {f1(100 * tb.x / v.w)}%; top: {f1(100 * (tb.y - 12) / v.h)}%">""" &
       &"""<div class="tb-title">SEAS OF SCIENTIFIC NIM</div><div class="{subClass}">{sub}</div><div class="tb-note">{tbNote}</div></div>"""
   else:
@@ -284,7 +310,7 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
   result.add borderSvg(v.w, v.h)
   result.add "\n</svg>"
   if html:
-    result = "<div class=\"chart-stage\">" & result & words.join("\n") & "</div>"
+    result = "<div class=\"chart-stage\" data-current=\"" & $current & "\">" & result & words.join("\n") & "</div>"
 
 const chartMapCss* = """
 .chart-map .soundings text { font-family: "Spectral", serif; font-style: italic; font-size: 8.5px; fill: #2c3a45; }
@@ -320,6 +346,11 @@ const chartMapCss* = """
 .chart-stage .ct.chart-note { font-family: "Spectral", serif; font-style: italic; font-size: 0.833cqw; text-shadow: 0 0 1px #fdfcf7, 0 0 2px #fdfcf7, 0 0 3px #fdfcf7, 0 0 4px #fdfcf7; }
 .chart-stage .ct.land-name { font-weight: 700; font-size: 1.250cqw; letter-spacing: 0.5em; }
 .chart-stage .ct.note { font-size: 0.625cqw; color: #4a5763; }
+/* the portolano: the sailing directions of each chart, in a box where the title block was */
+.chart-stage .ct.portolano { transform: none; white-space: normal; box-sizing: border-box; background: rgba(253, 252, 247, 0.93); border: 1px solid #1f2a33; outline: 0.5px solid #1f2a33; outline-offset: 0.25cqw; padding: 0.8cqw 1cqw; box-shadow: 0 0.4cqw 1.4cqw rgba(31, 42, 51, 0.12); line-height: 1.3; }
+.chart-stage .portolano .pt-title { font-weight: 700; font-size: 1.25cqw; letter-spacing: 0.2em; }
+.chart-stage .portolano .pt-head { font-weight: 700; font-size: 0.78cqw; letter-spacing: 0.3em; color: #b0167a; margin: 0.3cqw 0 0.6cqw; padding-bottom: 0.5cqw; border-bottom: 0.5px solid #1f2a33; }
+.chart-stage .portolano .pt-body { font-family: "Spectral", serif; font-style: italic; font-size: 1.4cqw; line-height: 1.4; }
 
 """
   ## css for the labels of this map (the fonts are in docs/assets/fonts/fonts.css)

@@ -336,6 +336,7 @@ func agileNbDocToHtml(blk: NbBlock, nb: Nb): string =
     "<body>"
     agileMainToHtml(doc, nb)
     agileLogoHtml
+    voyageDeckJs # the agenda bar and the course drawing itself, on the chart deck (themes.nim)
     "</body>"
     "</html>"
 

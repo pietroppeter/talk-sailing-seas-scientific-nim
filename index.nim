@@ -38,6 +38,8 @@ slides.add PageItem(url: "thank_you.html", title: "Thank you", eyebrow: "Slide",
   summary: "The last slide on its own: a p5nim animation.")
 slides.add PageItem(url: "my.html", title: "Style test deck", eyebrow: "Slides · tooling",
   summary: "The layouts and blocks of the slides, one per slide.")
+slides.add PageItem(url: "mapeditor.html", title: "Voyage map editor", eyebrow: "Slides · tooling",
+  summary: "The chart of the slides, to arrange by hand: coast, islands, course, anchors and the portolano.")
 nbPageList slides
 
 nbText """
