@@ -80,5 +80,5 @@ proc baseMap*(v: Voyage, names: openArray[string], current: int, id = ""): strin
       result.add &"""<g class="x-mark" transform="translate({f1(c.x)},{f1(c.y)})"><path d="M-13,-13 L13,13 M13,-13 L-13,13"/></g>"""
       result.add &"""<g class="light" transform="translate({f1(c.x)},{f1(c.y)})"><path d="M0,0 C-9,-14 -6,-30 0,-38 C6,-30 9,-14 0,0 Z"/><circle r="4"/></g>"""
   result.add compassSvg(v.compassAt, 30.0)
-  result.add &"""<text class="land-label" x="40" y="300" transform="rotate(-90 40 300)" text-anchor="middle">the mainland</text>"""
+  result.add &"""<text class="land-label" {v.landLabelAttrs} text-anchor="middle">the mainland</text>"""
   result.add "\n</svg>"

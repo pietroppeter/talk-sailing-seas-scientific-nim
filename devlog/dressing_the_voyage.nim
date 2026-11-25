@@ -160,7 +160,8 @@ Without the define the deck is unchanged.
 The whole deck in each theme:
 [pirate](../slides_pirate.html),
 [book](../slides_book.html),
-[chart](../slides_chart.html).
+[chart](../slides.html)
+(the deck's theme since 24 November).
 
 All fonts are from Google Fonts, under the SIL Open Font License,
 and are vendored in `docs/assets/fonts`

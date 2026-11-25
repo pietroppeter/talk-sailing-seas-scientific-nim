@@ -28,7 +28,7 @@ const
   pageGroups = ["slides", "deepdives", "devlog"]
   deckSections = ["title", "about", "intro", "island1", "island2", "island3", "island4",
                   "island5", "island6", "island7", "conclusion", "thank_you"] # as in deck.nim
-  themes = ["pirate", "book", "chart"]
+  themes = ["pirate", "book", "agile"] # the deck wears chart (themes.nim)
 
 proc run(cmd: string) =
   echo "== ", cmd
