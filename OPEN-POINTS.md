@@ -9,6 +9,13 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 ## Unanswered points from merged PRs
 
+### Intro (#48), choices made without review
+
+- [ ] Slide 1.1: the "price" of each language (e.g. Julia "compile latency, mostly science", R "slow loops, odd beyond statistics") kept as drafted: check they read as fair (K4).
+- [ ] Slide 1.1: Nim's row says 2008 (first release as Nimrod), after Julia's 2012, kept to make the point "older than Julia, still niche"; 2019 (1.0) is the alternative.
+- [ ] The two-language problem is only in the speaker notes of 1.1 (Island 1 shows it with Vandermonde): no slide of its own.
+- [ ] No intro deep dive (the language table with sources): add one if wanted.
+
 ### Island 6 Interactivity (the plant app)
 
 - [ ] Slide 7.2 shows a screenshot of the Shiny app and links the live one (it needs a few seconds and 16 MB to start). Embed it live in the slide instead?
