@@ -23,7 +23,7 @@ K1-K4 are the key messages in [decisions/tone.md](decisions/tone.md). Why the ou
 | 8 | Island 7: Notebook | 2.5 | 20:30 |
 | 9 | Conclusion: back on land | 2.5 | 23:00 |
 
-Total 23 minutes of content, leaving 7 minutes for Q&A and slack.
+Target (Pietro, 2026-11-25): 25 minutes of content and 5 of Q&A, as the title slide says. The sections add up to 23 minutes, which leaves 2 minutes of slack.
 
 ## Sections
 
