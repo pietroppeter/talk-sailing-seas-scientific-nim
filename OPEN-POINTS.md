@@ -21,10 +21,12 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 
 ### Island 3 redo (nanuq, tabelline, deep learning)
 
-- [ ] Island 3 now has ten content slides for 3.5 minutes. Candidates to cut or merge: SciNim (4.10) into the stack slide's speaker notes, Datamancer and ggplotnim (4.6, 4.7) on one slide, or the deep learning slide (4.5) into the deep dive only.
-- [ ] Slide 4.5 trains a network when the deck is built (96 to 97% right on the held-out half; the number moves a little with the random initialization). Fine to show a number that is not fixed?
-- [ ] nanuq and tabelline are said to be "mostly AI-written" on the rocks ahead slide itself, not only in the speaker notes (as for nimlang-pypi and naffprop in Island 4). Keep it on the slide?
-- [ ] nanuq slide: `col("body_mass_g")` (as `pl.col` in Python) rather than nanuq's `col.body_mass_g`, which does not compile inside the deck's templates. Fine?
+Chosen by Claude on 2026-11-25 (Pietro: go with your guts, no slides removed); revisit when polishing:
+
+- [ ] Island 3 has ten content slides for 3.5 minutes: all kept for now. Candidates when trimming: SciNim (4.10) into the stack slide's speaker notes, Datamancer and ggplotnim (4.6, 4.7) on one slide, or the deep learning slide (4.5) into the deep dive only.
+- [ ] Slide 4.5 trains the network on every build, so its accuracy moves a little (96 to 97%): kept live, no fixed seed.
+- [ ] "Mostly AI-written" stays on the rocks ahead slide itself, as an honest line next to "they need users".
+- [ ] nanuq code uses `col("body_mass_g")`, as `pl.col` in Python (nanuq's `col.body_mass_g` does not compile inside the deck's templates): kept.
 
 ### #25 QEX success story (Island 2)
 
