@@ -95,9 +95,9 @@ it is a quick and fun way to get a feeling for a place.
 The place we want to feel is:
 *how does Nim feel as a language for scientific computing*.
 
-- 🏝️ **Seven islands**: topics important for scientific computing
+- 🏝️ **Seven islands**: topics for scientific computing
 - 🪨 **Rocks ahead**: weak points and limitations
-- 🐋 **Deep dives**: (unpolished) longer explainers on some topics
+- 🐋 **Deep dives**: longer explainers (unpolished)
 """
     reference "The slides, the deep dives and their code: [the talk's site](index.html)"
     speakerNote """
