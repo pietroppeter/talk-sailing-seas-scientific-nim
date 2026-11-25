@@ -49,12 +49,12 @@ Placeholder slides that still need content:
 - [ ] 8.2 to 8.4 Island 7 Notebook: literate computing, nimib, rocks ahead vs Jupyter.
 - [ ] Deep dives for the new code-heavy slides (one nimib page in deepdive/ per code slide).
 
-### Conclusion (draft, 9.2 to 9.5)
+### Conclusion (draft, 9.2 to 9.5; choices made by Claude on 2026-11-25, to revisit)
 
-- [ ] 9.5 Why still niche: the governance and tooling lines are a first draft of your view; rewrite them in your words. Mention the Nimskull fork (2021) or Status funding in the speaker notes?
-- [ ] 9.3 headings "Fair winds" / "Rocks ahead", or plainer ("Why build in Nim" / "What it costs")?
-- [ ] 9.4 rows: keep R (dplyr formulas as metaprogramming) or swap for Fortran? Add Rust?
-- [ ] Timing: four content slides in 2.5 minutes; merge 9.2 and 9.3 into one "Takeaways" slide if rehearsal runs long.
+- [ ] 9.5 Why still niche: the governance and tooling lines are Claude's draft of your view, kept as is; rewrite them in your words. Nimskull fork and Status funding left out of the speaker notes.
+- [ ] 9.3 headings kept as "Fair winds" / "Rocks ahead" (plainer option: "Why build in Nim" / "What it costs").
+- [ ] 9.4 rows kept as Python, R, Julia, C/C++ (no Fortran, no Rust).
+- [ ] Timing: four content slides kept for 2.5 minutes; merge 9.2 and 9.3 into one "Takeaways" slide if rehearsal runs long.
 
 ## Upstream drafts on hold
 
