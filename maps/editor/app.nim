@@ -358,9 +358,16 @@ proc drawPortolano() =
 
 proc drawWords() =
   var s = &"""<div class="agenda-strip" style="top:{pc(100 * S["agenda"]["y"].getFloat / H)}%"></div>"""
+  # in the preview the agenda also has the mainland, where the trip starts (0) and ends (8)
+  let mainland = proc (n: int): string =
+    if mode != "preview": return ""
+    let cls = if n == 0: (if current <= 0: " current" else: " visited") elif current == 8: " current" else: ""
+    &"""<div class="ct cname mainland{cls}" data-m="{n}">MAINLAND</div>"""
+  s.add mainland(0)
   for i, isl in S["islands"].getElems:
     let n = i + 1
     s.add &"""<div class="ct cname{state(n, current)}" data-kind="label" data-i="{i}" style="{at(pt(isl["label"]))}">{n} · {esc(names[i].toUpperAscii)}</div>"""
+  s.add mainland(8)
   let tb = pt(S["titleBlock"])
   let hidden = if checked("show-portolano"): " hidden" else: ""
   let cur = if current > 0: " current" else: ""
@@ -881,7 +888,9 @@ proc barPositions(): seq[Pt] =
     stage.appendChild(m)
   m.style.top = cstring(pc(100 * S["agenda"]["y"].getFloat / H) & "%")
   var html = ""
+  html.add """<span class="ct cname bar">MAINLAND</span>"""
   for i, n in names: html.add &"""<span class="ct cname bar">{i + 1} · {esc(n.toUpperAscii)}</span>"""
+  html.add """<span class="ct cname bar">MAINLAND</span>"""
   m.innerHTML = cstring html
   let r = stage.getBoundingClientRect()
   for c in m.children:
@@ -900,11 +909,13 @@ proc show(i: int) =
   for b in el("pv-steps").children:
     if parseInt($b.Element.attr("data-s")) == stepAt: b.Element.classList.add "on" else: b.Element.classList.remove "on"
   let stage = el("stage")
+  stage.setAttribute("data-current", cstring $current) # the mainland in magenta on charts 0 and 8
   if s.map: stage.classList.add "on-map"; stage.classList.remove "on-slide"
   else: stage.classList.add "on-slide"; stage.classList.remove "on-map"
   drawWords(); drawCourse(s.map)
   let bar = barPositions()
-  let labels = el("words").querySelectorAll(".cname")
+  let labels = el("words").querySelectorAll(".cname") # the mainland, the islands, the mainland
+  let last = labels.len - 1
   if not s.map:
     for k, e in labels:
       e.classList.add "bar"; e.place(bar[k])
@@ -914,8 +925,14 @@ proc show(i: int) =
     el("words").reflow
     for k, e in labels:
       e.classList.remove "instant"
-      capture e, k: # each name its own e and k (a closure in a loop shares the loop's)
-        later(proc () = e.classList.remove "bar"; e.place(pt(S["islands"][k]["label"])), 120 + 60 * k)
+      let mainland = k == 0 or k == last
+      if mainland and (k == 0) != (s.n < 8):
+        e.classList.add "away"; continue # not this part of the trip
+      capture e, k, mainland: # each name its own e and k (a closure in a loop shares the loop's)
+        later(proc () =
+          e.classList.remove "bar"
+          if mainland: e.classList.add "ashore"; e.place(pt(S["landLabel"]))
+          else: e.place(pt(S["islands"][k - 1]["label"])), 120 + 60 * k)
   var sh = el("slide-heading")
   if sh.isNil:
     sh = document.createElement("div")
@@ -939,6 +956,7 @@ proc setMode(m: string) =
   let stage = el("stage")
   if m == "preview": stage.classList.add "previewing" else: stage.classList.remove "previewing"
   stage.classList.remove "on-map"; stage.classList.remove "on-slide"
+  stage.removeAttribute("data-current")
   let sh = el("slide-heading")
   if not sh.isNil: sh.parentNode.removeChild(sh)
   el("hint").textContent = cstring(if m == "edit":

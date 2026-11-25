@@ -174,6 +174,9 @@ a[href$="emilia.html"], a[href$="emilia.html"]:hover { color: inherit; text-deco
 .map-editor .ct.cname.bar.current { font-size: 0.98cqw; }
 .map-editor .previewing .ct.cname { transition: left 1s cubic-bezier(.5, 0, .2, 1), top 1s cubic-bezier(.5, 0, .2, 1), font-size 1s ease, color 0.4s ease; }
 .map-editor .previewing .ct.cname.instant { transition: none; }
+.map-editor .ct.cname.ashore { opacity: 0; transition: left 1s cubic-bezier(.5, 0, .2, 1), top 1s cubic-bezier(.5, 0, .2, 1), font-size 1s ease, opacity 0.4s ease 0.9s; }
+.map-editor .ct.cname.away { opacity: 0; transition: opacity 0.3s ease; }
+.map-editor .chart-stage[data-current="0"] .ct.land-name, .map-editor .chart-stage[data-current="8"] .ct.land-name { color: var(--magenta); }
 .map-editor .previewing.on-slide > svg > g:first-of-type, .map-editor .previewing.on-slide > svg #layer-border { opacity: 0; }
 .map-editor .previewing.on-slide #words > :not(.cname):not(.agenda-strip) { opacity: 0; }
 .map-editor .previewing.on-slide .portolano { opacity: 0; transform: translateY(0.6cqw); transition: opacity 0.3s ease, transform 0.3s ease; }

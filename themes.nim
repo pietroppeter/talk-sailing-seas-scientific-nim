@@ -291,8 +291,10 @@ proc titleCardCss(): string =
 """
 
 const agendaCss = """
-/* the agenda bar: the seven islands along the bottom of every slide, the current one in magenta;
-   on a map slide the names sail to their places on the chart, and back (Pietro, 2026-11-25) */
+/* the agenda bar: the mainland, the seven islands and the mainland again (the trip starts and ends
+   there) along the bottom of every slide, the current one in magenta; on a map slide the names sail
+   to their places on the chart, and back (Pietro, 2026-11-25). A mainland sails to the chart's
+   "THE MAINLAND" and fades into it; the other one (not this part of the trip) fades away */
 #voyage-agenda { position: fixed; left: 280px; right: 120px; bottom: 16px; display: flex; justify-content: space-evenly; z-index: 30; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
 #voyage-agenda::before { content: ""; position: absolute; inset: -7px -12px; background: rgba(246,243,234,0.92); border-top: 1px solid rgba(14,31,83,0.55); z-index: -1; transition: opacity 0.6s ease; }
 #voyage-agenda.shown { opacity: 1; }
@@ -300,6 +302,9 @@ const agendaCss = """
 #voyage-agenda span { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: clamp(9px, 0.7vw, 16px); letter-spacing: 0.06em; color: #13334c; white-space: nowrap; transform-origin: 50% 50%; transition: transform 1.1s cubic-bezier(.5,0,.2,1), color 0.4s ease; text-shadow: 0 0 1px #fdfcf7, 0 0 2px #fdfcf7, 0 0 3px #fdfcf7, 0 0 4px #fdfcf7; }
 #voyage-agenda span.visited { color: #4d6475; }
 #voyage-agenda span.current { color: #b0167a; }
+#voyage-agenda span.ashore { opacity: 0; transition: transform 1.1s cubic-bezier(.5,0,.2,1), color 0.4s ease, opacity 0.4s ease 0.9s; }
+.reveal .map-slide .chart-stage[data-current="0"] .ct.land-name, .reveal .map-slide .chart-stage[data-current="8"] .ct.land-name { color: #b0167a; }
+#voyage-agenda span.away { opacity: 0; transition: transform 1.1s cubic-bezier(.5,0,.2,1), color 0.4s ease, opacity 0.3s ease; }
 html.print-pdf #voyage-agenda, .reveal.overview ~ #voyage-agenda { display: none; }
 body.voyage-agenda .reveal .slides section.present .map-slide .ct.cname { visibility: hidden; }
 .reveal section.present .map-slide .anchor { animation: voyage-anchor 0.6s ease 3s both; }
@@ -321,14 +326,23 @@ const voyageDeckJs* = when slideTheme == "chart": """
   let at = -1;
   const islandOf = slides.map(s => { const m = mapOf(s); if (m) at = +m.dataset.current; return at; });
   const any = document.querySelector(".chart-stage[data-current]");
-  const names = any ? [...any.querySelectorAll(".ct.cname[data-n]")].map(e => e.textContent) : [];
+  const islands = any ? [...any.querySelectorAll(".ct.cname[data-n]")].map(e => e.textContent) : [];
+  // the trip: from the mainland (0), the islands (1 to 7), back to the mainland (8)
+  const names = islands.length ? ["MAINLAND", ...islands, "MAINLAND"] : [];
+  const last = names.length - 1;
   bar.innerHTML = names.map(n => "<span></span>").join("");
   [...bar.children].forEach((e, k) => { e.textContent = names[k]; });
   if (!printing && names.length) document.body.classList.add("voyage-agenda");
   const sail = (section, onMap) => {
     const b = bar.getBoundingClientRect();
+    const n = islandOf[slides.indexOf(section)];
     [...bar.children].forEach((e, k) => {
-      const label = onMap && section.querySelector(`.ct.cname[data-n="${k + 1}"]`);
+      // the mainland of this part of the trip sails to the chart's own name, and fades into it
+      const mainland = k === 0 || k === last, ours = k === 0 ? n < last : n === last;
+      const label = onMap && (mainland ? ours && section.querySelector(".ct.land-name")
+                                       : section.querySelector(`.ct.cname[data-n="${k}"]`));
+      e.classList.toggle("ashore", !!label && mainland);
+      e.classList.toggle("away", onMap && mainland && !ours);
       if (!label) { e.style.transform = ""; return; }
       const r = label.getBoundingClientRect();
       const x = b.left + e.offsetLeft + e.offsetWidth / 2, y = b.top + e.offsetTop + e.offsetHeight / 2;
@@ -353,8 +367,8 @@ const voyageDeckJs* = when slideTheme == "chart": """
     const hide = i === 0 || section.querySelector(".sketch, .title-art");
     bar.classList.toggle("shown", !hide);
     [...bar.children].forEach((e, k) => {
-      e.classList.toggle("current", k + 1 === n);
-      e.classList.toggle("visited", n === 8 || (n > 0 && k + 1 < n));
+      e.classList.toggle("current", k === Math.max(n, 0));
+      e.classList.toggle("visited", n === last || (n > 0 && k < n));
     });
     const onMap = !!mapOf(section);
     bar.classList.toggle("on-map", onMap);
