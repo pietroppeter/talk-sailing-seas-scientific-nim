@@ -27,7 +27,7 @@ import std / [os, osproc, strutils, re, sets, sequtils]
 
 const
   pageGroups = ["slides", "deepdives", "devlog"]
-  deckParts = {"title": "title", "about": "about", "intro": "intro",
+  deckParts = {"title": "title", "about": "about", "ai": "ai", "intro": "intro",
                "island1": "island1_performance", "island2": "island2_stories",
                "island3": "island3_datastack", "island4": "island4_interop",
                "island5": "island5_expressive", "island6": "island6_interactivity",
