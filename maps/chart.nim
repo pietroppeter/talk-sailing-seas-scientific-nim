@@ -29,12 +29,12 @@ func seaMask*(v: Voyage, grow = 3.0): string =
 
 # --- the sea floor ------------------------------------------------------------------------
 
-func metres(b: float): float =
+func metres*(b: float): float =
   ## the depth in metres at a point whose stretched distance to the coast is `b`
   ## shallow shelves near the coast, then a slope down to the deep sea between the islands
   if b <= 0: 0.0 else: 2.0 * sqrt(b) + 0.12 * b + 0.006 * b * b
 
-func level(m: float): float =
+func level*(m: float): float =
   ## the stretched distance where the depth is `m` metres (the inverse of `metres`, by bisection)
   var lo = 0.0
   var hi = 2000.0
@@ -43,9 +43,9 @@ func level(m: float): float =
     if metres(mid) < m: lo = mid else: hi = mid
   lo
 
-proc seaFloor(v: Voyage): Field =
+func stretched*(f: Field): Field =
   ## the distance field stretched by noise: a shelf is wide where the noise is low, steep where high
-  result = v.field
+  result = f
   for j in 0 ..< result.ny:
     for i in 0 ..< result.nx:
       let k = j * result.nx + i
@@ -54,11 +54,13 @@ proc seaFloor(v: Voyage): Field =
         let p: Pt = ((i - 1).float * result.cell, (j - 1).float * result.cell)
         result.d[k] = d * (0.45 + 1.1 * fbm(p.x / 110, p.y / 110, 3))
 
-func fillBelow(f: Field, level: float): string =
+proc seaFloor(v: Voyage): Field = v.field.stretched
+
+func fillBelow*(f: Field, level: float): string =
   ## one path for the area closer to the coast than `level` (even-odd fill of its contours)
   for line in f.contours(level): result.add svgPath(line.smooth(2)) & " "
 
-func soundingText(d: float, p: Pt): string =
+func soundingText*(d: float, p: Pt): string =
   ## a sounding: whole metres, and the decimal as a subscript below 21 m
   let m = int(floor(d))
   let dec = int(floor((d - m.float) * 10))
@@ -69,7 +71,7 @@ func soundingText(d: float, p: Pt): string =
 
 # --- the furniture of a chart ---------------------------------------------------------------
 
-func roseSvg(c: Pt, r: float): string =
+func roseSvg*(c: Pt, r: float): string =
   ## a compass rose as on charts: a true ring with degrees and a magnetic ring inside
   result = &"""<g class="rose" transform="translate({f1(c.x)},{f1(c.y)})" stroke="{magenta}" fill="none">"""
   result.add &"""<circle r="{f1(r)}" stroke-width="0.8"/><circle r="{f1(r - 6)}" stroke-width="0.5"/>"""
@@ -91,7 +93,7 @@ func roseSvg(c: Pt, r: float): string =
   result.add &"""<path d="M0,{f1(-r - 1.5)} l-2.5,5 h5 Z" fill="{magenta}" stroke="none"/>"""
   result.add &"""<text y="{f1(r * 0.3)}" text-anchor="middle" font-size="4.5" fill="{magenta}" stroke="none">VAR 3°W</text></g>"""
 
-func borderSvg(w, h: float): string =
+func borderSvg*(w, h: float): string =
   ## a fine graduated border: a neatline, minute bars in a thin band, a label every ten minutes
   let band = 5.0
   result = &"""<g class="chart-border"><rect x="0.5" y="0.5" width="{f1(w - 1)}" height="{f1(h - 1)}" fill="none" stroke="{ink}" stroke-width="0.6"/>"""
@@ -118,14 +120,14 @@ func borderSvg(w, h: float): string =
     inc k
   result.add "</g>"
 
-func cape(isl: Island, dir: Pt): Pt =
+func cape*(isl: Island, dir: Pt): Pt =
   ## the point of the coast farthest out in direction `dir`
   var best = -Inf
   for p in isl.polygon:
     let s = (p.x - isl.center.x) * dir.x + (p.y - isl.center.y) * dir.y
     if s > best: best = s; result = p
 
-func summit(f: Field, isl: Island): Pt =
+func summit*(f: Field, isl: Island): Pt =
   ## the point of the island farthest from its coast, where its height is written
   var best = 0.0
   result = isl.center
@@ -139,7 +141,7 @@ func summit(f: Field, isl: Island): Pt =
       dx += 3
     dy += 3
 
-func anchorSvg(at: Pt): string =
+func anchorSvg*(at: Pt): string =
   ## the anchor of the charts, drawn over a pale halo so it reads on land, shoal and deep water
   let d = "M0,-7.5 V9 M-5,-3.5 H5 M-8,3.5 Q-7,9.5 0,10 Q7,9.5 8,3.5 M-9.5,5.5 L-8,3.5 L-6,5.2 M9.5,5.5 L8,3.5 L6,5.2"
   &"""<g class="anchor" transform="translate({f1(at.x)},{f1(at.y)}) scale(0.62) translate(0,-1.5)">""" &

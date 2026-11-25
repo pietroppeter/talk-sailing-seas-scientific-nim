@@ -178,6 +178,102 @@ template nbApp*(id: string) =
   ## slides/island6_plant_app.nim): Karax replaces the inner element `id`, filled by nbJsFromCode
   nb.add newNbApp(id)
 
+# ------------------------------------------------------------------------------------------ the map editor
+
+newNbBlock(NbMapEditor):
+  toHtml:
+    """<div class="map-editor">
+<div class="bar">
+  <nav class="tabs" role="tablist">
+    <button id="tab-edit" class="tab on" role="tab" aria-selected="true">Edit</button>
+    <button id="tab-preview" class="tab" role="tab" aria-selected="false">Preview the slides</button>
+  </nav>
+  <div class="tools">
+    <button id="undo" title="Undo (Ctrl+Z)">Undo</button>
+    <button id="redo" title="Redo (Ctrl+Shift+Z)">Redo</button>
+    <button id="reset" title="Back to the deck's map (maps/voyage.json)">Reset</button>
+  </div>
+</div>
+
+<div class="layout">
+  <section class="stage-wrap">
+    <div id="stage" class="chart-stage editor-stage">
+      <svg id="chart" class="voyage-map chart-map" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="clip"><rect width="960" height="540"/></clipPath>
+          <mask id="sea"><rect width="960" height="540" fill="white"/><g id="sea-mask"></g></mask>
+        </defs>
+        <g clip-path="url(#clip)">
+          <rect class="paper" width="960" height="540"/>
+          <g id="layer-depth"></g>
+          <g id="layer-land"></g>
+          <g id="layer-soundings" class="soundings"></g>
+          <g id="layer-course" mask="url(#sea)"></g>
+          <g id="layer-anchor"></g>
+          <g id="layer-rose"></g>
+        </g>
+        <g id="layer-border"></g>
+        <g id="layer-handles"></g>
+      </svg>
+      <div id="words"></div>
+      <div id="portolano" class="portolano"><div class="pt-title">SEAS OF SCIENTIFIC NIM</div><div class="pt-head"></div><div class="pt-body"></div><span class="pt-resize" title="Drag to resize"></span></div>
+      <div id="busy" class="busy" hidden>sounding…</div>
+    </div>
+    <div id="preview-controls" class="preview-controls" hidden>
+      <button id="pv-prev" aria-label="Previous slide">◀</button>
+      <div id="pv-steps" class="pv-steps"></div>
+      <button id="pv-next" aria-label="Next slide">▶</button>
+      <button id="pv-play">Play the voyage</button>
+    </div>
+    <p id="hint" class="hint"></p>
+  </section>
+
+  <aside class="panel">
+    <section id="inspector" class="card">
+      <h2 id="ins-title">Nothing selected</h2>
+      <div id="ins-body"><p class="muted">Click an island, the coast, a turning point, an anchor or a name on the chart.</p></div>
+    </section>
+
+    <section class="card">
+      <h2>Show</h2>
+      <label class="check"><input type="checkbox" id="show-handles" checked> Handles</label>
+      <label class="check"><input type="checkbox" id="show-soundings" checked> Soundings and rocks</label>
+      <label class="check"><input type="checkbox" id="show-agenda"> Agenda bar</label>
+      <label class="check"><input type="checkbox" id="show-portolano" checked> Portolano box (in place of the title block)</label>
+      <label class="row">Current island
+        <select id="current">
+          <option value="0">0 · the whole map</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="card">
+      <h2>Portolano and agenda</h2>
+      <label class="row">Text for <span id="pt-for">island 1</span></label>
+      <textarea id="pt-text" rows="5" placeholder="A few lines to introduce this island"></textarea>
+      <label class="row">Agenda bar height <input type="range" id="agenda-y" min="420" max="535" step="1"></label>
+    </section>
+
+    <section class="card">
+      <h2>JSON</h2>
+      <p class="muted">Copy it and paste it in the thread: it becomes <code>maps/voyage.json</code>, the map of the deck.</p>
+      <div class="btns">
+        <button id="copy" class="primary">Copy JSON</button>
+        <button id="load">Load pasted JSON</button>
+      </div>
+      <textarea id="json" rows="10" spellcheck="false"></textarea>
+      <p id="json-msg" class="muted" role="status"></p>
+    </section>
+  </aside>
+</div>
+</div>"""
+
+template nbMapEditor*() =
+  ## the map editor's chart, handles and panels (mapeditor.nim), empty: maps/editor/app.nim,
+  ## compiled to JavaScript by nbJsFromCode, draws the chart and wires the controls by their ids;
+  ## styled by `useMapEditorStyle` (talkstyle.nim)
+  nb.add newNbMapEditor()
+
 # -------------------------------------------------------------------------------------------- text
 
 newNbBlock(NbLede):

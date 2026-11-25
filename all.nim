@@ -32,7 +32,7 @@ macro importPages(): untyped =
         result.add dir / line[0 ..< ^4]
     result.sort
   var pages: seq[string]
-  if wants("slides"): pages.add "slides/emilia"
+  if wants("slides"): pages.add ["slides/emilia", "mapeditor"]
   if wants("deepdives"):
     pages.add found("deepdive", ".nim")
     pages.add "deepdive/index" # last: it checks that every deep dive was built

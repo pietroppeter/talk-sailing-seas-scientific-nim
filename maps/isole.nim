@@ -51,8 +51,20 @@ func parseIsole(text: string): Table[string, Isola] =
       isl.outline.add (parseFloat(xs[k]), parseFloat(ys[k]))
     result[isl.name] = isl
 
-const isole* = parseIsole(staticRead(isoleCsv))
-  ## the 195 islands of the story, by name
+proc onTheMap(all: Table[string, Isola], voyage: string): Table[string, Isola] =
+  ## only the islands maps/voyage.json draws (each island and the islets near it)
+  let j = parseJson(voyage)
+  for isl in j["islands"]:
+    for name in @[isl["real"]] & isl{"near"}.getElems:
+      result[name.getStr] = all[name.getStr]
+
+when defined(js):
+  const isole* = onTheMap(parseIsole(staticRead(isoleCsv)), staticRead("voyage.json"))
+    ## in the browser (the map editor, maps/editor/app.nim), only the islands on the map: all of
+    ## them would add a megabyte to the page
+else:
+  const isole* = parseIsole(staticRead(isoleCsv))
+    ## the 195 islands of the story, by name
 
 type Placement* = object
   ## how an island's kilometres (x east, y north, from the middle of its outline's box) become map
@@ -606,7 +618,7 @@ func pt(n: JsonNode): Pt =
 func js(p: Pt): JsonNode = %*[round(p.x * 100) / 100, round(p.y * 100) / 100]
 
 proc layoutFromJson*(name, text: string): Layout =
-  ## an arrangement read from the json of the map editor (maps/editor.nim, format voyage-map/1):
+  ## an arrangement read from the json of the map editor (mapeditor.nim, format voyage-map/1):
   ## the coast, each island (center, size, rotation, name, anchor), the turning points of the
   ## course, the rose, the title block and the mainland's name. What is not there keeps its default
   let j = parseJson(text)
