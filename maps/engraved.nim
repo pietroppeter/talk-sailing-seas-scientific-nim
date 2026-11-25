@@ -149,7 +149,7 @@ proc engravedMap*(v: Voyage, names: openArray[string], current: int, id = ""): s
     result.add &"""<text class="ename{state}" x="{f1(lp.x)}" y="{f1(lp.y)}" text-anchor="middle">{names[i]}</text>"""
   result.add &"""<path id="sea-arc-{id}" d="M300,515 Q560,470 820,512" fill="none"/>"""
   result.add &"""<text class="esea"><textPath href="#sea-arc-{id}" startOffset="50%" text-anchor="middle">{v.seaName.toUpperAscii}</textPath></text>"""
-  result.add &"""<text class="eland" x="48" y="300" transform="rotate(-90 48 300)" text-anchor="middle">THE MAINLAND</text>"""
+  result.add &"""<text class="eland" {v.landLabelAttrs} text-anchor="middle">THE MAINLAND</text>"""
   result.add roseSvg(rose, 34)
   # cartouche
   result.add &"""<g transform="translate(470,48)"><rect x="-95" y="-26" width="190" height="48" fill="{paper}" stroke="{ink}" stroke-width="1"/><rect x="-91" y="-22" width="182" height="40" fill="none" stroke="{ink}" stroke-width="0.5"/>"""
