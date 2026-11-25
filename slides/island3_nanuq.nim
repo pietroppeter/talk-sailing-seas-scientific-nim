@@ -13,7 +13,7 @@ import ../my
 # and its code binds to nanuq here (the `slide:` around it stays a template).
 # Paths are relative to docs/ (nimib's homeDir), as in island3_datastack.nim.
 
-proc nanuqSlide(nb: var Nb) = # 4.8
+proc nanuqContent(nb: var Nb) = # 4.8
   nbText "## Dataframes: nanuq"
   # a shorter print than Polars' default (Python's pl.Config), for the slide only
   setTblHideDataframeShape(); setTblColumnDataTypeInline(); setFloatPrecision(1)
@@ -46,7 +46,7 @@ Written mostly with Claude, as nimlang-pypi and naffprop:
 it needs users more than features now.
 """
 
-proc tabellineSlide(nb: var Nb) = # 4.9
+proc tabellineContent(nb: var Nb) = # 4.9
   let penguins = readCsv("data/penguins.csv") # as on the previous slide
   nbText "## Tables: tabelline"
   compactColumns:
@@ -86,6 +86,16 @@ Gentoo weigh a kilo more.
 Also mine, from November 2026, also mostly written with Claude.
 """
 
+template nanuqSlide* = # 4.8
+  slide: nanuqContent(nb)
+
+template tabellineSlide* = # 4.9
+  slide: tabellineContent(nb)
+
 template nanuqSlides* =
-  slide: nanuqSlide(nb)
-  slide: tabellineSlide(nb)
+  nanuqSlide # 4.8
+  tabellineSlide # 4.9
+
+when isMainModule: # this part of the deck on its own: docs/slides_island3_nanuq.html
+  buildDeckPart("island3_nanuq", "slides/island3_nanuq.nim"):
+    nanuqSlides

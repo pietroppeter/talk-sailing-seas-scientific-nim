@@ -87,3 +87,7 @@ a promise he made in an issue in 2023.
 The API is marked unstable, and classic machine learning
 is a handful of algorithms: more in the deep dive.
 """
+
+when isMainModule: # this part of the deck on its own: docs/slides_island3_network.html
+  buildDeckPart("island3_network", "slides/island3_network.nim"):
+    networkSlide

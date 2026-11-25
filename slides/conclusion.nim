@@ -133,3 +133,7 @@ template conclusionSection* =
     builderSlide
     seenFromNimSlide
     nicheSlide
+
+when isMainModule: # this part of the deck on its own: docs/slides_conclusion.html
+  buildDeckPart("conclusion", "slides/conclusion.nim"):
+    conclusionSection

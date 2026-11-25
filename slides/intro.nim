@@ -30,17 +30,16 @@ proc mainlandTable*(): Tabella =
     .fmtNumber("since", decimals = 0, useSeps = false)
     .colsLabel({"since": "since", "cameTo": "came to", "price": "the price"})
 
-template introSection* =
-  slide:
-    slide: # 1.1
-      nbText "## The mainland"
-      nbText """
+template mainlandSlide* =
+  slide: # 1.1
+    nbText "## The mainland"
+    nbText """
 Each language came to solve a problem the previous ones
 did not, and each one has a price.
 """
-      nbTable mainlandTable().slideLook(fontSize = "0.55em").highlightRows(where(it["lang"] == "Nim"))
-      reference "Years of the first release; R grew out of S (1976), NumPy dates from 2006."
-      speakerNote """
+    nbTable mainlandTable().slideLook(fontSize = "0.55em").highlightRows(where(it["lang"] == "Nim"))
+    reference "Years of the first release; R grew out of S (1976), NumPy dates from 2006."
+    speakerNote """
 Scientific computing started with Fortran and never left it:
 LAPACK and most climate models are still Fortran.
 C and C++ came for the machine and for abstractions; R for statistics.
@@ -51,31 +50,33 @@ Every one of them pays a price for what it gives you.
 Nim is older than Julia, and still niche.
 Is there space for one more? This talk shows Nim's price.
 """
-    slide: # 1.2
-      nbText "## Nim's tradeoffs"
-      nbText """
+
+template tradeoffsSlide* =
+  slide: # 1.2
+    nbText "## Nim's tradeoffs"
+    nbText """
 *Nim*: general purpose, statically typed, compiled
 (to C, C++ and JavaScript), with a syntax that reads like Python.
 """
-      columns:
-        column:
-          nbText """
+    columns:
+      column:
+        nbText """
 **You get**
 
 - reads like Python, runs like C
 - macros, JavaScript, interop
 - one language, script to library
 """
-        column:
-          nbText """
+      column:
+        nbText """
 **You pay**
 
 - a compile step, no REPL
 - a tiny ecosystem
 - few people know it
 """
-      reference "Andreas Rumpf, 2008 (as Nimrod); 1.0 in 2019, 2.0 in 2023. [nim-lang.org](https://nim-lang.org)"
-      speakerNote """
+    reference "Andreas Rumpf, 2008 (as Nimrod); 1.0 in 2019, 2.0 in 2023. [nim-lang.org](https://nim-lang.org)"
+    speakerNote """
 Not a tutorial: just enough to read the examples.
 Nim is a general purpose language, not made for science,
 statically typed and compiled; it reads like Python.
@@ -83,9 +84,11 @@ What you get and what you pay is the whole talk:
 each island shows something on the left,
 and most of them end with something on the right.
 """
-    slide: # 1.3
-      nbText "## The voyage"
-      nbText """
+
+template voyageSlide* =
+  slide: # 1.3
+    nbText "## The voyage"
+    nbText """
 A niche language is an exotic land, and from a boat
 you only see the coast: the feeling of each place, not a tour.
 
@@ -93,8 +96,8 @@ you only see the coast: the feeling of each place, not a tour.
 - 🪨 **Rocks ahead**: where *Nim* falls short
 - 🐋 **Deep dives**: a page for what a slide only sketches
 """
-      reference "The slides, the deep dives and their code: [the talk's site](index.html)"
-      speakerNote """
+    reference "The slides, the deep dives and their code: [the talk's site](index.html)"
+    speakerNote """
 We will not go deep anywhere: thirty minutes, seven islands.
 Each island is a theme where Nim shows its powers.
 I will not hide where Nim falls short: most islands end with rocks ahead.
@@ -102,4 +105,14 @@ For those who want to land, each code-heavy slide has a deep dive,
 a page with more code and the sources, built like these slides.
 Everything is on the site, linked from the first slide.
 """
+
+template introSection* =
+  slide:
+    mainlandSlide # 1.1
+    tradeoffsSlide # 1.2
+    voyageSlide # 1.3
     mapSlide(0) # 1.4
+
+when isMainModule: # this part of the deck on its own: docs/slides_intro.html
+  buildDeckPart("intro", "slides/intro.nim"):
+    introSection

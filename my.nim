@@ -251,10 +251,6 @@ const quartoLook* = deckLook == "quarto"
 const sideLook* = not quartoLook
   ## a deck in a look other than the default, built on the side
 
-const deckSection* {.strdefine.} = ""
-  ## build one part of the deck on its own (see deck.nim): `nim r build.nim island1`.
-  ## The first slide is then that part's map slide, not the title, so it is not centered
-const titleFirst* = deckSection in ["", "title"]
 
 const codeTheme* {.strdefine.} = "atom-one-light"
   ## highlight.js style for code blocks, one of the files in docs/assets/highlight
@@ -299,7 +295,7 @@ func agileMainToHtml(doc: NbDoc, nb: Nb): string =
   # Quarto's reveal.js settings (quarto-cli, format-reveal.ts): a wider slide, a larger margin
   # around it, and slides aligned at the top instead of centered; the title slide stays centered
   let layout = when quartoLook: "width: 1050, height: 700, margin: 0.1, center: false," else: ""
-  let centerTitle = when quartoLook and titleFirst: "document.querySelector('.reveal .slides > section')?.classList.add('center');" else: ""
+  let centerTitle = if quartoLook and doc.context{"centerFirst"}.getBool: "document.querySelector('.reveal .slides > section')?.classList.add('center');" else: ""
   result = withNewlines:
     hlHtmlF"""
 <div class="reveal">
@@ -380,19 +376,31 @@ template useVendoredAssets* =
   nb.backend.partials["revealCSS"] = vendoredRevealCss
   nb.backend.partials["revealJS"] = vendoredRevealJs
 
-template myInit*(sourceFileRel = "my.nim") =
+template myInit*(sourceFileRel = "my.nim", centerFirst = true) =
+  ## `centerFirst`: the first slide is the title, centered (false for a part of the deck,
+  ## which starts with its map slide: see buildDeckPart)
   nbInit(thisFileRel=sourceFileRel, theme=revealTheme, renderer=freshRenderer()) # a renderer of its own: see offline.nim
+  nb.doc.context["centerFirst"] = %centerFirst
   useVendoredAssets
   useRevealLatex
   agileTheme()
   imageLeftStyle
   when quartoLook: # the default; -d:deckLook=centered for the earlier look
     nb.addStyle quartoCss
-    when titleFirst: # the title slide stays centered
+    if centerFirst: # the title slide stays centered
       nb.addStyle ".reveal .slides > section:first-child { text-align: center; }"
   when themed: # -d:slideTheme=pirate|book|chart, see themes.nim
     nb.addStyle: themeCss()
   nb.backend.funcs["NbDoc"] = agileNbDocToHtml
+
+template buildDeckPart*(name, sourceFileRel: string, slides: untyped) =
+  ## one part of the deck on its own, in the deck's look, into docs/slides_<name>.html,
+  ## to review or share it without the whole talk: the `when isMainModule` of each module
+  ## of slides/ (`nim r slides/intro.nim`, or `nim r build.nim intro`)
+  myInit(sourceFileRel, centerFirst = name == "title")
+  nb.doc.filename = "slides_" & name & ".html"
+  slides
+  nbSave
 
 
 const islands* = [

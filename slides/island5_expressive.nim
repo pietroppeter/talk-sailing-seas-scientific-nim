@@ -32,54 +32,54 @@ proc siUnitsCode: string =
   code.add "    ..."
   code
 
-template island5ExpressiveSection* =
-  slide:
-    mapSlide(5) # 6.1
-    slide: # 6.2
-      nbText "## Custom Operators: defined"
-      nbTextSmall """
+template operatorsDefinedSlide* =
+  slide: # 6.2
+    nbText "## Custom Operators: defined"
+    nbTextSmall """
 You can define custom operators easily in Nim,
 as a normal function, using backticks.
 """
-      nbCode:
-        type
-          Line = object   # through p, along d
-            p: Point
-            d: Vec
-          Plane = object  # through p, normal n
-            p: Point
-            n: Vec
+    nbCode:
+      type
+        Line = object   # through p, along d
+          p: Point
+          d: Vec
+        Plane = object  # through p, normal n
+          p: Point
+          n: Vec
 
-        func `+`(a, b: Point): Line = Line(p: a, d: b - a)
-        func `+`(l: Line, c: Point): Plane =
-          Plane(p: l.p, n: l.d × (c - l.p))
-        func `*`(l: Line, s: Plane): Point =
-          l.p + ((s.p - l.p) ∙ s.n) / (l.d ∙ s.n) * l.d
-      speakerNote """
+      func `+`(a, b: Point): Line = Line(p: a, d: b - a)
+      func `+`(l: Line, c: Point): Plane =
+        Plane(p: l.p, n: l.d × (c - l.p))
+      func `*`(l: Line, s: Plane): Point =
+        l.p + ((s.p - l.p) ∙ s.n) / (l.d ∙ s.n) * l.d
+    speakerNote """
 Points, vectors, dot (∙) and cross (×) products
 are a few lines in a helper module:
 unicode operators are custom operators too.
 `+` joins (two points make a line, a line and a point a plane),
 `*` meets (a line hits a plane in a point).
 """
-    slide: # 6.3
-      nbText "## Custom Operators: applied"
-      nbTextSmall """
+
+template operatorsAppliedSlide* =
+  slide: # 6.3
+    nbText "## Custom Operators: applied"
+    nbTextSmall """
 A line is defined by two points,
 a plane is defined by three points,
 they generically intersect in one point.
 """
-      nbCode:
-        func pt(x, y, z: float): Point = Point(x: x, y: y, z: z)
+    nbCode:
+      func pt(x, y, z: float): Point = Point(x: x, y: y, z: z)
 
-        let
-          line = pt(1, 2, 3) + pt(2, 3, 1)
-          plane = pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)
-        echo line * plane
-      nbTextSmall """
+      let
+        line = pt(1, 2, 3) + pt(2, 3, 1)
+        plane = pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)
+      echo line * plane
+    nbTextSmall """
 [Explained step by step here](deepdive/operators.html).
 """
-      speakerNote """
+    speakerNote """
 Two points make a line, three points a plane (here z = 0),
 and the line meets the plane in a point.
 The code reads like geometry, and the types check it:
@@ -87,24 +87,26 @@ The code reads like geometry, and the types check it:
 The deep dive goes through the math, the edge cases
 (parallel lines give infinities) and the meet of two planes.
 """
-    slide: # 6.4
-      nbText "## Macros to define Units"
-      nbTextSmall """
+
+template unitsMacrosSlide* =
+  slide: # 6.4
+    nbText "## Macros to define Units"
+    nbTextSmall """
 [unchained](https://github.com/SciNim/unchained) by Vindaar:
 units checked at compile time, plain floats at run time.
 Its `declareUnits` macro declares the SI units,
 and provides an API to add your own units:
 """
-      columns:
-        column:
-          nbShowCode siUnitsCode()
-        column:
-          nbShowCode newUnitsCode()
-      nbTextSmall """
+    columns:
+      column:
+        nbShowCode siUnitsCode()
+      column:
+        nbShowCode newUnitsCode()
+    nbTextSmall """
 The macro writes the types, the aliases and the conversions;
 `*`, `/` and `+` are macros that work out the unit of the result.
 """
-      speakerNote """
+    speakerNote """
 Left: two SI base units as unchained declares them (its si_units.nim),
 right: our two new units (slides/island5_units.nim).
 Our own units here: SolarMass and EarthMass (right column).
@@ -114,27 +116,44 @@ declareUnits reads this block and generates distinct float types
 The arithmetic operators are macros too: at compile time they
 compute the unit of the result (and define its type if needed).
 """
-    slide: # 6.5
-      nbText "## Units applied"
-      nbTextSmall """
+
+template unitsAppliedSlide* =
+  slide: # 6.5
+    nbText "## Units applied"
+    nbTextSmall """
 Kepler's third law:
 how long is a year, for a planet or a moon?
 """
-      nbCode:
-        func period[L: Length, M: Mass](a: L, mass: M): Second =
-          (2 * PI * sqrt(a^3 / (G_Newton * mass))).to(Second)
+    nbCode:
+      func period[L: Length, M: Mass](a: L, mass: M): Second =
+        (2 * PI * sqrt(a^3 / (G_Newton * mass))).to(Second)
 
-        echo "Mars: ", period(1.524.AU, 1.Msun).to(yr)
-        echo "Moon: ", period(384_400.km, 1.Mearth).to(day)
-        echo compiles(1.AU + 1.Msun) # Length + Mass
-      nbTextSmall """
+      echo "Mars: ", period(1.524.AU, 1.Msun).to(yr)
+      echo "Moon: ", period(384_400.km, 1.Mearth).to(day)
+      echo compiles(1.AU + 1.Msun) # Length + Mass
+    nbTextSmall """
 [Explained step by step here](deepdive/units_macros.html).
 """
-      speakerNote """
+    speakerNote """
 Astronomical units, kilometers, solar and Earth masses
 and Newton's constant in one formula, converted for us.
 Length and Mass are concepts: any unit of that quantity fits.
 sqrt only compiles for a unit that is a perfect square.
 Adding a length to a mass is a compile time error.
 """
-    placeholderSlide("6.6", "Rocks ahead", """with great power: macros can make code hard to read for newcomers; concepts (compile-time duck typing) were not robust until possibly recently.""")
+
+template island5RocksSlide* = # 6.6
+  placeholderSlide("6.6", "Rocks ahead", """with great power: macros can make code hard to read for newcomers; concepts (compile-time duck typing) were not robust until possibly recently.""")
+
+template island5ExpressiveSection* =
+  slide:
+    mapSlide(5) # 6.1
+    operatorsDefinedSlide # 6.2
+    operatorsAppliedSlide # 6.3
+    unitsMacrosSlide # 6.4
+    unitsAppliedSlide # 6.5
+    island5RocksSlide # 6.6
+
+when isMainModule: # this part of the deck on its own: docs/slides_island5.html
+  buildDeckPart("island5", "slides/island5_expressive.nim"):
+    island5ExpressiveSection
