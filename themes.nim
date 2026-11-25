@@ -236,12 +236,13 @@ func chartCss(): string =
 .reveal .title-slide {{ position: relative; z-index: 1; }}
 .reveal .title-slide .title-box {{ background: rgba(253,252,247,0.78); backdrop-filter: blur(3px); border: 1.5px solid {ink}; outline: 0.5px solid {ink}; outline-offset: 5px; padding: 0.35em 0.9em; font-size: 0.78em; display: inline-block; box-shadow: 0 6px 24px rgba(14,31,83,0.18); }}
 .reveal .title-slide .scale {{ font-family: "Space Grotesk", sans-serif; font-size: 0.5em; letter-spacing: 0.2em; color: {magenta}; }}
-/* the chart fills the screen (1369 x 770 is 16:9 around the 1050 x 700 slide and its margin) */
+/* the chart fills the screen and stays inside it: 1369 x 770 is 16:9 around the 1050 x 700 slide
+   and its margin, scaled by --chart-fit (set by voyageDeckJs) on screens of other proportions */
 .reveal .chart-stage > svg.voyage-map {{ width: 100%; height: auto; margin: 0; max-width: none; }}
-.reveal .map-slide .chart-stage {{ position: absolute; width: 1369px; left: 525px; top: 350px; transform: translate(-50%, -50%); }}
+.reveal .map-slide .chart-stage {{ position: absolute; width: calc(1369px * var(--chart-fit, 1)); left: 525px; top: 350px; transform: translate(-50%, -50%); }}
 #agileLabLogo {{ z-index: 40; }}
 .reveal .slides > section:has(.title-art) {{ top: 0 !important; height: 700px; display: flex !important; flex-direction: column; justify-content: center; }}
-.reveal .title-art {{ opacity: 1; inset: auto; left: 525px; top: 350px; width: 1369px; height: auto; transform: translate(-50%, -50%); z-index: 0; }}
+.reveal .title-art {{ opacity: 1; inset: auto; left: 525px; top: 350px; width: calc(1369px * var(--chart-fit, 1)); height: auto; transform: translate(-50%, -50%); z-index: 0; }}
 .reveal .title-art .title-block {{ display: none; }}
 .reveal .chapter {{ font-family: "Space Grotesk", sans-serif; color: {orange}; font-size: 0.6em; letter-spacing: 0.2em; margin: 0; }}
 .voyage-map .sea {{ fill: #d7e9f2; }}
@@ -283,7 +284,7 @@ proc titleCardCss(): string =
   let top = 350.0 - 770.0 / 2 + pb[1] * k
   result = &"""
 .reveal .title-slide {{ position: static; }}
-.reveal .title-slide .title-box {{ position: absolute; left: {left:.1f}px; top: {top:.1f}px; width: {pb[2] * k:.1f}px; min-height: {pb[3] * k:.1f}px; box-sizing: border-box; text-align: left; display: block; font-size: 0.82em; padding: 0.5em 0.8em; background: rgba(253,252,247,0.93); border: 1px solid #1f2a33; outline: 0.5px solid #1f2a33; outline-offset: 4px; backdrop-filter: none; }}
+.reveal .title-slide .title-box {{ position: absolute; left: {left:.1f}px; top: {top:.1f}px; width: {pb[2] * k:.1f}px; min-height: {pb[3] * k:.1f}px; box-sizing: border-box; text-align: left; display: block; font-size: 0.82em; padding: 0.5em 0.8em; background: rgba(253,252,247,0.93); border: 1px solid #1f2a33; outline: 0.5px solid #1f2a33; outline-offset: 4px; backdrop-filter: none; transform-origin: {525.0 - left:.1f}px {350.0 - top:.1f}px; transform: scale(var(--chart-fit, 1)); }}
 .reveal .title-slide .title-box h2 {{ font-size: 1.75em; line-height: 1.05; margin: 0 0 0.35em; padding-bottom: 0.3em; border-bottom: 0.5px solid #1f2a33; }}
 .reveal .title-slide .title-box p {{ margin: 0.25em 0; }}
 .reveal .title-art .portolano {{ display: none; }}
@@ -363,11 +364,18 @@ const voyageDeckJs* = when slideTheme == "chart": """
     if (onMap) drawCourse(section);
   }
   const arrived = () => { const s = Reveal.getCurrentSlide(); if (s && mapOf(s)) sail(s, true); };
-  Reveal.on("ready", () => { update(); arrived(); });
+  // the chart (16:9, 1369 x 770 slide pixels) fits inside the window, whatever its proportions:
+  // --chart-fit scales it (themes.nim, chartCss), 14px of the window left free around it
+  const fit = () => {
+    const v = Reveal.getViewportElement(), s = Reveal.getScale(), gap = 28;
+    const f = Math.min((v.clientWidth - gap) / s / 1369, (v.clientHeight - gap) / s / 770);
+    if (!printing && f > 0) document.documentElement.style.setProperty("--chart-fit", f.toFixed(4));
+  }
+  Reveal.on("ready", () => { fit(); update(); arrived(); });
   Reveal.on("slidechanged", update);
   Reveal.on("slidetransitionend", arrived);
-  Reveal.on("resize", () => { const s = Reveal.getCurrentSlide(); if (s) sail(s, !!mapOf(s)); });
-  if (Reveal.isReady()) { update(); arrived(); }
+  Reveal.on("resize", () => { fit(); const s = Reveal.getCurrentSlide(); if (s) sail(s, !!mapOf(s)); });
+  if (Reveal.isReady()) { fit(); update(); arrived(); }
 })();
 </script>
 """ else: ""
