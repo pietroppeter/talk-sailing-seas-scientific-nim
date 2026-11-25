@@ -140,7 +140,7 @@ nbText """
 
 The map slide of Island 3 in each theme
 (build the whole deck in a theme with `nim r build.nim themes`:
-[pirate](../slides_pirate.html), [book](../slides_book.html), [chart](../slides_chart.html)):
+[pirate](../slides_pirate.html), [book](../slides_book.html), [chart](../slides.html), the deck's theme since 24 November):
 """
 var shots: seq[Shot]
 for t in ["pirate", "book", "chart"]:
