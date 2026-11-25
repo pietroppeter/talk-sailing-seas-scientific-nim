@@ -56,6 +56,12 @@ Chosen by Claude on 2026-11-25 (Pietro: go with your guts, no slides removed); r
 
 - [ ] Run `bash bench/vandermonde/run.sh` on the presentation laptop and commit `results.csv` and `machine.txt`, so the slide shows the machine of the talk (today: a cloud machine, where Nim and NumPy are close and Nim's time moves between runs).
 
+### Island renames (2026-11-25: Performance, Science, Ecosystem, Expressivity)
+
+- [ ] Slide 3.2 is still titled "Success stories", under the island now called Science: keep it, or retitle it?
+- [ ] "Data stack" is still in the deep dive "Penguins with the Nim data stack" (title and slug `penguins_data_stack`), in prose of the deep dives (`plant_app`, `penguins_polars`, `notebook`, `vindaar`) and in slide 3.4's story text: keep it as a description, or say "ecosystem"?
+- [ ] Module names still follow the old names (`slides/island2_stories.nim`, `slides/island3_datastack.nim`, `slides/island5_expressive.nim`, and their section templates): rename them too?
+
 ## Outline still to fill (`outline.md`)
 
 Placeholder slides that still need content:
