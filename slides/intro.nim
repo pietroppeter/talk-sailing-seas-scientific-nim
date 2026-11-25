@@ -91,7 +91,7 @@ you only see the coast: the feeling of each place, not a tour.
 
 - 🏝️ **Seven islands**: themes where *Nim* shows its powers
 - 🪨 **Rocks ahead**: where *Nim* falls short
-- 🤿 **Deep dives**: a page for what a slide only sketches
+- 🐋 **Deep dives**: a page for what a slide only sketches
 """
       reference "The slides, the deep dives and their code: [the talk's site](index.html)"
       speakerNote """
