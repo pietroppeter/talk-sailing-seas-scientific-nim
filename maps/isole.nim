@@ -60,15 +60,17 @@ type Placement* = object
   center*: Pt
   a, k: float
   mid: Pt
+  flip: bool ## mirrored north to south (Pietro, 2026-11-25: Milos, so its port faces south)
 
 func turn(p: Pt, a: float): Pt = (p.x * cos(a) - p.y * sin(a), -(p.x * sin(a) + p.y * cos(a))) # y down
 
-func placement*(isl: Isola, center: Pt, size: float, rotate = 0.0): Placement =
+func placement*(isl: Isola, center: Pt, size: float, rotate = 0.0, flip = false): Placement =
   var lo = (x: Inf, y: Inf)
   var hi = (x: -Inf, y: -Inf)
   result.a = degToRad(-rotate)
+  result.flip = flip
   for p in isl.outline:
-    let q = turn(p, result.a)
+    let q = turn((p.x, if flip: -p.y else: p.y), result.a)
     lo = (min(lo.x, q.x), min(lo.y, q.y))
     hi = (max(hi.x, q.x), max(hi.y, q.y))
   result.k = size / max(hi.x - lo.x, hi.y - lo.y)
@@ -76,13 +78,13 @@ func placement*(isl: Isola, center: Pt, size: float, rotate = 0.0): Placement =
   result.center = center
 
 func toMap*(pl: Placement, km: Pt): Pt =
-  let q = turn(km, pl.a)
+  let q = turn((km.x, if pl.flip: -km.y else: km.y), pl.a)
   (pl.center.x + (q.x - pl.mid.x) * pl.k, pl.center.y + (q.y - pl.mid.y) * pl.k)
 
-func fitted*(isl: Isola, size: float, rotate = 0.0): seq[Pt] =
+func fitted*(isl: Isola, size: float, rotate = 0.0, flip = false): seq[Pt] =
   ## the outline in map units around its middle, its larger side `size` long,
-  ## north up (svg's y grows down), turned by `rotate` degrees if a slot needs it
-  let pl = isl.placement((0.0, 0.0), size, rotate)
+  ## north up (svg's y grows down), turned by `rotate` degrees if a slot needs it, mirrored with `flip`
+  let pl = isl.placement((0.0, 0.0), size, rotate, flip)
   for p in isl.outline: result.add pl.toMap(p)
 
 func centroidKm(isl: Isola): Pt =
@@ -122,10 +124,10 @@ func kmPerUnit*(isl: Isola, size: float, rotate = 0.0): float =
 const displayNames = {"Lošinj": "Lussino"}.toTable
   ## the name written on the map, where it is not the list's
 
-func realIsland*(name: string, center: Pt, size: float, labelBelow = false, rotate = 0.0): Island =
+func realIsland*(name: string, center: Pt, size: float, labelBelow = false, rotate = 0.0, flip = false): Island =
   ## an island of the voyage drawn with the coast of a real one, `size` units on its larger side
   let isl = isole[name]
-  result = Island(center: center, outline: isl.fitted(size, rotate), exact: true, real: name,
+  result = Island(center: center, outline: isl.fitted(size, rotate, flip), exact: true, real: name,
     elevation: isl.elevation, labelBelow: labelBelow)
   if name in displayNames: result.real = displayNames[name]
   var halfH = 0.0
@@ -554,6 +556,7 @@ type
     size*: float
     labelBelow*: bool
     rotate*: float     ## degrees clockwise, to fit its place
+    flip*: bool        ## mirrored north to south
     near*: seq[string] ## smaller islands around it, drawn at the same scale where they really are
     lore*: string      ## why this island: a line in the title block of its chart
     note*: string      ## a note on the chart beside it
@@ -617,7 +620,7 @@ proc layoutFromJson*(name, text: string): Layout =
       if pick[0] == isl["real"].getStr: k = i
     doAssert k >= 0, "not an island of the voyage: " & isl["real"].getStr
     var s = Slot(real: islandPicks[k][0], port: islandPicks[k][1], lore: islandPicks[k][2],
-      center: pt(isl["center"]), size: isl["size"].getFloat, rotate: isl{"rotate"}.getFloat(0),
+      center: pt(isl["center"]), size: isl["size"].getFloat, rotate: isl{"rotate"}.getFloat(0), flip: isl{"flip"}.getBool(false),
       labelBelow: isl{"labelBelow"}.getBool(false), note: isl{"note"}.getStr(""),
       label: pt(isl{"label"}), anchor: pt(isl{"anchor"}))
     for n in isl{"near"}.getElems: s.near.add n.getStr
@@ -665,12 +668,12 @@ proc layoutVoyage*(l: Layout): Voyage =
     if p == (0.0, 0.0): l.trieste else: coastPoint(o, l.coastAngle, l.coastScale, l.trieste, p)
   result.route = @[port(l.setOut)]
   for s in l.slots:
-    result.islands.add realIsland(s.real, s.center, s.size, s.labelBelow, s.rotate)
+    result.islands.add realIsland(s.real, s.center, s.size, s.labelBelow, s.rotate, s.flip)
     result.islands[^1].lore = s.lore
     result.islands[^1].note = s.note
     result.islands[^1].label = s.label
     let main = isole[s.real]
-    let pl = main.placement(s.center, s.size, s.rotate)
+    let pl = main.placement(s.center, s.size, s.rotate, s.flip)
     for name in s.near:
       let o = main.offsetKm(isole[name])
       var islet: seq[Pt]
@@ -708,7 +711,7 @@ proc layoutJson*(l: Layout, names: openArray[string]): JsonNode =
       let half = 0.37 * 14.5 * (names[i].len + 4).float
       label = (clamp(label.x, half + 10, v.w - half - 10), (if isl.labelBelow: label.y else: label.y - 2))
     result["islands"].add %*{"real": s.real, "name": names[i], "center": js(s.center), "size": s.size,
-      "rotate": s.rotate, "labelBelow": s.labelBelow, "label": js(label), "anchor": js(v.route[i + 1]),
+      "rotate": s.rotate, "flip": s.flip, "labelBelow": s.labelBelow, "label": js(label), "anchor": js(v.route[i + 1]),
       "note": s.note, "near": s.near}
   for leg in l.via:
     var a = newJArray()

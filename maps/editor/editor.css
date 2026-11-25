@@ -67,7 +67,9 @@ input[type=range] { width: 55%; accent-color: var(--magenta); }
 .portolano { position: absolute; background: rgba(253, 252, 247, 0.93); border: 1px solid var(--ink); outline: 0.5px solid var(--ink); outline-offset: 0.25cqw; padding: 0.7cqw 0.9cqw; overflow: hidden; cursor: move; box-shadow: 0 0.4cqw 1.4cqw rgba(31, 42, 51, 0.12); transition: opacity 0.6s ease 0.6s, transform 0.6s ease 0.6s; }
 .portolano .pt-title { font: 700 1.25cqw "Space Grotesk", sans-serif; letter-spacing: 0.2em; color: var(--ink); }
 .portolano .pt-head { font: 700 0.78cqw "Space Grotesk", sans-serif; letter-spacing: 0.3em; color: var(--magenta); margin: 0.25cqw 0 0.5cqw; padding-bottom: 0.4cqw; border-bottom: 0.5px solid var(--ink); }
-.portolano .pt-body { font: italic 1.15cqw/1.35 "Spectral", serif; color: var(--ink); white-space: pre-wrap; }
+.portolano.title-card .pt-title { font-size: 2.3cqw; letter-spacing: 0.01em; line-height: 1.1; color: var(--navy); }
+.portolano.title-card .pt-body { font-size: 1.3cqw; }
+.portolano .pt-body { font: italic 1.35cqw/1.4 "Spectral", serif; color: var(--ink); white-space: pre-wrap; }
 .pt-resize { position: absolute; right: 0; bottom: 0; width: 1.4cqw; height: 1.4cqw; min-width: 12px; min-height: 12px; cursor: nwse-resize; background: linear-gradient(135deg, transparent 50%, var(--ink) 50%); }
 .previewing .portolano { cursor: default; }
 .previewing .pt-resize { display: none; }

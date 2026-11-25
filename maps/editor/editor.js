@@ -23,12 +23,12 @@ function withDefaults(j) {
   j = clone(j);
   j.format = "voyage-map/1"; j.w = W; j.h = H;
   j.portolano = j.portolano || {};
-  j.portolano.box = j.portolano.box || [672, 412, 272, 112];
+  j.portolano.box = j.portolano.box || [28, 60, 320, 230];
   j.portolano.texts = j.portolano.texts || SAMPLE_TEXTS.slice();
   while (j.portolano.texts.length < 9) j.portolano.texts.push("");
   j.agenda = j.agenda || {};
   if (j.agenda.y == null) j.agenda.y = 522;
-  for (const isl of j.islands) { isl.near = isl.near || []; isl.rotate = isl.rotate || 0; isl.note = isl.note || ""; }
+  for (const isl of j.islands) { isl.near = isl.near || []; isl.rotate = isl.rotate || 0; isl.flip = !!isl.flip; isl.note = isl.note || ""; }
   return j;
 }
 let S = withDefaults(DATA.defaults);
@@ -81,12 +81,12 @@ function coastPolygon(lonLat, origin, angle, upk, at, endDown, rough = 4, reach 
 }
 const turn = (p, a) => [p[0] * Math.cos(a) - p[1] * Math.sin(a), -(p[0] * Math.sin(a) + p[1] * Math.cos(a))];
 function outlineKm(isl) { const r = []; for (let k = 0; k < isl.x.length; k++) r.push([isl.x[k], isl.y[k]]); return r; }
-function placement(isl, center, size, rotate) {
+function placement(isl, center, size, rotate, flip) {
   const a = rad(-rotate); let lo = [Infinity, Infinity], hi = [-Infinity, -Infinity];
-  for (const p of outlineKm(isl)) { const q = turn(p, a); lo = [Math.min(lo[0], q[0]), Math.min(lo[1], q[1])]; hi = [Math.max(hi[0], q[0]), Math.max(hi[1], q[1])]; }
-  return { a, k: size / Math.max(hi[0] - lo[0], hi[1] - lo[1]), mid: [(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2], center };
+  for (const p of outlineKm(isl)) { const q = turn([p[0], flip ? -p[1] : p[1]], a); lo = [Math.min(lo[0], q[0]), Math.min(lo[1], q[1])]; hi = [Math.max(hi[0], q[0]), Math.max(hi[1], q[1])]; }
+  return { a, flip: !!flip, k: size / Math.max(hi[0] - lo[0], hi[1] - lo[1]), mid: [(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2], center };
 }
-function toMap(pl, km) { const q = turn(km, pl.a); return [pl.center[0] + (q[0] - pl.mid[0]) * pl.k, pl.center[1] + (q[1] - pl.mid[1]) * pl.k]; }
+function toMap(pl, km) { const q = turn([km[0], pl.flip ? -km[1] : km[1]], pl.a); return [pl.center[0] + (q[0] - pl.mid[0]) * pl.k, pl.center[1] + (q[1] - pl.mid[1]) * pl.k]; }
 function centroidKm(isl) {
   const o = outlineKm(isl), n = o.length; let a = 0, cx = 0, cy = 0;
   for (let i = 0; i < n; i++) { const p = o[i], q = o[(i + 1) % n], f = p[0] * q[1] - q[0] * p[1]; a += f; cx += (p[0] + q[0]) * f; cy += (p[1] + q[1]) * f; }
@@ -106,7 +106,7 @@ function geometry() {
   const coast = coastPolygon(lonLat, origin, c.angle, c.scale, c.trieste, c.openEast !== false);
   const islands = S.islands.map((s, i) => {
     const isl = ISLES[s.real];
-    const pl = placement(isl, s.center, s.size, s.rotate);
+    const pl = placement(isl, s.center, s.size, s.rotate, s.flip);
     const poly = outlineKm(isl).map(p => toMap(pl, p));
     let halfH = 0; for (const p of poly) halfH = Math.max(halfH, Math.abs(p[1] - s.center[1]));
     const islets = s.near.map(name => { const o = offsetKm(isl, ISLES[name]); return outlineKm(ISLES[name]).map(p => toMap(pl, [o[0] + p[0], o[1] + p[1]])); });
@@ -116,7 +116,7 @@ function geometry() {
   const lands = [coast]; for (const g of islands) lands.push(g.poly);
   for (const g of islands) for (const p of g.islets) lands.push(p);
   const groups = [{ key: JSON.stringify(c), polys: [coast] }].concat(islands.map(g => ({
-    key: JSON.stringify([g.slot.real, g.slot.center, g.slot.size, g.slot.rotate, g.slot.near]), polys: [g.poly, ...g.islets] })));
+    key: JSON.stringify([g.slot.real, g.slot.center, g.slot.size, g.slot.rotate, !!g.slot.flip, g.slot.near]), polys: [g.poly, ...g.islets] })));
   return { coast, islands, lands, origin, groups };
 }
 function route() {
@@ -284,6 +284,72 @@ function harbour(lands, p, search = 16, reach = 22) {
   return [r2(res[0]), r2(res[1])];
 }
 
+// --- laying the course: the shortest way by sea, then as few straight legs as the water allows ----
+let CLEAR = 9; // how far from any coast a course keeps (map units), except near its ports; less in narrows
+function clearAt(p, ends) {
+  const d = at(F, p);
+  for (const e of ends) if (Math.hypot(p[0] - e[0], p[1] - e[1]) < 20) return d > Math.min(1.5, CLEAR);
+  return d > CLEAR;
+}
+function seaLine(a, b, ends) {
+  const n = Math.max(2, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 2));
+  for (let k = 0; k <= n; k++) { const t = k / n; if (!clearAt([a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])], ends)) return false; }
+  return true;
+}
+function layLeg(k) {
+  for (const clear of [9, 6, 4, 2, 0.5]) { CLEAR = clear; const legs = layLegAt(k); if (legs) { CLEAR = 9; return legs; } }
+  CLEAR = 9; return S.legs[k] || []; // no way by sea: keep the legs as they are
+}
+function layLegAt(k) {
+  const r = route(), from = r[k], to = r[k + 1], ends = [from, to];
+  if (seaLine(from, to, ends)) return [];
+  // A* on the grid of the distance field, 8 neighbours, a little extra cost close to land
+  const c = F.cell, nx = Math.floor(W / c) + 1, ny = Math.floor(H / c) + 1;
+  const idx = p => Math.max(0, Math.min(ny - 1, Math.round(p[1] / c))) * nx + Math.max(0, Math.min(nx - 1, Math.round(p[0] / c)));
+  const pos = i => [(i % nx) * c, Math.floor(i / nx) * c];
+  const open = (i) => { const p = pos(i); return clearAt(p, ends); };
+  const start = idx(from), goal = idx(to), g = new Float64Array(nx * ny).fill(Infinity), prev = new Int32Array(nx * ny).fill(-1);
+  const heap = [[0, start]]; g[start] = 0;
+  const push = (f, i) => { heap.push([f, i]); let j = heap.length - 1; while (j > 0) { const q = (j - 1) >> 1; if (heap[q][0] <= heap[j][0]) break; [heap[q], heap[j]] = [heap[j], heap[q]]; j = q; } };
+  const pop = () => { const top = heap[0], last = heap.pop(); if (heap.length) { heap[0] = last; let j = 0; for (;;) { const l = 2 * j + 1, rr = l + 1; let m = j; if (l < heap.length && heap[l][0] < heap[m][0]) m = l; if (rr < heap.length && heap[rr][0] < heap[m][0]) m = rr; if (m === j) break; [heap[m], heap[j]] = [heap[j], heap[m]]; j = m; } } return top; };
+  const gp = pos(goal), h = i => { const p = pos(i); return Math.hypot(p[0] - gp[0], p[1] - gp[1]); };
+  while (heap.length) {
+    const [, i] = pop();
+    if (i === goal) break;
+    const x = i % nx, y = Math.floor(i / nx);
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+      if (!dx && !dy) continue;
+      const X = x + dx, Y = y + dy; if (X < 0 || Y < 0 || X >= nx || Y >= ny) continue;
+      const j = Y * nx + X; if (j !== goal && !open(j)) continue;
+      const d = at(F, pos(j)), cost = c * Math.hypot(dx, dy) * (1 + 1.5 / Math.max(1, d / 10));
+      if (g[i] + cost < g[j]) { g[j] = g[i] + cost; prev[j] = i; push(g[j] + h(j), j); }
+    }
+  }
+  if (prev[goal] < 0) return null;
+  const path = [to]; for (let i = prev[goal]; i >= 0 && i !== start; i = prev[i]) path.push(pos(i)); path.push(from); path.reverse();
+  // string pulling: from each turn, sail straight to the farthest point still in clear water
+  const turns = []; let i = 0;
+  while (i < path.length - 1) {
+    let j = path.length - 1;
+    while (j > i + 1 && !seaLine(path[i], path[j], ends)) j--;
+    if (j < path.length - 1) turns.push([r2(path[j][0]), r2(path[j][1])]);
+    i = j;
+  }
+  return turns;
+}
+function layCourse(only) {
+  const n = route().length - 1;
+  for (let k = 0; k < n; k++) if (only == null || only === k) S.legs[k] = layLeg(k);
+  commit(); renderLight(); inspector(); writeJson();
+}
+function snapAnchors() {
+  G.islands.forEach((g, i) => { S.islands[i].anchor = harbour([g.poly, ...g.islets], g.port); });
+  S.setOut.anchor = harbour([G.coast], coastPoint(G.origin, S.coast.angle, S.coast.scale, S.coast.trieste, S.setOut.port));
+  S.landfall.anchor = harbour([G.coast], coastPoint(G.origin, S.coast.angle, S.coast.scale, S.coast.trieste, S.landfall.port));
+  commit(); renderLight(); inspector(); writeJson();
+}
+window.voyageTools = { layCourse, snapAnchors }; // for scripts driving the page
+
 // --- drawing the chart ----------------------------------------------------------------------------
 const $ = id => document.getElementById(id);
 const svg = $("chart"), stage = $("stage"), words = $("words");
@@ -436,6 +502,8 @@ function drawPortolano() {
   el.hidden = !$("show-portolano").checked;
   const head = current >= 1 && current <= 7 ? `CHART ${current} OF 7 · ${NAMES[current - 1].toUpperCase()}` : current === 8 ? "LANDFALL · BACK ON THE MAINLAND" : "FROM THE MAINLAND TO SEVEN ISLANDS";
   el.querySelector(".pt-head").textContent = head;
+  el.classList.toggle("title-card", current === 0);
+  el.querySelector(".pt-title").textContent = current === 0 ? "Sailing Seas of Scientific Nim" : "SEAS OF SCIENTIFIC NIM";
   el.querySelector(".pt-body").textContent = S.portolano.texts[current] || "";
   $("pt-for").textContent = current >= 1 && current <= 7 ? `island ${current} · ${NAMES[current - 1]}` : current === 8 ? "landfall (8)" : "the whole map (0)";
   if (document.activeElement !== $("pt-text")) $("pt-text").value = S.portolano.texts[current] || "";
@@ -672,7 +740,12 @@ function button(label, on) {
 }
 function inspector() {
   const T = $("ins-title"), B = $("ins-body");
-  if (!selected) { T.textContent = "Nothing selected"; B.innerHTML = `<p class="muted">Click an island, the coast, a turning point, an anchor or a name on the chart.</p>`; return; }
+  if (!selected) {
+    T.textContent = "Nothing selected";
+    B.innerHTML = `<p class="muted">Click an island, the coast, a turning point, an anchor or a name on the chart.</p><p class="muted">After moving islands, lay the course again: the shortest way by sea, in straight legs clear of the coasts.</p><div class="btns">` +
+      button("Lay the whole course again", () => layCourse()) + button("Anchors to sheltered water", () => snapAnchors()) + `</div>`;
+    return;
+  }
   const s = selected;
   if (s.kind === "island") {
     const isl = S.islands[s.i], g = G?.islands[s.i];
@@ -680,9 +753,12 @@ function inspector() {
     B.innerHTML = `<p class="muted">${esc(isl.real)}${isl.near.length ? " with " + esc(isl.near.join(", ")) : ""}, ${Math.round(ISLES[isl.real].elevation)} m high. Drag it, or its knobs: ↻ turns, ⤡ scales. Its name and anchor move with it.</p>` +
       numberRow("Center x", isl.center[0], 1, v => isl.center[0] = v) + numberRow("Center y", isl.center[1], 1, v => isl.center[1] = v) +
       numberRow("Size (map units)", isl.size, 1, v => isl.size = v) + numberRow("Turned (degrees)", isl.rotate, 1, v => isl.rotate = v) +
+      `<label class="check"><input type="checkbox" id="flip-isl" ${isl.flip ? "checked" : ""}> Mirrored north to south</label>` +
       `<div class="btns">` + button("Anchor in sheltered water", () => {
         const near = [g.poly, ...g.islets]; isl.anchor = harbour(near, g.port); commit(); renderLight(); inspector(); writeJson();
       }) + `</div>`;
+    setTimeout(() => { const el = $("flip-isl"); if (el) el.onchange = () => {
+      isl.flip = el.checked; isl.anchor = [r2(isl.anchor[0]), r2(2 * isl.center[1] - isl.anchor[1])]; commit(); busy(() => renderAll()); }; });
   } else if (s.kind === "coast") {
     const c = S.coast;
     T.textContent = "The mainland (Istria)";
@@ -696,7 +772,7 @@ function inspector() {
     const k = s.k, from = k === 0 ? "Portorož" : `island ${k}`, to = k === S.islands.length ? "Koper" : `island ${k + 1}`;
     T.textContent = `Leg ${k + 1}: ${from} to ${to}`;
     B.innerHTML = `<p class="muted">${(S.legs[k] || []).length} turning points. Drag them; double-click the leg to add one, double-click a point (or Delete) to remove it.</p>` +
-      (s.j >= 0 ? `<div class="btns">${button("Remove this turning point", () => removeWp(k, s.j))}</div>` : "");
+      `<div class="btns">${button("Lay this leg again", () => layCourse(k))}${s.j >= 0 ? button("Remove this turning point", () => removeWp(k, s.j)) : ""}</div>`;
   } else if (s.kind === "anchor") {
     const last = S.islands.length + 1, name = s.i === 0 ? "Portorož, where the voyage sets out" : s.i === last ? "Koper, the landfall" : `the anchor of island ${s.i} · ${NAMES[s.i - 1]}`;
     T.textContent = "Anchor"; B.innerHTML = `<p class="muted">${esc(name)}: the course calls here and the magenta anchor is drawn here.</p><div class="btns">` + button("Back to sheltered water", () => {

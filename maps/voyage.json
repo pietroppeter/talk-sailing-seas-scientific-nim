@@ -6,25 +6,40 @@
   "setOut": {"port": [13.596, 45.5145], "anchor": [380.79, 419.03]},
   "landfall": {"port": [13.7297, 45.548], "anchor": [418.61, 511.66]},
   "islands": [
-    {"real": "Vulcano", "name": "Accessible Performance", "center": [180, 300], "size": 80, "rotate": 0, "labelBelow": false, "label": [180, 240], "anchor": [173.34, 277.58], "note": "Volcano (active)", "near": []},
-    {"real": "Lošinj", "name": "Success Stories", "center": [215, 165], "size": 100, "rotate": 0, "labelBelow": false, "label": [215, 95], "anchor": [232.4, 213.98], "note": "", "near": []},
-    {"real": "Porquerolles", "name": "Data Stack", "center": [380, 100], "size": 100, "rotate": 0, "labelBelow": true, "label": [380, 163.47], "anchor": [383.27, 99.24], "note": "", "near": []},
-    {"real": "Milos", "name": "Interoperability", "center": [585, 100], "size": 95, "rotate": 0, "labelBelow": true, "label": [585, 163.74], "anchor": [590.06, 96.45], "note": "", "near": []},
-    {"real": "Elba", "name": "An Expressive Language", "center": [765, 192], "size": 110, "rotate": 0, "labelBelow": false, "label": [765, 136.25], "anchor": [787.39, 185], "note": "", "near": []},
-    {"real": "Caprera", "name": "Interactivity", "center": [790, 325], "size": 75, "rotate": 0, "labelBelow": true, "label": [790, 393.5], "anchor": [761.39, 322.9], "note": "", "near": ["La Maddalena"]},
-    {"real": "Leros", "name": "Notebook", "center": [480, 265], "size": 90, "rotate": 0, "labelBelow": true, "label": [480, 341], "anchor": [495.14, 287.26], "note": "", "near": []}
+    {"real": "Vulcano", "name": "Accessible Performance", "center": [439.18, 287.65], "size": 80, "rotate": 0, "labelBelow": false, "label": [478, 226], "anchor": [432.52, 265.23], "note": "Volcano (active)", "near": [], "flip": false},
+    {"real": "Lošinj", "name": "Success Stories", "center": [494.44, 114.75], "size": 100, "rotate": 0, "labelBelow": false, "label": [494.44, 44.75], "anchor": [511.84, 163.73], "note": "", "near": [], "flip": false},
+    {"real": "Porquerolles", "name": "Data Stack", "center": [610.08, 247.22], "size": 100, "rotate": 0, "labelBelow": true, "label": [610.08, 310.69], "anchor": [613.35, 246.46], "note": "", "near": [], "flip": false},
+    {"real": "Milos", "name": "Interoperability", "center": [676.68, 97.35], "size": 95, "rotate": 0, "flip": true, "labelBelow": true, "label": [676.68, 161.09], "anchor": [681.74, 100.9], "note": "", "near": []},
+    {"real": "Elba", "name": "An Expressive Language", "center": [823.19, 226.38], "size": 110, "rotate": 0, "labelBelow": false, "label": [823, 296], "anchor": [845.58, 219.38], "note": "", "near": [], "flip": false},
+    {"real": "Caprera", "name": "Interactivity", "center": [861.4, 409.63], "size": 75, "rotate": 0, "labelBelow": true, "label": [861.4, 478.13], "anchor": [832.79, 407.53], "note": "", "near": ["La Maddalena"], "flip": false},
+    {"real": "Leros", "name": "Notebook", "center": [628.98, 421.03], "size": 90, "rotate": 0, "labelBelow": true, "label": [628.98, 497.03], "anchor": [644.12, 443.29], "note": "", "near": [], "flip": false}
   ],
   "legs": [
-    [[400, 340], [250, 262]],
+    [[384, 400], [492, 320], [460, 264]],
     [],
-    [[300, 214], [300, 58], [372, 58]],
-    [[380, 42], [594, 42]],
-    [[600, 42], [781, 42]],
-    [[770, 160], [700, 160], [700, 318]],
-    [[720, 372], [500, 372], [455, 330]],
-    [[455, 330], [440, 420]]
+    [],
+    [[668, 108], [676, 100]],
+    [[672, 104], [660, 124], [712, 172], [840, 212], [844, 216]],
+    [[844, 216], [820, 192], [748, 220], [792, 420], [824, 416]],
+    [[644, 472], [632, 456], [636, 448]],
+    [[592, 472], [424, 500]]
   ],
   "compass": [905, 60],
   "landLabel": [215, 468],
-  "titleBlock": [790, 480]
+  "titleBlock": [188, 78],
+  "portolano": {
+    "box": [28, 60, 320, 230],
+    "texts": [
+      "Seven islands off the mainland, sailed clockwise. Each island is drawn at its own scale; soundings in metres.",
+      "First landfall. The passage most sailors come for: code that reads like Python and runs like C.",
+      "Inhabited: crews of bioinformaticians and lattice physicists made port here and stayed. Ask for their logbooks.",
+      "Well charted waters: tensors, data frames and plots. A small crew keeps the beacons lit; mind the rocks where the charts end.",
+      "Bridges to Python, C and JavaScript. Ships of any flag may call here and leave with their cargo.",
+      "Operators and units of your own making. Macros shape this coast: read the signs before going ashore.",
+      "The same app sailed twice: once in Shiny, once compiled to JavaScript. Light winds, quick crossing.",
+      "The home port of this chart: notebooks as plain Nim files, built into pages and slides.",
+      "Landfall. Back on the mainland, the hold full of samples. Fair winds."
+    ]
+  },
+  "agenda": {"y": 522}
 }
