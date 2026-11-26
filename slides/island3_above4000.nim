@@ -76,10 +76,11 @@ proc above4000Content(nb: var Nb) = # 4.8
       nbDiv("centered", ""):
         nbImg("images/above4000.jpg", "48%")
         nbTextSmall """
-📱 Monte Rosa from Val Vigezzo. A photo taken while
-working on nanuq with Claude on the phone.
+📱 Monte Rosa from Val Vigezzo: a photo taken while
+working on nanuq with Claude on the phone
+
 🐋 [Above 4000](https://pietroppeter.github.io/nanuq/blog/2026-11-01-above-4000.html):
-the exploration in Nim and Python.
+the exploration in Nim and Python
 """
 
   speakerNote """

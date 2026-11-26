@@ -166,6 +166,8 @@ template island5RocksSlide* = # 6.6
 - macros are hard to write, and hard to debug: errors point at generated code
 - every DSL is a new little language for its readers
 - with great power: reach for procs and templates first
+- 🍬 we call it syntax sugar: too much sugar can be bad
+for your health
 """
     speakerNote """
 (Claude's proposal from the dry run, to check.)
@@ -176,6 +178,10 @@ A DSL reads beautifully once you know it, but every
 newcomer has to learn it first.
 The community rule: a proc if you can, a template if
 you must, a macro only when nothing else works.
+And sugar: Nim has a lot of it (tabelline's tables are
+written as blocks, without the chain of dots, thanks
+to a macro). We call it syntax sugar, and too much
+sugar can be bad for your health.
 """
 
 template island5ExpressiveSection* =

@@ -46,11 +46,13 @@ proc voyageIslands*(): seq[IslandRow] =
 
 proc onSlide(t: sink Tabella): Tabella =
   ## the deck's look, not shown on the slide: the chart's colours for the shapes,
-  ## the theme's blue for the bars, the seas in orange
+  ## the seas in orange
   t.fmtNanoplot("shape", plotType = "shape", plotHeight = "2em",
       options = nanoplotOptions(dataBarFillColor = land, dataBarStrokeColor = ink))
     .fmtFlag("code", round = true, height = "0.9em")
-    .fmtNanoplot("people", plotType = "bar", plotHeight = "1em", options = slideBars())
+    .fmtNanoplot("people", plotHeight = "1.4em",
+      options = nanoplotOptions(dataLineStrokeColor = agileLightBlue, dataLineStrokeWidth = 6))
+    .tabStyle(style.text(whitespace = "nowrap"), loc.body(cols("chart")))
     .tabStyle(style.text(color = "#ee961a", style = "italic"), loc.rowGroups())
     .slideLook(fontSize = "0.5em")
     .tabOptions(dataRowPadding = "0.05em", rowGroupPadding = "0.3em",
@@ -67,27 +69,27 @@ proc islandsContent(nb: var Nb) = # 4.10
         # their sea, flag, outline and people
         let islands = tabella(rows,
             rownameCol = "island",
-            groupnameCol = "sea")
-          .colsMove(["shape", "code"],
-            after = "island")
-          .fmtNanoplot("shape",
-            plotType = "shape")
-          .fmtFlag("code")
-          .fmtNanoplot("people",
-            plotType = "bar")
-          .colsLabel({"shape": "", "code": "",
-            "chart": "on the chart"})
-          .tabSourceNote(md(
+            groupnameCol = "sea"):
+          colsMove ["shape", "code"],
+            after = "island"
+          fmtNanoplot "shape", plotType = "shape"
+          fmtFlag "code"
+          fmtNanoplot "people"
+          colsLabel:
+            shape: ""
+            code: ""
+            chart: "on the chart"
+          tabSourceNote md(
             "From tabelline's story " &
             "[Islands of the Mediterranean](" &
-            story & ") (OSM, IHO, Wikipedia)"))
+            story & ") (OSM, IHO, Wikipedia)")
     column:
       nbTable islands.onSlide
   speakerNote """
 And now I can tell you where we are sailing:
 every island of the chart has the coast of a real one.
 Sea by sea, with its flag, its shape and how many people
-live there (hover on a bar for the number).
+live there (hover on a line for the number).
 Caprera is Garibaldi's island, and nobody lives there.
 The shapes are a new nanoplot of tabelline:
 the data is from the islands story on tabelline's site,
