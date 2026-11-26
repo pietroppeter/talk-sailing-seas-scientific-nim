@@ -416,7 +416,8 @@ const sketchCss = """
   justify-content: center;
   pointer-events: none;
 }
-.reveal .playful-word h1 { font-size: 2.6em; margin: 0; }
+.reveal .playful-word h1 { font-size: 2.6em; margin: 0; padding: 0 0.4em; border-radius: 0.2em;
+  background: rgba(246, 243, 236, 0.85); box-shadow: 0 4px 30px rgba(246, 243, 236, 0.9); }
 /* the credit line, smaller than the link above it */
 .thank-you-link small + small { opacity: 0.7; }
 .thank-you-link small + small p { font-size: 0.67em; }

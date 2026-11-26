@@ -138,4 +138,4 @@ Every deep dive, talk log page and index has a review mode (`review.nim` and `do
 
 ## License
 
-MIT (see `LICENSE`), except `slides/thank_you.nim` and `deepdive/thank_you_sketch.nim` (which quotes it): the animation of the Thank You slide is based on [a sketch by Okazz](https://openprocessing.org/sketch/3044593), licensed under [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/), so those files are licensed under CC BY-NC-SA 3.0 too.
+MIT (see `LICENSE`), except `slides/thank_you.nim` and `deepdive/thank_you_sketch.nim` (which quotes it): the animation of the Thank You slide is based on [a sketch by Okazz](https://openprocessing.org/sketch/3044593), licensed under [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/), so those files are licensed under CC BY-NC-SA 3.0 too. The same holds for `slides/playful_okazz.nim`, p5nim's port of [another sketch by Okazz](https://openprocessing.org/sketch/1653811).
