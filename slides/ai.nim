@@ -7,16 +7,21 @@ import ../my
 template aiSlide* =
   slide:
     nbText """
-## 🤖 November 2026
+## 🤖 the AI slide (Nov 2026)
 
-- Programming languages matter less, and that is *liberating*
-- AI writes **excellent Nim**: compiled, statically typed
-- A small ecosystem hurts less: porting is easy
+A lot is changing. For the context of this talk:
 
-## What does not change
+- Programming languages matter less
+- 👀 **AI writes excellent Nim** (compiler, static types, low cognitive load)
+- A small ecosystem hurts less: binding/porting is easy
 
-*Judgment* · *Ownership* · *Trust*
+What does not change (becomes more important):
+
+- *Judgment*: what you point your agent at, when to stop
+- *Ownership*: you own everything you put out
+- *Trust*: the trust you build with your community of users
 """
+    reference "(me: went heavy on AI only in last two months)"
     speakerNote """
 It is November 2026, so I need an AI slide. Let me keep
 it to the context of this talk. Three things.
