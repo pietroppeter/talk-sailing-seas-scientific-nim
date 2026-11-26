@@ -20,7 +20,7 @@ newNbBlock(NbPlotly):
       result.add &"""<script src="{blk.lib}"></script>
 """
     result.add &"""<div id="{blk.id}"></div>
-<script>Plotly.newPlot("{blk.id}", {blk.traces}, {blk.layout}, {{responsive: true}});</script>"""
+<script>Plotly.newPlot("{blk.id}", {blk.traces}, {blk.layout}, {{responsive: true, displayModeBar: false}});</script>"""
 
 proc plotly*[T](nb: var Nb, p: Plot[T]) =
   var count = 0
@@ -32,3 +32,11 @@ proc plotly*[T](nb: var Nb, p: Plot[T]) =
 
 template nbPlotly*[T](p: Plot[T]) =
   nb.plotly(p)
+
+proc plotly*(nb: var Nb, pj: PlotJson) =
+  ## a plot as nim-plotly's JSON, for what its types have no field for (edited before showing)
+  var count = 0
+  for b in nb.doc.blocksFlattened:
+    if b of NbPlotly: inc count
+  nb.add newNbPlotly(id = "nb-plotly-" & $(count + 1), traces = $pj.traces, layout = $pj.layout,
+    lib = if count == 0: nb.assetsDir & "/" & plotlyJs else: "")

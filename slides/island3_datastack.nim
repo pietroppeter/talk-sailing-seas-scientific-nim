@@ -4,9 +4,9 @@ import ggplotnim
 import arraymancer / linear_algebra # solve
 import tabelline except Column, readCsv
 import ../my
-import island3_network, island3_nanuq, island3_plotly
+import island3_network, island3_nanuq, island3_above4000, island3_islands
 export math, sequtils, ggplotnim, linear_algebra
-export networkSlide, nanuqSlide, tabellineSlide, nanuqSlides, plotlySlide
+export networkSlide, nanuqSlide, tabellineSlide, nanuqSlides, above4000Slide, islandsSlide
 
 # Section 4: Island 3: Ecosystem (see outline.md)
 # The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2 and K3.
@@ -216,10 +216,11 @@ template island3DataStackSection* {.dirty.} =
     datamancerSlide # 4.5
     nanuqSlide # 4.6
     ggplotnimSlide # 4.7
-    plotlySlide # 4.8
+    above4000Slide # 4.8 (nanuq and nim-plotly on the Alps)
     tabellineSlide # 4.9
-    scinimSlide # 4.10
-    island3RocksSlide # 4.11
+    islandsSlide # 4.10 (the islands of the chart, uncovered)
+    scinimSlide # 4.11
+    island3RocksSlide # 4.12
 
 when isMainModule: # this part of the deck on its own: docs/slides_island3.html
   buildDeckPart("island3", "slides/island3_datastack.nim"):

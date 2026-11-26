@@ -104,3 +104,9 @@ Caveat said on stage: limited experience (a year learning to be a manager, deep 
 - [x] 8.2: Knuth's quote, then Fernando Pérez's definition of literate computing (verified from his 2013 post), then "Jupyter created the notebook as we know it"; the Pimentel study moved to the notes.
 - [x] Notes: how does a notebook work with no REPL? That is what started Pietro doing open source: nimib.
 - [ ] The recording stops at "And then some other": the rest of Island 7 and the conclusion are still to come.
+
+## After the run (same morning)
+
+- [x] 4.2 is now "Ecosystem"; its last row is "Display tables", in orange; the notes open with the single takeaway: use Great Tables and gt, build more and better great tables.
+- [x] 4.8: "Above 4000: nanuq and nim-plotly", the Alps' 82 four-thousanders cleaned with nanuq and drawn with nim-plotly on their relief, with Pietro's photo of Monte Rosa and nanuq's post as the deep dive. It replaced the penguins' plotly slide.
+- [x] 4.10: "The islands, uncovered", a tabelline table of the real islands of the chart, sea by sea: flag, outline (shape nanoplot), area and people with bars.
