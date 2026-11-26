@@ -9,7 +9,7 @@ import ../my
 template storiesIntroSlide* = # 3.2
   slide:
     nbText: """
-## Success stories in science
+## Success stories in Science
 
 How do we define success stories in scientific computing?
 By looking at *people who used Nim to advance science*.
@@ -186,11 +186,11 @@ A tiny ecosystem: pioneers build what they need,
 or move where the libraries are
 """
     nbDiv("rocks-quotes", ""):
-      nbQuote("""I mostly switched to rust since that's where
-the bioinformatics libs are, but **I still really like nim**""",
+      nbQuote("""**I mostly switched to rust** since that's where
+the bioinformatics libs are, but *I still really like nim*""",
         "Brent Pedersen, personal communication, 2026")
-      nbQuote("""by choosing Nim [...] I underestimated
-the amount of code I would / had to write [...]
+      nbQuote("""by choosing Nim [...] **I underestimated
+the amount of code I would / had to write** [...]
 *I learned way more than I would have otherwise*""",
         "Vindaar, in his thesis")
     speakerNote """
