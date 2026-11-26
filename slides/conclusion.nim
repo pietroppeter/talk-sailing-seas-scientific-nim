@@ -183,8 +183,6 @@ in the colors of Okazz, like the one at the end.
 template conclusionSection* =
   slide:
     mapSlide(8) # 9.1
-    beginnerSlide
-    builderSlide
     nicheSlide
     playfulSlide
 

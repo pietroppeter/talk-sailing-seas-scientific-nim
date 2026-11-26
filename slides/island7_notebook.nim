@@ -47,30 +47,28 @@ of those it ran, about one in four ran without errors, 4% gave the same results.
 Quarto, Pluto.jl and marimo answer with plain files and, for the last two, reactivity.
 """
 
+const horizonSource = staticRead("../examples/horizon.nim") # a plain nimib document
+
 template nimibSlide* =
   slide: # 8.3
-    nbText "## nimib: a notebook is a program"
-    nbDiv("nimib-twin", ""):
-      nimibCode:
-        nbText "### From the deck of a boat"
-        nbCode:
-          let earth = 6371e3 # m, radius
-          let eyes = 2.0     # m above the sea
-          let horizon = sqrt(2 * earth * eyes)
-          echo horizon.round, " m"
-        nbText "Horizon: **" &
-          $round(horizon / 1000, 1) & " km**"
+    nbText "## nimib: a notebook is a library"
+    compactColumns:
+      column:
+        nbShowCode(horizonSource)
+      column:
+        nbDiv("phone-frame", ""): # examples/horizon.nim built with plain nimib, on a phone
+          nbImg("images/horizon-phone.png")
     nbTextSmall """
 Run the file, get the page: no kernel, no hidden state,
 top to bottom every time; diffs, review and CI like any code.
 Every page of this talk is made with nimib, this deck too.
 """
     speakerNote """
-On the left a nimib document: nbText is Markdown, nbCode is Nim code.
-On the right what it gives: the code runs when the file runs, its output
+On the left a nimib document: a Nim program that imports nimib;
+nbText is Markdown, nbCode is Nim code, nbSave writes the page.
+On the right what it gives, on a phone, in nimib's default theme with Show Source: the code runs when the file runs, its output
 is captured, and the text uses the result, so the number cannot go stale.
-This is the real thing: the right side was rendered from the left side
-when this deck was built. The unexpected direction: Jupyter brings a kernel
+This is the real thing (examples/horizon.nim). The unexpected direction: Jupyter brings a kernel
 into the browser, nimib brings the notebook into your editor and your compiler.
 I started nimib in 2020; Hugo Granström maintains it with me.
 """
@@ -79,13 +77,13 @@ template nimibMakesSlide* =
   slide: # 8.4
     nbText "## What you can make with nimib"
     nbText """
-- **pages**: the deep dives of this talk, with Show Source and a review mode
-- **slides**: this deck, with [nimiSlides](https://github.com/HugoGranstrom/nimiSlides)
+- 📄 **pages**: the deep dives of this talk, with Show Source and a review mode
+- 🎞️ **slides**: this deck, with [nimiSlides](https://github.com/HugoGranstrom/nimiSlides)
   (reveal.js)
-- **books**: [nimibook](https://github.com/pietroppeter/nimibook), the docs of QEX
+- 📚 **books**: [nimibook](https://github.com/pietroppeter/nimibook), the docs of QEX
   and SciNim's getting started
-- **interactive pages**: Nim compiled to JavaScript, like the plant of Island 6
-- **your own blocks**: the tables, the maps and the plotly figures of this talk
+- 🕹️ **interactive pages**: Nim compiled to JavaScript, like the plant of Island 6
+- 🧱 **your own blocks**: the tables, the maps and the plotly figures of this talk
 """
     nbTextSmall "🐋 [nimib, a deep dive](deepdive/notebook.html)"
     speakerNote """
