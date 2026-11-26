@@ -30,15 +30,15 @@
   "portolano": {
     "box": [28, 60, 320, 230],
     "texts": [
-      "We start from the mainland: mainstream programming languages like Python, R, Julia, C, C++ and others.",
-      "First landfall. The passage most sailors come for: code that reads like Python and runs like C.",
-      "Inhabited: crews of bioinformaticians and lattice physicists made port here and stayed. Ask for their logbooks.",
-      "Well charted waters: tensors, data frames and plots. A small crew keeps the beacons lit; mind the rocks where the charts end.",
-      "Bridges to Python, C and JavaScript. Ships of any flag may call here and leave with their cargo.",
-      "Expressivity is ingrained in the language. Two landmarks: operators of your own making, and units checked by the compiler, built with a macro.",
-      "The same app sailed twice: once in Shiny, once compiled to JavaScript. Light winds, quick crossing.",
-      "The home port of this chart: notebooks as plain Nim files, built into pages and slides.",
-      "Landfall. Back on the mainland, the hold full of samples. Fair winds."
+      "Every language brings a fresh perspective. Let's sail to Nim's.",
+      "Reads like Python, runs like C.",
+      "Real science, done by small crews.",
+      "The building blocks are there. The crew is small.",
+      "Nim talks to C, Python and JavaScript.",
+      "Macros: shape the language to your problem.",
+      "One app, twice: in Shiny and in Nim in the browser.",
+      "A notebook is a plain Nim file.",
+      "Back home, with a fresh perspective."
     ]
   },
   "agenda": {"y": 522}
