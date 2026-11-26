@@ -80,7 +80,13 @@ Imperative first, functional later, obj oriented when needed.
 - a tiny ecosystem
 - few people know it, weak governance limits adoption
 """
-    reference "Andreas Rumpf, 2008 (as Nimrod), 1.0 in 2019, 2.0 in 2023; still evolving: Nimony / Nim 3.0 upcoming. [nim-lang.org](https://nim-lang.org)"
+    reference """Andreas Rumpf, 2008 (as Nimrod, a systems language with macros),
+1.0 in 2019, 2.0 in 2023;
+still evolving: Nimony / Nim 3.0 upcoming. [nim-lang.org](https://nim-lang.org)
+
+Universal: from embedded to webdev (fullstack), from gamedev to scientific computing,
+you can build a language or an OS with it.
+"""
     speakerNote """
 Not a tutorial: just enough to read the examples.
 Nim is a general purpose language, not made for science,
