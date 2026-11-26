@@ -4,9 +4,9 @@ import ggplotnim
 import arraymancer / linear_algebra # solve
 import tabelline except Column, readCsv
 import ../my
-import island3_network, island3_nanuq, island3_above4000, island3_islands
+import island3_network, island3_above4000, island3_islands
 export math, sequtils, ggplotnim, linear_algebra
-export networkSlide, nanuqSlide, tabellineSlide, nanuqSlides, above4000Slide, islandsSlide
+export networkSlide, above4000Slide, islandsSlide
 
 # Section 4: Island 3: Ecosystem (see outline.md)
 # The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2 and K3.
@@ -19,11 +19,11 @@ export networkSlide, nanuqSlide, tabellineSlide, nanuqSlides, above4000Slide, is
 proc stackTable*(): Tabella =
   let stack = @[
     (part: "Tensors", python: "NumPy, PyTorch", r: "arrays, torch",
-     nim: "[Arraymancer](https://github.com/mratsim/Arraymancer)"),
+     nim: "[Arraymancer](https://github.com/mratsim/Arraymancer), [flambeau](https://github.com/SciNim/flambeau)"),
     (part: "Dataframes", python: "pandas, Polars", r: "dplyr",
      nim: "[Datamancer](https://github.com/SciNim/Datamancer), [nanuq](https://github.com/pietroppeter/nanuq)"),
     (part: "Plots", python: "matplotlib", r: "ggplot2",
-     nim: "[ggplotnim](https://github.com/Vindaar/ggplotnim)"),
+     nim: "[ggplotnim](https://github.com/Vindaar/ggplotnim), [nim-plotly](https://github.com/SciNim/nim-plotly)"),
     (part: "Display tables", python: "Great Tables", r: "gt",
      nim: "[tabelline](https://github.com/pietroppeter/tabelline)")]
   tabella(stack, rownameCol = "part")
@@ -162,7 +162,7 @@ Backends: PNG/PDF via cairo, SVG, TikZ, Vega-Lite.
 
 template scinimSlide* {.dirty.} =
   slide: # 4.11
-    nbText "## SciNim: a crew, not a library"
+    nbText "## SciNim community"
     nbTextSmall """
 [SciNim](https://github.com/SciNim) is an organization: 38 repositories since 2016,
 about 55 people. These 15 made 10 commits or more:
@@ -230,13 +230,11 @@ template island3DataStackSection* {.dirty.} =
     arraymancerSlide # 4.3
     networkSlide # 4.4
     datamancerSlide # 4.5
-    nanuqSlide # 4.6
-    ggplotnimSlide # 4.7
-    above4000Slide # 4.8 (nanuq and nim-plotly on the Alps)
-    tabellineSlide # 4.9
-    islandsSlide # 4.10 (the islands of the chart, uncovered)
-    scinimSlide # 4.11
-    island3RocksSlide # 4.12
+    ggplotnimSlide # 4.6
+    above4000Slide # 4.7 (nanuq and nim-plotly on the Alps)
+    islandsSlide # 4.8 (tabelline: the islands of the chart, uncovered)
+    scinimSlide # 4.9
+    island3RocksSlide # 4.10
 
 when isMainModule: # this part of the deck on its own: docs/slides_island3.html
   buildDeckPart("island3", "slides/island3_datastack.nim"):

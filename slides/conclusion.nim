@@ -5,19 +5,8 @@ import ../my
 # Section 9: Conclusion: back on land (see outline.md)
 # Takeaways and an opinionated reflection on why Nim is still niche. Carries K1, K3 and K4.
 
-# the tables of slides 9.4 and 9.5, made in procs and not in the templates below,
+# the table of slide 9.4, made in procs and not in the templates below,
 # so that tabelline's names stay out of the deck's templates (as in island3_datastack.nim)
-proc seenFromNimTable*(): Tabella =
-  let views = @[
-    (lang: "Python", notice: "loops are slow, so you think in arrays; in Nim a for loop is fine (Island 1)"),
-    (lang: "R", notice: "dplyr's formulas are metaprogramming: Datamancer's `f{...}` is the same idea (Island 3)"),
-    (lang: "Julia", notice: "the JIT gives you a REPL and costs a warm-up; Nim compiles ahead of time: no warm-up, no REPL (Island 6)"),
-    (lang: "C, C++", notice: "the same machine code with less ceremony; macros instead of templates and the preprocessor (Island 5)")]
-  tabella(views, rownameCol = "lang")
-    .colsLabel({"notice": "Nim makes you notice"})
-    .fmtMarkdown("notice")
-    .slideLook(fontSize = "0.7em")
-
 proc nicheTable*(): Tabella =
   let views = @[
     (area: "🧬 Language", view: "stable: 1.0 in 2019, 2.0 in 2023, ready for more than it is used for"),
@@ -88,25 +77,8 @@ Write the algorithm in Nim, and ship it to Python users as a wheel:
 that is the path naffprop took (Island 4).
 """
 
-template seenFromNimSlide* =
-  slide: # 9.4
-    nbText "## Your language, seen from Nim"
-    nbTable seenFromNimTable()
-    nbLede """
-Not "switch to Nim": every language is a set of tradeoffs,
-and their diversity is how scientific computing explores them
-"""
-    speakerNote """
-I am not asking you to switch. The voyage was a way to look
-back at the mainland from the sea: the tradeoffs of your own
-language that you no longer notice. Python is slow in loops,
-so you learned to think in arrays. Julia has a REPL, and pays
-with a warm-up. Each language made its choices for a reason,
-and the variety of languages is how we try new tradeoffs.
-"""
-
 template nicheSlide* =
-  slide: # 9.5
+  slide: # 9.4
     nbText "## Why still niche?"
     nbTable nicheTable()
     nbLede """
@@ -127,13 +99,79 @@ people, and it is hard to know from outside where the language goes.
 Still: it is fun, exciting, and has more potential than impact so far.
 """
 
+template playfulSlide* =
+  useP5
+  slide: # 9.5: the last word of the mainland, over a p5nim sketch
+    nbSketch("playful-sketch")
+    nbDiv("playful-word", ""):
+      nbText "# playfulness"
+    nbJsFromCodeGlobal:
+      import p5
+      import std / [dom, algorithm, strutils]
+      from std / math import nil
+    nbJsFromCode:
+      const
+        sphereW = 960 # the whole slide
+        sphereH = 700
+        sphereR = 250.0 # the sphere's radius
+        nBalls = 500 # points on the sphere
+        # Okazz's ballColors, as in the Thank You slide
+        ballColors = ["#f42464", "#f6a620", "#09aa75", "#58a5fd", "#4629d7",
+                   "#f93c1b", "#fbd50c", "#f7acc6", "#251872"]
+      type SphereBall = tuple[z, x, y: float, col: int]
+      proc hexChannel(c: string, k: int): float = float(parseHexInt(c[1 + 2 * k .. 2 + 2 * k]))
+      var spherePoints: seq[(float, float, float)] # a Fibonacci sphere: points evenly spread
+      for i in 0 ..< nBalls:
+        let y = 1 - 2 * (i.float + 0.5) / nBalls.float
+        let r = math.sqrt(1 - y * y)
+        let a = i.float * 2.399963 # the golden angle
+        spherePoints.add (math.cos(a) * r, y, math.sin(a) * r)
+
+      proc sphereTurned(sphereT: int): seq[SphereBall] =
+        ## the sphere turned by frame sphereT, around a tilted axis, back to front
+        let (a, tilt) = (sphereT.float * 0.006, 0.4 + 0.15 * math.sin(sphereT.float * 0.004))
+        for i, (x, y, z) in spherePoints:
+          let x1 = x * math.cos(a) + z * math.sin(a)
+          let z1 = z * math.cos(a) - x * math.sin(a)
+          let y2 = y * math.cos(tilt) - z1 * math.sin(tilt)
+          let z2 = y * math.sin(tilt) + z1 * math.cos(tilt)
+          result.add (z: z2, x: x1, y: y2, col: (i + sphereT div 40) mod ballColors.len)
+        result.sort()
+
+      proc sphereShown(): bool =
+        document.querySelector("section.present > #playful-sketch") != nil
+
+      var sphereT = 0
+      proc sphereSketch() = # in a proc: p5nim's instance mode fails to compile at the top level
+        instance("playful-sketch"):
+          setup:
+            createCanvas(sphereW, sphereH)
+          draw:
+            if not sphereShown(): return
+            inc sphereT
+            clear() # transparent: the slide's background shows through
+            noStroke()
+            let sphereBalls = sphereTurned(sphereT)
+            for k in 0 ..< sphereBalls.len:
+              let b = sphereBalls[k]
+              let d = 6 + 9 * (b.z + 1) # the near side bigger
+              let c = ballColors[b.col]
+              fill(hexChannel(c, 0), hexChannel(c, 1), hexChannel(c, 2), 120 + 135 * (b.z + 1) / 2)
+              ellipse(sphereW / 2 + sphereR * b.x, sphereH / 2 + sphereR * b.y, d, d)
+      sphereSketch()
+    speakerNote """
+And one last word, the one that sums up Nim for me: playfulness.
+The sphere is a p5nim sketch, Nim compiled to JavaScript,
+in the colors of Okazz, like the one at the end.
+"""
+
 template conclusionSection* =
   slide:
     mapSlide(8) # 9.1
     beginnerSlide
     builderSlide
-    seenFromNimSlide
     nicheSlide
+    playfulSlide
 
 when isMainModule: # this part of the deck on its own: docs/slides_conclusion.html
   buildDeckPart("conclusion", "slides/conclusion.nim"):

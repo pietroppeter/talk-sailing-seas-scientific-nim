@@ -158,7 +158,7 @@ Julia needs no bridge: any Nim proc exported with the C ABI
 
 template nimlangPypiSlide* =
   slide: # 5.5
-    nbText "## Write it in Nim, use it from Python"
+    nbText "## 👑 `uv add nimlang` 🐍"
     nbTextSmall """
 `nimlang-pypi` (`uv add nimlang`, weeks old, made with AI): the Nim compiler in a Python wheel,
 with `zig cc` as the C compiler. Nothing else to install.

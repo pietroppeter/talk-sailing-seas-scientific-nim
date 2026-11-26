@@ -186,12 +186,12 @@ A tiny ecosystem: pioneers build what they need,
 or move where the libraries are
 """
     nbDiv("rocks-quotes", ""):
-      nbQuote("""**I mostly switched to rust** since that's where
-the bioinformatics libs are, but *I still really like nim*""",
+      nbQuote("""*I mostly switched to rust* since that's where
+the bioinformatics libs are, but **I still really like nim**""",
         "Brent Pedersen, personal communication, 2026")
-      nbQuote("""by choosing Nim [...] **I underestimated
-the amount of code I would / had to write** [...]
-*I learned way more than I would have otherwise*""",
+      nbQuote("""by choosing Nim [...] *I underestimated
+the amount of code I would / had to write* [...]
+**I learned way more than I would have otherwise**""",
         "Vindaar, in his thesis")
     speakerNote """
 The first rocks ahead. Brent mostly switched to Rust:

@@ -75,6 +75,9 @@ proc islandsContent(nb: var Nb) = # 4.10
           fmtNanoplot "shape", plotType = "shape"
           fmtFlag "code"
           fmtNanoplot "people"
+          tabHeader(
+            "A nice table with some islands",
+            "API after gt and Great Tables")
           colsLabel:
             shape: ""
             code: ""
