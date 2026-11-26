@@ -102,7 +102,7 @@ And there is nblog, a blog of nimib posts, and nimibex with more blocks.
 
 template nimibLandSlide* =
   slide: # 8.5
-    nbText "## nimib land: 24 people"
+    nbText "## nimib land community"
     nbAvatars ["pietroppeter", "HugoGranstrom", "neroist", "Clonkk",
       "dlesnoff", "Yardanico", "Vindaar", "quimt", "metagn", "lost22git",
       "sent44", "PhilippMDoerner", "lbartoletti", # nimib
