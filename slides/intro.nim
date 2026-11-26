@@ -10,27 +10,27 @@ import ../my
 type Language* = tuple[lang: string, since: int, cameTo: string, price: string]
 
 const mainland*: seq[Language] = @[
-  (lang: "Fortran", since: 1957, cameTo: "turn formulas into fast code",
+  (lang: "Fortran", since: 1957, cameTo: "formulas as fast code",
    price: "great on arrays, hard for the rest"),
-  (lang: "C", since: 1972, cameTo: "be portable and close to the machine",
+  (lang: "C", since: 1972, cameTo: "portable, close to the machine",
    price: "memory by hand"),
-  (lang: "C++", since: 1985, cameTo: "add abstractions at no runtime cost",
+  (lang: "C++", since: 1985, cameTo: "abstractions at no runtime cost",
    price: "complexity, long builds"),
-  (lang: "Python", since: 1991, cameTo: "be easy, general, the glue",
+  (lang: "Python", since: 1991, cameTo: "ease, generality, the glue",
    price: "slow loops: the fast part in C"),
-  (lang: "R", since: 1993, cameTo: "do statistics interactively",
+  (lang: "R", since: 1993, cameTo: "interactive statistics",
    price: "slow loops, odd beyond statistics"),
-  (lang: "Julia", since: 2012, cameTo: "be easy and fast, for science",
+  (lang: "Julia", since: 2012, cameTo: "ease and speed, for science",
    price: "compile latency, mostly science"),
-  (lang: "Rust", since: 2012, cameTo: "be fast and memory safe, no GC",
+  (lang: "Rust", since: 2012, cameTo: "speed and memory safety, no GC",
    price: "the borrow checker, long builds"),
-  (lang: "Nim", since: 2008, cameTo: "be universal and minimal", price: "small, complex compiler"),
+  (lang: "Nim", since: 2008, cameTo: "universal and minimal", price: "small, complex compiler"),
 ]
 
 proc mainlandTable*(): Tabella =
   tabella(mainland, rownameCol = "lang")
     .fmtNumber("since", decimals = 0, useSeps = false)
-    .colsLabel({"since": "since", "cameTo": "came to", "price": "the price"})
+    .colsLabel({"since": "since", "cameTo": "brings", "price": "the price"})
     .tabFootnote("Year of the first release; R grew out of S (1976), NumPy dates from 2006.",
       loc.columnLabels("since"))
 
@@ -38,16 +38,17 @@ template mainlandSlide* =
   slide: # 1.3
     nbText "## The mainland"
     nbText """
-Each language came to solve a problem the previous ones
-did not, and each one has a price.
+Each language brings a fresh perspective to old problems,
+and has a price. Languages feed on and inspire each other.
 """
     nbTable mainlandTable().slideLook(fontSize = "0.55em").highlightRows(where(it["lang"] == "Nim"))
     speakerNote """
 I love programming languages. I mostly used Python,
 and very little of the others.
-What matters here: every language comes with tradeoffs,
-and an interesting language pushes you to do things
-differently, which often gives back to the ecosystem.
+What matters here: every language brings a fresh perspective
+to old problems, and comes with tradeoffs.
+What I believe in is an ecosystem of languages
+that feed on each other and inspire each other.
 Nim is a very interesting project.
 
 At the end of the talk, you should have a sense of what Nim gives you and what it costs.
