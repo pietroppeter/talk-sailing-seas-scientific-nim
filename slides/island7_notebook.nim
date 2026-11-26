@@ -1,4 +1,4 @@
-import std / math
+import std / [math, sequtils]
 import nimib, nimiSlides
 import ../my
 
@@ -85,7 +85,6 @@ template nimibMakesSlide* =
 - **books**: [nimibook](https://github.com/pietroppeter/nimibook), the docs of QEX
   and SciNim's getting started
 - **interactive pages**: Nim compiled to JavaScript, like the plant of Island 6
-- **READMEs**: the same blocks rendered as Markdown
 - **your own blocks**: the tables, the maps and the plotly figures of this talk
 """
     nbTextSmall "🐋 [nimib, a deep dive](deepdive/notebook.html)"
@@ -98,6 +97,30 @@ nimibook makes a book with a sidebar out of many documents.
 The JavaScript backend means a page can carry a small app,
 written in Nim and compiled when the page is built.
 And there is nblog, a blog of nimib posts, and nimibex with more blocks.
+"""
+
+const
+  explainerShots = ["nanuq-aged19", "tabelline-fosdem", "dragging", "faretto"]
+  phoneShots = ["devrooms", "dragging", "eight", "faretto", "iphone", "month",
+    "nanuq-above4000", "nanuq-aged19", "nanuq-elnino", "nanuq-move37", "nimibland",
+    "nimony", "tabelline-explainer", "tabelline-fosdem", "tabelline-isole", "tabelline-milano"]
+
+template explainersSlide* =
+  slide: # 8.5: what nimib is for me now
+    nbCollage("EXPLAINERS", explainerShots.mapIt("images/explainers/desk-" & it & ".jpg"))
+    speakerNote """
+What I make with nimib today, mostly with Claude: explainers.
+A nanuq post on a teenager's cycling season, a tabelline story
+on FOSDEM, a port of declarative dragging, Faretto
+(can Nim code be alive, like Pharo?). Each one is a nimib page.
+"""
+
+template explainersPhoneSlide* =
+  slide: # 8.6: the same, as I read them, on the phone
+    nbCollage("EXPLAINERS", phoneShots.mapIt("images/explainers/phone-" & it & ".jpg"), phone = true)
+    speakerNote """
+And this is how I read them: on the phone. Nanuq's blog,
+tabelline's stories, my Claude artifacts, all nimib pages.
 """
 
 template nimibLandSlide* =
@@ -168,6 +191,8 @@ template island7NotebookSection* =
     literateSlide # 8.2
     nimibSlide # 8.3
     nimibMakesSlide # 8.4
+    explainersSlide # 8.5
+    explainersPhoneSlide # 8.6 (one of the two, Pietro picks)
     nimibLandSlide # 8.5
     island7RocksSlide # 8.6
 
