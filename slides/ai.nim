@@ -21,7 +21,7 @@ What does not change (becomes more important):
 - *Ownership*: you own everything you put out
 - *Trust*: the trust you build with your community of users
 """
-    reference "(me: went heavy on AI only in last two months)"
+    reference "(my limited experience: heavy AI use only in the last two months)"
     speakerNote """
 It is November 2026, so I need an AI slide. Let me keep
 it to the context of this talk. Three things.

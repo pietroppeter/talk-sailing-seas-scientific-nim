@@ -61,7 +61,7 @@ template tradeoffsSlide* =
 General purpose, universal and minimal;
 statically typed, compiled (to C, C++, JavaScript),
 with a syntax like Python.
-Imperative first, functional later, obj oriented when needed.
+Imperative first, functional later, object oriented when needed.
 """
     compactColumns:
       column:
@@ -70,7 +70,7 @@ Imperative first, functional later, obj oriented when needed.
 
 - reads like Python, runs like C
 - metaprogramming (macros), JavaScript, interop
-- one lang for scripting, libraries, applications
+- one language for scripting, libraries, applications
 """
       column:
         nbText """
