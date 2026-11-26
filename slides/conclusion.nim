@@ -24,26 +24,41 @@ proc nicheTable*(): Tabella =
 template beginnerSlide* =
   slide: # 9.2
     nbText "## For the beginner"
-    nbLede """
-Try it: accessible, fun, and a mirror
-for your own language
+    columns:
+      column:
+        nbText """
+### ⛵ Fair winds
+
+- reads like Python, with a compiler
+  that checks your types
+- a small community: easy to find
+  something to contribute and make your own
+- room to experiment, also with AI
 """
-    nbText """
-- reads like Python, a compiler that checks your types
-- where to start: [the playground](https://play.nim-lang.org),
-  [Nim for Python programmers](https://github.com/nim-lang/Nim/wiki/Nim-for-Python-Programmers),
-  [Exercism](https://exercism.org/tracks/nim),
-  [SciNim getting started](https://scinim.github.io/getting-started/)
-- a first project: an Advent of Code puzzle, a small CLI, a nimib page
+      column:
+        nbText """
+### 🪨 Rocks ahead
+
+- a niche: it will not help you find a job
+- fewer libraries: things take more work
+- fewer answers online
+"""
+    nbTextSmall """
+Where to start: [the playground](https://play.nim-lang.org),
+[Nim for Python programmers](https://github.com/nim-lang/Nim/wiki/Nim-for-Python-Programmers),
+[Exercism](https://exercism.org/tracks/nim),
+[SciNim getting started](https://scinim.github.io/getting-started/)
 """
     speakerNote """
-If you are new to scientific computing, or just curious:
-Nim is a good second language. It reads like Python,
-and the compiler teaches you what types and compilation are about.
-At the very least, a learning tool: it shows you
-the tradeoffs of the language you use every day.
-Start in the browser with the playground, then the wiki page
-for Python programmers. Advent of Code starts in a few days.
+If you are new, or just curious. Fair winds: it reads like Python,
+and the compiler teaches you what types are about.
+The community is small, so it is much easier to find something
+you want to contribute and make it your own.
+And it is a good place to experiment with AI: in a big ecosystem
+you have to go slower with AI; in a small one you can try more.
+Rocks ahead: it is a niche, it will not help you find a job,
+and things are harder to do: fewer libraries, fewer answers online.
+Start in the browser with the playground. Advent of Code starts in a few days.
 """
 
 template builderSlide* =
@@ -52,7 +67,7 @@ template builderSlide* =
     columns:
       column:
         nbText """
-### Fair winds
+### ⛵ Fair winds
 
 - prototype and fast code in one language
 - C and C++ libraries one line away
@@ -61,7 +76,7 @@ template builderSlide* =
 """
       column:
         nbText """
-### Rocks ahead
+### 🪨 Rocks ahead
 
 - a tiny ecosystem: you will write more code
 - a few maintainers carry each library
