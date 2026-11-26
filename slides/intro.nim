@@ -24,7 +24,7 @@ const mainland*: seq[Language] = @[
    price: "compile latency, mostly science"),
   (lang: "Rust", since: 2012, cameTo: "be fast and memory safe, no GC",
    price: "the borrow checker, long builds"),
-  (lang: "Nim", since: 2008, cameTo: "?", price: "this talk"),
+  (lang: "Nim", since: 2008, cameTo: "be universal and minimal", price: "small"),
 ]
 
 proc mainlandTable*(): Tabella =
