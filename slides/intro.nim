@@ -1,6 +1,7 @@
 import nimib, nimiSlides
 import tabelline
 import ../my
+import playful_okazz
 
 # Section 1: Intro: leaving the mainland (see outline.md)
 # Set up the voyage: many languages, each with its tradeoffs; this talk shows Nim's. Carries K1 and K4.
@@ -141,6 +142,7 @@ template introSection* =
     mapSlide(0) # 1.2
     mainlandSlide # 1.3
     tradeoffsSlide # 1.4
+    okazzPlayfulSlide # 1.5 (p5nim, after Okazz)
 
 when isMainModule: # this part of the deck on its own: docs/slides_intro.html
   buildDeckPart("intro", "slides/intro.nim"):
