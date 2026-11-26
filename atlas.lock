@@ -225,7 +225,7 @@
     "tabelline": {
       "dir": "$deps/tabelline",
       "url": "https://github.com/pietroppeter/tabelline",
-      "commit": "1a92954d2ef713fb68c36028b0f1abd10c2225eb",
+      "commit": "47ba07b659481d408ad7be66e6bec7ef6b4c911f",
       "version": ""
     },
     "threading": {

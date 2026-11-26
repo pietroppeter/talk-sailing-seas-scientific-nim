@@ -32,7 +32,7 @@ proc nanuqContent(nb: var Nb) = # 4.8
 [Polars](https://pola.rs) for Nim:
 the Rust library behind a C ABI,
 116 of Polars' 128 feature groups
-([deep dive](deepdive/penguins_polars.html)).
+(🐋 [deep dive](deepdive/penguins_polars.html)).
 """
   speakerNote """
 The same query as with Datamancer, now Polars style:
@@ -75,7 +75,7 @@ proc tabellineContent(nb: var Nb) = # 4.9
   nbTextSmall """
 After R's gt and Python's Great Tables, in plain Nim:
 every table in this talk is made with it
-([deep dive](deepdive/penguins_polars.html)).
+(🐋 [deep dive](deepdive/penguins_polars.html)).
 """
   speakerNote """
 The last block: display tables, for people to read.

@@ -73,7 +73,7 @@ template networkSlide* =
 Autograd, layers, optimizers;
 since October 2026 also GPT-2-like transformers
 ([by lucidrains](https://github.com/mratsim/Arraymancer/pull/695)).
-Step by step in [the deep dive](deepdive/penguins_data_stack.html).
+Step by step in 🐋 [the deep dive](deepdive/penguins_data_stack.html).
 """
     speakerNote """
 On top of the tensors, a compact deep learning framework, as in PyTorch.

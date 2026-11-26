@@ -302,7 +302,11 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
     if isl.note.len > 0:
       let c = isl.cape((-1.0, 0.5))
       word("chart-note", isl.note, (c.x - 5, c.y + 10), "end")
-  if html and v.landLabelAngle == 0: word("land-name", "MAINLAND", v.landLabel)
+  if html and v.landLabelAngle == 0:
+    word("land-name", "MAINLAND", v.landLabel)
+    if id == "title": # what the mainland is, on the title slide only (Pietro, dry run 2026-11-26)
+      word("land-sub", "(mainstream languages for scientific computing:<br>Python, R, Julia, C, C++, ...)",
+        (v.landLabel.x, v.landLabel.y + 25))
   else: result.add &"""<text class="land-name" {v.landLabelAttrs} text-anchor="middle">MAINLAND</text>"""
   word("note", "Coasts © OpenStreetMap contributors (ODbL)", (v.w / 2, v.h - 10))
   result.add roseSvg(rose, 34)
@@ -346,6 +350,7 @@ const chartMapCss* = """
 .chart-stage .ct.chart-note { font-family: "Spectral", serif; font-style: italic; font-size: 0.833cqw; text-shadow: 0 0 1px #fdfcf7, 0 0 2px #fdfcf7, 0 0 3px #fdfcf7, 0 0 4px #fdfcf7; }
 .chart-stage .ct.land-name { font-weight: 700; font-size: 1.510cqw; letter-spacing: 0.06em; color: #13334c; text-shadow: 0 0 1px #fdfcf7, 0 0 2px #fdfcf7, 0 0 3px #fdfcf7, 0 0 4px #fdfcf7; }
 .chart-stage[data-current="0"] .ct.land-name, .chart-stage[data-current="8"] .ct.land-name { color: #b0167a; font-size: 1.771cqw; }
+.chart-stage .ct.land-sub { font-family: "Space Grotesk", sans-serif; font-size: 1.05cqw; line-height: 1.3; text-align: center; white-space: nowrap; color: #6b7682; text-shadow: 0 0 1px #fdfcf7, 0 0 2px #fdfcf7, 0 0 3px #fdfcf7, 0 0 4px #fdfcf7; }
 .chart-stage .ct.note { font-size: 0.625cqw; color: #4a5763; }
 /* the portolano: the sailing directions of each chart, in a box where the title block was */
 .chart-stage .ct.portolano { transform: none; white-space: normal; box-sizing: border-box; background: rgba(253, 252, 247, 0.93); border: 1px solid #1f2a33; outline: 0.5px solid #1f2a33; outline-offset: 0.25cqw; padding: 0.8cqw 1cqw; box-shadow: 0 0.4cqw 1.4cqw rgba(31, 42, 51, 0.12); line-height: 1.3; }

@@ -8,7 +8,7 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 - [ ] Portolano texts on the charts are Claude's drafts (`maps/voyage.json`): rewrite them in the map editor.
 - [ ] Timing: the target is 25 minutes of content and 5 of Q&A (2026-11-25); the sections add up to 23 minutes (with QEX, Island 2 is 2.5; Island 1 is one slide, 1 minute). Use the 2 minutes of slack, or leave them for the day? Check in the dry run.
 
-- [ ] Slide 0.3 AI (`slides/ai.nim`, after about me): a placeholder; what it says, and the minutes it takes from the opening (still 1 minute in the outline).
+- [ ] Slide 0.3 AI: content from the first dry run (2026-11-26); the opening (title with hands up, about me, AI) clearly takes more than the 1 minute of the outline: time it.
 
 ## Unanswered points from merged PRs
 
@@ -68,7 +68,7 @@ Chosen by Claude on 2026-11-25 (Pietro: go with your guts, no slides removed); r
 
 Placeholder slides that still need content:
 
-- [ ] 6.6 Island 5 rocks ahead (macros readability, concepts).
+- [ ] 6.6 Island 5 rocks ahead: Claude's proposal from dry run 1 (hard to write and debug, every DSL a new language, procs and templates first), to check.
 - [ ] 9.2 to 9.5 Conclusion: for the beginner, for the builder, your language seen from Nim, why still niche (your views on governance, tooling, Nimony and NIF).
 - [ ] Deep dives for the new code-heavy slides (one nimib page in deepdive/ per code slide).
 

@@ -15,18 +15,26 @@ template literateSlide* =
 Let us concentrate rather on explaining to human beings
 what we want a computer to do.""",
       "Donald Knuth, *Literate Programming* (1984)")
+    nbQuote("""
+"Literate computing": the weaving of a narrative directly
+into a live computation, interleaving text with code and results.""",
+      "Fernando Pérez, *Literate computing and computational reproducibility* (2013)")
     nbText """
-- 2001 IPython, 2014 Jupyter (Fernando Pérez):
-  code, results and story, the lab notebook of science
-- the price: hidden state, cells run out of order,
-  JSON files hard to review
-- plain files again: Quarto, Pluto.jl, marimo
-"""
-    reference """
-Of the GitHub notebooks a 2019 study could run, 1 in 4 ran
-without errors and 4% gave the same results (Pimentel et al.)
+*Jupyter* (2014, from IPython) created the notebook as we know it:
+code, results and story, the lab notebook of science.
 """
     speakerNote """
+So how does a notebook work with no REPL? That is what
+started me doing open source: I wanted something that
+covered the need of Jupyter, but I had no REPL, so I had
+to invent something completely different, that took
+advantage of what Nim offers: nimib.
+But first, the definition. Literate programming: explaining
+to human beings what we want a computer to do (Knuth).
+Literate computing, as Fernando Pérez calls it: a narrative
+woven into a live computation. And Jupyter created the
+concept of a notebook: it did not exist before.
+
 Knuth wanted programs written for people to read, with the code
 in the order of the explanation (WEB, then TeX).
 Fernando Pérez, keynote of this conference, started IPython in 2001;
@@ -80,7 +88,7 @@ template nimibMakesSlide* =
 - **READMEs**: the same blocks rendered as Markdown
 - **your own blocks**: the tables, the maps and the plotly figures of this talk
 """
-    nbTextSmall "[nimib, a deep dive](deepdive/notebook.html)"
+    nbTextSmall "🐋 [nimib, a deep dive](deepdive/notebook.html)"
     speakerNote """
 A block is a type and a function that renders it:
 nimib ships text, code, images, files; you add your own.
@@ -99,43 +107,19 @@ template nimibLandSlide* =
       "dlesnoff", "Yardanico", "Vindaar", "quimt", "metagn", "lost22git",
       "sent44", "PhilippMDoerner", "lbartoletti", # nimib
       "svenrdz", "dsrw", "moigagoo", "beef331", "ptweir",
-      "tobimori", "nukopy", "alesanchezr", "bugct", "feluxe", "zetashift"]
-    nbTextSmall """
+      "tobimori", "nukopy", "alesanchezr", "bugct", "feluxe", "zetashift"],
+      small = true
+    columns:
+      column:
+        nbTextSmall """
 13 wrote **nimib**, 24 with **nimiSlides**, **nimibook**, **nimiBoost**,
 **nimitheme**, **nimipdf** and [nimib-land](https://github.com/nimib-land);
 nimibook documents 13 projects (enu, owlkettle, Norm, QEX, ...),
-nimiSlides made 10 of 41 NimConf talks since 2022
-"""
-    reference """
+nimiSlides made 10 of 41 NimConf talks since 2022.
+
 These are commits only: using it, reporting issues and telling us
 what you built count as much, today more than ever
-([who builds nimib land](deepdive/notebook.html))
-"""
-    speakerNote """
-These are the people who wrote nimib land, from the git history of each repository.
-Commits are only what git remembers: users, issues and feedback
-are how most of nimib got better, and with AI writing code, they matter most.
-nimiSlides made at least 10 of the 41 NimConf talks since 2022;
-nimibook is the documentation of 13 projects, enu, owlkettle, Norm and QEX among them.
-nimib: I started it in 2020, Hugo maintains it with me, 13 people wrote code for it.
-Hugo made nimiSlides, this deck, and nimiBoost, the VS Code preview;
-Clonkk wrote half of nimibook; neroist made nimitheme and nimipdf.
-nimib-land is the GitHub organization where the ecosystem is moving:
-nimibex for experiments and extra blocks, nblog, and nimib.py.
-"""
-
-template island7RocksSlide* =
-  slide: # 8.6
-    nbText "## Rocks ahead"
-    columns:
-      column:
-        nbText """
-- no kernel: every change reruns the whole
-  document, seconds, not instant
-- made to explain more than to explore:
-  nothing to poke at
-- a small community, two maintainers,
-  docs behind the code
+(🐋 [who builds nimib land](deepdive/notebook.html))
 """
       column:
         nbDiv("crew-photo", ""):
@@ -144,14 +128,36 @@ template island7RocksSlide* =
               "our first meeting in person; co-maintainers since July 2022",
             alt = "Selfie of Pietro and Hugo Granström by the portholes of a boat at night")
     speakerNote """
+These are the people who wrote nimib land, from the git history of each repository.
+Commits are only what git remembers: users, issues and feedback
+are how most of nimib got better, and with AI writing code, they matter most.
+nimiSlides made at least 10 of the 41 NimConf talks since 2022;
+nimibook is the documentation of 13 projects, enu, owlkettle, Norm and QEX among them.
+nimib: I started it in 2020, Hugo maintains it with me, 13 people wrote code for it.
+The photo: PyCon Sweden 2023, the first time Hugo and I met in person,
+a year after he became co-maintainer with nimib 0.3.
+Hugo made nimiSlides, this deck, and nimiBoost, the VS Code preview;
+Clonkk wrote half of nimibook; neroist made nimitheme and nimipdf.
+nimib-land is the GitHub organization where the ecosystem is moving:
+nimibex for experiments and extra blocks, nblog, and nimib.py.
+"""
+
+template island7RocksSlide* =
+  slide: # 8.6
+    nbText "## ⚠️ Rocks ahead 🪨"
+    nbText """
+- no kernel: every change reruns the whole document,
+seconds, not instant
+- made to explain more than to explore: nothing to poke at
+- a small community, two maintainers, docs behind the code
+"""
+    speakerNote """
 The tradeoff of the unexpected direction.
 Long computations you cache by hand.
 Jupyter is a great place to explore: you keep the data in memory
 and try things. nimib reruns everything, which is what makes it
 reproducible, and what makes it slow when the work is heavy.
 nimiBoost in VS Code shows a preview as you save.
-The photo: PyCon Sweden 2023, the first time we met in person,
-a year after Hugo became co-maintainer with nimib 0.3.
 nimib is mine and Hugo's: a hobby project, and the 0.4 rewrite
 left parts of the docs behind. Help is welcome.
 """

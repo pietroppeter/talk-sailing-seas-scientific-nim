@@ -56,6 +56,10 @@ const slideBlocksCss = """
 .reveal .code-stage .item.lifted { transition: none; cursor: grabbing; }
 .reveal .code-stage .handle { fill: var(--r-link-color); fill-opacity: 0; } /* a secret: no hint that the lines move */
 .reveal .code-stage .lifted .handle { fill-opacity: 0; }
+.reveal .code-stage .scrub { cursor: ew-resize; } /* bounds you scrub, as in Bret Victor's explorable explanations */
+/* what you are about to drag turns orange: the word slider of a line, or a number */
+.reveal .code-stage .item:hover:not(:has(.scrub:hover)) .slider-word, .reveal .code-stage .item.lifted .slider-word,
+.reveal .code-stage .scrub:hover { color: #ee961a; }
 /* imageAside: a picture with something smaller beside it (slide 7.2) */
 .reveal .img-aside { display: grid; grid-template-columns: 2fr 1fr; gap: 1em; align-items: center; margin-top: 0.6em; }
 .reveal .img-aside img { width: 100%; margin: 0; }
@@ -79,16 +83,27 @@ const slideBlocksCss = """
 .reveal .slides section > figure.quote blockquote { width: auto; margin: 0; font-size: 0.85em; }
 .reveal .slides section > figure.quote figcaption { font-size: 0.55em; margin-top: 0.4em; }
 /* the photo of the crew on the rocks ahead slide (8.6): smaller, rounded */
-.reveal .crew-photo img { width: 75%; border-radius: 14px; }
+.reveal .crew-photo img { width: 60%; border-radius: 14px; }
+.reveal .crew-photo figure { margin: 0.5em 0 0; }
+.reveal .crew-photo figcaption { font-size: 0.5em; }
 /* nbImg with a caption on a slide (8.6, the photo of the crew) */
 .reveal .slides figure figcaption { font-size: 0.55em; margin-top: 0.3em; }
 /* nbAvatars: round GitHub avatars of the people of nimib land (8.5) */
 .reveal .avatars { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em 0; margin: 0.4em auto 0.6em; max-width: 24em; }
 .reveal .avatars a { display: flex; flex-direction: column; align-items: center; width: 3em; text-decoration: none; }
 .reveal .avatars img { width: 2.1em; height: 2.1em; border-radius: 50%; margin: 0; border: 2px solid var(--r-link-color); }
+.reveal .avatars.small { max-width: 40em; margin: 0.2em auto 0.3em; }
+.reveal .avatars.small a { width: 2.1em; }
+.reveal .avatars.small img { width: 1.4em; height: 1.4em; }
 .reveal .avatars .nick { font-size: 0.32em; color: gray; margin-top: 0.3em; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* no line numbers on code (dry run 1): reveal.js draws them as a table column */
+.reveal .hljs-ln-numbers { display: none; }
+/* centered: an image and its caption in the middle of a column (slide 4.8) */
+.reveal .centered { text-align: center; }
+.reveal .centered figure { margin: 0.3em auto 0; }
 /* compactColumns: three narrow columns of code (Island 4 bridges), smaller code */
 .reveal .compact-cols pre { font-size: 0.5em; }
+.reveal .compact-cols ul { font-size: 0.8em; } /* lists too (1.4, You get / You pay) */
 /* a table on its own in a slide (not in a layout's grid) gets room above and below */
 .reveal .slides section > .tabella { margin: 0.8em 0; }
 /* code in nimiSlides' columns (a grid) fills its column */
@@ -436,8 +451,6 @@ template themedTitle*(body: untyped) =
     nbDiv("title-slide", ""):
       nbDiv("title-box", ""):
         body
-        when slideTheme == "chart":
-          nbLede("SCALE 1 : 25 (minutes + 5' Q&A)", "scale")
   else:
     body
 
@@ -471,7 +484,7 @@ template imageLeftSlide*(url: string, width: float, body: untyped) =
     nb.add imgLeft
 
 template compactColumns*(body: untyped) =
-  ## nimiSlides' `columns`, with smaller code, for three narrow columns of code
+  ## nimiSlides' `columns`, with smaller code and lists, for narrow columns
   nbDiv(classes = "compact-cols", styles = "display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); column-gap: 0.8em;"):
     body
 
@@ -481,16 +494,17 @@ template imageLeftSlide*(url: string, body: untyped) =
 newNbBlock(NbAvatars of NbBlock):
   logins: seq[string]
   dir: string
+  small: bool
   toHtml:
-    var html = "<div class=\"avatars\">"
+    var html = if blk.small: "<div class=\"avatars small\">" else: "<div class=\"avatars\">"
     for login in blk.logins:
       html.add &"""<a href="https://github.com/{login}"><img src="{blk.dir}/{login}.jpg" alt="{login}"><span class="nick">{login}</span></a>"""
     html & "</div>"
 
-template nbAvatars*(logins: openArray[string]) =
+template nbAvatars*(logins: openArray[string], small = false) =
   ## inside a slide: a wall of round GitHub avatars (vendored in docs/images/contributors/<login>.jpg),
   ## each linked to its profile (slide 8.5, the people of nimib land)
-  nb.add newNbAvatars(@logins, nb.doc.relToRoot("images/contributors"))
+  nb.add newNbAvatars(@logins, nb.doc.relToRoot("images/contributors"), small)
 
 newNbBlock(NbImageAside of NbContainer):
   url: string

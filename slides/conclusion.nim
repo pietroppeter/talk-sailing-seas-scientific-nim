@@ -20,15 +20,16 @@ proc seenFromNimTable*(): Tabella =
 
 proc nicheTable*(): Tabella =
   let views = @[
-    (area: "Language", view: "stable: 1.0 in 2019, 2.0 in 2023, ready for more than it is used for"),
-    (area: "Ecosystem", view: "small: libraries depend on a few people, users wait for libraries"),
-    (area: "Community", view: "friendly and small: one person can make a difference"),
-    (area: "Governance", view: "**the main shortcoming**: few people decide, the direction is hard to read from outside"),
-    (area: "Tooling", view: "editor support and compile times behind Rust's; Nimony and NIF are the way to catch up")]
+    (area: "🧬 Language", view: "stable: 1.0 in 2019, 2.0 in 2023, ready for more than it is used for"),
+    (area: "🛠️ Tooling", view: "editor support and compile times behind Rust's; Nimony and NIF are the way to catch up"),
+    (area: "📦 Ecosystem", view: "small: libraries depend on a few people, users wait for libraries"),
+    (area: "🤝 Community", view: "friendly and small: one person can make a difference"),
+    (area: "🏛️ Governance", view: "**the main shortcoming**: few people decide, the direction is hard to read from outside")]
   tabella(views, rownameCol = "area")
     .colsLabel({"view": "My view"})
     .fmtMarkdown("view")
-    .highlightRows(@[3])
+    .highlightRows(@[4])
+    .tabStyle(style.text(whitespace = "nowrap"), loc.stub())
     .slideLook(fontSize = "0.7em")
 
 template beginnerSlide* =
@@ -115,14 +116,14 @@ than the impact it had so far
     speakerNote """
 My opinionated view. The language is stable and ready:
 1.0 in 2019, 2.0 in 2023 with ARC/ORC memory management.
-The ecosystem is the chicken and egg of every small language.
-The community is friendly, and small enough that one person
-makes a difference (most of scientific Nim is a handful of people).
-The main shortcoming is governance: decisions rest with very few
-people, and it is hard to know from outside where the language goes.
 On tooling: editor support and compile times are behind Rust's;
 Nimony, the next compiler, and NIF, its intermediate format,
 are meant to bring incremental compilation and better tooling.
+The ecosystem is the chicken and egg of every small language.
+The community is friendly, and small enough that one person
+makes a difference (most of scientific Nim is a handful of people).
+Last, the main shortcoming is governance: decisions rest with very few
+people, and it is hard to know from outside where the language goes.
 Still: it is fun, exciting, and has more potential than impact so far.
 """
 

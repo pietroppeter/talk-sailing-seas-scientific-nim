@@ -4,9 +4,9 @@ import ggplotnim
 import arraymancer / linear_algebra # solve
 import tabelline except Column, readCsv
 import ../my
-import island3_network, island3_nanuq
+import island3_network, island3_nanuq, island3_above4000, island3_islands
 export math, sequtils, ggplotnim, linear_algebra
-export networkSlide, nanuqSlide, tabellineSlide, nanuqSlides
+export networkSlide, nanuqSlide, tabellineSlide, nanuqSlides, above4000Slide, islandsSlide
 
 # Section 4: Island 3: Ecosystem (see outline.md)
 # The basic building blocks of the data ecosystem, through an exploration of the penguins dataset. Carries K2 and K3.
@@ -24,26 +24,63 @@ proc stackTable*(): Tabella =
      nim: "[Datamancer](https://github.com/SciNim/Datamancer), [nanuq](https://github.com/pietroppeter/nanuq)"),
     (part: "Plots", python: "matplotlib", r: "ggplot2",
      nim: "[ggplotnim](https://github.com/Vindaar/ggplotnim)"),
-    (part: "Tables", python: "Great Tables", r: "gt",
+    (part: "Display tables", python: "Great Tables", r: "gt",
      nim: "[tabelline](https://github.com/pietroppeter/tabelline)")]
   tabella(stack, rownameCol = "part")
     .colsLabel({"python": "Python", "r": "R", "nim": "Nim"})
     .fmtMarkdown("nim")
     .highlightCols("nim")
-    .slideLook(fontSize = "0.85em")
+    .tabStyle(style.text(color = "#ee961a", weight = "bold"),
+              loc.stub(labels = ["Display tables"]))
+    .slideLook(fontSize = "0.7em")
 
 # dirty: Datamancer's `f{...}` formulas read `f` and type hints like `float`
 # as plain identifiers, which a normal template would bind to symbols
 template stackSlide* {.dirty.} =
   slide: # 4.2
-    nbText "## The stack"
+    nbText "## Ecosystem"
     nbTextSmall """
 The building blocks of data science, as in the
 [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)
-by Jake VanderPlas:
+by Jake VanderPlas (plus Great Tables):
 """
     nbTable stackTable()
+    columns:
+      column:
+        nbImg("images/lter_penguins.png", "45%")
+      column:
+        nbTextSmall """
+🐋 [A data exploration with the stack](deepdive/penguins_data_stack.html):
+344 penguins near Palmer Station, Antarctica.
+Data: Gorman, Williams and Fraser (2014),
+[palmerpenguins](https://allisonhorst.github.io/palmerpenguins/) (CC0).
+Artwork by @allison_horst.
+"""
     speakerNote """
+Tensors, dataframes and plots are the core of every
+book. But if you do not care about Nim and want a single
+takeaway from this talk: go and use Great Tables (Python)
+and gt (R). They are great, people should build more and
+better great tables, and I have been enjoying it a lot.
+To get inspired, go to their sites; you can also go to
+tabelline's site, I put a lot of love into it (still a
+lot to polish): there is an explainer on the islands of
+the Mediterranean.
+
+So, the ecosystem. If we start from the classic stack,
+the one I learned from Jake VanderPlas's Python Data
+Science Handbook: tensors, dataframes, plots. I add
+display tables: I worked on them recently, they are
+great and underused.
+Nim has not one but at least two tensor libraries,
+Arraymancer and Flambeau (more than one is also a
+problem); a dataframe built on Arraymancer, and nanuq,
+bindings to Polars; a plot library inspired by ggplot,
+and one that uses Plotly; and since recently tabelline,
+a port of Great Tables. nanuq and tabelline were born
+a month ago, and thanks to AI they are already feature
+complete and usable, which is kind of crazy.
+
 Nim has the same building blocks.
 Arraymancer is by Mamy (mratsim).
 Datamancer and ggplotnim are by Vindaar,
@@ -51,28 +88,6 @@ built for his PhD (island 2), now under SciNim.
 nanuq and tabelline are new, this autumn, and mine:
 the modern side, Polars and Great Tables.
 Let's try them on a dataset you all know.
-"""
-
-template penguinsSlide* {.dirty.} =
-  slide: # 4.3
-    nbText "## Meet the penguins"
-    nbImg("images/lter_penguins.png", "42%")
-    nbTextSmall """
-344 penguins, three species, three islands near Palmer Station, Antarctica.
-[The deep dive](deepdive/penguins_data_stack.html) explores them further:
-missing values, group and summarize, three plots,
-Simpson's paradox with tensors, k-means clustering,
-what else is in Arraymancer, nanuq and tabelline.
-"""
-    reference """
-Data: Gorman, Williams and Fraser (2014),
-[palmerpenguins](https://allisonhorst.github.io/palmerpenguins/) (CC0).
-Artwork by @allison_horst.
-"""
-    speakerNote """
-Familiar to the Python crowd (seaborn ships it)
-and to the R crowd (palmerpenguins).
-We use seaborn's CSV, missing values are empty fields.
 """
 
 template arraymancerSlide* {.dirty.} =
@@ -85,8 +100,9 @@ template arraymancerSlide* {.dirty.} =
       let A = [[2.0, 1.0], [1.0, 3.0]].toTensor
       echo solve(A, [3.0, 5.0].toTensor) # linear system, with LAPACK
     nbTextSmall """
-Inspired by NumPy and PyTorch: a solid ndarray with linear algebra,
-a compact deep learning framework (next slide), and the seeds of scikit-learn.
+More than NumPy: CPU and GPU backends (CUDA, OpenCL),
+a solid ndarray with linear algebra, deep learning (next slide),
+and the seeds of scikit-learn.
 """
     speakerNote """
 Bottom of the stack: tensors, as in NumPy.
@@ -113,7 +129,7 @@ template datamancerSlide* {.dirty.} =
         f{float: "mass (g)" << mean(`body_mass_g`)},
         f{float: "flipper (mm)" << mean(`flipper_length_mm`)})
     nbTextSmall """
-Inspired by dplyr, built on Arraymancer.
+Looks like dplyr, with Arraymancer as its backend.
 """
     speakerNote """
 Reads like dplyr or pandas: read, filter, group by, summarize.
@@ -128,7 +144,7 @@ template ggplotnimSlide* {.dirty.} =
   slide: # 4.7
     nbText "## Plots: ggplotnim"
     nbTextSmall """
-A port of ggplot2, using Datamancer dataframes.
+Looks like ggplot2, using Datamancer dataframes.
 """
     nbCode:
       ggplot(df, aes("flipper_length_mm", "body_mass_g",
@@ -145,36 +161,51 @@ Backends: PNG/PDF via cairo, SVG, TikZ, Vega-Lite.
 """
 
 template scinimSlide* {.dirty.} =
-  slide: # 4.10
-    nbText "## SciNim"
+  slide: # 4.11
+    nbText "## SciNim: a crew, not a library"
     nbTextSmall """
-[SciNim](https://github.com/SciNim) gathers the scientific Nim libraries.
-Start from [getting started](https://scinim.github.io/getting-started/):
-tutorials and a list of libraries. A few more:
+[SciNim](https://github.com/SciNim) is an organization: 38 repositories since 2016,
+about 55 people. These 15 made 10 commits or more:
 """
-    nbText """
-- [flambeau](https://github.com/SciNim/flambeau): bindings to libtorch
-- [nim-plotly](https://github.com/SciNim/nim-plotly): interactive plots with plotly.js
-- [numericalnim](https://github.com/SciNim/numericalnim): integration, ODEs, optimization, interpolation
+    nbAvatars ["Vindaar", "Clonkk", "HugoGranstrom", "mantielero", "xbello",
+      "andreaferretti", "mratsim", "hschindl", "lilkeet", "pietroppeter",
+      "brentp", "AngelEzquerra", "arkanoid87", "juancarlospaco", "BarrOff"]
+    compactColumns:
+      column:
+        nbTextSmall """
+**data** Datamancer, nim-plotly;
+**units** Unchained, Measuremancer;
+**numerics** numericalnim, impulse;
+**bridges** nimjl, rnim;
+**deep learning** flambeau;
+**physics** xrayAttenuation, NimBoltz
 """
+      column:
+        nbImg("images/scinim_getting_started.png", "75%",
+          caption = "[getting started](https://scinim.github.io/getting-started/): a nimibook (to be updated)")
     speakerNote """
-SciNim is the organization that collects libraries
-that would otherwise be scattered: Datamancer, unchained,
-numericalnim and more live there.
-The getting started site has tutorials for the stack
-and a list of libraries by topic.
+SciNim is not a library: it is the organization that
+collects libraries that would otherwise be scattered.
+38 repositories, about 55 people since 2016; these are
+the 15 with ten commits or more. Vindaar alone made
+more than a third of the commits, then Clonkk (here
+today) and Hugo. Busiest in 2021, quieter since,
+and alive again in 2026 with Vindaar's physics
+(xrayAttenuation, NimBoltz).
+The getting started site, a book made with nimibook,
+has tutorials for the stack (it needs to be updated).
 nim-plotly was started by Brent Pedersen (brentp, island 2)
 and donated to SciNim.
 """
 
 template island3RocksSlide* {.dirty.} =
   slide: # 4.11
-    nbText "## Rocks ahead"
+    nbText "## ⚠️ Rocks ahead 🪨"
     nbText """
 - classic ML is only seeds: a few algorithms, no scikit-learn
 - multiple tensor libraries, and now two dataframe libraries
-- the ecosystem depends on a few contributors (Vindaar, mratsim, Clonkk, HugoGranstrom): when life happens, development stops
-- nanuq and tabelline are weeks old, one person's, mostly AI-written: they need users
+- the ecosystem depends on a few contributors (Vindaar, mratsim, Clonkk, HugoGranstrom, ...): when life happens, development stops
+- nanuq and tabelline are weeks old, one person's, mostly AI-written: they need usage
 """
     speakerNote """
 The pieces are good and you can do real work with them.
@@ -186,21 +217,26 @@ A handful of people carry the stack:
 when life happens to them, development stops.
 nanuq and tabelline are mine, from this autumn,
 written mostly with Claude: an experiment in how fast
-one person can fill a gap. What they need now is users.
+one person can fill a gap. What they need now is usage.
+So the ecosystem is not strong, but it is usable.
+And you do not need that much ecosystem, because
+interoperability is very strong (next island).
 """
 
 template island3DataStackSection* {.dirty.} =
   slide:
     mapSlide(3) # 4.1
-    stackSlide # 4.2
-    penguinsSlide # 4.3
-    arraymancerSlide # 4.4
-    networkSlide # 4.5
-    datamancerSlide # 4.6
+    stackSlide # 4.2 (with the penguins)
+    arraymancerSlide # 4.3
+    networkSlide # 4.4
+    datamancerSlide # 4.5
+    nanuqSlide # 4.6
     ggplotnimSlide # 4.7
-    nanuqSlides # 4.8 and 4.9
-    scinimSlide # 4.10
-    island3RocksSlide # 4.11
+    above4000Slide # 4.8 (nanuq and nim-plotly on the Alps)
+    tabellineSlide # 4.9
+    islandsSlide # 4.10 (the islands of the chart, uncovered)
+    scinimSlide # 4.11
+    island3RocksSlide # 4.12
 
 when isMainModule: # this part of the deck on its own: docs/slides_island3.html
   buildDeckPart("island3", "slides/island3_datastack.nim"):

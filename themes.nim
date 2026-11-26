@@ -196,7 +196,7 @@ func chartCss(): string =
   ## a modern nautical chart: chart paper, a thin neatline around the slide, a light grid,
   ## a grotesque sans for titles and Spectral for text. The slides keep the deck's colors (my.nim:
   ## AgileLab dark and light blue, orange for emphasis); chart magenta (the color charts use for
-  ## lights and cautions) is only on the maps and the scale of the title slide (Pietro, 2026-11-25)
+  ## lights and cautions) is only on the maps (Pietro, 2026-11-25)
   let navy = "#13334c"   # the maps' ink
   let magenta = "#b0167a"
   let blue = "#1f6fa3"   # the maps' water lines
@@ -235,7 +235,9 @@ func chartCss(): string =
 .reveal .title-slide h2 {{ font-size: 1.75em; margin-bottom: 0.15em; }}
 .reveal .title-slide {{ position: relative; z-index: 1; }}
 .reveal .title-slide .title-box {{ background: rgba(253,252,247,0.78); backdrop-filter: blur(3px); border: 1.5px solid {ink}; outline: 0.5px solid {ink}; outline-offset: 5px; padding: 0.35em 0.9em; font-size: 0.78em; display: inline-block; box-shadow: 0 6px 24px rgba(14,31,83,0.18); }}
-.reveal .title-slide .scale {{ font-family: "Space Grotesk", sans-serif; font-size: 0.5em; letter-spacing: 0.2em; color: {magenta}; }}
+.reveal .title-slide .title-sub {{ font-family: "Space Grotesk", sans-serif; color: #6b7682; font-size: 0.5em; margin: -0.2em 0 0.5em; }}
+/* before the voyage nothing is in magenta but the route and the first port (Pietro, dry run 2026-11-26) */
+.reveal .title-art .chart-stage .ct.land-name {{ color: {navy}; }}
 /* the chart fills the screen and stays inside it: 1369 x 770 is 16:9 around the 1050 x 700 slide
    and its margin, scaled by --chart-fit (set by voyageDeckJs) on screens of other proportions */
 .reveal .chart-stage > svg.voyage-map {{ width: 100%; height: auto; margin: 0; max-width: none; }}
@@ -285,7 +287,8 @@ proc titleCardCss(): string =
   result = &"""
 .reveal .title-slide {{ position: static; }}
 .reveal .title-slide .title-box {{ position: absolute; left: {left:.1f}px; top: {top:.1f}px; width: {pb[2] * k:.1f}px; min-height: {pb[3] * k:.1f}px; box-sizing: border-box; text-align: left; display: block; font-size: 0.82em; padding: 0.5em 0.8em; background: rgba(253,252,247,0.93); border: 1px solid #1f2a33; outline: 0.5px solid #1f2a33; outline-offset: 4px; backdrop-filter: none; transform-origin: {525.0 - left:.1f}px {350.0 - top:.1f}px; transform: scale(var(--chart-fit, 1)); }}
-.reveal .title-slide .title-box h2 {{ font-size: 1.75em; line-height: 1.05; margin: 0 0 0.35em; padding-bottom: 0.3em; border-bottom: 0.5px solid #1f2a33; }}
+.reveal .title-slide .title-box h2 {{ font-size: 1.75em; line-height: 1.05; margin: 0 0 0.2em; }}
+.reveal .title-slide .title-box .title-sub {{ margin: 0 0 0.7em; padding-bottom: 0.6em; border-bottom: 0.5px solid #1f2a33; }}
 .reveal .title-slide .title-box p {{ margin: 0.25em 0; }}
 .reveal .title-art .portolano {{ display: none; }}
 """
