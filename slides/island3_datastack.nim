@@ -24,19 +24,21 @@ proc stackTable*(): Tabella =
      nim: "[Datamancer](https://github.com/SciNim/Datamancer), [nanuq](https://github.com/pietroppeter/nanuq)"),
     (part: "Plots", python: "matplotlib", r: "ggplot2",
      nim: "[ggplotnim](https://github.com/Vindaar/ggplotnim)"),
-    (part: "Tables", python: "Great Tables", r: "gt",
+    (part: "Display tables", python: "Great Tables", r: "gt",
      nim: "[tabelline](https://github.com/pietroppeter/tabelline)")]
   tabella(stack, rownameCol = "part")
     .colsLabel({"python": "Python", "r": "R", "nim": "Nim"})
     .fmtMarkdown("nim")
     .highlightCols("nim")
+    .tabStyle(style.text(color = "#ee961a", weight = "bold"),
+              loc.stub(labels = ["Display tables"]))
     .slideLook(fontSize = "0.7em")
 
 # dirty: Datamancer's `f{...}` formulas read `f` and type hints like `float`
 # as plain identifiers, which a normal template would bind to symbols
 template stackSlide* {.dirty.} =
   slide: # 4.2
-    nbText "## The stack"
+    nbText "## Ecosystem"
     nbTextSmall """
 The building blocks of data science, as in the
 [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)
@@ -55,6 +57,16 @@ Data: Gorman, Williams and Fraser (2014),
 Artwork by @allison_horst.
 """
     speakerNote """
+Tensors, dataframes and plots are the core of every
+book. But if you do not care about Nim and want a single
+takeaway from this talk: go and use Great Tables (Python)
+and gt (R). They are great, people should build more and
+better great tables, and I have been enjoying it a lot.
+To get inspired, go to their sites; you can also go to
+tabelline's site, I put a lot of love into it (still a
+lot to polish): there is an explainer on the islands of
+the Mediterranean.
+
 So, the ecosystem. If we start from the classic stack,
 the one I learned from Jake VanderPlas's Python Data
 Science Handbook: tensors, dataframes, plots. I add
