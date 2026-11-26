@@ -14,9 +14,10 @@
 ##                                        (any of `deckParts`: intro, island1 to island7, conclusion, ...),
 ##                                        to review or publish one island
 ##
-## Every build also exports the Shiny apps of shiny/ with shinylive into docs/shiny/
+## The full build (and CI) also exports the Shiny apps of shiny/ with shinylive into docs/shiny/
 ## (scripts/shinylive.sh), once: about 50 MB, not committed, and the first export needs
-## the network. Offline and without them, a link to docs/shiny/ is only a warning outside CI.
+## the network. A build of some groups (`slides`, `island6`, ...) skips it. Without them,
+## a link to docs/shiny/ is not checked outside CI.
 ##
 ## Any group also builds the site index (index.nim, docs/index.html), which lists everything.
 ##
@@ -144,7 +145,8 @@ when isMainModule:
     if afterDashes: extra.add a
     elif a == "--": afterDashes = true
     else: groups.add a
-  if groups.len == 0 or "all" in groups:
+  let everything = groups.len == 0 or "all" in groups
+  if everything:
     groups = @pageGroups & @["themes", "looks", "check"]
   for g in groups:
     if g notin pageGroups and g notin ["themes", "looks", "check"] and g notin partNames:
@@ -160,6 +162,6 @@ when isMainModule:
     if name in groups: run "nim r " & nimFlags(extra) & " slides/" & module & ".nim"
   if "looks" in groups:
     run "nim r " & nimFlags(extra) & " -d:deckLook=centered all.nim"
-  shinyApps()
+  if everything or getEnv("CI").len > 0: shinyApps() # not for one group: no wait on slides (Pietro, 2026-11-26)
   let checks = [check(), linksResolve(), noRawHtml(), noAgentNotes()]
   if false in checks: quit 1
