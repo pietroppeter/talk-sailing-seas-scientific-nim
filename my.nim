@@ -7,6 +7,7 @@ import themes
 export themes
 import tabelline
 import offline # freshRenderer
+import QRgen
 import blocks # nbImg, nbShowCode, nbSketch, ... (pages and slides share them)
 export offline, blocks
 import tabelline / nimib as tabellineNimib
@@ -90,6 +91,12 @@ const slideBlocksCss = """
 .reveal .slides figure figcaption { font-size: 0.55em; margin-top: 0.3em; }
 /* nbAvatars: round GitHub avatars of the people of nimib land (8.5) */
 .reveal .avatars { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em 0; margin: 0.4em auto 0.6em; max-width: 24em; }
+/* nbQr (title slide): the QR code to the slides, bottom center, for phones */
+.reveal .qr-box { position: absolute; z-index: 2; left: 42%; bottom: 2%; width: 7.4em; text-align: center;
+  background: rgba(253, 252, 247, 0.93); border: 1px solid #1f2a33; padding: 0.2em 0.5em 0.3em; box-shadow: 0 6px 24px rgba(14, 31, 83, 0.18); }
+.reveal .qr-box .qr-label { font-family: var(--r-heading-font); font-weight: 700; font-size: 0.8em; letter-spacing: 0.15em; text-transform: uppercase; }
+.reveal .qr-box svg { width: 6em; height: 6em; display: block; margin: 0 auto; }
+.reveal .qr-box .qr-links { display: flex; flex-direction: column; font-size: 0.4em; line-height: 1.25; overflow-wrap: anywhere; }
 /* nbCollage (slide 8.5): one big word over screenshots of pages, the whole slide */
 .reveal .slides section:has(> .collage) { top: 0 !important; height: var(--slide-height); padding: 0; }
 .reveal .collage { position: absolute; inset: 0; overflow: hidden; }
@@ -537,6 +544,22 @@ template nbAvatars*(logins: openArray[string], small = false) =
   ## inside a slide: a wall of round GitHub avatars (vendored in docs/images/contributors/<login>.jpg),
   ## each linked to its profile (slide 8.5, the people of nimib land)
   nb.add newNbAvatars(@logins, nb.doc.relToRoot("images/contributors"), small)
+
+newNbBlock(NbQr of NbBlock):
+  svg: string
+  label: string
+  links: seq[(string, string)]
+  toHtml:
+    var html = &"""<div class="qr-box"><div class="qr-label">{blk.label}</div>"""
+    html.add blk.svg
+    html.add "<div class=\"qr-links\">"
+    for (text, href) in blk.links:
+      html.add &"""<a href="{href}">{text}</a>"""
+    html & "</div></div>"
+
+template nbQr*(url, label: string, links: openArray[(string, string)]) =
+  ## on the title slide: a big QR code (made with QRgen) to `url`, a word above it and links below
+  nb.add newNbQr(newQR(url).printSvg(light = "#fdfcf7", dark = "#1f2a33", moRad = 30), label, @links)
 
 newNbBlock(NbCollage of NbBlock):
   word: string

@@ -174,6 +174,12 @@
       "commit": "a02d481ccc111925ff4799468b64aa93c4fa0f68",
       "version": ""
     },
+    "QRgen": {
+      "dir": "$deps/QRgen",
+      "url": "https://github.com/aruZeta/QRgen",
+      "commit": "4445bb93a126ec33004901e9486963a40cbb97fc",
+      "version": ""
+    },
     "parsetoml": {
       "dir": "$deps/parsetoml",
       "url": "https://github.com/NimParsers/parsetoml",
@@ -316,6 +322,7 @@
     "--path:\"deps/opencl/src\"",
     "--path:\"deps/p5nim/src\"",
     "--path:\"deps/parsetoml/src\"",
+    "--path:\"deps/QRgen/src\"",
     "--path:\"deps/pixie/src\"",
     "--path:\"deps/plotly/src\"",
     "--path:\"deps/polynumeric\"",
