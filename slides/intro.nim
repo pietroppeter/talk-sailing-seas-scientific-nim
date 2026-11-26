@@ -44,22 +44,14 @@ did not, and each one has a price.
     nbTable mainlandTable().slideLook(fontSize = "0.55em").highlightRows(where(it["lang"] == "Nim"))
     speakerNote """
 I love programming languages. I mostly used Python,
-I know a little R, I wrote a few lines of Julia and C,
-Fortran during my PhD, nothing in C++ and a little Rust.
+and very little of the others.
 What matters here: every language comes with tradeoffs,
 and an interesting language pushes you to do things
 differently, which often gives back to the ecosystem.
 Nim is a very interesting project.
 
-Scientific computing started with Fortran and never left it:
-LAPACK and most climate models are still Fortran.
-C and C++ came for the machine and for abstractions; R for statistics.
-Python became the glue: easy to write, but loops are slow,
-so the fast part is written in C or Fortran. Two languages:
-the two-language problem, the reason Julia was made.
-Every one of them pays a price for what it gives you.
-Nim is older than Julia, and still niche.
-Is there space for one more? This talk shows Nim's price.
+At the end of the talk, you should have a sense of what Nim gives you and what it costs.
+You might come back refreshed with a new perspective on programming languages.
 """
 
 template tradeoffsSlide* =
@@ -68,7 +60,7 @@ template tradeoffsSlide* =
     nbText """
 *Nim*: general purpose, universal and minimal;
 statically typed, compiled (to C, C++, JavaScript),
-with a syntax like Python.
+with a syntax like Python. Imperative first, functional later, obj oriented when needed..
 """
     columns:
       column:
@@ -76,18 +68,18 @@ with a syntax like Python.
 **You get**
 
 - reads like Python, runs like C
-- macros, JavaScript, interop
-- one language, script to library
+- metaprogramming (macros), JavaScript, interop
+- one language for scripting, libraries, applications
 """
       column:
         nbText """
 **You pay**
 
-- a compile step, no REPL
+- a compile step, no REPL (yet)
 - a tiny ecosystem
 - few people know it
 """
-    reference "Andreas Rumpf, 2008 (as Nimrod), 2.0 in 2023; still in strong evolution: Nimony / Nim 3.0 upcoming. [nim-lang.org](https://nim-lang.org)"
+    reference "Andreas Rumpf, 2008 (as Nimrod), 1.0 in 2019, 2.0 in 2023; still evolving: Nimony / Nim 3.0 upcoming. [nim-lang.org](https://nim-lang.org)"
     speakerNote """
 Not a tutorial: just enough to read the examples.
 Nim is a general purpose language, not made for science,
@@ -104,13 +96,14 @@ and most of them end with something on the right.
 
 template voyageSlide* =
   slide: # 1.1
-    nbText "## The sailing metaphor"
+    nbText "## ⛵️ The sailing metaphor"
     nbText """
 A "niche" language is an exotic land.
 From a sailing boat you do not actually "live" a place but
 it is a quick and fun way to get a feeling for a place.
-The place we want to feel is:
-*how does Nim feel as a language for scientific computing*.
+
+The place we want to visit is:
+*how does Nim feel as a language for scientific computing?*.
 
 - 🏙️ **Mainland**: mainstream programming languages
 - 🏝️ **Seven islands**: topics for scientific computing
