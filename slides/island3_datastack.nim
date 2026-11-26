@@ -164,19 +164,30 @@ template scinimSlide* {.dirty.} =
   slide: # 4.10
     nbText "## SciNim"
     nbTextSmall """
-[SciNim](https://github.com/SciNim) gathers the scientific Nim libraries.
+[SciNim](https://github.com/SciNim) is an organization, not a library:
+it gathers the scientific Nim libraries.
+"""
+    compactColumns:
+      column:
+        nbTextSmall """
 Start from [getting started](https://scinim.github.io/getting-started/)
-(it needs to be updated): tutorials and a list of libraries. A few more:
+(it needs to be updated): tutorials and a list of libraries.
+A few more:
 """
-    nbText """
+        nbText """
 - [flambeau](https://github.com/SciNim/flambeau): bindings to libtorch
-- [numericalnim](https://github.com/SciNim/numericalnim): integration, ODEs, optimization, interpolation
+- [numericalnim](https://github.com/SciNim/numericalnim): integration,
+ODEs, optimization, interpolation
 """
+      column:
+        nbImg("images/scinim_getting_started.png", "100%",
+          caption = "[getting started](https://scinim.github.io/getting-started/): a book made with nimibook")
     speakerNote """
-SciNim is the organization that collects libraries
+SciNim is not a library: it is the organization that collects libraries
 that would otherwise be scattered: Datamancer, unchained,
 numericalnim and more live there.
-The getting started site has tutorials for the stack
+The getting started site, a book made with nimibook,
+has tutorials for the stack
 and a list of libraries by topic.
 nim-plotly was started by Brent Pedersen (brentp, island 2)
 and donated to SciNim.
