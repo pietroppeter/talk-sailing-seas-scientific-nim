@@ -58,9 +58,10 @@ template tradeoffsSlide* =
   slide: # 1.4
     nbText "## Nim's tradeoffs"
     nbText """
-*Nim*: general purpose, universal and minimal;
+General purpose, universal and minimal;
 statically typed, compiled (to C, C++, JavaScript),
-with a syntax like Python. Imperative first, functional later, obj oriented when needed..
+with a syntax like Python.
+Imperative first, functional later, obj oriented when needed.
 """
     columns:
       column:
@@ -69,7 +70,7 @@ with a syntax like Python. Imperative first, functional later, obj oriented when
 
 - reads like Python, runs like C
 - metaprogramming (macros), JavaScript, interop
-- one language for scripting, libraries, applications
+- one lang for scripting, libraries, applications
 """
       column:
         nbText """
@@ -100,9 +101,8 @@ template voyageSlide* =
     nbText """
 A "niche" language is an exotic land.
 From a sailing boat you do not actually "live" a place but
-it is a quick and fun way to get a feeling for a place.
+it is a quick and fun way to get a feeling for a place. The place we want to visit is:
 
-The place we want to visit is:
 *how does Nim feel as a language for scientific computing?*.
 
 - 🏙️ **Mainland**: mainstream programming languages
