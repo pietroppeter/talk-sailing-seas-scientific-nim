@@ -64,7 +64,7 @@ proc above4000Content(nb: var Nb) = # 4.8
         "line": {"width": 1, "color": "white"}}
       pj.traces[0]["hoverinfo"] = %"text"
       pj.traces.elems.insert(relief("data/alps_relief.parquet", 4800), 0)
-      pj.layout = %*{"width": 470, "height": 250, "showlegend": false,
+      pj.layout = %*{"width": 470, "height": 230, "showlegend": false,
         "margin": {"l": 45, "r": 5, "t": 5, "b": 25},
         "paper_bgcolor": "rgba(0,0,0,0)", "font": {"size": 10}}
       pj.layout["xaxis"] = %*{"range": [5.6, 10.6], "showgrid": false,
@@ -74,7 +74,7 @@ proc above4000Content(nb: var Nb) = # 4.8
         "constrain": "domain", "ticksuffix": "°N"}
       nb.plotly(pj)
       nbDiv("centered", ""):
-        nbImg("images/above4000.jpg", "48%")
+        nbImg("images/above4000.jpg", "40%")
         nbTextSmall """
 📱 Monte Rosa from Val Vigezzo: a photo taken while
 working on nanuq with Claude on the phone
