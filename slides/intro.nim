@@ -56,7 +56,7 @@ You might come back refreshed with a new perspective on programming languages.
 
 template tradeoffsSlide* =
   slide: # 1.4
-    nbText "## Nim's tradeoffs"
+    nbText "## 👑 Nim's tradeoffs"
     nbText """
 General purpose, universal and minimal;
 statically typed, compiled (to C, C++, JavaScript),
@@ -78,7 +78,7 @@ Imperative first, functional later, object oriented when needed.
 
 - a compile step, no REPL (yet)
 - a tiny ecosystem
-- few people know it
+- few people know it, weak governance limits adoption
 """
     reference "Andreas Rumpf, 2008 (as Nimrod), 1.0 in 2019, 2.0 in 2023; still evolving: Nimony / Nim 3.0 upcoming. [nim-lang.org](https://nim-lang.org)"
     speakerNote """
