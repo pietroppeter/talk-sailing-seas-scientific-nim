@@ -6,7 +6,7 @@ import tabelline except Column, readCsv
 import tabelline / [nimib, nanuq]
 
 # A nimib document that explains slides 4.8 and 4.9 of Island 3
-# (nanuq and tabelline, in slides/island3_nanuq.nim):
+# (nanuq and tabelline; both slides were removed on the talk day):
 #   nim r deepdive/penguins_polars.nim
 # writes docs/deepdive/penguins_polars.html.
 # The code below runs when the page is built, like on the slides.

@@ -386,6 +386,17 @@ const sketchCss = """
   line-height: 1.3;
 }
 .thank-you-link p { margin: 0; }
+/* the word over the sphere of the playfulness slide */
+.reveal .playful-word {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.reveal .playful-word h1 { font-size: 2.6em; margin: 0; }
 /* the credit line, smaller than the link above it */
 .thank-you-link small + small { opacity: 0.7; }
 .thank-you-link small + small p { font-size: 0.67em; }

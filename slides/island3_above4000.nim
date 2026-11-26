@@ -11,7 +11,7 @@ import ../my
 # in docs/data/alps*.{csv,parquet} (the UIAA list from Wikipedia, CC BY-SA; coordinates from Wikidata and
 # Camptocamp; the relief from Copernicus' GLO-90, as the post's relief_prep.py made it),
 # the photo in docs/images/above4000.jpg (Pietro's own).
-# A proc of its own module, as in island3_nanuq.nim: nanuq's names clash with Datamancer's.
+# A proc of its own module: nanuq's names clash with Datamancer's.
 # Paths are relative to docs/ (nimib's homeDir).
 
 const terrain = [(0.0, "#2b6c8f"), (0.0001, "#e8eedb"), (0.15, "#c9d6a3"),
