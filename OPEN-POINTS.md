@@ -107,3 +107,8 @@ Working notes that are not committed (on purpose, or not yet):
 ## Outside this repository
 
 - [ ] Rename `nimlang` to `nimlang-pypi` in the uv-add-nimlang repository and on PyPI (Pietro, 2026-11-24: "nimlang" alone is ambiguous). The talk already calls it nimlang-pypi; its commands (`uv add nimlang`, `uv run nimlang ...`) change with the rename.
+
+### Island 7 nimib land (2026-11-26)
+
+- [ ] Slide 8.5 counts 24 people: 6 of them (ptweir, tobimori, nukopy, alesanchezr, bugct, feluxe) are in nimiBoost's history from the VS Code extension it started from, before 2020. Keep them, or show 18?
+- [ ] Peter Weir's GitHub account (`ptweir`) is a guess: his nimiBoost commits are not linked to an account.

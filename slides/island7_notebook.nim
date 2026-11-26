@@ -92,22 +92,66 @@ written in Nim and compiled when the page is built.
 And there is nblog, a blog of nimib posts, and nimibex with more blocks.
 """
 
-template island7RocksSlide* =
+template nimibLandSlide* =
   slide: # 8.5
-    nbText "## Rocks ahead"
-    nbText """
-- no kernel: every change compiles and runs the whole document again,
-  seconds, not instant; long computations you cache by hand
-- made to explain more than to explore: you edit and rebuild,
-  there is nothing to poke at
-- a small community, two maintainers, docs behind the code
+    nbText "## nimib land: 24 people"
+    nbAvatars ["pietroppeter", "HugoGranstrom", "neroist", "Clonkk",
+      "dlesnoff", "Yardanico", "Vindaar", "quimt", "metagn", "lost22git",
+      "sent44", "PhilippMDoerner", "lbartoletti", # nimib
+      "svenrdz", "dsrw", "moigagoo", "beef331", "ptweir",
+      "tobimori", "nukopy", "alesanchezr", "bugct", "feluxe", "zetashift"]
+    nbTextSmall """
+13 wrote **nimib**, 24 with **nimiSlides**, **nimibook**, **nimiBoost**,
+**nimitheme**, **nimipdf** and [nimib-land](https://github.com/nimib-land);
+nimibook documents 13 projects (enu, owlkettle, Norm, QEX, ...),
+nimiSlides made 10 of 41 NimConf talks since 2022
+"""
+    reference """
+These are commits only: using it, reporting issues and telling us
+what you built count as much, today more than ever
+([who builds nimib land](deepdive/notebook.html))
 """
     speakerNote """
+These are the people who wrote nimib land, from the git history of each repository.
+Commits are only what git remembers: users, issues and feedback
+are how most of nimib got better, and with AI writing code, they matter most.
+nimiSlides made at least 10 of the 41 NimConf talks since 2022;
+nimibook is the documentation of 13 projects, enu, owlkettle, Norm and QEX among them.
+nimib: I started it in 2020, Hugo maintains it with me, 13 people wrote code for it.
+Hugo made nimiSlides, this deck, and nimiBoost, the VS Code preview;
+Clonkk wrote half of nimibook; neroist made nimitheme and nimipdf.
+nimib-land is the GitHub organization where the ecosystem is moving:
+nimibex for experiments and extra blocks, nblog, and nimib.py.
+"""
+
+template island7RocksSlide* =
+  slide: # 8.6
+    nbText "## Rocks ahead"
+    columns:
+      column:
+        nbText """
+- no kernel: every change reruns the whole
+  document, seconds, not instant
+- made to explain more than to explore:
+  nothing to poke at
+- a small community, two maintainers,
+  docs behind the code
+"""
+      column:
+        nbDiv("crew-photo", ""):
+          nbImg("images/hugo-pietro.jpg",
+            caption = "Hugo Granström and me at PyCon Sweden 2023, " &
+              "our first meeting in person; co-maintainers since July 2022",
+            alt = "Selfie of Pietro and Hugo Granström by the portholes of a boat at night")
+    speakerNote """
 The tradeoff of the unexpected direction.
+Long computations you cache by hand.
 Jupyter is a great place to explore: you keep the data in memory
 and try things. nimib reruns everything, which is what makes it
 reproducible, and what makes it slow when the work is heavy.
 nimiBoost in VS Code shows a preview as you save.
+The photo: PyCon Sweden 2023, the first time we met in person,
+a year after Hugo became co-maintainer with nimib 0.3.
 nimib is mine and Hugo's: a hobby project, and the 0.4 rewrite
 left parts of the docs behind. Help is welcome.
 """
@@ -118,7 +162,8 @@ template island7NotebookSection* =
     literateSlide # 8.2
     nimibSlide # 8.3
     nimibMakesSlide # 8.4
-    island7RocksSlide # 8.5
+    nimibLandSlide # 8.5
+    island7RocksSlide # 8.6
 
 when isMainModule: # this part of the deck on its own: docs/slides_island7.html
   buildDeckPart("island7", "slides/island7_notebook.nim"):

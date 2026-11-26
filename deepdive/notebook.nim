@@ -264,6 +264,148 @@ leaves comments on any block and exports them for the author.
 """
 
 nbText """
+## nimib land: who builds it
+
+The circle of faces on the slide is everyone with at least one
+commit in nimib land: 13 people wrote code for nimib itself,
+24 for the whole family. The counts come from the git history
+of twelve repositories (nimib, nimiSlides, nimibook, nimiBoost,
+nimitheme, nimipdf, nimibex, nblog, nimib.py, the nimib.land
+site, libnimib, nimibujo), read on 25 November 2026, with
+each person counted once: commits made under other names or
+emails (neroist also commits as Grave, niko and Jazz, and
+used to be t-h-rk-turner) are merged, which is why GitHub
+shows 16 contributors for nimib and this page 13.
+The whole ecosystem, repository by repository, with its
+open issues and the move to nimib-land, is in
+[State of NimibLand](https://pietroppeter.github.io/claude-artifacts/state-of-nimibland/)
+(October 2026).
+"""
+let people = tableData:
+  person: ["pietroppeter", "HugoGranstrom", "neroist", "Clonkk",
+    "ptweir", "tobimori", "beef331", "nukopy", "dlesnoff",
+    "Yardanico", "zetashift", "svenrdz", "PhilippMDoerner",
+    "quimt", "Vindaar", "alesanchezr", "lbartoletti", "metagn",
+    "sent44", "lost22git", "moigagoo", "dsrw", "bugct", "feluxe"]
+  since: [2020, 2021, 2023, 2021, 2018, 2018, 2022, 2020, 2023,
+    2021, 2021, 2023, 2023, 2023, 2021, 2019, 2024, 2022, 2023,
+    2024, 2021, 2023, 2018, 2019]
+  came: ["nimib", "nimib", "nimib", "nimib", "nimiBoost",
+    "nimiBoost", "nimibook", "nimiBoost", "nimib", "nimib",
+    "nimibujo", "nimiSlides", "nimibook", "nimib", "nimib",
+    "nimiBoost", "nimib", "nimib", "nimib", "nimib", "nimibook",
+    "nimibook", "nimiBoost", "nimiBoost"]
+  commits: [350, 332, 266, 67, 39, 30, 19, 14, 5, 4, 5, 3, 3,
+    2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1]
+  where: ["nimib 165, nblog 88, nimibook 85, 4 more 12",
+    "nimiSlides 226, nimiBoost 38, nimib 31, 3 more 37",
+    "nimitheme 233, nimipdf 21, nimib 12",
+    "nimibook 64, nimib 3", "nimiBoost 39", "nimiBoost 30",
+    "libnimib 18, nimibook 1", "nimiBoost 14", "nimib 5",
+    "nimib 4", "nimibujo 5", "nimiSlides 3", "nimibook 2, nimib 1",
+    "nimib 1, nimiSlides 1", "nimib 2", "nimiBoost 2",
+    "nimib 1, nimibook 1", "nimib 1", "nimib 1", "nimib 1",
+    "nimibook 1", "nimibook 1", "nimiBoost 1", "nimiBoost 1"]
+let peopleTable = tabella(people, rownameCol = "person"):
+  tabStubhead "person"
+  colsLabel "since", "first commit"
+  colsLabel "came", "came through"
+  colsLabel "where", "commits by repository"
+nbTable peopleTable
+
+nbText """
+Most people came through nimib itself, often with one fix to
+something that bit them; nimibook brought library authors who
+document their projects with it (Norm, enu). The six people
+whose history starts before 2020 came with nimiBoost: Hugo
+built it in 2021 on an existing VS Code extension for
+Markdown inside code, and its history kept their commits.
+
+A commit is only the kind of contribution git remembers.
+Using nimib, opening an issue, asking a question that shows
+where the docs are wrong, telling us what you built with it:
+that is how most of nimib got better, and with code getting
+cheaper to write, it is the contribution that matters most.
+None of it shows in this table.
+"""
+
+nbText """
+### nimibook: documentation of 13 projects
+
+Counted with a GitHub code search for projects that depend
+on nimibook (28 October 2026), leaving out our own:
+"""
+let books = tableData:
+  project: ["[enu](https://getenu.com/docs/intro.html)",
+    "[owlkettle](https://can-lehmann.github.io/owlkettle/README.html)",
+    "[Norm](https://norm.nim.town)",
+    "[SciNim getting started](https://scinim.github.io/getting-started/)",
+    "[QEX](http://jcosborn.github.io/qex/)",
+    "[Snorlogue](https://philippmdoerner.github.io/Snorlogue/bookCompiled/)",
+    "[Karkas](https://karkas.nim.town/)",
+    "[mapster](https://philippmdoerner.github.io/mapster/index.html)",
+    "[nova](https://neroist.github.io/nova/)",
+    "[FrogCap](https://github.com/chutter/FrogCap-Sequence-Capture)",
+    "[NimDrake](https://github.com/BontaVlad/NimDrake)",
+    "[ThreadButler](https://github.com/PhilippMDoerner/ThreadButler)",
+    "[Kiloneie's tutorials](https://kiloneie.github.io/)"]
+  what: ["a Logo-like 3D environment",
+    "declarative user interfaces (GTK)", "an ORM for SQLite and Postgres",
+    "Nim for scientific computing",
+    "lattice field theory (Island 2)", "an admin plugin for Prologue",
+    "layout helpers for Karax", "mapping functions made at compile time",
+    "a CLI for Govee light strips", "a sequence capture pipeline (biology)",
+    "DuckDB bindings", "threads used as if they were servers",
+    "video tutorials of Nim, as pages"]
+  stars: [486, 459, 417, 64, 60, 27, 19, 17, 14, 10, 8, 7, 1]
+let booksTable = tabella(books, rownameCol = "project"):
+  tabStubhead "project"
+  colsLabel "what", "what it is"
+  colsLabel "stars", "GitHub stars"
+  fmtMarkdown "project"
+nbTable booksTable
+
+nbText """
+### nimiSlides: decks
+
+The same search finds 8 decks by others (NimConf talks,
+a club site, tutorials) and 14 of mine, from Python Milano
+and PyCon talks to this one; Hugo keeps his own NimConf
+decks in the nimiSlides repository.
+"""
+
+nbText """
+#### nimiSlides at NimConf
+
+NimConf is the online conference of the Nim community.
+Since nimiSlides exists, at least 10 of its 41 talks were
+given with nimiSlides decks, by six speakers; counted from the
+talks whose slides are public (the conference schedules on
+[conf.nim-lang.org](https://conf.nim-lang.org), collected in
+[NimConf schedules](https://pietroppeter.github.io/claude-artifacts/nimconf-schedules/),
+and a GitHub
+search for decks that import nimiSlides).
+"""
+let nimconf = tableData:
+  year: [2022, 2022, 2024, 2024, 2024, 2024, 2026, 2026, 2026, 2026]
+  talk: ["Nimib goes interactive",
+    "Make beautiful presentations in Nim using NimiSlides",
+    "Karax Kraut Karkas", "The Ferus Web Engine",
+    "avr_io, bare-metal embedded development in Nim",
+    "Updates from NimibLand", "Nim for the Modern Linux Desktop",
+    "Nimib v0.4: internals ref-actoring",
+    "Nim for embedded software development", "Henka: Bind anything"]
+  speakers: ["Pietro Peterlongo, Hugo Granström", "Hugo Granström",
+    "Constantine Molchanov", "Trayambak Rai", "Gianmarco Marcello",
+    "Pietro Peterlongo, Hugo Granström", "Trayambak Rai",
+    "Hugo Granström", "Gianmarco Marcello", "Row"]
+  share: ["2 of 11", "2 of 11", "4 of 10", "4 of 10", "4 of 10",
+    "4 of 10", "4 of 20", "4 of 20", "4 of 20", "4 of 20"]
+let nimconfTable = tabella(nimconf):
+  colsLabel "share", "nimiSlides talks that year"
+nbTable nimconfTable
+
+nbText """
 ## nimib and the other notebooks
 
 Not a contest: each makes a different tradeoff.
