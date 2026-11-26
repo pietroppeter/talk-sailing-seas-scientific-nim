@@ -356,7 +356,7 @@ const chartMapCss* = """
 .chart-stage .ct.portolano { transform: none; white-space: normal; box-sizing: border-box; background: rgba(253, 252, 247, 0.93); border: 1px solid #1f2a33; outline: 0.5px solid #1f2a33; outline-offset: 0.25cqw; padding: 0.8cqw 1cqw; box-shadow: 0 0.4cqw 1.4cqw rgba(31, 42, 51, 0.12); line-height: 1.3; }
 .chart-stage .portolano .pt-title { font-weight: 700; font-size: 1.25cqw; letter-spacing: 0.2em; }
 .chart-stage .portolano .pt-head { font-weight: 700; font-size: 0.78cqw; letter-spacing: 0.3em; color: #b0167a; margin: 0.3cqw 0 0.6cqw; padding-bottom: 0.5cqw; border-bottom: 0.5px solid #1f2a33; }
-.chart-stage .portolano .pt-body { font-family: "Spectral", serif; font-style: italic; font-size: 1.4cqw; line-height: 1.4; }
+.chart-stage .portolano .pt-body { font-family: "Spectral", serif; font-style: italic; font-size: 3.1cqw; line-height: 1.25; }
 
 """
   ## css for the labels of this map (the fonts are in docs/assets/fonts/fonts.css)
