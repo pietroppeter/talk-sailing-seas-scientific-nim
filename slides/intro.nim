@@ -22,6 +22,8 @@ const mainland*: seq[Language] = @[
    price: "slow loops, odd beyond statistics"),
   (lang: "Julia", since: 2012, cameTo: "be easy and fast, for science",
    price: "compile latency, mostly science"),
+  (lang: "Rust", since: 2012, cameTo: "be fast and memory safe, no GC",
+   price: "the borrow checker, long builds"),
   (lang: "Nim", since: 2008, cameTo: "?", price: "this talk"),
 ]
 
@@ -29,6 +31,8 @@ proc mainlandTable*(): Tabella =
   tabella(mainland, rownameCol = "lang")
     .fmtNumber("since", decimals = 0, useSeps = false)
     .colsLabel({"since": "since", "cameTo": "came to", "price": "the price"})
+    .tabFootnote("Year of the first release; R grew out of S (1976), NumPy dates from 2006.",
+      loc.columnLabels("since"))
 
 template mainlandSlide* =
   slide: # 1.3
@@ -38,8 +42,15 @@ Each language came to solve a problem the previous ones
 did not, and each one has a price.
 """
     nbTable mainlandTable().slideLook(fontSize = "0.55em").highlightRows(where(it["lang"] == "Nim"))
-    reference "Years of the first release; R grew out of S (1976), NumPy dates from 2006."
     speakerNote """
+I love programming languages. I mostly used Python,
+I know a little R, I wrote a few lines of Julia and C,
+Fortran during my PhD, nothing in C++ and a little Rust.
+What matters here: every language comes with tradeoffs,
+and an interesting language pushes you to do things
+differently, which often gives back to the ecosystem.
+Nim is a very interesting project.
+
 Scientific computing started with Fortran and never left it:
 LAPACK and most climate models are still Fortran.
 C and C++ came for the machine and for abstractions; R for statistics.
@@ -55,8 +66,9 @@ template tradeoffsSlide* =
   slide: # 1.4
     nbText "## Nim's tradeoffs"
     nbText """
-*Nim*: general purpose, statically typed, compiled
-(to C, C++ and JavaScript), with a syntax that reads like Python.
+*Nim*: general purpose, universal and minimal;
+statically typed, compiled (to C, C++, JavaScript),
+with a syntax like Python.
 """
     columns:
       column:
@@ -75,11 +87,16 @@ template tradeoffsSlide* =
 - a tiny ecosystem
 - few people know it
 """
-    reference "Andreas Rumpf, 2008 (as Nimrod); 1.0 in 2019, 2.0 in 2023. [nim-lang.org](https://nim-lang.org)"
+    reference "Andreas Rumpf, 2008 (as Nimrod), 2.0 in 2023; still in strong evolution: Nimony / Nim 3.0 upcoming. [nim-lang.org](https://nim-lang.org)"
     speakerNote """
 Not a tutorial: just enough to read the examples.
 Nim is a general purpose language, not made for science,
 statically typed and compiled; it reads like Python.
+I still find it mind-bending: very universal, and minimal.
+It reduces the cognitive load: it is easy to reason about,
+easier than Python, because you can understand what is
+going on (and I think AI appreciates that too).
+Still evolving a lot: Nimony, the future Nim 3.0.
 What you get and what you pay is the whole talk:
 each island shows something on the left,
 and most of them end with something on the right.
@@ -95,17 +112,24 @@ it is a quick and fun way to get a feeling for a place.
 The place we want to feel is:
 *how does Nim feel as a language for scientific computing*.
 
+- 🏙️ **Mainland**: mainstream programming languages
 - 🏝️ **Seven islands**: topics for scientific computing
 - 🪨 **Rocks ahead**: weak points and limitations
 - 🐋 **Deep dives**: longer explainers (unpolished)
 """
     reference "The slides, the deep dives and their code: [the talk's site](index.html)"
     speakerNote """
+I picked a sailing metaphor because a niche language is
+an exotic land, and from a boat we stay far off and never
+really touch land on many things.
 We will not go deep anywhere: thirty minutes, seven islands.
 Each island is a theme where Nim shows its powers.
 I will not hide where Nim falls short: most islands end with rocks ahead.
 For those who want to land, each code-heavy slide has a deep dive,
 a page with more code and the sources, built like these slides.
+Honestly: the deep dives are mostly AI generated and unpolished,
+and I have not read the latest version of all of them;
+I still think they should be there.
 Everything is on the site, linked from the first slide.
 """
 

@@ -56,6 +56,7 @@ const slideBlocksCss = """
 .reveal .code-stage .item.lifted { transition: none; cursor: grabbing; }
 .reveal .code-stage .handle { fill: var(--r-link-color); fill-opacity: 0; } /* a secret: no hint that the lines move */
 .reveal .code-stage .lifted .handle { fill-opacity: 0; }
+.reveal .code-stage .scrub { cursor: ew-resize; } /* bounds you scrub, as in Bret Victor's explorable explanations */
 /* imageAside: a picture with something smaller beside it (slide 7.2) */
 .reveal .img-aside { display: grid; grid-template-columns: 2fr 1fr; gap: 1em; align-items: center; margin-top: 0.6em; }
 .reveal .img-aside img { width: 100%; margin: 0; }

@@ -23,9 +23,13 @@ The following are three stories:
     reference """
 Beyond science, Nim runs on the web, in blockchains,
 security tools, games, chips and more:
-[Nim success stories beyond science](deepdive/beyond_science.html)
+🐋 [Nim success stories beyond science](deepdive/beyond_science.html)
 """
     speakerNote """
+Now let's talk science, because we want to do science.
+The fun thing: with just that value proposition,
+people started doing science with Nim.
+
 Success here means people who used Nim to advance science:
 published, cited, used by others.
 For the curious, the deep dive collects stories
@@ -62,9 +66,16 @@ Others followed, with papers of their own""", "story")
     reference """
 Citations from Google Scholar, stars from GitHub (November 2026);
 more tools in [awesome-bionimformatics](https://github.com/andreas-wilm/awesome-bionimformatics);
-[the tools, the people and the genomics, explained](deepdive/bioinformatics.html)
+🐋 [the tools, the people and the genomics, explained](deepdive/bioinformatics.html)
 """
     speakerNote """
+Almost ten years ago Brent Pedersen started doing
+bioinformatics with Nim: it is easier to start in a
+domain where there is not a lot of stuff yet.
+A tool and a paper, then more tools and more papers,
+with good citations and good stars, and others followed.
+A successful run for Nim in bioinformatics.
+
 Brent Pedersen started it: hts-nim wraps htslib,
 the C library behind samtools, and its paper says
 scripting languages are easy but slow at genome scale;
@@ -105,9 +116,15 @@ proc axionFluxPrimakoff(E_a: keV,
 [source](https://github.com/Vindaar/phd),
 [code](https://github.com/Vindaar/TimepixAnalysis),
 [data](https://zenodo.org/uploads/10521887);
-[the thesis in plain words](deepdive/vindaar.html)
+🐋 [the thesis in plain words](deepdive/vindaar.html)
 """
     speakerNote """
+Another person who wanted to do science with Nim is
+Sebastian, aka Vindaar: he did his whole PhD in Nim,
+and doing that he built the stack. More about him later:
+he could not be here, and the scientific Nim community
+owes him a lot of gratitude.
+
 A GridPix detector at the CERN Axion Solar Telescope.
 Code, thesis and data are all public.
 The excerpt is from the thesis: the axion flux,
@@ -139,9 +156,15 @@ threads:
 [Paper](https://arxiv.org/abs/1612.02750) (2016),
 [code](https://github.com/jcosborn/qex),
 [new physics](https://arxiv.org/abs/2409.02062) (PRL 2025);
-[lattice QCD and QEX in plain words](deepdive/qex.html)
+🐋 [lattice QCD and QEX in plain words](deepdive/qex.html)
 """
     speakerNote """
+And then you discover people at a US national
+laboratory using Nim for QEX. They do not interact much
+with the community, and that is fine: Nim is just a very
+good language, usable without a big ecosystem.
+Still ongoing, still very active.
+
 QEX is Quantum EXpressions, by James Osborn and Xiao-Yong Jin.
 Lattice QCD computes how quarks and gluons bind into protons,
 on a grid of space-time points, on supercomputers.
@@ -157,7 +180,7 @@ Its docs are a book written with nimibook.
 template island2RocksSlide* = # 3.6
   slide:
     nbText: """
-## Rocks ahead
+## 🪨⚠️ Rocks ahead
 
 A tiny ecosystem: pioneers build what they need,
 or move where the libraries are
@@ -171,6 +194,12 @@ the amount of code I would / had to write [...]
 *I learned way more than I would have otherwise*""",
         "Vindaar, in his thesis")
     speakerNote """
+The first rocks ahead. Brent mostly switched to Rust:
+ten years ago Nim and Rust were still contending,
+and Nim could have grown; Rust grew a lot, Nim did not.
+And when you want to do science you do not want to
+build the ecosystem: you want it there.
+
 Brent: his newer tools are in Rust, because that is
 where the bioinformatics libraries are; he still likes Nim.
 Vindaar: from the thesis appendix on why he wrote his own

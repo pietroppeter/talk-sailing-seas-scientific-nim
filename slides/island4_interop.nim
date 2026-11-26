@@ -28,9 +28,15 @@ with `importc`, `importcpp`, `importjs`
 **Through bridges**: Python, R, Julia (next slide)
 """
     nbTextSmall """
-[Interoperability, the deep dive](deepdive/interoperability.html)
+🐋 [Interoperability, the deep dive](deepdive/interoperability.html)
 """
     speakerNote """
+The ecosystem is not big, but you do not need much
+ecosystem, because interoperability is very strong.
+Nim compiles to C, C++ and JavaScript, so it can use a
+library in any of those languages, or produce a library
+for any of them.
+
 Nim's own ecosystem is small, and that matters less than it looks.
 Nim compiles to C, C++ and JavaScript, so their libraries
 are one pragma away: here the Bessel function from C's math library,
@@ -75,9 +81,16 @@ let r = Julia.sqrt(4.0)
 echo r.to(float)  # 2.0
 """
     nbTextSmall """
-rnim is a prototype, nimjl needs Julia installed.
+nimpy is the most stable. rnim (by Vindaar) and nimjl (by Clonkk)
+are less stable and robust. Each needs its runtime installed.
 """
     speakerNote """
+And you can reach the Python, R and Julia ecosystems.
+(We have the creator and maintainer of the Nim-Julia
+bridge in the room.) nimpy is very stable; rnim was
+created and is maintained by Sebastian (Vindaar),
+nimjl by Clonkk; those two are less stable and robust.
+
 Three micro examples, from each library's README (shown, not run:
 the build would need numpy, R and Julia).
 nimpy imports a Python module and calls it with Nim values;
@@ -131,6 +144,10 @@ ccall((:add, "./libadd.so"),
   Cint, (Cint, Cint), 1, 2)
 """, lang = "julia")
     speakerNote """
+Bridges work both ways: you can call Nim from Python,
+R and Julia. This matters: Nim can compete with Rust
+as the performant language behind Python libraries.
+
 The other direction: the Nim code is the library.
 nimpy's exportpy makes a Python extension module (next slide: how to build
 and ship it without a Nim compiler for users).
@@ -143,7 +160,7 @@ template nimlangPypiSlide* =
   slide: # 5.5
     nbText "## Write it in Nim, use it from Python"
     nbTextSmall """
-`nimlang-pypi` (`uv add nimlang`): the Nim compiler in a Python wheel,
+`nimlang-pypi` (`uv add nimlang`, weeks old, made with AI): the Nim compiler in a Python wheel,
 with `zig cc` as the C compiler. Nothing else to install.
 `fast.nim` is the Nim twin of `fib` in `slow.py`:
 """
@@ -166,6 +183,11 @@ It also builds the wheels: ship Nim-powered libraries to Python users
 with no Nim compiler on their side, as Rust does with maturin.
 """
     speakerNote """
+A project I made with AI, weeks old: nimlang-pypi.
+Now with `uv add nimlang` you get the Nim compiler, and
+you can package and ship Python libraries easily,
+without the user even knowing about Nim.
+
 The other direction: Nim as the language where you write the fast part,
 and other languages use it. Python people do it with C, Cython, Rust.
 For Nim the binding was there (nimpy), the toolchain was the hurdle.
@@ -201,10 +223,18 @@ The algorithm in plain Nim, built with `nimlang-pypi`:
       column:
         nbFrame("assets/naffprop/index.html", "How exemplars emerge, naffprop's interactive figure")
         nbTextSmall """
-[How exemplars emerge](https://pietroppeter.github.io/naffprop/):
+🐋 [How exemplars emerge](https://pietroppeter.github.io/naffprop/):
 the same Nim, compiled to JavaScript
 """
     speakerNote """
+In a past life I used affinity propagation a lot, and
+I needed features that scikit-learn did not have, so I
+had to wrap the R library. Now I made a library with a
+powerful affinity propagation: features from Python,
+from R, and from papers I read that add to it. And I can
+write explainers that make me understand better how
+affinity propagation works: how exemplars emerge.
+
 An example of a real package built this way.
 Affinity propagation: points exchange messages until some emerge as exemplars,
 no number of clusters fixed beforehand.
@@ -218,9 +248,9 @@ Also mine, from this year, mostly written with an AI agent (its README says so).
 
 template island4RocksSlide* =
   slide: # 5.7
-    nbText "## Rocks ahead"
+    nbText "## 🪨⚠️ Rocks ahead"
     nbText """
-- bridges of different maturity: nimpy is solid, rnim a prototype, nimjl needs Julia installed
+- bridges of different maturity: nimpy is solid, rnim and nimjl less so
 - packaging Nim for Python had no maintained tool for years; `nimlang-pypi` is new and alpha
 - few Python users know Nim: fewer examples and fewer people to ask than with Rust
 """

@@ -8,7 +8,8 @@ Many slides are still Claude's drafts that Pietro has not yet read or made his o
 
 | Part | Slides | Started | Notes |
 |------|--------|---------|-------|
-| 1 | 0.1 title, 0.2 about me, 0.3 AI | 01:21 | No end time yet. "These questions will take time": the opening is longer than its 1 minute in the outline. |
+| 1 | 0.1 title, 0.2 about me, 0.3 AI | 01:21 | "These questions will take time": the opening is longer than its 1 minute in the outline. |
+| 2 | 1.1 intro to 8.2 literate computing | 01:30 | Nine minutes for the first three slides (with dictating). The recording of part 2 stops mid-sentence in Island 7. |
 
 ## Part 1: opening
 
@@ -46,3 +47,60 @@ The three points:
 3. Issues of a small language, like a small ecosystem, matter much less: porting is very easy.
 
 Caveat said on stage: limited experience (a year learning to be a manager, deep into AI only in the last couple of months). What does not change and matters more: judgment (what to point your agent at and when to stop it), ownership (of everything you put out), trust (with your community of users, eroded much more easily by an irresponsible use of AI).
+
+## Part 2: from the intro to the notebook
+
+### Everywhere
+
+- [x] Every rocks ahead slide has a rock and a warning sign in its title: 🪨⚠️ Rocks ahead.
+- [x] Every link to a deep dive has the 🐋.
+
+### Intro
+
+- [x] 1.1: a first bullet, 🏙️ **Mainland**: mainstream programming languages. In the notes: the deep dives are mostly AI generated, unpolished, some not read in their latest version, but they should be there.
+- [x] 1.2: the map's box says "We start from the mainland: mainstream programming languages like Python, R, Julia, C, C++ and others."
+- [x] 1.3: Rust added; the years of the first release are a tabelline footnote. Notes: the languages Pietro used, every language comes with tradeoffs, an interesting language pushes you to do things differently.
+- [x] 1.4: "general purpose, universal and minimal"; still in strong evolution, Nimony / Nim 3.0 upcoming. Notes: universal and minimal is mind-bending; low cognitive load, easier to reason about than Python.
+
+### Island 1: Performance
+
+- [x] Notes: very little time here; writing a lot of Python makes you scared of for loops and think you need a library for everything; in C a for loop is cheap; with Mamy: Nim is where performance can be pushed furthest, more than Rust, which is about safety.
+
+### Island 2: Science
+
+- [x] Notes: with just that value proposition people started doing science with Nim; Brent Pedersen in bioinformatics almost ten years ago; Sebastian (Vindaar), whole PhD in Nim, built the stack, gratitude; QEX at a US national laboratory, little contact with the community, still very active. Rocks ahead: Brent moved mostly to Rust (Nim and Rust were contending ten years ago, Rust grew, Nim did not); when you do science you want the ecosystem there.
+
+### Island 3: Ecosystem
+
+- [x] The stack slide carries the penguins: "(plus Great Tables)" after Jake VanderPlas, a small artwork, a link to the deep dive "A data exploration with the stack", Allison Horst credited. The "Meet the penguins" slide is gone.
+- [x] Arraymancer: CPU and GPU backends, more than NumPy, deep learning. Datamancer: looks like dplyr, Arraymancer as its backend. ggplotnim: looks like ggplot2.
+- [x] nanuq moved up, right after Datamancer.
+- [x] nim-plotly: one quick slide, an interactive scatter of the penguins' bills.
+- [x] SciNim: "getting started (it needs to be updated)"; Flambeau stays listed there (no slide: Pietro has never seen it).
+- [x] Rocks ahead: "Vindaar, mratsim, Clonkk, HugoGranstrom, ..."; "they need usage".
+- [x] Notes: the classic stack from the Python Data Science Handbook plus display tables; at least two tensor libraries (Arraymancer, Flambeau), two dataframes, two plot libraries, tabelline; nanuq and tabelline born a month ago and already usable thanks to AI; the ecosystem is not strong but usable, and you do not need much of it because of interop.
+- [ ] Maybe list more libraries on the SciNim slide: to think about.
+
+### Island 4: Interoperability
+
+- [x] Bridges: nimpy the most stable; rnim (by Vindaar) and nimjl (by Clonkk) less stable and robust; each needs its runtime installed.
+- [x] nimlang-pypi marked "weeks old, made with AI"; 🐋 on "How exemplars emerge".
+- [x] Notes: compiles to C, C++, JavaScript, so it can use and produce libraries for them; the Nim-Julia bridge's creator is in the room; bridges both ways, Nim can compete with Rust for Python libraries; `uv add nimlang`; the affinity propagation story behind naffprop.
+
+### Island 5: Expressivity
+
+- [x] Notes: Python seemed expressive until Nim; two examples, custom operators (adding points, line times plane) and unchained (metaprogramming, units DSL, back to Vindaar's thesis).
+- [x] The map's box: "Expressivity is ingrained in the language. Two landmarks: operators of your own making, and units checked by the compiler, built with a macro." (Pietro: "here in the box we probably should put something else".)
+- [x] Rocks ahead (was a placeholder): Claude's proposal, to check.
+
+### Island 6: Interactivity
+
+- [x] The bounds in the plant's code (0, 100, 0, 20, 0, 10, 0, 1) scrub like Bret Victor's numbers: press and move left or right, the number changes by one and the slider's bound with it.
+- [x] Karax noted as another example of metaprogramming: a reactive framework in Nim.
+- [x] Notes: the interactivity Pietro means is interactive artifacts, native on the web through the JavaScript backend, not a REPL (which Nim does not have, yet); the fern Shiny app needed a server, with WASM it does not but it is clunky; cicak, a recent AI-driven explainer on providing a REPL.
+
+### Island 7: Notebook
+
+- [x] 8.2: Knuth's quote, then Fernando Pérez's definition of literate computing (verified from his 2013 post), then "Jupyter created the notebook as we know it"; the Pimentel study moved to the notes.
+- [x] Notes: how does a notebook work with no REPL? That is what started Pietro doing open source: nimib.
+- [ ] The recording stops at "And then some other": the rest of Island 7 and the conclusion are still to come.

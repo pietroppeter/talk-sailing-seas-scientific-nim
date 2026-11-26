@@ -15,18 +15,26 @@ template literateSlide* =
 Let us concentrate rather on explaining to human beings
 what we want a computer to do.""",
       "Donald Knuth, *Literate Programming* (1984)")
+    nbQuote("""
+"Literate computing": the weaving of a narrative directly
+into a live computation, interleaving text with code and results.""",
+      "Fernando Pérez, *Literate computing and computational reproducibility* (2013)")
     nbText """
-- 2001 IPython, 2014 Jupyter (Fernando Pérez):
-  code, results and story, the lab notebook of science
-- the price: hidden state, cells run out of order,
-  JSON files hard to review
-- plain files again: Quarto, Pluto.jl, marimo
-"""
-    reference """
-Of the GitHub notebooks a 2019 study could run, 1 in 4 ran
-without errors and 4% gave the same results (Pimentel et al.)
+*Jupyter* (2014, from IPython) created the notebook as we know it:
+code, results and story, the lab notebook of science.
 """
     speakerNote """
+So how does a notebook work with no REPL? That is what
+started me doing open source: I wanted something that
+covered the need of Jupyter, but I had no REPL, so I had
+to invent something completely different, that took
+advantage of what Nim offers: nimib.
+But first, the definition. Literate programming: explaining
+to human beings what we want a computer to do (Knuth).
+Literate computing, as Fernando Pérez calls it: a narrative
+woven into a live computation. And Jupyter created the
+concept of a notebook: it did not exist before.
+
 Knuth wanted programs written for people to read, with the code
 in the order of the explanation (WEB, then TeX).
 Fernando Pérez, keynote of this conference, started IPython in 2001;
@@ -80,7 +88,7 @@ template nimibMakesSlide* =
 - **READMEs**: the same blocks rendered as Markdown
 - **your own blocks**: the tables, the maps and the plotly figures of this talk
 """
-    nbTextSmall "[nimib, a deep dive](deepdive/notebook.html)"
+    nbTextSmall "🐋 [nimib, a deep dive](deepdive/notebook.html)"
     speakerNote """
 A block is a type and a function that renders it:
 nimib ships text, code, images, files; you add your own.
@@ -109,7 +117,7 @@ nimiSlides made 10 of 41 NimConf talks since 2022
     reference """
 These are commits only: using it, reporting issues and telling us
 what you built count as much, today more than ever
-([who builds nimib land](deepdive/notebook.html))
+(🐋 [who builds nimib land](deepdive/notebook.html))
 """
     speakerNote """
 These are the people who wrote nimib land, from the git history of each repository.
@@ -126,7 +134,7 @@ nimibex for experiments and extra blocks, nblog, and nimib.py.
 
 template island7RocksSlide* =
   slide: # 8.6
-    nbText "## Rocks ahead"
+    nbText "## 🪨⚠️ Rocks ahead"
     columns:
       column:
         nbText """

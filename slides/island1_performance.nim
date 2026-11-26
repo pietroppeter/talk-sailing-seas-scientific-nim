@@ -67,9 +67,16 @@ GPUs and assembly.
 """
     reference &"""
 Best of 100 runs: {benchMachineInfo()}.
-[Benchmark code and details](deepdive/vandermonde.html)
+🐋 [Benchmark code and details](deepdive/vandermonde.html)
 """
     speakerNote """
+(Very little time here.) The main value proposition:
+it is performant, it runs like C.
+When you write a lot of Python you get scared of
+for loops, and you think you need a library for
+everything. You do not: for loops are easy to
+understand, and in C they are cheap.
+
 The Vandermonde matrix: row i holds the powers of x[i].
 A classic example for the two-language problem.
 Both sides are plain for loops, and look almost the same.
@@ -80,6 +87,11 @@ the loop is compiled, and it runs as fast as NumPy's C loop.
 No ceiling: Nim compiles to C, so you can go as low as you want,
 SIMD intrinsics, threads, GPU kernels, inline assembly.
 Mamy's talk, in this same session, shows how far that goes.
+
+In the words of people like Mamy, who talks before me,
+Nim is one of the languages where you can push
+performance the furthest, even more than Rust,
+which is focused on safety, not only performance.
 """
 
 template island1PerformanceSection* =

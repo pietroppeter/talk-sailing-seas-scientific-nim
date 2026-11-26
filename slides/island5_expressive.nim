@@ -54,6 +54,13 @@ as a normal function, using backticks.
       func `*`(l: Line, s: Plane): Point =
         l.p + ((s.p - l.p) ∙ s.n) / (l.d ∙ s.n) * l.d
     speakerNote """
+I thought Python was an expressive language, until I
+ran into Nim. Expressivity is ingrained in many parts
+of the language; I will show just two.
+First: you can define custom operators very easily.
+Summing two points, or a multiplication operator that
+is the intersection of a line and a plane.
+
 Points, vectors, dot (∙) and cross (×) products
 are a few lines in a helper module:
 unicode operators are custom operators too.
@@ -77,7 +84,7 @@ they generically intersect in one point.
         plane = pt(0, 0, 0) + pt(1, 0, 0) + pt(0, 1, 0)
       echo line * plane
     nbTextSmall """
-[Explained step by step here](deepdive/operators.html).
+🐋 [Explained step by step here](deepdive/operators.html).
 """
     speakerNote """
 Two points make a line, three points a plane (here z = 0),
@@ -107,6 +114,11 @@ The macro writes the types, the aliases and the conversions;
 `*`, `/` and `+` are macros that work out the unit of the result.
 """
     speakerNote """
+Second: you can do crazy stuff, like unchained, with
+metaprogramming, one of Nim's superpowers. You write a
+DSL that says: these are the units; and a library lets
+you create other units whenever you want them.
+
 Left: two SI base units as unchained declares them (its si_units.nim),
 right: our two new units (slides/island5_units.nim).
 Our own units here: SolarMass and EarthMass (right column).
@@ -132,9 +144,14 @@ how long is a year, for a planet or a moon?
       echo "Moon: ", period(384_400.km, 1.Mearth).to(day)
       echo compiles(1.AU + 1.Msun) # Length + Mass
     nbTextSmall """
-[Explained step by step here](deepdive/units_macros.html).
+🐋 [Explained step by step here](deepdive/units_macros.html).
 """
     speakerNote """
+Then you use them in code as you would in physics,
+everything type checked. This goes back to Vindaar's
+code in his thesis. And there are many more examples
+of metaprogramming.
+
 Astronomical units, kilometers, solar and Earth masses
 and Newton's constant in one formula, converted for us.
 Length and Mass are concepts: any unit of that quantity fits.
@@ -143,7 +160,23 @@ Adding a length to a mass is a compile time error.
 """
 
 template island5RocksSlide* = # 6.6
-  placeholderSlide("6.6", "Rocks ahead", """with great power: macros can make code hard to read for newcomers; concepts (compile-time duck typing) were not robust until possibly recently.""")
+  slide:
+    nbText "## 🪨⚠️ Rocks ahead"
+    nbText """
+- macros are hard to write, and hard to debug: errors point at generated code
+- every DSL is a new little language for its readers
+- with great power: reach for procs and templates first
+"""
+    speakerNote """
+(Claude's proposal from the dry run, to check.)
+Macros are powerful and can be dangerous.
+Writing one means working on the syntax tree, and when
+something breaks the error is in code you never wrote.
+A DSL reads beautifully once you know it, but every
+newcomer has to learn it first.
+The community rule: a proc if you can, a template if
+you must, a macro only when nothing else works.
+"""
 
 template island5ExpressiveSection* =
   slide:

@@ -12,7 +12,7 @@ const karaxCode* = block:
   ("  proc render(): VNode =\n" & lines).dedent.strip
 
 when defined(js):
-  import std / dom
+  import std / [dom, math]
   import zogyn, zogyn / stage
 
   const
@@ -46,11 +46,78 @@ when defined(js):
     let i = parseInt(key) - first
     if i in 0 ..< order.len: closest(order.reorderings(i)) else: nil
 
-  proc plantCode*(id: string, setOrder: proc (order: seq[int]), w = 420.0) =
+  # the bounds of the sliders are numbers you scrub, as in Bret Victor's
+  # explorable explanations (dry run 1, 2026-11-26): press on a 0 or a 100 in the
+  # code and move left or right, the number changes by one and the slider with it
+  const
+    numSpan = "<span class=\"hljs-number\">"
+    sliderStep = [1.0, 1.0, 1.0, 0.01]     # the steps of the sliders, as in the app
+  var
+    tmpl: seq[string]                       # the lines, with a mark where a bound goes
+    bound: array[4, array[2, int]]          # the bounds of each slider, as in the code
+
+  proc fillLine(i: int) =
+    html[i] = tmpl[i]
+    for k in 0 ..< 4:
+      for b in 0 .. 1:
+        html[i] = html[i].replace("@" & $k & $b & "@", $bound[k][b])
+
+  proc scrubbable() =
+    ## marks the first two numbers of each slider line (its bounds) as scrubbable
+    tmpl = html
+    for k in 0 ..< 4:
+      let i = first + k
+      var line = html[i]
+      var at = 0
+      for b in 0 .. 1:
+        at = line.find(numSpan, at)
+        let close = line.find("</span>", at)
+        bound[k][b] = parseInt(line[at + numSpan.len ..< close])
+        let marked = "<span class=\"hljs-number scrub\" data-k=\"" & $k & "\" data-b=\"" & $b & "\">@" & $k & $b & "@"
+        line = line[0 ..< at] & marked & line[close .. ^1]
+        at += marked.len
+      tmpl[i] = line
+
+  proc closestScrub(e: EventTarget): Element {.importjs: "((e) => e.closest ? e.closest('.scrub') : null)(#)".}
+  proc dataInt(e: Element, name: cstring): int {.importjs: "parseInt(#.getAttribute(#))".}
+
+  proc setBound(appId: string, k, b, v: int) =
+    ## the k-th slider of the app in the element with id `appId` gets its bound b
+    ## (0 min, 1 max) set to v; an input event updates the plant if its value moved
+    let inputs = document.querySelectorAll(cstring("#" & appId & " .sidebar input"))
+    if k >= inputs.len: return
+    let input = inputs[k]
+    input.setAttribute(cstring(if b == 0: "min" else: "max"), cstring($int(round(v.float / sliderStep[k]))))
+    input.dispatchEvent(newEvent("input"))
+
+  proc plantCode*(id: string, setOrder: proc (order: seq[int]), w = 420.0, appId = "plant") =
     ## the code shown in the element with id `id` (nbCodeStage), made a stage
     ## w units wide: while a slider line is dragged, `setOrder` gets the order
-    ## of the sliders on screen, so the sliders move with it
+    ## of the sliders on screen, so the sliders move with it; the bounds in the
+    ## code scrub the bounds of the sliders of the app in `appId`
     html = ($document.getElementById(cstring(id)).querySelector("code").innerHTML).splitLines
+    scrubbable()
+    for k in 0 ..< 4: fillLine(first + k)
     let st = mount(id, w, lh * float(lines.len) + 2 * pad, @[0, 1, 2, 3],
                    renderCode, codeSpec, toggle = false)
     st.onMove = proc () = setOrder(st.shown) # the sliders follow the line while it is dragged
+    var (sk, sb, x0, v0) = (-1, 0, 0, 0)
+    let host = document.getElementById(cstring(id))
+    host.addEventListener("pointerdown", proc (ev: Event) =
+      let t = closestScrub(ev.target)
+      if t.isNil: return
+      ev.stopPropagation() # not a line to drag
+      ev.preventDefault()
+      (sk, sb) = (t.dataInt("data-k"), t.dataInt("data-b"))
+      (x0, v0) = (MouseEvent(ev).clientX, bound[sk][sb]), true)
+    document.addEventListener("pointermove", proc (ev: Event) =
+      if sk < 0: return
+      var v = v0 + (MouseEvent(ev).clientX - x0) div 8
+      if sb == 0: v = max(0, min(v, bound[sk][1] - 1))
+      else: v = max(v, bound[sk][0] + 1)
+      if v == bound[sk][sb]: return
+      bound[sk][sb] = v
+      fillLine(first + sk)
+      st.refresh()
+      setBound(appId, sk, sb, v))
+    document.addEventListener("pointerup", proc (ev: Event) = sk = -1)

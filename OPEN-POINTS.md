@@ -68,7 +68,7 @@ Chosen by Claude on 2026-11-25 (Pietro: go with your guts, no slides removed); r
 
 Placeholder slides that still need content:
 
-- [ ] 6.6 Island 5 rocks ahead (macros readability, concepts).
+- [ ] 6.6 Island 5 rocks ahead: Claude's proposal from dry run 1 (hard to write and debug, every DSL a new language, procs and templates first), to check.
 - [ ] 9.2 to 9.5 Conclusion: for the beginner, for the builder, your language seen from Nim, why still niche (your views on governance, tooling, Nimony and NIF).
 - [ ] Deep dives for the new code-heavy slides (one nimib page in deepdive/ per code slide).
 
