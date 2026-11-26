@@ -31,7 +31,7 @@ const mainland*: seq[Language] = @[
 proc mainlandTable*(): Tabella =
   tabella(mainland, rownameCol = "lang")
     .fmtNumber("since", decimals = 0, useSeps = false)
-    .colsLabel({"since": "since", "cameTo": "brings", "price": "the price"})
+    .colsLabel({"since": "since", "cameTo": "brings", "price": "trade-offs"})
     .tabFootnote("Year of the first release; R grew out of S (1976), NumPy dates from 2006.",
       loc.columnLabels("since"))
 
@@ -40,7 +40,7 @@ template mainlandSlide* =
     nbText "## The mainland"
     nbText """
 Each language brings a fresh perspective to old problems,
-and has a price. Languages feed on and inspire each other.
+and has trade-offs. Languages feed on and inspire each other.
 """
     nbTable mainlandTable().slideLook(fontSize = "0.55em").highlightRows(where(it["lang"] == "Nim"))
     speakerNote """
