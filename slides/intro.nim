@@ -58,7 +58,7 @@ template tradeoffsSlide* =
   slide: # 1.4
     nbText "## 👑 Nim"
     nbText """
-General purpose, *universal* and "minimal";
+General purpose, *universal* and *"minimal"*;
 statically typed, compiled (to C, C++, JavaScript),
 with a syntax like Python.
 Imperative first, functional later, obj oriented when needed.
@@ -77,15 +77,16 @@ Imperative first, functional later, obj oriented when needed.
 **You pay**
 
 - a compile step, no REPL (yet)
-- a tiny ecosystem
+- a tiny ecosystem, no big sponsors
 - few people know it, weak governance limits adoption
 """
     reference """Andreas Rumpf, 2008 (as Nimrod, a systems language with macros),
 1.0 in 2019, 2.0 in 2023;
 still evolving: Nimony / Nim 3.0 upcoming. [nim-lang.org](https://nim-lang.org)
 
-Universal: from embedded to webdev (fullstack), from gamedev to scientific computing,
-you can build a language or an OS with it.
+Universal: embedded, web (full stack), games, science; even a language or an OS.
+"Minimal": not anymore, but still light, on the mind and on resources
+(small binaries, fast, economical).
 """
     speakerNote """
 Not a tutorial: just enough to read the examples.
