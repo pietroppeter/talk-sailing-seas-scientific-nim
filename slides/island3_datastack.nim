@@ -172,7 +172,7 @@ and donated to SciNim.
 
 template island3RocksSlide* {.dirty.} =
   slide: # 4.11
-    nbText "## 🪨⚠️ Rocks ahead"
+    nbText "## ⚠️ Rocks ahead 🪨"
     nbText """
 - classic ML is only seeds: a few algorithms, no scikit-learn
 - multiple tensor libraries, and now two dataframe libraries

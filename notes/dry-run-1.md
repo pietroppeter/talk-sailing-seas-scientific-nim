@@ -52,7 +52,7 @@ Caveat said on stage: limited experience (a year learning to be a manager, deep 
 
 ### Everywhere
 
-- [x] Every rocks ahead slide has a rock and a warning sign in its title: 🪨⚠️ Rocks ahead.
+- [x] Every rocks ahead slide has a warning sign and a rock in its title: "⚠️ Rocks ahead 🪨" (Pietro, 2026-11-26).
 - [x] Every link to a deep dive has the 🐋.
 
 ### Intro
@@ -95,7 +95,7 @@ Caveat said on stage: limited experience (a year learning to be a manager, deep 
 
 ### Island 6: Interactivity
 
-- [x] The bounds in the plant's code (0, 100, 0, 20, 0, 10, 0, 1) scrub like Bret Victor's numbers: press and move left or right, the number changes by one and the slider's bound with it.
+- [x] The bounds in the plant's code (0, 100, 0, 20, 0, 10, 0, 1) scrub like Bret Victor's numbers: press and move left or right, the number changes by one (negative too) and the slider's bound with it.
 - [x] Karax noted as another example of metaprogramming: a reactive framework in Nim.
 - [x] Notes: the interactivity Pietro means is interactive artifacts, native on the web through the JavaScript backend, not a REPL (which Nim does not have, yet); the fern Shiny app needed a server, with WASM it does not but it is clunky; cicak, a recent AI-driven explainer on providing a REPL.
 

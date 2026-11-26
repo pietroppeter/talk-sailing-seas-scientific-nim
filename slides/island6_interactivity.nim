@@ -98,7 +98,7 @@ and draws its own plot, since ggplotnim needs Cairo (C).
 
 template island6RocksSlide* =
   slide: # 7.4
-    nbText "## 🪨⚠️ Rocks ahead"
+    nbText "## ⚠️ Rocks ahead 🪨"
     nbText """
 - no REPL yet, only experiments: nim secret, INim, jupyternim, cicak
 - a REPL fits interpreted or JIT languages; Nim is statically typed and compiled ahead of time

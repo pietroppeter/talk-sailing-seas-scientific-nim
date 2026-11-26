@@ -161,7 +161,7 @@ Adding a length to a mass is a compile time error.
 
 template island5RocksSlide* = # 6.6
   slide:
-    nbText "## 🪨⚠️ Rocks ahead"
+    nbText "## ⚠️ Rocks ahead 🪨"
     nbText """
 - macros are hard to write, and hard to debug: errors point at generated code
 - every DSL is a new little language for its readers

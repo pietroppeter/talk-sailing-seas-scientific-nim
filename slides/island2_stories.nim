@@ -180,7 +180,7 @@ Its docs are a book written with nimibook.
 template island2RocksSlide* = # 3.6
   slide:
     nbText: """
-## 🪨⚠️ Rocks ahead
+## ⚠️ Rocks ahead 🪨
 
 A tiny ecosystem: pioneers build what they need,
 or move where the libraries are

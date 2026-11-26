@@ -113,7 +113,7 @@ when defined(js):
     document.addEventListener("pointermove", proc (ev: Event) =
       if sk < 0: return
       var v = v0 + (MouseEvent(ev).clientX - x0) div 8
-      if sb == 0: v = max(0, min(v, bound[sk][1] - 1))
+      if sb == 0: v = min(v, bound[sk][1] - 1) # negative too (Pietro: what does a negative simplicity do?)
       else: v = max(v, bound[sk][0] + 1)
       if v == bound[sk][sb]: return
       bound[sk][sb] = v

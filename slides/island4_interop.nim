@@ -248,7 +248,7 @@ Also mine, from this year, mostly written with an AI agent (its README says so).
 
 template island4RocksSlide* =
   slide: # 5.7
-    nbText "## 🪨⚠️ Rocks ahead"
+    nbText "## ⚠️ Rocks ahead 🪨"
     nbText """
 - bridges of different maturity: nimpy is solid, rnim and nimjl less so
 - packaging Nim for Python had no maintained tool for years; `nimlang-pypi` is new and alpha

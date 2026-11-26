@@ -134,7 +134,7 @@ nimibex for experiments and extra blocks, nblog, and nimib.py.
 
 template island7RocksSlide* =
   slide: # 8.6
-    nbText "## 🪨⚠️ Rocks ahead"
+    nbText "## ⚠️ Rocks ahead 🪨"
     columns:
       column:
         nbText """
