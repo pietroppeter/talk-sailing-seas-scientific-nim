@@ -51,7 +51,7 @@ const horizonSource = staticRead("../examples/horizon.nim") # a plain nimib docu
 
 template nimibSlide* =
   slide: # 8.3
-    nbText "## nimib: a notebook is a library"
+    nbText "## nimib: notebook as a library"
     compactColumns:
       column:
         nbShowCode(horizonSource)
