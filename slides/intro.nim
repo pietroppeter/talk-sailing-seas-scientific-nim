@@ -63,7 +63,7 @@ statically typed, compiled (to C, C++, JavaScript),
 with a syntax like Python.
 Imperative first, functional later, obj oriented when needed.
 """
-    columns:
+    compactColumns:
       column:
         nbText """
 **You get**
@@ -101,9 +101,10 @@ template voyageSlide* =
     nbText """
 A "niche" language is an exotic land.
 From a sailing boat you do not actually "live" a place but
-it is a quick and fun way to get a feeling for a place. The place we want to visit is:
+it is a quick and fun way to get a feeling for a place.
+The place we want to visit is:
 
-*how does Nim feel as a language for scientific computing?*.
+*how does Nim feel as a language for scientific computing?*
 
 - 🏙️ **Mainland**: mainstream programming languages
 - 🏝️ **Seven islands**: topics for scientific computing

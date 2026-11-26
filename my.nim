@@ -93,6 +93,7 @@ const slideBlocksCss = """
 .reveal .avatars .nick { font-size: 0.32em; color: gray; margin-top: 0.3em; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* compactColumns: three narrow columns of code (Island 4 bridges), smaller code */
 .reveal .compact-cols pre { font-size: 0.5em; }
+.reveal .compact-cols ul { font-size: 0.8em; } /* lists too (1.4, You get / You pay) */
 /* a table on its own in a slide (not in a layout's grid) gets room above and below */
 .reveal .slides section > .tabella { margin: 0.8em 0; }
 /* code in nimiSlides' columns (a grid) fills its column */
@@ -473,7 +474,7 @@ template imageLeftSlide*(url: string, width: float, body: untyped) =
     nb.add imgLeft
 
 template compactColumns*(body: untyped) =
-  ## nimiSlides' `columns`, with smaller code, for three narrow columns of code
+  ## nimiSlides' `columns`, with smaller code and lists, for narrow columns
   nbDiv(classes = "compact-cols", styles = "display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); column-gap: 0.8em;"):
     body
 
