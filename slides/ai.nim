@@ -11,7 +11,7 @@ template aiSlide* =
 
 A lot is changing. For the context of this talk:
 
-- Programming languages matter less
+- Programming languages matter less, what you do with them matters more
 - 👀 **AI writes excellent Nim** (compiler, static types, low cognitive load)
 - A small ecosystem hurts less: binding/porting is easy
 
@@ -21,7 +21,7 @@ What does not change (becomes more important):
 - *Ownership*: you own everything you put out
 - *Trust*: the trust you build with your community of users
 """
-    reference "(my limited experience: heavy AI use only in the last two months)"
+    reference "(my limited experience: heavy AI use only in the last two months, many 🌌🧠 galaxy brain moments)"
     speakerNote """
 It is November 2026, so I need an AI slide. Let me keep
 it to the context of this talk. Three things.
