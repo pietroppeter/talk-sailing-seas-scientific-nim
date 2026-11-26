@@ -1,6 +1,7 @@
 import std / [math, strutils]
 import nimib
 import deepdive # useDeepDive, and the blocks of blocks.nim
+import ../pythonish # nbPython
 import ggplotnim
 import tabelline except Column # Datamancer has its own Column
 import tabelline / nimib as tabNimib # nbTable
@@ -215,6 +216,43 @@ the maps, the quotes and the plotly figures are blocks.
 nbText """
 Blocks can contain blocks (`nbDiv`, the columns of a slide),
 and every block can be rendered by more than one backend:
+"""
+
+nbText """
+### A block that speaks Python
+
+A block is just a template, so it can play tricks. The
+code below reads as Python, and it is Nim: `nbPython`
+shows it as written, and a macro rewrites a few Python
+habits (`def`, assignment without `var`, lists, `range`,
+`True`) into Nim before the compiler checks it. It ran
+when this page was built:
+"""
+nbPython:
+  def mean(xs):
+      return sum(xs) / len(xs)
+
+  speeds = [6.5, 7.2, 5.9, 8.1]  # knots, one per leg
+  speeds.append(6.8)
+  print(f"mean speed: {mean(speeds):.1f} knots")
+
+  for i in range(len(speeds)):
+      if speeds[i] > mean(speeds):
+          print("leg", i + 1, "is fast")
+      elif speeds[i] < 6:
+          print("leg", i + 1, "is slow")
+
+  arrived = False
+  arrived = True
+  print("arrived:", arrived, "after", 7 // 2, "days")
+nbText """
+It is a joke with a point: Nim's syntax is close enough
+to Python's that a macro gets you most of the way.
+Only most: tuple unpacking, classes, list comprehensions
+and 'single quotes' (a char in Nim) do not parse or do not
+mean the same, and a list cannot mix types. The rewrite is
+[`pythonish.nim`](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim/blob/main/pythonish.nim),
+about a hundred lines.
 """
 
 nbText """

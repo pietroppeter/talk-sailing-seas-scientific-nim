@@ -20,7 +20,10 @@ newNbBlock(NbShowCode):
   caption: string   # markdown, e.g. the file and the lines it comes from
   toHtml:
     # Nim is highlighted when the page is built; other languages by highlight.js in the browser
-    let cls = if blk.lang == "nim": "nohighlight nim hljs" else: "language-" & blk.lang
+    # "pynim" (pythonish.nim): Nim that reads as Python, highlighted as Python
+    let cls = if blk.lang == "nim": "nohighlight nim hljs"
+      elif blk.lang == "pynim": "language-python pynim"
+      else: "language-" & blk.lang
     # data-noescape: reveal.js' highlight plugin would escape the html of the highlighted code
     result = &"""<pre><code class="{cls}" data-noescape>{blk.html}</code></pre>"""
     if blk.caption.len > 0:
@@ -45,6 +48,7 @@ pre:has(> code.language-julia)::before {
 pre:has(> code.nim)::before, pre:has(> code.language-nim)::before { content: "👑 Nim"; }
 pre:has(> code.python)::before, pre:has(> code.language-python)::before { content: "🐍 Python"; }
 pre:has(> code.language-julia)::before { content: "🤹 Julia"; }
+pre:has(> code.pynim)::before { content: "🐍 Python? 👑 Nim!"; opacity: 0.8; }
 """
   ## used by the pages (talkstyle.nim) and the slides (my.nim)
 
