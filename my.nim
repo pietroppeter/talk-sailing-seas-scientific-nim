@@ -91,6 +91,9 @@ const slideBlocksCss = """
 .reveal .avatars a { display: flex; flex-direction: column; align-items: center; width: 3em; text-decoration: none; }
 .reveal .avatars img { width: 2.1em; height: 2.1em; border-radius: 50%; margin: 0; border: 2px solid var(--r-link-color); }
 .reveal .avatars .nick { font-size: 0.32em; color: gray; margin-top: 0.3em; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* centered: an image and its caption in the middle of a column (slide 4.8) */
+.reveal .centered { text-align: center; }
+.reveal .centered figure { margin: 0.3em auto 0; }
 /* compactColumns: three narrow columns of code (Island 4 bridges), smaller code */
 .reveal .compact-cols pre { font-size: 0.5em; }
 .reveal .compact-cols ul { font-size: 0.8em; } /* lists too (1.4, You get / You pay) */

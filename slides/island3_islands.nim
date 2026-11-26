@@ -1,5 +1,6 @@
 import std / [os, strutils, sequtils, algorithm]
-import nimib, nimiSlides
+import nimib except md
+import nimiSlides
 import tabelline except Column, readCsv
 import tabelline as tl
 import ../my, ../islandnames
@@ -24,57 +25,77 @@ const
 
 proc nums(v: Value): seq[float] = ($v).splitWhitespace.mapIt(it.parseFloat)
 
-proc islandsTable*(): Tabella =
+type IslandRow* = tuple[island, sea, chart, code: string, shape: Value, people: float]
+
+proc voyageIslands*(): seq[IslandRow] =
+  ## the real islands of the chart, one row each, sea by sea from west to east
+  ## and in each sea in the order of the voyage
   let isole = tl.readCsv(isoleCsv, comment = "#")
-  var rows: seq[tuple[island, sea, chart, code: string, shape: Value,
-                      km2, population: float]]
   for i in 0 ..< isole.nrows:
     let k = voyage.find($isole["island", i])
     if k < 0: continue
     let s = seas.mapIt(it[0]).find($isole["iho_sea", i])
     doAssert s >= 0, "no sea for " & $isole["island", i]
-    rows.add (island: $isole["island", i], sea: seas[s][1],
-              chart: $(k + 1) & " · " & islands[k], code: $isole["code", i],
-              shape: toValue((x: nums(isole["x", i]), y: nums(isole["y", i]))),
-              km2: isole["km2", i].toFloat, population: isole["population", i].toFloat)
-  doAssert rows.len == voyage.len
-  # sea by sea from west to east, and in each sea in the order of the voyage
-  rows.sort(proc (a, b: typeof(rows[0])): int =
+    result.add (island: $isole["island", i], sea: seas[s][1],
+                chart: $(k + 1) & " · " & islands[k], code: $isole["code", i],
+                shape: toValue((x: nums(isole["x", i]), y: nums(isole["y", i]))),
+                people: isole["population", i].toFloat)
+  doAssert result.len == voyage.len
+  result.sort(proc (a, b: IslandRow): int =
     cmp((seas.mapIt(it[1]).find(a.sea), a.chart), (seas.mapIt(it[1]).find(b.sea), b.chart)))
-  let shapes = nanoplotOptions(dataBarFillColor = land, dataBarStrokeColor = ink)
-  tabella(rows, rownameCol = "island", groupnameCol = "sea")
-    .colsMove(["shape", "code"], after = "island")
-    .fmtNanoplot("shape", plotType = "shape", plotHeight = "2em", options = shapes)
+
+proc onSlide(t: sink Tabella): Tabella =
+  ## the deck's look, not shown on the slide: the chart's colours for the shapes,
+  ## the theme's blue for the bars, the seas in orange
+  t.fmtNanoplot("shape", plotType = "shape", plotHeight = "2em",
+      options = nanoplotOptions(dataBarFillColor = land, dataBarStrokeColor = ink))
     .fmtFlag("code", round = true, height = "0.9em")
-    .fmtInteger(["km2", "population"])
-    .barBefore("km2", plotHeight = "0.9em")
-    .barBefore("population", plotHeight = "0.9em")
-    .colsLabel({"shape": "", "code": "", "chart": "on the chart",
-                "km2": "km²", "population": "people"})
+    .fmtNanoplot("people", plotType = "bar", plotHeight = "1em", options = slideBars())
     .tabStyle(style.text(color = "#ee961a", style = "italic"), loc.rowGroups())
-    .slideLook(fontSize = "0.53em")
+    .slideLook(fontSize = "0.5em")
     .tabOptions(dataRowPadding = "0.05em", rowGroupPadding = "0.3em",
                 rowGroupFontWeight = "bold")
 
-template islandsSlide* = # 4.10
-  slide:
-    nbText "## The islands, uncovered"
-    nbTable islandsTable()
-    reference """
-From tabelline's story
-[Islands of the Mediterranean](https://pietroppeter.github.io/tabelline/stories/isole/)
-(data: OpenStreetMap, IHO, Wikipedia)
-"""
-    speakerNote """
+proc islandsContent(nb: var Nb) = # 4.10
+  nbText "## Display tables: tabelline"
+  let rows = voyageIslands()
+  const story = "https://pietroppeter.github.io/tabelline/stories/isole/"
+  compactColumns:
+    column:
+      nbCode:
+        # rows: the islands of the chart, with
+        # their sea, flag, outline and people
+        let islands = tabella(rows,
+            rownameCol = "island",
+            groupnameCol = "sea")
+          .colsMove(["shape", "code"],
+            after = "island")
+          .fmtNanoplot("shape",
+            plotType = "shape")
+          .fmtFlag("code")
+          .fmtNanoplot("people",
+            plotType = "bar")
+          .colsLabel({"shape": "", "code": "",
+            "chart": "on the chart"})
+          .tabSourceNote(md(
+            "From tabelline's story " &
+            "[Islands of the Mediterranean](" &
+            story & ") (OSM, IHO, Wikipedia)"))
+    column:
+      nbTable islands.onSlide
+  speakerNote """
 And now I can tell you where we are sailing:
 every island of the chart has the coast of a real one.
-Sea by sea, with its flag, its shape, how big it is
-and how many people live there.
+Sea by sea, with its flag, its shape and how many people
+live there (hover on a bar for the number).
 Caprera is Garibaldi's island, and nobody lives there.
 The shapes are a new nanoplot of tabelline:
 the data is from the islands story on tabelline's site,
 gathered with nanuq.
 """
+
+template islandsSlide* = # 4.10
+  slide: islandsContent(nb)
 
 when isMainModule: # this slide on its own: docs/slides_island3_islands.html
   buildDeckPart("island3_islands", "slides/island3_islands.nim"):

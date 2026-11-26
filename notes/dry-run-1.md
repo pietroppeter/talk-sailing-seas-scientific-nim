@@ -109,4 +109,4 @@ Caveat said on stage: limited experience (a year learning to be a manager, deep 
 
 - [x] 4.2 is now "Ecosystem"; its last row is "Display tables", in orange; the notes open with the single takeaway: use Great Tables and gt, build more and better great tables.
 - [x] 4.8: "Above 4000: nanuq and nim-plotly", the Alps' 82 four-thousanders cleaned with nanuq and drawn with nim-plotly on their relief, with Pietro's photo of Monte Rosa and nanuq's post as the deep dive. It replaced the penguins' plotly slide.
-- [x] 4.10: "The islands, uncovered", a tabelline table of the real islands of the chart, sea by sea: flag, outline (shape nanoplot), area and people with bars.
+- [x] 4.10: "Display tables: tabelline", the code on the left and a table of the real islands of the chart, sea by sea: flag, outline (shape nanoplot), people as a bar nanoplot, the source as a source note. tabelline upgraded to its latest main.
