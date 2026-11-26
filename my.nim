@@ -70,6 +70,9 @@ const slideBlocksCss = """
 /* Island 1: Python and Nim side by side, each column as wide as its code */
 .reveal .perf-cols { display: grid; grid-template-columns: max-content 1fr; gap: 0.6em; margin-bottom: 0.6em; }
 .reveal .perf-cols pre { font-size: 0.45em; width: 100%; margin: 0; }
+/* Island 7 (slide 8.3): the page on a phone */
+.reveal .phone-frame { width: 70%; margin: 0 auto; border: 0.35em solid #1f2a33; border-radius: 1.2em; overflow: hidden; box-shadow: 0 8px 28px rgba(31, 42, 51, 0.25); }
+.reveal .phone-frame figure, .reveal .phone-frame img { margin: 0; display: block; width: 100%; }
 /* Island 7 (slide 8.3): a nimib document (nimibCode) on the left, what it renders on the right, as a page */
 .reveal .nimib-twin { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: 1.2em; row-gap: 0; align-items: start; margin-top: 0.4em; }
 .reveal .nimib-twin > :first-child { grid-column: 1; grid-row: 1 / span 8; font-size: 0.48em; margin: 0; width: 100%; }
