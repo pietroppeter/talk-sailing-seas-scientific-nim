@@ -436,8 +436,6 @@ template themedTitle*(body: untyped) =
     nbDiv("title-slide", ""):
       nbDiv("title-box", ""):
         body
-        when slideTheme == "chart":
-          nbLede("SCALE 1 : 25 (minutes + 5' Q&A)", "scale")
   else:
     body
 

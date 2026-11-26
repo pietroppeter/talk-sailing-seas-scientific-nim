@@ -23,19 +23,24 @@ template aboutSlide* =
 - 🎂 Founded 12 years ago, 📮 now part of Poste Italiane
 """
     speakerNote """
-- Delivery Manager at AgileLab since 2024, before that
-  Data Scientist.
-- Applied math: started in geosciences, weather and climate
-  dynamics, an (unfinished) PhD in Paris (LMD, ENS),
-  later cryptography.
-- Passionate about Nim since 2018; nimib, the open source
-  "notebook" for Nim, since 2020 (this deck is made with it).
-- AgileLab: data consulting for big enterprises
-  (e.g. Poste Italiane), ~350 people, about 2x growth
-  in the last 2-3 years; public handbook, self-management
-  (holacracy).
-- Nomads: e.g. 2 weeks in the Canary Islands... or in Toulouse.
-- Budget to attend conferences, and extra budget for speakers.
+So who am I? I work at AgileLab, and I am a manager:
+I have not written code in about a year. Well, nobody
+codes anymore, everybody is becoming a manager of agents.
+
+In my spare time I help organize Python Milan and
+PyData Milan, a bit less lately.
+
+I have been passionate about Nim since I ran into it on
+Hacker News in 2018, and it is what pushed me into open
+source: I made a "notebook" for Nim, nimib, which this
+deck is built with.
+
+My background is applied math, and I did many things
+with it. One reason I am happy to give this talk here:
+I spent two years in Paris not finishing a PhD in
+geosciences (LMD, ENS).
+
+Happy to tell you about AgileLab later.
 """
 
 when isMainModule: # this part of the deck on its own: docs/slides_about.html

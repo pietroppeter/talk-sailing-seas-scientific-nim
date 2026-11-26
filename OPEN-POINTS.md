@@ -8,7 +8,7 @@ Everything still open or undecided, collected on 2026-11-24 after merging PRs #2
 - [ ] Portolano texts on the charts are Claude's drafts (`maps/voyage.json`): rewrite them in the map editor.
 - [ ] Timing: the target is 25 minutes of content and 5 of Q&A (2026-11-25); the sections add up to 23 minutes (with QEX, Island 2 is 2.5; Island 1 is one slide, 1 minute). Use the 2 minutes of slack, or leave them for the day? Check in the dry run.
 
-- [ ] Slide 0.3 AI (`slides/ai.nim`, after about me): a placeholder; what it says, and the minutes it takes from the opening (still 1 minute in the outline).
+- [ ] Slide 0.3 AI: content from the first dry run (2026-11-26); the opening (title with hands up, about me, AI) clearly takes more than the 1 minute of the outline: time it.
 
 ## Unanswered points from merged PRs
 

@@ -33,9 +33,9 @@ Navigation: each section except the opening is a vertical stack in reveal.js. It
 
 Title and speaker, before the voyage starts. Not part of the intro section.
 
-0.1 **Sailing Seas of Scientific Nim** - title slide (short form, fits on one line) with speaker and conference, and the link to the repository with its short form, bit.ly/pietro-scinim.
+0.1 **Sailing Seas of Scientific Nim** - title slide (short form, fits on one line), in gray below it "Nim is a programming language", speaker and conference, and the link to the repository with its short form, bit.ly/pietro-scinim. On the chart behind it, in gray under MAINLAND: "mainstream languages for scientific computing: Python, R, Julia, C, C++" (title slide only); nothing in magenta but the route and the first port. The speaker asks for hands: who has heard of Nim, who has written some, who has contributed to scientific Nim.
 0.2 **👋 About me** (`slides/about.nim`) - Pietro Peterlongo; ~~Data Scientist~~ Delivery Manager at AgileLab; organizer of Python Milan and PyData Milan; Nim since 2018, the nimib "notebook" since 2020; applied math from geosciences to cryptography. Then a second heading, "About AgileLab?": data consulting, ~350 people (2x in 3 years), public handbook (linked), holacracy, nomads. Orange for the personal and Nim parts, teal for AgileLab. Emojis after Pietro's domain-driven data science talk; the Paris PhD years (LMD, ENS), the clients and the details go in the speaker notes.
-0.3 **AI** (`slides/ai.nim`) - one slide on AI, right after about me: a placeholder, content to decide.
+0.3 **AI** (`slides/ai.nim`) - "November 2026": in the context of this talk, programming languages matter less (liberating), AI writes excellent Nim (compiled, statically typed), a small ecosystem hurts less (porting is easy); then what does not change: judgment, ownership, trust. Pietro's experience is recent and limited (in the speaker notes).
 
 ### 1. Intro: leaving the mainland (~2 min)
 

@@ -196,7 +196,7 @@ func chartCss(): string =
   ## a modern nautical chart: chart paper, a thin neatline around the slide, a light grid,
   ## a grotesque sans for titles and Spectral for text. The slides keep the deck's colors (my.nim:
   ## AgileLab dark and light blue, orange for emphasis); chart magenta (the color charts use for
-  ## lights and cautions) is only on the maps and the scale of the title slide (Pietro, 2026-11-25)
+  ## lights and cautions) is only on the maps (Pietro, 2026-11-25)
   let navy = "#13334c"   # the maps' ink
   let magenta = "#b0167a"
   let blue = "#1f6fa3"   # the maps' water lines
@@ -235,7 +235,9 @@ func chartCss(): string =
 .reveal .title-slide h2 {{ font-size: 1.75em; margin-bottom: 0.15em; }}
 .reveal .title-slide {{ position: relative; z-index: 1; }}
 .reveal .title-slide .title-box {{ background: rgba(253,252,247,0.78); backdrop-filter: blur(3px); border: 1.5px solid {ink}; outline: 0.5px solid {ink}; outline-offset: 5px; padding: 0.35em 0.9em; font-size: 0.78em; display: inline-block; box-shadow: 0 6px 24px rgba(14,31,83,0.18); }}
-.reveal .title-slide .scale {{ font-family: "Space Grotesk", sans-serif; font-size: 0.5em; letter-spacing: 0.2em; color: {magenta}; }}
+.reveal .title-slide .title-sub {{ font-family: "Space Grotesk", sans-serif; color: #6b7682; font-size: 0.8em; margin: -0.2em 0 0.5em; }}
+/* before the voyage nothing is in magenta but the route and the first port (Pietro, dry run 2026-11-26) */
+.reveal .title-art .chart-stage .ct.land-name {{ color: {navy}; }}
 /* the chart fills the screen and stays inside it: 1369 x 770 is 16:9 around the 1050 x 700 slide
    and its margin, scaled by --chart-fit (set by voyageDeckJs) on screens of other proportions */
 .reveal .chart-stage > svg.voyage-map {{ width: 100%; height: auto; margin: 0; max-width: none; }}
