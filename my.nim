@@ -83,13 +83,18 @@ const slideBlocksCss = """
 .reveal .slides section > figure.quote blockquote { width: auto; margin: 0; font-size: 0.85em; }
 .reveal .slides section > figure.quote figcaption { font-size: 0.55em; margin-top: 0.4em; }
 /* the photo of the crew on the rocks ahead slide (8.6): smaller, rounded */
-.reveal .crew-photo img { width: 75%; border-radius: 14px; }
+.reveal .crew-photo img { width: 60%; border-radius: 14px; }
+.reveal .crew-photo figure { margin: 0.5em 0 0; }
+.reveal .crew-photo figcaption { font-size: 0.5em; }
 /* nbImg with a caption on a slide (8.6, the photo of the crew) */
 .reveal .slides figure figcaption { font-size: 0.55em; margin-top: 0.3em; }
 /* nbAvatars: round GitHub avatars of the people of nimib land (8.5) */
 .reveal .avatars { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em 0; margin: 0.4em auto 0.6em; max-width: 24em; }
 .reveal .avatars a { display: flex; flex-direction: column; align-items: center; width: 3em; text-decoration: none; }
 .reveal .avatars img { width: 2.1em; height: 2.1em; border-radius: 50%; margin: 0; border: 2px solid var(--r-link-color); }
+.reveal .avatars.small { max-width: 40em; margin: 0.2em auto 0.3em; }
+.reveal .avatars.small a { width: 2.1em; }
+.reveal .avatars.small img { width: 1.4em; height: 1.4em; }
 .reveal .avatars .nick { font-size: 0.32em; color: gray; margin-top: 0.3em; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* no line numbers on code (dry run 1): reveal.js draws them as a table column */
 .reveal .hljs-ln-numbers { display: none; }
@@ -489,16 +494,17 @@ template imageLeftSlide*(url: string, body: untyped) =
 newNbBlock(NbAvatars of NbBlock):
   logins: seq[string]
   dir: string
+  small: bool
   toHtml:
-    var html = "<div class=\"avatars\">"
+    var html = if blk.small: "<div class=\"avatars small\">" else: "<div class=\"avatars\">"
     for login in blk.logins:
       html.add &"""<a href="https://github.com/{login}"><img src="{blk.dir}/{login}.jpg" alt="{login}"><span class="nick">{login}</span></a>"""
     html & "</div>"
 
-template nbAvatars*(logins: openArray[string]) =
+template nbAvatars*(logins: openArray[string], small = false) =
   ## inside a slide: a wall of round GitHub avatars (vendored in docs/images/contributors/<login>.jpg),
   ## each linked to its profile (slide 8.5, the people of nimib land)
-  nb.add newNbAvatars(@logins, nb.doc.relToRoot("images/contributors"))
+  nb.add newNbAvatars(@logins, nb.doc.relToRoot("images/contributors"), small)
 
 newNbBlock(NbImageAside of NbContainer):
   url: string
