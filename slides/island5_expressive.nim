@@ -162,12 +162,19 @@ Adding a length to a mass is a compile time error.
 template island5RocksSlide* = # 6.6
   slide:
     nbText "## ⚠️ Rocks ahead 🪨"
-    nbText """
-- macros are hard to write, and hard to debug: errors point at generated code
+    compactColumns:
+      column:
+        nbText """
+- macros are hard to write, and hard to debug:
+errors point at generated code
 - every DSL is a new little language for its readers
 - with great power: reach for procs and templates first
 - 🍬 we call it syntax sugar: too much sugar can be bad
 for your health
+- ergonomic sum types (algebraic data types)
+arrived in mainline Nim only last month
+- type-checked generics (new concepts: duck typing for static
+types, like Rust's traits) are yet to come (in Nimony)
 """
     speakerNote """
 (Claude's proposal from the dry run, to check.)
@@ -182,6 +189,11 @@ And sugar: Nim has a lot of it (tabelline's tables are
 written as blocks, without the chain of dots, thanks
 to a macro). We call it syntax sugar, and too much
 sugar can be bad for your health.
+And the type system is still catching up: ergonomic sum
+types, algebraic data types, arrived in mainline Nim
+only last month; type-checked generics, the new concepts,
+a kind of duck typing for static types, close to Rust's
+traits, are still in the future: you can try them in Nimony.
 """
 
 template island5ExpressiveSection* =
