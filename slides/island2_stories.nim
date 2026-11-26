@@ -9,16 +9,16 @@ import ../my
 template storiesIntroSlide* = # 3.2
   slide:
     nbText: """
-## Success stories
+## Success stories in science
 
 How do we define success stories in scientific computing?
-By looking at people who used Nim to advance science.
+By looking at *people who used Nim to advance science*.
 
 The following are three stories:
 
 - 🧬 Bioinformatics
 - ☀️ Experimental physics
-- ⚛️ Theoretical physics (lattice QCD)
+- ⚛️ Theoretical physics
 """
     reference """
 Beyond science, Nim runs on the web, in blockchains,
