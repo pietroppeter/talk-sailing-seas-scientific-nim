@@ -78,6 +78,15 @@ const slideBlocksCss = """
 .reveal .slides section > figure.quote { margin: 0.4em 0 0.6em; }
 .reveal .slides section > figure.quote blockquote { width: auto; margin: 0; font-size: 0.85em; }
 .reveal .slides section > figure.quote figcaption { font-size: 0.55em; margin-top: 0.4em; }
+/* the photo of the crew on the rocks ahead slide (8.6): smaller, rounded */
+.reveal .crew-photo img { width: 75%; border-radius: 14px; }
+/* nbImg with a caption on a slide (8.6, the photo of the crew) */
+.reveal .slides figure figcaption { font-size: 0.55em; margin-top: 0.3em; }
+/* nbAvatars: round GitHub avatars of the people of nimib land (8.5) */
+.reveal .avatars { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em 0; margin: 0.4em auto 0.6em; max-width: 24em; }
+.reveal .avatars a { display: flex; flex-direction: column; align-items: center; width: 3em; text-decoration: none; }
+.reveal .avatars img { width: 2.1em; height: 2.1em; border-radius: 50%; margin: 0; border: 2px solid var(--r-link-color); }
+.reveal .avatars .nick { font-size: 0.32em; color: gray; margin-top: 0.3em; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* compactColumns: three narrow columns of code (Island 4 bridges), smaller code */
 .reveal .compact-cols pre { font-size: 0.5em; }
 /* a table on its own in a slide (not in a layout's grid) gets room above and below */
@@ -468,6 +477,20 @@ template compactColumns*(body: untyped) =
 
 template imageLeftSlide*(url: string, body: untyped) =
   imageLeftSlide(url, 0.4, body)
+
+newNbBlock(NbAvatars of NbBlock):
+  logins: seq[string]
+  dir: string
+  toHtml:
+    var html = "<div class=\"avatars\">"
+    for login in blk.logins:
+      html.add &"""<a href="https://github.com/{login}"><img src="{blk.dir}/{login}.jpg" alt="{login}"><span class="nick">{login}</span></a>"""
+    html & "</div>"
+
+template nbAvatars*(logins: openArray[string]) =
+  ## inside a slide: a wall of round GitHub avatars (vendored in docs/images/contributors/<login>.jpg),
+  ## each linked to its profile (slide 8.5, the people of nimib land)
+  nb.add newNbAvatars(@logins, nb.doc.relToRoot("images/contributors"))
 
 newNbBlock(NbImageAside of NbContainer):
   url: string
