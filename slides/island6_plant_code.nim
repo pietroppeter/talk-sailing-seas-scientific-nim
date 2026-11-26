@@ -76,7 +76,7 @@ when defined(js):
         let marked = "<span class=\"hljs-number scrub\" data-k=\"" & $k & "\" data-b=\"" & $b & "\">@" & $k & $b & "@"
         line = line[0 ..< at] & marked & line[close .. ^1]
         at += marked.len
-      tmpl[i] = line
+      tmpl[i] = line.replace("slider(", "<span class=\"slider-word\">slider</span>(") # orange on hover
 
   proc closestScrub(e: EventTarget): Element {.importjs: "((e) => e.closest ? e.closest('.scrub') : null)(#)".}
   proc dataInt(e: Element, name: cstring): int {.importjs: "parseInt(#.getAttribute(#))".}
