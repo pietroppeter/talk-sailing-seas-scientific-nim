@@ -305,8 +305,8 @@ proc chartMap*(v: Voyage, names: openArray[string], current: int, id = "", html 
   if html and v.landLabelAngle == 0:
     word("land-name", "MAINLAND", v.landLabel)
     if id == "title": # what the mainland is, on the title slide only (Pietro, dry run 2026-11-26)
-      word("land-sub", "mainstream languages for scientific computing:<br>Python, R, Julia, C, C++",
-        (v.landLabel.x, v.landLabel.y + 16))
+      word("land-sub", "(mainstream languages for scientific computing:<br>Python, R, Julia, C, C++, ...)",
+        (v.landLabel.x, v.landLabel.y + 25))
   else: result.add &"""<text class="land-name" {v.landLabelAttrs} text-anchor="middle">MAINLAND</text>"""
   word("note", "Coasts © OpenStreetMap contributors (ODbL)", (v.w / 2, v.h - 10))
   result.add roseSvg(rose, 34)

@@ -7,7 +7,7 @@ template titleSlide* =
       nbText """
 ## Sailing Seas of Scientific Nim
 """
-      nbLede("Nim is a programming language", "title-sub")
+      nbLede("(Nim is a programming language)", "title-sub")
       nbText """
 **Pietro Peterlongo, AgileLab**
 

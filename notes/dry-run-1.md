@@ -17,8 +17,8 @@ Many slides are still Claude's drafts that Pietro has not yet read or made his o
 
 - [x] The mainland was in magenta, but on the title slide the voyage has not started: now in the chart's ink. Magenta only for the route and the anchor in the first port.
 - [x] "SCALE 1 : 25 (minutes + 5' Q&A)": liked a lot, but distracting. Removed.
-- [x] Below the title, in gray: "Nim is a programming language" (not a given for this audience).
-- [x] Under MAINLAND, in gray, on the title slide's map only: "mainstream languages for scientific computing: Python, R, Julia, C, C++" (these five, the most mainstream).
+- [x] Below the title, in gray: "Nim is a programming language" (not a given for this audience). Then (same morning): smaller, in parentheses, above the line under the title.
+- [x] Under MAINLAND, in gray, on the title slide's map only: "mainstream languages for scientific computing: Python, R, Julia, C, C++" (these five, the most mainstream). Then: in parentheses, with ", ...", a bit lower so it does not touch MAINLAND.
 - [ ] Minor: the compass rose (magnetic variation 3° W) has a small flaw in its north arrow.
 - [ ] Minor: the route is not always great, especially the leg into the Notebook: it could stay a bit farther from the coast (without hitting the coast).
 
