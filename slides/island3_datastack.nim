@@ -161,34 +161,39 @@ Backends: PNG/PDF via cairo, SVG, TikZ, Vega-Lite.
 """
 
 template scinimSlide* {.dirty.} =
-  slide: # 4.10
-    nbText "## SciNim"
+  slide: # 4.11
+    nbText "## SciNim: a crew, not a library"
     nbTextSmall """
-[SciNim](https://github.com/SciNim) is an organization, not a library:
-it gathers the scientific Nim libraries.
+[SciNim](https://github.com/SciNim) is an organization: 38 repositories since 2016,
+about 55 people. These 15 made 10 commits or more:
 """
+    nbAvatars ["Vindaar", "Clonkk", "HugoGranstrom", "mantielero", "xbello",
+      "andreaferretti", "mratsim", "hschindl", "lilkeet", "pietroppeter",
+      "brentp", "AngelEzquerra", "arkanoid87", "juancarlospaco", "BarrOff"]
     compactColumns:
       column:
         nbTextSmall """
-Start from [getting started](https://scinim.github.io/getting-started/)
-(it needs to be updated): tutorials and a list of libraries.
-A few more:
-"""
-        nbText """
-- [flambeau](https://github.com/SciNim/flambeau): bindings to libtorch
-- [numericalnim](https://github.com/SciNim/numericalnim): integration,
-ODEs, optimization, interpolation
+**data** Datamancer, nim-plotly;
+**units** Unchained, Measuremancer;
+**numerics** numericalnim, impulse;
+**bridges** nimjl, rnim;
+**deep learning** flambeau;
+**physics** xrayAttenuation, NimBoltz
 """
       column:
-        nbImg("images/scinim_getting_started.png", "100%",
-          caption = "[getting started](https://scinim.github.io/getting-started/): a book made with nimibook")
+        nbImg("images/scinim_getting_started.png", "75%",
+          caption = "[getting started](https://scinim.github.io/getting-started/): a nimibook (to be updated)")
     speakerNote """
-SciNim is not a library: it is the organization that collects libraries
-that would otherwise be scattered: Datamancer, unchained,
-numericalnim and more live there.
+SciNim is not a library: it is the organization that
+collects libraries that would otherwise be scattered.
+38 repositories, about 55 people since 2016; these are
+the 15 with ten commits or more. Vindaar alone made
+more than a third of the commits, then Clonkk (here
+today) and Hugo. Busiest in 2021, quieter since,
+and alive again in 2026 with Vindaar's physics
+(xrayAttenuation, NimBoltz).
 The getting started site, a book made with nimibook,
-has tutorials for the stack
-and a list of libraries by topic.
+has tutorials for the stack (it needs to be updated).
 nim-plotly was started by Brent Pedersen (brentp, island 2)
 and donated to SciNim.
 """
