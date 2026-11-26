@@ -10,7 +10,7 @@ import ../my
 proc nicheTable*(): Tabella =
   let views = @[
     (area: "🧬 Language", view: "stable: 1.0 in 2019, 2.0 in 2023, ready for more than it is used for"),
-    (area: "🛠️ Tooling", view: "editor support and compile times behind Rust's; Nimony and NIF are the way to catch up"),
+    (area: "🛠️ Tooling", view: "editor support behind Rust's, compile times close but not incremental yet ([🐋](deepdive/compile_times.html)); Nimony and NIF to catch up"),
     (area: "📦 Ecosystem", view: "small: libraries depend on a few people, users wait for libraries"),
     (area: "🤝 Community", view: "friendly and small: one person can make a difference"),
     (area: "🏛️ Governance", view: "**the main shortcoming**: few people decide, the direction is hard to read from outside")]
@@ -103,7 +103,10 @@ than the impact it had so far
     speakerNote """
 My opinionated view. The language is stable and ready:
 1.0 in 2019, 2.0 in 2023 with ARC/ORC memory management.
-On tooling: editor support and compile times are behind Rust's;
+On tooling: editor support is behind Rust's. Compile times are
+close to Rust's from scratch, but Nim has no incremental builds yet,
+so after an edit in a big project it is slower (the deep dive has
+the measurements, with Go and Zig too).
 Nimony, the next compiler, and NIF, its intermediate format,
 are meant to bring incremental compilation and better tooling.
 The ecosystem is the chicken and egg of every small language.

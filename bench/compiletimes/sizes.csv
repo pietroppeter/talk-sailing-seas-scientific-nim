@@ -1,0 +1,5 @@
+lang,project,own_lines,dep_lines,deps
+Nim,the Nim compiler,65724,53934,stdlib and checksums
+Rust,ripgrep 16.0.0,14017,644739,43 crates
+Go,fzf v0.75.0,25258,38728,modules; plus 189 k lines of the standard library
+Zig,translate-c,10976,103092,aro, the C front-end
