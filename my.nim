@@ -1,4 +1,4 @@
-import std / [strutils, strformat, json, math, xmltree]
+import std / [strutils, strformat, json, math, xmltree, sequtils]
 import islandnames # the names of the islands, for the map slides
 export islandnames
 export strutils
@@ -90,6 +90,26 @@ const slideBlocksCss = """
 .reveal .slides figure figcaption { font-size: 0.55em; margin-top: 0.3em; }
 /* nbAvatars: round GitHub avatars of the people of nimib land (8.5) */
 .reveal .avatars { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em 0; margin: 0.4em auto 0.6em; max-width: 24em; }
+/* nbCollage (slide 8.5): one big word over screenshots of pages, the whole slide */
+.reveal .slides section:has(> .collage) { top: 0 !important; height: var(--slide-height); padding: 0; }
+.reveal .collage { position: absolute; inset: 0; overflow: hidden; }
+.reveal .collage-shots { position: absolute; inset: 0; }
+.reveal .collage-shots img { position: absolute; width: 47%; margin: 0; border-radius: 6px;
+  box-shadow: 0 6px 24px rgba(31, 42, 51, 0.25); }
+.reveal .collage-shots img:nth-child(1) { left: 2%; top: 4%; transform: rotate(-3deg); }
+.reveal .collage-shots img:nth-child(2) { right: 2%; top: 6%; transform: rotate(2.5deg); }
+.reveal .collage-shots img:nth-child(3) { left: 4%; bottom: 6%; transform: rotate(2deg); }
+.reveal .collage-shots img:nth-child(4) { right: 3%; bottom: 4%; transform: rotate(-2.5deg); }
+.reveal .collage.phone .collage-shots { display: grid; grid-template-columns: repeat(8, 1fr); gap: 14px;
+  align-content: center; padding: 0 24px; }
+.reveal .collage.phone .collage-shots img { position: static; width: 100%; transform: none;
+  border-radius: 12px; border: 3px solid var(--r-heading-color); }
+.reveal .collage-word { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  pointer-events: none; }
+.reveal .collage-word { font-family: var(--r-heading-font); font-weight: 700; font-size: 2.6em;
+  color: var(--r-heading-color); letter-spacing: 0.05em; }
+.reveal .collage-word span { background: rgba(246, 243, 236, 0.9); padding: 0.1em 0.5em; border-radius: 0.2em;
+  box-shadow: 0 4px 30px rgba(246, 243, 236, 0.9); }
 .reveal .avatars a { display: flex; flex-direction: column; align-items: center; width: 3em; text-decoration: none; }
 .reveal .avatars img { width: 2.1em; height: 2.1em; border-radius: 50%; margin: 0; border: 2px solid var(--r-link-color); }
 .reveal .avatars.small { max-width: 40em; margin: 0.2em auto 0.3em; }
@@ -516,6 +536,21 @@ template nbAvatars*(logins: openArray[string], small = false) =
   ## inside a slide: a wall of round GitHub avatars (vendored in docs/images/contributors/<login>.jpg),
   ## each linked to its profile (slide 8.5, the people of nimib land)
   nb.add newNbAvatars(@logins, nb.doc.relToRoot("images/contributors"), small)
+
+newNbBlock(NbCollage of NbBlock):
+  word: string
+  shots: seq[string]
+  phone: bool
+  toHtml:
+    var html = "<div class=\"collage" & (if blk.phone: " phone" else: "") & "\"><div class=\"collage-shots\">"
+    for shot in blk.shots:
+      html.add &"""<img src="{shot}" alt="">"""
+    html & &"""</div><div class="collage-word"><span>{blk.word}</span></div></div>"""
+
+template nbCollage*(word: string, shots: openArray[string], phone = false) =
+  ## inside a slide: one big word over a collage of page screenshots (paths relative to docs/):
+  ## four desktop shots as tilted cards, or with `phone` many phone-sized ones in a grid (slide 8.5)
+  nb.add newNbCollage(word, @shots.mapIt(nb.doc.relToRoot(it)), phone)
 
 newNbBlock(NbImageAside of NbContainer):
   url: string
