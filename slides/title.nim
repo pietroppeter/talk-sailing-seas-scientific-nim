@@ -3,6 +3,7 @@ import ../my
 
 template titleSlide* =
   slide:
+   slide:
     themedTitle:
       nbText """
 ## Sailing Seas of Scientific Nim
@@ -15,10 +16,6 @@ template titleSlide* =
 
 """
       reference "[github.com/pietroppeter/talk-sailing-seas-scientific-nim](https://github.com/pietroppeter/talk-sailing-seas-scientific-nim) or [bit.ly/pietro-scinim](https://bit.ly/pietro-scinim)"
-    nbQr("https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html", "slides",
-      [("bit.ly/pietro-scinim", "https://bit.ly/pietro-scinim"),
-       ("github.com/pietroppeter/ talk-sailing-seas-scientific-nim",
-        "https://github.com/pietroppeter/talk-sailing-seas-scientific-nim")])
     speakerNote """
 Hello everyone! I am really happy to be here in Paris
 and to talk about something I am passionate about
@@ -37,6 +34,11 @@ Keep it up if you have contributed to scientific Nim.
 (No time to explain the voyage metaphor here: the
 map speaks for itself.)
 """
+   slide: # below the title: the QR code to the slides, for phones
+    nbQr("https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html", "slides",
+      [("bit.ly/pietro-scinim", "https://bit.ly/pietro-scinim"),
+       ("github.com/pietroppeter/talk-sailing-seas-scientific-nim",
+        "https://github.com/pietroppeter/talk-sailing-seas-scientific-nim")])
 
 when isMainModule: # this part of the deck on its own: docs/slides_title.html
   buildDeckPart("title", "slides/title.nim"):

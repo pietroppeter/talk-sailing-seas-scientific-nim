@@ -243,7 +243,7 @@ func chartCss(): string =
 .reveal .chart-stage > svg.voyage-map {{ width: 100%; height: auto; margin: 0; max-width: none; }}
 .reveal .map-slide .chart-stage {{ position: absolute; width: calc(1369px * var(--chart-fit, 1)); left: 525px; top: 350px; transform: translate(-50%, -50%); }}
 #agileLabLogo {{ z-index: 40; }}
-.reveal .slides > section:has(.title-art) {{ top: 0 !important; height: 700px; display: flex !important; flex-direction: column; justify-content: center; }}
+.reveal .slides > section:has(.title-art), .reveal .slides > section.stack > section:has(.title-art) {{ top: 0 !important; height: 700px; display: flex !important; flex-direction: column; justify-content: center; }}
 .reveal .title-art {{ opacity: 1; inset: auto; left: 525px; top: 350px; width: calc(1369px * var(--chart-fit, 1)); height: auto; transform: translate(-50%, -50%); z-index: 0; }}
 .reveal .title-art .title-block {{ display: none; }}
 .reveal .chapter {{ font-family: "Space Grotesk", sans-serif; color: {orange}; font-size: 0.6em; letter-spacing: 0.2em; margin: 0; }}
