@@ -21,6 +21,7 @@ const
   sizesCsv = staticRead(benchDir & "sizes.csv")
   sameCsv = staticRead(benchDir & "same.csv")
   machineTxt = staticRead(benchDir & "machine.txt")
+  historyCsv = staticRead(benchDir & "history.csv")
 
 # --- the logbook: results.csv, the median of each scenario ----------------
 
@@ -319,6 +320,108 @@ Zig in release mode hands its standard library to LLVM every
 time, and takes 15 seconds to say hello.
 """
 
+# --- history.csv: older toolchains on the same program -------------------
+
+var history: Table[string, float] # "Rust 1.24.0/debug/clean" -> seconds
+var toolchains: seq[string]
+for line in historyCsv.strip.splitLines[1 .. ^1]:
+  let f = line.split(',')
+  history[[f[0], f[2], f[3]].join("/")] = f[4].parseFloat
+  if f[0] notin toolchains: toolchains.add f[0]
+
+proc h(toolchain, mode, scenario: string): string =
+  formatFloat(history[[toolchain, mode, scenario].join("/")], ffDecimal, 1) & " s"
+
+const released = {"Rust 1.24.0": "Feb 2018", "Rust 1.40.0": "Dec 2019",
+  "Rust 1.60.0": "Apr 2022", "Rust 1.97.0": "Jul 2026",
+  "Nim 1.6.14": "2023", "Nim 2.2.4": "Apr 2025"}.toTable
+
+type HistoryRow = tuple[toolchain, released: string, cleanDebug, cleanRelease,
+                        editDebug, editRelease: float]
+var historyRows: seq[HistoryRow]
+for t in toolchains:
+  historyRows.add (toolchain: t, released: released.getOrDefault(t, ""),
+    cleanDebug: history[t & "/debug/clean"], cleanRelease: history[t & "/release/clean"],
+    editDebug: history[t & "/debug/rebuild"], editRelease: history[t & "/release/rebuild"])
+
+nbText """
+## Where the reputation comes from
+
+So why does everyone "know" that Nim compiles fast
+and Rust slowly? Three reasons, and one thing
+that is not a reason.
+
+**Nim says so, and it is true of Nim itself.**
+📚 The [release candidate of Nim 2.0](https://nim-lang.org/blog/2022/12/21/version-20-rc.html)
+(December 2022) lists among Nim's features: "Fast compile
+times: a full compiler rebuild takes ~12s (Rust: 15min,
+gcc: 30min+, clang: 1hr+, Go: 90s)", on an 8-core 2019
+Intel Mac. The same page boasts small binaries:
+"echo "hello world" generates a 67K binary
+(Go: 2MB, Rust: 377K, C++: 56K)".
+Both are fair measurements, but the first compares
+compilers, not languages: rustc is a far bigger program
+than the Nim compiler, with LLVM behind it.
+A small compiler written in a language that compiles
+through C builds fast: 🔬 here the Nim compiler builds
+in 23 s (debug) on 4 slower cores.
+
+**Rust really was slow.**
+The complaints are from the years around Rust 1.0 (2015):
+incremental compilation was only switched on by default
+in 📚 [Rust 1.24](https://blog.rust-lang.org/2018/02/15/Rust-1.24/)
+(February 2018). Since then the Rust project has measured
+and shaved its compiler year after year. 📚 Nicholas Nethercote,
+who wrote a long series of posts on it, counted compile times
+on real code going down by
+[10 to 40%, and up to 58%, from August 2020 to November 2021](https://nnethercote.github.io/2021/11/12/the-rust-compiler-has-gotten-faster-again.html),
+and a [37% reduction from 2020 to 2024](https://nnethercote.github.io/2024/03/06/how-to-speed-up-the-rust-compiler-in-march-2024.html).
+We could check that here: rustup still installs old Rust
+releases, and the Ubuntu package has Nim 1.6.
+The same generated program, the same machine:
+"""
+
+let historyTable = tabella(historyRows, rownameCol = "toolchain"):
+  tabStubhead "same program"
+  colsLabel {"released": "released", "cleanDebug": "clean debug",
+             "cleanRelease": "clean release", "editDebug": "edit debug",
+             "editRelease": "edit release"}
+  fmtNumber ["cleanDebug", "cleanRelease", "editDebug", "editRelease"], decimals = 1
+  tabSourceNote "🔬 Seconds, median of 3 runs (bench/compiletimes/history.py). Nim 1.6.14 is the Ubuntu 24.04 package, with gcc."
+nbTable historyTable
+
+nbText &"""
+🔬 In debug mode Rust is about four times faster than in 2018:
+{h("Rust 1.24.0", "debug", "clean")} then, {h("Rust 1.97.0", "debug", "clean")}
+now from scratch, {h("Rust 1.24.0", "debug", "rebuild")} then,
+{h("Rust 1.97.0", "debug", "rebuild")} now after an edit.
+The release build has not moved much: that time is spent
+in LLVM, optimising, and Rust 1.40 was even slower.
+A Nim user who compared the two in 2018 had good reasons
+to call Rust slow; the comparison has aged.
+
+**Nim did not get slower.** 🔬 Nim 2.2 compiles the program
+as fast as Nim 1.6 in debug mode, and twice as fast in
+release mode ({h("Nim 1.6.14", "release", "clean")} against
+{h("Nim 2.2.4", "release", "clean")}). Nim 2 changed the default
+memory management (ORC instead of the old garbage collector),
+which changes the C that Nim writes, so this is not only the
+compiler getting faster. Either way, the reputation did not
+change because Nim slowed down: Rust caught up.
+
+**Rust projects are big.** 🧭 The third reason is the
+way people use the two languages. A Rust program stands on
+crates: ripgrep, a small program of 14 k lines, builds
+43 crates, some with procedural macros (`serde`'s derive
+needs the `syn` parser), and web services build hundreds.
+Cargo compiles all of them on the first build, in CI, after
+a toolchain update, and that is the wait people remember.
+A Nim program usually has few dependencies and compiles its
+standard library from source in seconds. On the same program,
+as we saw above, they are in the same league; on the projects
+people actually write, Rust has more to compile.
+"""
+
 nbText """
 ## What the others say
 
@@ -418,5 +521,9 @@ runs every build (about an hour on 4 cores) and writes
 `results.csv`, `sizes.csv`, `same.csv` and `machine.txt`,
 which this page reads when it is built.
 `run.py same` runs one project, `run.py Rust` one language.
+`history.py` times the older toolchains of the table in
+*Where the reputation comes from* (Rust 1.24, 1.40 and 1.60
+from rustup, Nim 1.6 from the Ubuntu package) and writes
+`history.csv`.
 """
 nbSave
