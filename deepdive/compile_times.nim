@@ -366,6 +366,18 @@ A small compiler written in a language that compiles
 through C builds fast: 🔬 here the Nim compiler builds
 in 23 s (debug) on 4 slower cores.
 
+Binary size has an older pedigree. 📚 From 2017 to 2020 the
+features page of nim-lang.org showed a "Hello World binary
+size" chart: Nim 41 KB, Rust 332, D 974, Haskell 1382,
+Go 1628 (source:
+[dom96/binary_size](https://github.com/dom96/binary_size)).
+It was [added in April 2017](https://github.com/nim-lang/website/commit/fd0bc9266c3cf1a08b74d3c5ff27cc0fa08d0dba)
+and [removed in April 2020](https://github.com/nim-lang/website/commit/bc9262536617e02ec3f32c14cf48e44748214859),
+in a cleanup of the website. The page had no chart of compile
+times; next to the binaries it showed the latency of the
+garbage collector. Small, fast and native: it is easy to
+remember the chart as "Nim is fast to build".
+
 **Rust really was slow.**
 The complaints are from the years around Rust 1.0 (2015):
 incremental compilation was only switched on by default
