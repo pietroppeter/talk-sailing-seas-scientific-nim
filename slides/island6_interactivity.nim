@@ -1,4 +1,5 @@
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import ../my
 import island6_plant_code # karaxCode
 
@@ -84,8 +85,12 @@ a reactive framework in Nim.
 
 Move the sliders: the same plant, the same curve,
 written in Nim and compiled to JavaScript when the deck is built.
-Easter egg, not said on the slide: drag a slider line in the code,
-the sliders follow (zogyn; the trick is explained in the deep dive).
+Two easter eggs, not said on the slide.
+The wiggly numbers that Bret Victor made famous with
+Inventing on Principle: drag a bound in the code and the number
+changes (I demoed it in the talk: what is negative simplicity?).
+And drag a slider line in the code: the sliders follow
+(zogyn; the trick is explained in the deep dive).
 The page is Karax: buildHtml describes the sidebar and the canvas
 from the state, Karax renders it again after every slider move,
 and the canvas is bound with importjs in a few lines.

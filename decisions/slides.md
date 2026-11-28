@@ -21,6 +21,7 @@ The deck is code, built with the tools the talk is partly about, and must be rev
 - **Animations are p5nim sketches**, compiled to JavaScript by nimib when the deck is built (p5.js vendored); an animation starts from the beginning whenever its slide is shown.
 - **Math with KaTeX.** nimiSlides 0.4.0 breaks LaTeX (and the footer, slide numbers, scroll wheel): `my.nim` works around it. An upstream fix is drafted but on hold.
 - **Blocks, not HTML** (Pietro, 2026-11-24): slides use nimib's and the talk's blocks (`blocks.nim`), CSS lives in `my.nim`, no `nbRawHtml`.
+- **The talk as a blog post** (Pietro, 2026-11-28): `docs/blog.html` (`blog.nim`) is every slide followed by its speaker notes, built from the deck's blocks with the deck. `speakerNote(text, blog = false)` keeps a note out of it, `blogNote` adds text only it has (also between slides); with a label it is set apart, as the *After the talk* boxes (`afterTheTalk` in `my.nim`, Pietro, 2026-11-28). Deep dive: `deepdive/blog_post.nim`. The machinery is `blogpost.nim`, `nbSaveAsBlogPost`, written for nimiSlides (it needs only nimib and nimiSlides) so it can go upstream; until then the modules that expand slides import `nimiSlides except speakerNote`. A slide is a screenshot (`scripts/blog-shots.sh`, webp, not committed) or, without one, the deck itself in a frame at that slide (reveal.js reads its settings from the address: no controls, every fragment shown).
 - **Every slide change is shown rendered** before review: screenshots with `scripts/screenshot.sh docs/slides.html <dir>` or Playwright.
 
 ## Options considered
@@ -46,3 +47,4 @@ The deck is code, built with the tools the talk is partly about, and must be rev
 - 2026-11-24: two accents for emphasis (orange `*`, teal `**`), room above a second heading.
 - 2026-11-24: a language tag on every code block.
 - 2026-11-24: room above and below a table on its own.
+- 2026-11-28: the talk as a blog post (`blog.nim`, `blogpost.nim`).

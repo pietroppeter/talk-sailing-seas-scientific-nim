@@ -1,4 +1,5 @@
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import ../my
 
 # 1.5 Playfulness, the last slide of the mainland before the voyage: the word over a p5nim sketch.

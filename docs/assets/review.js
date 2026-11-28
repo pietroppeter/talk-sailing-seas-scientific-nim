@@ -53,6 +53,14 @@
     });
     return found;
   }
+  function originOf(node) {
+    // a part of the page can say where its text is written, when that is not the page's source
+    // (data-origin="slides/intro.nim:42", a speaker note in a blog post made from a deck), and
+    // what it is (data-where="Slide 12 · Ecosystem"), which then names it in the export
+    var el = node.nodeType === 3 ? node.parentNode : node;
+    var o = el.closest ? el.closest('[data-origin]') : null, w = el.closest ? el.closest('[data-where]') : null;
+    return { origin: o ? o.dataset.origin : '', where: w ? w.dataset.where : '' };
+  }
   function describe(range) {
     var idx = textIndex();
     var s = pointToIndex(idx, range.startContainer, range.startOffset);
@@ -60,7 +68,8 @@
     var quote = idx.text.slice(s, e);
     if (!quote.trim()) return null;
     return { quote: quote, prefix: idx.text.slice(Math.max(0, s - CONTEXT), s),
-             suffix: idx.text.slice(e, e + CONTEXT), section: sectionOf(range.startContainer) };
+             suffix: idx.text.slice(e, e + CONTEXT), section: sectionOf(range.startContainer),
+             origin: originOf(range.startContainer).origin, where: originOf(range.startContainer).where };
   }
   function locate(note, idx) {
     // every place the quote is, scored by how much of its context matches; the best wins
@@ -136,7 +145,7 @@
     try {
       localStorage.setItem(KEY, JSON.stringify(notes.map(function (n) {
         return { id: n.id, kind: n.kind, quote: n.quote, prefix: n.prefix, suffix: n.suffix,
-                 section: n.section, text: n.text, replacement: n.replacement, at: n.at, images: n.images,
+                 section: n.section, origin: n.origin, where: n.where, text: n.text, replacement: n.replacement, at: n.at, images: n.images,
                  commit: n.commit || page.commit || '' };
       })));
       full = false;
@@ -410,7 +419,7 @@
     commit = commit === undefined ? page.commit || '' : commit;
     var out = ['# Review of “' + page.title + '”, version ' + version, '',
       '```yaml',
-      'format: nimib-review/5',
+      'format: nimib-review/6',
       'title: ' + yaml(page.title),
       'page: ' + yaml(location.origin + location.pathname),
       'source: ' + yaml(page.source),
@@ -421,9 +430,11 @@
       '```', ''];
     list.forEach(function (n, i) {
       var where = !n.quote ? 'On the whole page'
+                : n.where ? 'In “' + n.where + '”'
                 : n.section && n.section.title ? 'In “' + n.section.title + '”' + (n.section.id ? ' (#' + n.section.id + ')' : '')
                 : 'At the top';
       out.push('## ' + (i + 1) + '. ' + where, '');
+      if (n.origin) out.push('Written in `' + n.origin + '` (edit it there, not in the page\'s source).', '');
       if (n.from && n.from !== version) out.push('From version ' + n.from + (n.commit ? ' (commit ' + n.commit + ')' : '') + '.', '');
       if (n.quote) {
         out.push('> ' + quoted(n.quote), '');

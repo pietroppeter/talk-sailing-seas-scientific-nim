@@ -1,4 +1,5 @@
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import std / [math, sequtils]
 import ggplotnim
 import arraymancer / linear_algebra # solve
@@ -80,14 +81,6 @@ and one that uses Plotly; and since recently tabelline,
 a port of Great Tables. nanuq and tabelline were born
 a month ago, and thanks to AI they are already feature
 complete and usable, which is kind of crazy.
-
-Nim has the same building blocks.
-Arraymancer is by Mamy (mratsim).
-Datamancer and ggplotnim are by Vindaar,
-built for his PhD (island 2), now under SciNim.
-nanuq and tabelline are new, this autumn, and mine:
-the modern side, Polars and Great Tables.
-Let's try them on a dataset you all know.
 """
 
 template arraymancerSlide* {.dirty.} =
