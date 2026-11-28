@@ -1,0 +1,5 @@
+lang,lines,modules,functions
+nim,50202,50,5000
+rust,65305,50,5000
+go,65410,50,5000
+zig,70306,50,5000

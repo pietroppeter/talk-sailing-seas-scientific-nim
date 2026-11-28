@@ -1,6 +1,6 @@
 # Deep dives
 
-Status: accepted · Updated 2026-11-24
+Status: accepted · Updated 2026-11-26
 
 ## Context
 
@@ -10,7 +10,7 @@ Slides have little room for code and the talk is shallow by design ([tone.md](to
 
 - **A deep dive for what the slides only sketch** (Pietro, 2026-10-27): a nimib page, more thorough than the slide, linked from it, with code that runs when the page is built. Pietro likes the word "explainer" too; the pages are called deep dives since 2026-11-24 and could go back.
 - **The folder** (Pietro, 2026-11-24): `deepdive/<slug>.nim` builds `docs/deepdive/<slug>.html`; the list is `deepdive/deepdive.nim`, shown by `deepdive/index.nim` and the site index. A deep dive starts with `nb.useDeepDive(slug, ownSource)`, which adds a header back to the list and the slides.
-- **Today**: vandermonde (Island 1), beyond_science, brentp, vindaar, qex (Island 2), penguins_data_stack (Island 3), interoperability (Island 4), operators, units_macros (Island 5), plant_app (Island 6), notebook (Island 7), thank_you_sketch (Thank you). Short names, since they are public URLs (Pietro).
+- **Today**: vandermonde (Island 1), beyond_science, brentp, vindaar, qex (Island 2), penguins_data_stack (Island 3), interoperability (Island 4), operators, units_macros (Island 5), plant_app (Island 6), notebook (Island 7), compile_times (Conclusion, slide 9.4), thank_you_sketch (Thank you). Short names, since they are public URLs (Pietro).
 - **The whale** (Pietro, 2026-11-25): 🐋 is the deep dives' emoji, starting with the intro slide that presents them.
 - **Offline and reviewable** like every page ([build-ci.md](build-ci.md), [review.md](review.md)).
 
@@ -34,3 +34,4 @@ Slides have little room for code and the talk is shallow by design ([tone.md](to
 - 2026-11-24: vandermonde, the benchmark of Island 1.
 - 2026-11-24: interoperability (Island 4).
 - 2026-11-25: 🐋 as the deep dives' emoji.
+- 2026-11-26: compile_times (after the talk), measured with bench/compiletimes.

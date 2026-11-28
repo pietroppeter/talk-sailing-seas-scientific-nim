@@ -54,6 +54,11 @@ Chosen by Claude on 2026-11-25 (Pietro: go with your guts, no slides removed); r
 - [ ] On a phone the brentp deep dive tools table scrolls sideways a little for the citations column: drop the "what it does" column there, or fine as is?
 - [ ] Slide 3.3: with the content-sized table, the code box reaches further right than before. Shrink it?
 
+### Compile times deep dive (after the talk)
+
+- [ ] Measured on a 4-core cloud machine: Rust beat Nim with gcc in debug builds, Nim with clang caught up from scratch, Nim won release rebuilds. Run `python3 bench/compiletimes/run.py` on your laptop (about an hour) and commit the csv files, to see if it holds there (macOS: Nim uses clang by default).
+- [ ] Slide 9.4 tooling row reworded ("compile times close but not incremental yet"): check it, the talk said "behind Rust's".
+
 ### Island 1 in one slide (Vandermonde benchmark)
 
 - [ ] Run `bash bench/vandermonde/run.sh` on the presentation laptop and commit `results.csv` and `machine.txt`, so the slide shows the machine of the talk (today: a cloud machine, where Nim and NumPy are close and Nim's time moves between runs).
