@@ -12,3 +12,5 @@ docs/images/nimib_horizon.png
 docs/shiny/
 # the plant plotted by ggplotnim in the Island 6 deep dive
 docs/images/plant*.png
+# screenshots of the slides for the blog post (scripts/blog-shots.sh); without them it shows the slides live
+docs/images/blog/

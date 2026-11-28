@@ -4,8 +4,10 @@
 ## in order (`introSection`, ...): reorder slides there, reorder sections here.
 ## Each module also builds its part on its own with `when isMainModule`
 ## (`nim r slides/intro.nim`, or `nim r build.nim intro`: docs/slides_intro.html).
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import my
+import blog # the deck as a blog post (docs/blog.html)
 import slides / [title, about, ai, intro, island1_performance, island2_stories, island3_datastack, island4_interop, island5_expressive, island6_interactivity, island7_notebook, conclusion, thank_you]
 # exported, so the templates of the slides expand in all.nim too
 export title, about, ai, intro, island1_performance, island2_stories, island3_datastack, island4_interop, island5_expressive, island6_interactivity, island7_notebook, conclusion, thank_you
@@ -37,6 +39,8 @@ template buildDeck*() =
   else:
     nb.doc.filename = "slides.html"
   nbSave
+  when not sideTheme and not sideLook:
+    buildBlogPost() # docs/blog.html, from the slides just saved
 
 when isMainModule:
   buildDeck()

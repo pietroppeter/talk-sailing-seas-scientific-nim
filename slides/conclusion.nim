@@ -1,4 +1,5 @@
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import tabelline
 import ../my
 
@@ -109,9 +110,24 @@ are meant to bring incremental compilation and better tooling.
 The ecosystem is the chicken and egg of every small language.
 The community is friendly, and small enough that one person
 makes a difference (most of scientific Nim is a handful of people).
-Last, the main shortcoming is governance: decisions rest with very few
-people, and it is hard to know from outside where the language goes.
+Last, the main shortcoming is governance: Nim is not a project
+with an open governance or a foundation. The governance set up
+so far is what it takes to support the language's creator and
+a few contributors, but in my opinion it is not enough to drive
+and accelerate wider adoption.
 Still: it is fun, exciting, and has more potential than impact so far.
+"""
+    afterTheTalk """
+Mamy called me out on compile times during the talk.
+That line was on the slide, Claude-assisted, and I had not
+reviewed it. On the spot I said the common perception is
+that Rust compiles slowly and Nim fast, and I used it as an
+example of bad ownership on my side: a mistake by Claude
+I had not double-checked. After the talk I asked Claude for
+a deep dive, and now I am kind of convinced the line was right:
+Rust compile times went down a lot. Maybe the feeling is
+still justified, because a typical Rust project depends on
+a lot of crates.
 """
 
 template playfulSlide* =

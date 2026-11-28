@@ -1,6 +1,6 @@
 ---
 name: nimib-review
-description: Use when a review export from a nimib page is pasted in the chat (Markdown with a YAML block or front matter holding `format: nimib-review/1` to `/5`), to apply each comment to the page's source and close the review round.
+description: Use when a review export from a nimib page is pasted in the chat (Markdown with a YAML block or front matter holding `format: nimib-review/1` to `/6`), to apply each comment to the page's source and close the review round.
 metadata:
   status: draft
 ---
@@ -21,7 +21,7 @@ text into changes.
   built from uncommitted changes; 7 hex characters: built outside git). Check that the
   count matches the `## n.` sections: a long paste can arrive cut short, and the count is how you
   notice. If it does not match, say so.
-- Each section is `## n. Where` in `nimib-review/3` to `/5`: `In “Heading” (#id)`, `At the top`, or
+- Each section is `## n. Where` in `nimib-review/3` to `/6`: `In “Heading” (#id)`, `At the top`, or
   `On the whole page` (no quote: the note is about the page as a whole). Every comment is a note;
   a replacement is said in it, as `Replace with: ...`, or `Remove`. Do what the note asks.
 - In `/1` and `/2` the section is `## n. Kind, where`:
@@ -31,6 +31,11 @@ text into changes.
   - `Remove` (`Cut` in exports of version 3 and before): remove the quoted text and mend the
     sentence around it.
   A `/3` to `/5` export may still hold one of these, from a comment written on an older version.
+- `Written in \`slides/intro.nim:42\`` under a heading (`/6`): the quoted text is not written in
+  the page's `source` but there, at the call that starts it (a speaker note of a slide, in the
+  blog post made from the deck: `blog.nim`, `blogpost.nim`). Change it there; the heading then
+  names the slide (`In “Slide 12 · Ecosystem”`). A change to a speaker note changes the deck's
+  notes too: that is the point.
 - `From version 7 (commit a1b2c3d).` under a heading (`/5`): the comment was written on an older
   version than the export's, and kept in the browser (History's **Export** or **Export
   everything**). Check it before you apply it: see step 2.
@@ -79,7 +84,7 @@ The quote is rendered text, not source. Search the notebook for it, and expect:
 
 ## 3. Make the changes
 
-Change the notebook named in `source`. There are no versions to keep: git keeps them, and the
+Change the notebook named in `source`, or the file a comment says it is `Written in`. There are no versions to keep: git keeps them, and the
 commit that holds the changes is the page's next version (its comments start empty).
 
 

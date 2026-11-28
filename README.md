@@ -42,6 +42,7 @@ The abstract and description above are kept verbatim as submitted. While prepari
 Slides are made with [nimib](https://github.com/pietroppeter/nimib) and [nimiSlides](https://github.com/HugoGranstrom/nimiSlides):
 
 - `deck.nim`: the presentation (`docs/slides.html`): the order of its parts, one module of `slides/` each
+- `blog.nim`: the talk as a blog post (`docs/blog.html`), built with the deck: every slide, then its speaker notes. `blogpost.nim` does the work (`nbSaveAsBlogPost`, `speakerNote`, `blogNote`) and depends only on nimib and nimiSlides, to move into nimiSlides later; `scripts/blog-shots.sh` takes the screenshots it shows (without them it shows each slide live in a frame)
 - `index.nim`: the site index (`docs/index.html`), which lists the slides, the deep dives and the talk log
 - `my.nim`: helpers and AgileLab theme; run it directly for a style test deck (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/my.html)
 - `slides/thank_you.nim`: the animated Thank You slide (a p5nim sketch); run it directly to build the slide on its own (deployed with pages: https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/thank_you.html)
@@ -125,7 +126,7 @@ Pages say what they show with nimib's blocks and the talk's own, never with HTML
 
 ## Review mode
 
-Every deep dive, talk log page and index has a review mode (`review.nim` and `docs/assets/review.js`, ported from [tabelline](https://github.com/pietroppeter/tabelline)): under the title, the page's version (the commits that changed its source) and a **✎ Review** button. In review mode, select words and comment on them, or add a note on the whole page; comments stay in the browser. **Export** gives one text, Markdown with a YAML block, to paste in a Claude Code chat: the `nimib-review` skill (`.claude/skills/nimib-review`) applies each comment to the page's source. `nb.usePage(ownSource, withReview = false)` leaves it out. The slides have no review mode.
+Every deep dive, talk log page and index has a review mode (`review.nim` and `docs/assets/review.js`, ported from [tabelline](https://github.com/pietroppeter/tabelline)): under the title, the page's version (the commits that changed its source) and a **✎ Review** button. In review mode, select words and comment on them, or add a note on the whole page; comments stay in the browser. **Export** gives one text, Markdown with a YAML block, to paste in a Claude Code chat: the `nimib-review` skill (`.claude/skills/nimib-review`) applies each comment to the page's source. `nb.usePage(ownSource, withReview = false)` leaves it out. The slides have no review mode, but the blog post has: a comment on a speaker note says the file and line of the note (`Written in slides/intro.nim:42`), so the skill edits the note in the slide.
 
 `scripts/screenshot.sh docs/slides.html shots/` renders each slide to a png with headless Chromium.
 

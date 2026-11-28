@@ -1,5 +1,6 @@
 import std / [math, strformat]
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import nimib / highlight
 # `pT` (picotesla) would clash with `pt` (slide 6.3):
 # identifiers are case insensitive after the first letter
@@ -177,7 +178,6 @@ arrived in mainline Nim only last month
 types, like Rust's traits) are yet to come (in Nimony)
 """
     speakerNote """
-(Claude's proposal from the dry run, to check.)
 Macros are powerful and can be dangerous.
 Writing one means working on the syntax tree, and when
 something breaks the error is in code you never wrote.

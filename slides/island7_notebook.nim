@@ -1,5 +1,6 @@
 import std / [math, sequtils]
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import ../my
 
 # Section 8: Island 7: Notebook (see outline.md)
@@ -64,6 +65,13 @@ top to bottom every time; diffs, review and CI like any code.
 Every page of this talk is made with nimib, this deck too.
 """
     speakerNote """
+So how do you make a notebook without a REPL?
+This is why I think it is interesting to have different
+languages bring different perspectives: my take was to
+provide notebook-like functionality as a library.
+I have never seen anything like it elsewhere
+(if you have, let me know).
+
 On the left a nimib document: a Nim program that imports nimib;
 nbText is Markdown, nbCode is Nim code, nbSave writes the page.
 On the right what it gives, on a phone, in nimib's default theme with Show Source: the code runs when the file runs, its output
@@ -110,7 +118,9 @@ template explainersSlide* =
 What I make with nimib today, mostly with Claude: explainers.
 A nanuq post on a teenager's cycling season, a tabelline story
 on FOSDEM, a port of declarative dragging, Faretto
-(can Nim code be alive, like Pharo?). Each one is a nimib page.
+(can Nim code be alive, like Pharo?), which I made on the spot
+at this conference, after Marcus Denker's talk on Pharo.
+Each one is a nimib page.
 """
 
 template explainersPhoneSlide* =
@@ -151,7 +161,8 @@ what you built count as much, today more than ever
     speakerNote """
 These are the people who wrote nimib land, from the git history of each repository.
 Commits are only what git remembers: users, issues and feedback
-are how most of nimib got better, and with AI writing code, they matter most.
+are how most of nimib got better, and with AI writing code, they matter most,
+and they are not tracked here.
 nimiSlides made at least 10 of the 41 NimConf talks since 2022;
 nimibook is the documentation of 13 projects, enu, owlkettle, Norm and QEX among them.
 nimib: I started it in 2020, Hugo maintains it with me, 13 people wrote code for it.

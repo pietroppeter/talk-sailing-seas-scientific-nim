@@ -1,5 +1,6 @@
 import std / strutils
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import ../my, island4_bessel
 export island4_bessel
 
@@ -194,7 +195,8 @@ For Nim the binding was there (nimpy), the toolchain was the hurdle.
 nimlang-pypi is a Python package (mine, alpha) that ships the Nim compiler
 and uses zig from PyPI as C compiler: uv add, write the Nim file, build, import.
 Eight times faster on a toy that is all function calls.
-The session is recorded (24 Nov 2026, Linux), not live.
+The terminal session on the slide is not live:
+I ran it on 24 Nov 2026, on Linux, and pasted its output.
 And the point for library authors: nimlang-pypi builds wheels, for five platforms
 from one Linux machine, so Python users pip install a Nim-powered library
 without a Nim compiler. That is what Rust has with PyO3 and maturin,
