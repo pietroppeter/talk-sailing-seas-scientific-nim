@@ -26,6 +26,14 @@ I gave this talk at
 in the session *A Babel of Compilers*.
 The text under each slide comes from the speaker notes
 of the deck, so it reads like someone talking.
-The slides are live: tap the caption under one
+Tap the caption under a slide
 to open the deck at that slide.
+Boxes marked *After the talk* say what happened
+when I gave it.
+How this page is made from the slides:
+[a deep dive](deepdive/blog_post.html).
+"""
+    nbNote """
+Work in progress: the speaker notes are still to be
+reviewed, and they do not always match what I said.
 """

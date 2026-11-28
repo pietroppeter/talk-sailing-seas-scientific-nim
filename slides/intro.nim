@@ -126,11 +126,11 @@ The place we want to visit is:
 I picked a sailing metaphor because a niche language is
 an exotic land, and from a boat we stay far off and never
 really touch land on many things.
-We will not go deep anywhere: thirty minutes, seven islands.
-Each island is a theme where Nim shows its powers.
-I will not hide where Nim falls short: most islands end with rocks ahead.
-For those who want to land, each code-heavy slide has a deep dive,
-a page with more code and the sources, built like these slides.
+Each island is a topic I think is important for a language
+for scientific computing, named and framed after Nim's strengths.
+Rocks ahead sections are where I talk about weak points and limitations.
+There are a fair number of deep dives, longer explainers
+for those who want to go deeper on a particular subject.
 Honestly: the deep dives are mostly AI generated and unpolished,
 and I have not read the latest version of all of them;
 I still think they should be there.

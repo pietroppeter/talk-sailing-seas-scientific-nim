@@ -94,6 +94,9 @@ the relief of the Alps, interactive: hover for the names
 (the 82 of the UIAA list).
 The photo is mine, from Val Vigezzo, looking at Monte Rosa:
 six of those summits are in it.
+I took it while iterating on the explainer with Claude Code
+on my phone: most of what I did in the last two months
+was with Claude Code on the phone, often while walking.
 The deep dive is the whole exploration, in Nim and in
 Python side by side, with the same outputs.
 """

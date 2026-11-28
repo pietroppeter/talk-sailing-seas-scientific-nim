@@ -89,7 +89,7 @@ No ceiling: Nim compiles to C, so you can go as low as you want,
 SIMD intrinsics, threads, GPU kernels, inline assembly.
 Mamy's talk, in this same session, shows how far that goes.
 
-In the words of people like Mamy, who talks before me,
+In the words of people like Mamy, who talks after me,
 Nim is one of the languages where you can push
 performance the furthest, even more than Rust,
 which is focused on safety, not only performance.

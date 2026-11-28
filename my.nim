@@ -12,6 +12,10 @@ import QRgen
 import blocks # nbImg, nbShowCode, nbSketch, ... (pages and slides share them)
 import blogpost # speakerNote, blogNote: the deck as a blog post (blog.nim)
 export blogpost
+
+template afterTheTalk*(text: string) =
+  ## a note for the blog post only, set apart: what happened when the talk was given
+  blogNote(text, "After the talk")
 export offline, blocks
 import tabelline / nimib as tabellineNimib
 # only nbTable: tabelline's other names (Column, readCsv, ...) clash with Datamancer's,

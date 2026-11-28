@@ -7,6 +7,7 @@
 ##   speakerNote """..."""                # in the deck's notes and in the blog post
 ##   speakerNote("...", blog = false)     # in the deck's notes only
 ##   blogNote """..."""                   # in the blog post only (nothing in the deck)
+##   blogNote("...", "After the talk")   # set apart, under a small label
 ##
 ## `blogNote` also works between slides, outside any `slide:`, for text between two slides.
 ## Then, after the deck is built (and saved), with the deck's `nb`:
@@ -61,22 +62,25 @@ template speakerNote*(ttext: string, blog = true) =
 
 newNbBlock(NbBlogNote):
   text: string
+  label: string
   file: string
   line: int
   toHtml:
     "" # nothing in the deck
 
-template blogNote*(ttext: string) =
+template blogNote*(ttext: string, tlabel = "") =
   ## text (markdown) for the blog post only, after the notes written before it in the slide;
-  ## outside a slide, between the slides it is written between
+  ## outside a slide, between the slides it is written between. With a label (such as
+  ## "After the talk") it is set apart from the notes, under that label
   const at = instantiationInfo(-1, fullPaths = true)
-  nb.add newNbBlogNote(text = ttext, file = at.filename, line = at.line)
+  nb.add newNbBlogNote(text = ttext, label = tlabel, file = at.filename, line = at.line)
 
 # ------------------------------------------------------------------------------ the slides
 
 type
   BlogText* = object
     text*, source*: string ## markdown, and `file:line`
+    label*: string         ## a blogNote's label: set apart under it
   BlogSlide* = object
     h*, v*: int            ## reveal.js indices: the deck's address is `#/h/v`
     n*: int                ## its number in the deck, from 1
@@ -104,7 +108,7 @@ proc collectTexts(blocks: seq[NbBlock], root: string, into: var seq[BlogText]) =
       if n.inBlog: into.add BlogText(text: n.text, source: sourceOf(n.file, n.line, root))
     elif b of NbBlogNote:
       let n = NbBlogNote(b)
-      into.add BlogText(text: n.text, source: sourceOf(n.file, n.line, root))
+      into.add BlogText(text: n.text, label: n.label, source: sourceOf(n.file, n.line, root))
     elif b of NbContainer:
       collectTexts(NbContainer(b).blocks, root, into)
 
@@ -133,7 +137,7 @@ proc blogSlides*(deck: NbDoc, root = ""): seq[BlogSlide] =
     elif b of NbBlogNote:
       let n = NbBlogNote(b)
       result.add BlogSlide(h: h, between: true,
-                           texts: @[BlogText(text: n.text, source: sourceOf(n.file, n.line, root))])
+                           texts: @[BlogText(text: n.text, label: n.label, source: sourceOf(n.file, n.line, root))])
 
 # ------------------------------------------------------------------------------ on the page
 
@@ -145,6 +149,9 @@ const blogPostCss* = """
   border-radius: 4px; background: #fff; }
 .blog-slide img.slide-view { height: auto; object-fit: contain; }
 .blog-slide figcaption { font-size: .85rem; opacity: .75; margin-top: .3rem; }
+/* a blogNote with a label (After the talk): set apart from what was said */
+.blog-aside { margin: 1.2rem 0; padding: .2rem 1rem .4rem; border-left: 4px solid currentColor; background: rgba(127, 127, 127, .08); }
+.blog-aside-label { margin: .5rem 0 .2rem; font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
 """
 
 ## the deck's settings in its address, read by reveal.js over its own: the slide as it is at its
@@ -174,8 +181,13 @@ newNbBlock(NbBlogSlide of NbContainer):
 newNbBlock(NbBlogText):
   text: string
   source: string
+  label: string
   toHtml:
-    &"""<div class="blog-text" data-origin="{esc(blk.source)}">""" & "\n" & markdownToHtml(blk.text) & "\n</div>"
+    if blk.label.len > 0:
+      &"""<aside class="blog-aside" data-origin="{esc(blk.source)}"><p class="blog-aside-label">{esc(blk.label)}</p>""" &
+        "\n" & markdownToHtml(blk.text) & "\n</aside>"
+    else:
+      &"""<div class="blog-text" data-origin="{esc(blk.source)}">""" & "\n" & markdownToHtml(blk.text) & "\n</div>"
 
 ## Frames load when they come near the screen and unload when they are far from it, so a long
 ## deck does not run all its slides at once.
@@ -201,7 +213,7 @@ proc addBlogSlides*(nb: var Nb, slides: seq[BlogSlide], deckUrl: string, slideIm
   ## the slides and their notes, as blocks of the page `nb`
   for s in slides:
     if s.between:
-      for t in s.texts: nb.add newNbBlogText(text = t.text, source = t.source)
+      for t in s.texts: nb.add newNbBlogText(text = t.text, source = t.source, label = t.label)
       continue
     var image = ""
     if slideImages.len > 0:
@@ -211,7 +223,7 @@ proc addBlogSlides*(nb: var Nb, slides: seq[BlogSlide], deckUrl: string, slideIm
           image = candidate
           break
     let blk = newNbBlogSlide(deckUrl = deckUrl, image = image, h = s.h, v = s.v, n = s.n, title = s.title)
-    for t in s.texts: blk.blocks.add newNbBlogText(text = t.text, source = t.source)
+    for t in s.texts: blk.blocks.add newNbBlogText(text = t.text, source = t.source, label = t.label)
     nb.add blk
   nb.add newNbBlogFrames()
 

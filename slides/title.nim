@@ -31,15 +31,24 @@ Nim is a programming language.
 Keep your hand up if you have written some Nim.
 Keep it up if you have contributed to scientific Nim.
 (Probably only Clonkk and Mamy.)
-
-(No time to explain the voyage metaphor here: the
-map speaks for itself.)
+"""
+    afterTheTalk """
+Very few people in the room knew about Nim
+(how many were we? 20 to 40 is my guess,
+I was too nervous to count), and indeed
+only Mamy and Clonkk had written any Nim.
 """
    slide: # below the title: the QR code to the slides, for phones
     nbQr("https://pietroppeter.github.io/talk-sailing-seas-scientific-nim/slides.html", "slides",
       [("bit.ly/pietro-scinim", "https://bit.ly/pietro-scinim"),
        ("github.com/pietroppeter/talk-sailing-seas-scientific-nim",
         "https://github.com/pietroppeter/talk-sailing-seas-scientific-nim")])
+    afterTheTalk """
+In that room the screen had been switching off
+at random, so I prepared a big QR code and asked
+everyone to open the slides on their phone.
+Luckily I was spared any interruption.
+"""
 
 when isMainModule: # this part of the deck on its own: docs/slides_title.html
   buildDeckPart("title", "slides/title.nim"):
