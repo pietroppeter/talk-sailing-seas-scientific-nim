@@ -1,4 +1,5 @@
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import std / [math, sequtils]
 import ggplotnim
 import arraymancer / linear_algebra # solve

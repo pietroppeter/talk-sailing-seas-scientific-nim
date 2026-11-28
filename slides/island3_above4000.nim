@@ -1,5 +1,6 @@
 import std / [json, math, sequtils, strutils]
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import nanuq
 import plotly except Color
 import nbplotly

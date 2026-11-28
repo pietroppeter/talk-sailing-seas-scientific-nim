@@ -1,5 +1,6 @@
 import std / [math, strformat]
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import nimib / highlight
 # `pT` (picotesla) would clash with `pt` (slide 6.3):
 # identifiers are case insensitive after the first letter

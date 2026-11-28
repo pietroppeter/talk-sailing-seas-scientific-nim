@@ -1,5 +1,6 @@
 import std / strutils
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import ../my, island4_bessel
 export island4_bessel
 

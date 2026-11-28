@@ -1,5 +1,6 @@
 import std / [math, sequtils]
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import ../my
 
 # Section 8: Island 7: Notebook (see outline.md)

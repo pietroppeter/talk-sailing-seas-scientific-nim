@@ -1,5 +1,6 @@
 import std / [strutils, strformat, tables]
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import tabelline
 import ../my
 

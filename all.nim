@@ -14,7 +14,8 @@
 ## `-d:slideTheme=<theme>` (pirate, book, agile) builds only the deck, in that theme, as docs/slides_<theme>.html;
 ## `-d:deckLook=centered` only the deck and the style test deck in the earlier centered look (slides_centered.html, my_centered.html).
 import std / [macros, os, strutils, algorithm]
-import nimib, nimiSlides # the decks expand here: what deck.nim imports
+import nimib
+import nimiSlides except speakerNote # the decks expand here: what deck.nim imports
 import themes # sideTheme, slideTheme
 import my, deck
 import slides / thank_you

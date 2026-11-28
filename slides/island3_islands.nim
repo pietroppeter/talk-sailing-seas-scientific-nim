@@ -1,6 +1,6 @@
 import std / [os, strutils, sequtils, algorithm]
 import nimib except md
-import nimiSlides
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import tabelline except Column, readCsv
 import tabelline as tl
 import ../my, ../islandnames

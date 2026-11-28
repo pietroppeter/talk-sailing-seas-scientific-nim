@@ -1,4 +1,5 @@
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import ../my
 
 # Opening, slide 0.2: about me (not part of the intro section, like the title slide)

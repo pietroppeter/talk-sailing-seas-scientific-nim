@@ -1,4 +1,5 @@
-import nimib, nimiSlides
+import nimib
+import nimiSlides except speakerNote # blogpost.nim has its own (my.nim exports it)
 import ../my
 import island6_plant_code # karaxCode
 
