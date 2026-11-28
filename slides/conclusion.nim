@@ -127,7 +127,8 @@ reviewed it. On the spot I said the common perception is
 that Rust compiles slowly and Nim fast, and I used it as an
 example of bad ownership on my side: a mistake by Claude
 I had not double-checked. After the talk I asked Claude for
-a deep dive, and now I am kind of convinced the line was right:
+[a deep dive](deepdive/compile_times.html), and now I am
+kind of convinced the line was mostly right:
 Rust compile times went down a lot. Maybe the feeling is
 still justified, because a typical Rust project depends on
 a lot of crates.
